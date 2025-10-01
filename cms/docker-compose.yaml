@@ -1,0 +1,46 @@
+services:
+  cache:
+    image: redis
+    container_name: redis
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(redis-cli ping) = 'PONG' ]"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      # start_interval: 5s
+      # start_period: 30s
+
+  directus:
+    image: directus/directus
+    container_name: directus
+    cap_add:
+      - NET_RAW
+    ports:
+      - 8055:8055
+    volumes:
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+    depends_on:
+      cache:
+        condition: service_healthy
+    environment:
+      SECRET: "Nutshell-Suspense-Domestic6"
+      DB_CLIENT: "pg"
+      DB_HOST: "ep-rough-resonance-agpkrnq8-pooler.c-2.eu-central-1.aws.neon.tech"
+      DB_PORT: "5432"
+      DB_DATABASE: "neondb"
+      DB_USER: "neondb_owner"
+      DB_PASSWORD: "npg_vZMNOR4hq6xW"
+      DB_SSL: "true"
+
+      CACHE_ENABLED: "true"
+      CACHE_AUTO_PURGE: "true"
+      CACHE_STORE: "redis"
+      REDIS: "redis://cache:6379"
+
+      ADMIN_EMAIL: "ignazio.ingenito@gmail.com"
+      ADMIN_PASSWORD: "19Getmail74"
+
+      PUBLIC_URL: "http://localhost:8055"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
