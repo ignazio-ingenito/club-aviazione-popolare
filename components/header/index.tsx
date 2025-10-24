@@ -31,7 +31,7 @@ import { Menu } from "lucide-react"
 import { HeaderContacts } from "./contacts"
 import { HeaderSocials } from "./socials"
 
-export type HeaderHomeProps = {
+export type HeaderProps = {
     title?: string
     description?: string
     phone?: string
@@ -42,7 +42,7 @@ export type HeaderHomeProps = {
     menu?: MenuItem[]
 }
 
-export function HeaderHome({
+export function Header({
     title = "",
     phone,
     email,
@@ -50,7 +50,7 @@ export function HeaderHome({
     instagramUrl,
     twitterUrl,
     menu,
-}: HeaderHomeProps) {
+}: HeaderProps) {
     const [open, setOpen] = useState(false)
     const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined)
     const isScrolled = useScrolled({ threshold: 10 })
@@ -85,14 +85,14 @@ export function HeaderHome({
                                     if (!submenu) return <></>
                                     if (submenu?.length > 0) {
                                         return (
-                                            <NavigationMenuItem key={title}>
+                                            <NavigationMenuItem key={title} data-submenu-len={submenu.length}>
                                                 <NavigationMenuTrigger className={`${isScrolled ? "text-accent" : "text-white"} text-sm font-medium bg-transparent cursor-pointer transition-all`}>
                                                     {title}
                                                 </NavigationMenuTrigger>
                                                 <NavigationMenuContent className="p-3">
-                                                    <div className={`max-w-screen w-[600px] grid gap-1 grid-cols-${submenu.length < 9 ? 2 : 3}`}>
+                                                    <div className={`max-w-screen w-[600px] grid gap-1 ${submenu.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
                                                         {submenu.map(({ id, url, title }) => {
-                                                            const Icon = icons[url || ""]
+                                                            const Icon = icons[`${url}`]
                                                             return (
                                                                 <NavigationMenuLink asChild className="p-3 text-accent hover:text-secondary" key={id}>
                                                                     <Link href={url}

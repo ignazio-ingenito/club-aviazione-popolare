@@ -1,41 +1,46 @@
 import ReactMarkdown from 'react-markdown'
 import { SiteFooter } from "@/components/site-footer"
-import { HeaderPage } from "@/components/header-page"
 import { Card, CardContent } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getPage, sanitizeHtml } from "@/lib/utils-server"
+import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/utils-server"
 
 import { Users, Target, FileText, LucideIcon, LibraryBig } from "lucide-react"
+import { Header } from '@/components/header'
 
 const icons: LucideIcon[] = [Users, Target, FileText]
 
 export default async function index() {
   const meta = await getMetadata()
+  const menu = await getMenu()
   const page = await getPage("la-nostra-storia")
-  // const secs = await getPageSections("la-nostra-storia")
 
   return (
-    <div className="chi-siamo flex min-h-screen flex-col">
-      <HeaderPage title={meta.title}
+    <div className="la-nostra-storia flex min-h-screen flex-col">
+      <Header
+        title={meta.title}
         description={meta.description}
+        menu={menu}
         phone={meta.phone}
         email={meta.email}
         facebookUrl={meta.facebook}
-        twitterUrl={meta.twitter} />
+        instagramUrl={meta.instagram}
+        twitterUrl={meta.twitter}
+
+      />
 
       <main className="flex-1 w-full max-w-7xl m-auto">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80 text-secondary-foreground">
+        <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
           <div className="container px-6 ">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Chi Siamo</h1>
-            <div className="text-lg leading-relaxed max-w-3xl opacity-90">
+            <div className="text-lg leading-relaxed opacity-90">
               <TextToParagraphs text={page.description ?? ""} />
             </div>
           </div>
         </section>
 
         {/* Storia Section */}
-        <section className="py-16 bg-background">
+        <section className="py-8 px-4 bg-background">
           <div className="container">
             <div>
               <div className="flex items-center gap-3 mb-6">
@@ -49,7 +54,7 @@ export default async function index() {
 
         {/* Missione e Valori */}
         <section className="py-16 px-8 bg-muted/50">
-          <div className="container">
+          <div className="container w-full">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[0].title}</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

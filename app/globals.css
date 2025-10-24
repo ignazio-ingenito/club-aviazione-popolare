@@ -138,25 +138,24 @@
   h6 {
     @apply font-heading;
   }
-
-  /* Added centered container with max-width of 1440px */
-  /* .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8;
-    max-width: 1440px;
-  } */
 }
 
+main>section>div>p {
+  @apply mb-8;
+}
 
-/* Chi siamo */
-
-.chi-siamo main section img {
+.la-nostra-storia main section img {
   @apply w-full object-cover;
 }
 
-.chi-siamo .mission h3 {
+.la-nostra-storia .mission h3 {
   @apply text-xl font-bold mb-3;
 }
 
-.chi-siamo .mission ul {
+.la-nostra-storia .mission ul {
   @apply list-disc pl-3 space-y-1 text-muted-foreground;
+}
+
+.albo-storico table {
+  @apply w-full border-collapse;
 }

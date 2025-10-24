@@ -1,9 +1,9 @@
-import { HeaderHome } from "@/components/header/home"
+import { Header } from "@/components/header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Clock, Users } from "lucide-react"
-import { getMetadata } from "@/lib/utils"
+import { getMetadata } from "@/lib/utils-server"
 
 const upcomingEvents = [
   {
@@ -66,7 +66,7 @@ export default async function EventiPage() {
   const meta = await getMetadata()
   return (
     <div className="flex min-h-screen flex-col">
-      <HeaderHome title={meta.title}
+      <Header title={meta.title}
         description={meta.description}
         phone={meta.phone}
         email={meta.email}
@@ -75,7 +75,7 @@ export default async function EventiPage() {
 
       <main className="flex-1 w-full max-w-7xl m-auto">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+        <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Eventi e Attività</h1>
             <p className="text-xl leading-relaxed max-w-3xl opacity-90">

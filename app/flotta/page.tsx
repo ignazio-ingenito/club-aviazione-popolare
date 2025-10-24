@@ -1,4 +1,4 @@
-import { HeaderHome } from "@/components/header/home"
+import { Header } from "@/components/header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -96,7 +96,7 @@ export default async function FlottaPage() {
   const meta = await getMetadata()
   return (
     <div className="flex min-h-screen flex-col">
-      <HeaderHome title={meta.title}
+      <Header title={meta.title}
         description={meta.description}
         phone={meta.phone}
         email={meta.email}

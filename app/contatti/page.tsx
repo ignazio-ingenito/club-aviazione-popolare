@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { HeaderHome } from "@/components/header/home"
+import { Header } from "@/components/header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -77,7 +77,7 @@ export default async function ContattiPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <HeaderHome title={meta.title}
+      <Header title={meta.title}
         description={meta.description}
         phone={meta.phone}
         email={meta.email}
