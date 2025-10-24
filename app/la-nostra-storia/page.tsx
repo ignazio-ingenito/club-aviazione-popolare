@@ -3,17 +3,16 @@ import { SiteFooter } from "@/components/site-footer"
 import { HeaderPage } from "@/components/header-page"
 import { Card, CardContent } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getPage, getPageSections, sanitizeHtml } from "@/lib/utils"
+import { getMetadata, getPage, sanitizeHtml } from "@/lib/utils-server"
 
-import { Users, Target, FileText, History, LucideIcon } from "lucide-react"
+import { Users, Target, FileText, LucideIcon, LibraryBig } from "lucide-react"
 
 const icons: LucideIcon[] = [Users, Target, FileText]
 
 export default async function index() {
   const meta = await getMetadata()
-  const page = await getPage("la-storia-del-cap")
-  const secs = await getPageSections("la-storia-del-cap")
-
+  const page = await getPage("la-nostra-storia")
+  // const secs = await getPageSections("la-nostra-storia")
 
   return (
     <div className="chi-siamo flex min-h-screen flex-col">
@@ -27,7 +26,7 @@ export default async function index() {
       <main className="flex-1 w-full max-w-7xl m-auto">
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80 text-secondary-foreground">
-          <div className="container">
+          <div className="container px-6 ">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Chi Siamo</h1>
             <div className="text-lg leading-relaxed max-w-3xl opacity-90">
               <TextToParagraphs text={page.description ?? ""} />
@@ -40,7 +39,7 @@ export default async function index() {
           <div className="container">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <History className="h-8 w-8 text-primary" />
+                <LibraryBig className="h-8 w-8" />
                 <h2 className="text-3xl font-bold">{page?.content_title}</h2>
               </div>
               <div className="space-y-4 text-lg leading-relaxed text-muted-foreground" dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }} />
@@ -49,17 +48,17 @@ export default async function index() {
         </section>
 
         {/* Missione e Valori */}
-        <section className="py-16 bg-muted/50">
+        <section className="py-16 px-8 bg-muted/50">
           <div className="container">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{secs[0].title}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[0].title}</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {secs[0].content}
+                {page?.sections && page.sections[0].title}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {secs.slice(1, 4).map((sec, i) => {
+              {page?.sections?.slice(1, 4).map((sec, i) => {
                 const DynIcon = icons[i % icons.length]
                 return (
                   <Card key={sec.id} data-id={sec.id}>
@@ -83,9 +82,9 @@ export default async function index() {
 
         {/* Statuto Section */}
         <section className="py-16 bg-background">
-          <div className="container max-w-4xl">
+          <div className="container max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{secs[4] && secs[4]?.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[4]?.title}</h2>
               <p className="text-lg text-muted-foreground">
                 Il Club Aviazione Popolare è regolato da uno statuto che definisce gli obiettivi,
                 i diritti e i doveri dei soci.
@@ -96,7 +95,7 @@ export default async function index() {
               <CardContent className="p-8">
                 <div className="space-y-6 prose">
                   <ReactMarkdown>
-                    {secs[4] && secs[4].content}
+                    {page?.sections && page.sections[4]?.content}
                   </ReactMarkdown>
                 </div>
               </CardContent>

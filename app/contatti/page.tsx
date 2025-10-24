@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { HeaderHome } from "@/components/header-home-cli"
+import { HeaderHome } from "@/components/header/home"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"

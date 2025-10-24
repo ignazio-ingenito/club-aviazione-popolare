@@ -50,3 +50,7 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 - Preferenza: Next.js + TailwindCSS + shadcn/ui.
 - Alternativa: HTML/CSS/JS vanilla.
 - Componenti modulari e riutilizzabili.
+
+# TODO
+
+- [ ] Migrare le singole pagine delle associazioni cap in "Le nostre sezioni"
