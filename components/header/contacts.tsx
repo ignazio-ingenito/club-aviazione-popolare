@@ -1,41 +1,51 @@
 import { Mail, Phone } from "lucide-react"
 
 type ContactsProps = {
-    css?: string
+    className?: string
     isScrolled: boolean
     phone?: string
     email?: string
+    showText?: boolean
+    textColor?: string
+    scrolledTextColor?: string
+    scrolledTextColorHover?: string
 }
 
-export function HeaderContacts({ css = "", isScrolled, phone, email, }: ContactsProps) {
-    const telHref = phone ? `tel:${phone.replace(/\s+/g, "")}` : undefined
-    const mailHref = email ? `mailto:${email}` : undefined
-
+export function HeaderContacts({
+    className,
+    isScrolled,
+    phone,
+    email,
+    showText = false,
+    textColor,
+    scrolledTextColor,
+    scrolledTextColorHover
+}: ContactsProps) {
+    const phoneUrl = phone ? `tel:${phone.replace(/\s+/g, "")}` : undefined
+    const emailUrl = email ? `mailto:${email}` : undefined
+    const cssScrolled = isScrolled ? `${textColor}` : `${scrolledTextColor} hover:${scrolledTextColorHover}`
     return (
-        <div className={`${css}`}>
-            {telHref && (
+        <>
+            {phoneUrl && (
                 <a
-                    href={telHref}
-                    className={
-                        `${isScrolled ? "text-accent" : "text-white hover:text-accent"} flex items-center gap-1 hover:scale-110 transition-all`
-                    }
+                    href={phoneUrl}
+                    className={`${className} ${cssScrolled}`}
                     aria-label={`Chiama ${phone}`}
                 >
                     <Phone className="h-4 w-4" />
+                    {showText && phone && (<span className="text-ellipsis overflow-x-hidden">{phone}</span>)}
                 </a>
             )}
-            {
-                mailHref && (
-                    <a
-                        href={mailHref}
-                        className={`${isScrolled ? "text-accent" : "text-white hover:text-accent"
-                            } flex items-center gap-1 hover:scale-110 transition-all`}
-                        aria-label={`Scrivi a ${email}`}
-                    >
-                        <Mail className="h-4 w-4" />
-                    </a>
-                )
-            }
-        </div >
+            {emailUrl && (
+                <a
+                    href={emailUrl}
+                    className={`${className} ${cssScrolled}`}
+                    aria-label={`Scrivi a ${email}`}
+                >
+                    <Mail className="h-4 w-4" />
+                    {showText && email && (<span className="text-ellipsis overflow-x-hidden">{email}</span>)}
+                </a>
+            )}
+        </>
     )
 }

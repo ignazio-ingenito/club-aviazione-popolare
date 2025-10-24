@@ -18,7 +18,7 @@ export const Hero = () => {
                 <p className="text-xl md:text-2xl mb-8 text-pretty max-w-3xl mx-auto leading-relaxed">
                     Sodalizio delle Associazioni Italiane di Costruttori di Aeromobili Amatoriali e Storici
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 sm:px-0">
                     <Button
                         asChild
                         size="lg"

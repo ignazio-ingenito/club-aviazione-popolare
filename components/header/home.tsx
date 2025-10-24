@@ -1,18 +1,16 @@
 "use client"
 
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
-import { useWindowScroll } from "react-use"
 
-import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
 import { useScrolled } from "@/lib/useScrolled"
+
 import darkLogo from "@/app/public/logo-dark.svg"
 import lightLogo from "@/app/public/logo-light.svg"
-import { Mail, Phone, Facebook, Instagram, Twitter, Menu } from "lucide-react"
 import {
     Accordion,
     AccordionContent,
@@ -27,10 +25,11 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { MenuItem } from "@/lib/utils-types"
 import { getMenuIcons } from "@/lib/utils-server"
-import { HeaderSocials } from "./socials"
+import { MenuItem } from "@/lib/utils-types"
+import { Menu } from "lucide-react"
 import { HeaderContacts } from "./contacts"
+import { HeaderSocials } from "./socials"
 
 export type HeaderHomeProps = {
     title?: string
@@ -55,10 +54,7 @@ export function HeaderHome({
     const [open, setOpen] = useState(false)
     const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined)
     const isScrolled = useScrolled({ threshold: 10 })
-
     const icons = getMenuIcons()
-    const telHref = phone ? `tel:${phone.replace(/\s+/g, "")}` : undefined
-    const mailHref = email ? `mailto:${email}` : undefined
 
     return (
         <header
@@ -134,11 +130,27 @@ export function HeaderHome({
 
                     <div className="flex items-center justify-center gap-3 shrink-0">
                         {/* Contacts (desktop XL) */}
-                        <HeaderContacts css="hidden xl:flex items-center gap-3" isScrolled={isScrolled} phone={phone} email={email} />
-
-
-                        {/* Social */}
-                        <HeaderSocials isScrolled={isScrolled} instagramUrl={instagramUrl} />
+                        <div className="hidden xl:flex items-center gap-3">
+                            <HeaderContacts
+                                className="hover:scale-150 transition-all ease-in-out duration-300"
+                                isScrolled={isScrolled}
+                                phone={phone}
+                                email={email}
+                                textColor="text-accent"
+                                scrolledTextColor="text-white"
+                                scrolledTextColorHover="text-accent"
+                            />
+                        </div>
+                        <HeaderSocials
+                            className="flex items-center gap-3"
+                            isScrolled={isScrolled}
+                            facebookUrl={facebookUrl}
+                            instagramUrl={instagramUrl}
+                            twitterUrl={twitterUrl}
+                            textColor="text-accent"
+                            scrolledTextColor="text-white"
+                            scrolledTextColorHover="text-accent"
+                        />
 
                         <ThemeToggle className={isScrolled ? "text-accent" : "text-white"} />
 
@@ -146,7 +158,7 @@ export function HeaderHome({
                         <Sheet open={open} onOpenChange={setOpen}>
                             <SheetTrigger asChild className="lg:hidden">
                                 <Button variant="ghost" size="icon" aria-label="Apri menu">
-                                    <Menu className={`h-5 w-5 ${isScrolled ? "text-accent" : "text-white"}`} />
+                                    <Menu className={`h-5 w-5 ${isScrolled ? "text-accent hover:text-red-500" : "text-white"}`} />
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="right" className="w-[300px] sm:w-[400px] focus:ring-0 focus:ring-transparent focus:ring-offset-0">
@@ -193,56 +205,21 @@ export function HeaderHome({
                                         })}
                                     </Accordion>
                                     <div className="flex flex-col gap-3 pt-10 border-t text-sm text-muted-foreground">
-                                        {phone && (
-                                            <a href={telHref} className="flex items-center gap-2 hover:text-foreground transition-colors">
-                                                <Phone className="h-4 w-4" />
-                                                <span>{phone}</span>
-                                            </a>
-                                        )}
-                                        {email && (
-                                            <a href={mailHref} className="flex items-center gap-2 hover:text-foreground transition-colors">
-                                                <Mail className="h-4 w-4" />
-                                                <span>{email}</span>
-                                            </a>
-                                        )}
-                                        {(facebookUrl || twitterUrl) && (
-                                            <div className="flex items-center gap-3 mt-2">
-                                                {facebookUrl && (
-                                                    <a
-                                                        href={facebookUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="hover:text-foreground transition-colors"
-                                                        aria-label="Facebook"
-                                                    >
-                                                        <Facebook className="h-5 w-5" />
-                                                    </a>
-                                                )}
-                                                {instagramUrl && (
-                                                    <a
-                                                        href={instagramUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="hover:text-foreground transition-colors"
-                                                        aria-label="Instagram"
-                                                    >
-                                                        <Instagram className="h-5 w-5" />
-                                                    </a>
-                                                )
-                                                }
-                                                {twitterUrl && (
-                                                    <a
-                                                        href={twitterUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="hover:text-foreground transition-colors"
-                                                        aria-label="Twitter / X"
-                                                    >
-                                                        <Twitter className="h-5 w-5" />
-                                                    </a>
-                                                )}
-                                            </div>
-                                        )}
+                                        <HeaderContacts
+                                            className="flex items-center gap-2 hover:text-foreground transition-colors"
+                                            isScrolled={isScrolled}
+                                            phone={phone}
+                                            email={email}
+                                            showText={true}
+                                            scrolledTextColorHover="hover:text-foreground" />
+
+                                        <HeaderSocials
+                                            className="text-foreground flex items-center gap-6 mt-2"
+                                            isScrolled={isScrolled}
+                                            facebookUrl={facebookUrl}
+                                            instagramUrl={instagramUrl}
+                                            twitterUrl={twitterUrl}
+                                        />
                                     </div>
                                 </nav>
                             </SheetContent>
