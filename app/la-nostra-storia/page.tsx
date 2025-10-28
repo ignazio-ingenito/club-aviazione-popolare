@@ -41,20 +41,22 @@ export default async function index() {
 
         {/* Storia Section */}
         <section className="py-8 px-4 bg-background">
-          <div className="container">
+          <div className="w-full">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <LibraryBig className="h-8 w-8" />
                 <h2 className="text-3xl font-bold">{page?.content_title}</h2>
               </div>
-              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground" dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }} />
+              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground [&_img]:w-full [&_img]:object-cover"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }}
+              />
             </div>
           </div>
         </section>
 
         {/* Missione e Valori */}
         <section className="py-16 px-8 bg-muted/50">
-          <div className="container w-full">
+          <div className="w-full">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[0].title}</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -96,7 +98,7 @@ export default async function index() {
               </p>
             </div>
 
-            <Card className="mission">
+            <Card className="mission [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
               <CardContent className="p-8">
                 <div className="space-y-6 prose">
                   <ReactMarkdown>

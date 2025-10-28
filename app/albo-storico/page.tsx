@@ -38,14 +38,21 @@ export default async function index() {
 
         {/* Storia Section */}
         <section className="py-8 px-4 bg-background">
-          <div className="container">
+          <div className="w-full">
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <NotebookText className="h-8 w-8" />
                 <h2 className="text-3xl font-bold">{page?.content_title}</h2>
               </div>
-              <div className="select-none text-md text-muted-foreground [&_tr]:hover:text-accent [&_th]:font-semibold [&_th]:text-accent [&_th,&_td]:text-center [&_th:nth-child(3),&_th:nth-child(4),&_td:nth-child(3),&_td:nth-child(4)]:text-left [&_td,&_th]:py-1.5 [&_td,&_th]:border-y"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }}
+              <div className=
+                {
+                  `select-none text-md text-muted-foreground ` +
+                  `[&_table]:w-full [&_table]:border-collapse ` +
+                  `[&_tr]:hover:text-accent ` +
+                  `[&_th]:font-semibold [&_th]:text-accent [&_th,&_td]:text-center ` +
+                  `[&_th:nth-child(3),&_th:nth-child(4),&_td:nth-child(3),&_td:nth-child(4)]:text-left ` +
+                  `[&_td,&_th]:py-1.5 [&_tr]:border-y `
+                } dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }}
               />
             </div>
           </div>

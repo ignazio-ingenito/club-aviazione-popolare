@@ -144,18 +144,3 @@ main>section>div>p {
   @apply mb-8;
 }
 
-.la-nostra-storia main section img {
-  @apply w-full object-cover;
-}
-
-.la-nostra-storia .mission h3 {
-  @apply text-xl font-bold mb-3;
-}
-
-.la-nostra-storia .mission ul {
-  @apply list-disc pl-3 space-y-1 text-muted-foreground;
-}
-
-.albo-storico table {
-  @apply w-full border-collapse;
-}
