@@ -7,11 +7,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megaphone } from "lucide-react"
 import { getMenu, getMetadata, getPage } from "@/lib/server"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import MapContatti from "./map"
 
-const FormContatti = dynamic(() => import("./form"), { ssr: false })
+const MapContacts = dynamic(() => import("./map"), { ssr: false })
+const FormContacts = dynamic(() => import("./form"), { ssr: false })
 
 export default async function index() {
+  const maptype = "map"
   const menu = await getMenu()
   const meta = await getMetadata()
   const page = await getPage("contatti")
@@ -194,7 +195,7 @@ export default async function index() {
                 <CardContent className="p-8">
                   <h2 className="text-2xl font-bold mb-6">Invia un Messaggio</h2>
                   <div className="contatti-form">
-                    <FormContatti />
+                    <FormContacts />
                   </div>
                 </CardContent>
               </Card>
@@ -205,11 +206,7 @@ export default async function index() {
         {/* Map Section */}
         <section className="py-4 px-8 w-full bg-muted/50 mb-6">
           <h2 className="text-3xl font-bold mb-8 text-center">Come Raggiungerci</h2>
-          <Card className="overflow-hidden">
-            <div className="aspect-video bg-muted flex items-center justify-center">
-              <MapContatti />
-            </div>
-          </Card>
+          <MapContacts />
         </section>
       </main>
 
