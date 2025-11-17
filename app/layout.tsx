@@ -1,5 +1,5 @@
 import { ReactNode, Suspense } from "react"
-import { getMetadata } from "@/lib/utils-server"
+import { getMetadata } from "@/lib/server"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Montserrat } from "next/font/google"
 

@@ -1,10 +1,11 @@
 import { SiteFooter } from "@/components/site-footer"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/utils-server"
+import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
 
 import { Network } from "lucide-react"
 import { Header } from '@/components/header'
 
+import styles from "./styles.module.css"
 
 export default async function index() {
   const meta = await getMetadata()
@@ -29,7 +30,7 @@ export default async function index() {
         {/* Hero Section */}
         <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
           <div className="container px-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Costruire un aereo</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Organigramma</h1>
             <div className="text-md leading-relaxed opacity-90">
               <TextToParagraphs text={page.description ?? ""} />
             </div>
@@ -38,15 +39,11 @@ export default async function index() {
 
         {/* Page Section */}
         <section className="py-8 px-4 bg-background">
-          <div className="container">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Network className="h-8 w-8" />
-                <h2 className="text-3xl font-bold">{page?.content_title}</h2>
-              </div>
-              <div className="py-10" dangerouslySetInnerHTML={{ __html: sanitizeHtml(page?.content ?? "") }} />
-            </div>
+          <div className="flex items-center gap-3 mb-6">
+            <Network className="h-8 w-8" />
+            <h2 className="text-3xl font-bold">{page?.content_title}</h2>
           </div>
+          <div className={styles.chart} dangerouslySetInnerHTML={{ __html: sanitizeHtml(page?.content ?? "") }} />
         </section>
       </main>
       <SiteFooter />

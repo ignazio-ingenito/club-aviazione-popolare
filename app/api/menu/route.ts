@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { readItems } from "@directus/sdk"
-import { directus } from "@/lib/utils-server"
-import { MenuItem } from "@/lib/utils-types"
+import { directus } from "@/lib/server"
+import { MenuItem } from "@/lib/types"
 
 export async function GET() {
     const menu = await directus.request(readItems("site_menu", {

@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Clock, Users } from "lucide-react"
-import { getMetadata } from "@/lib/utils-server"
+import { getMetadata } from "@/lib/server"
 
 const upcomingEvents = [
   {

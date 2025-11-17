@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/site-footer"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/utils-server"
+import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
 
 import { NotebookText } from "lucide-react"
 import { Header } from '@/components/header'

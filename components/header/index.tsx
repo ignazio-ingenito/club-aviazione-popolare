@@ -25,8 +25,8 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { getMenuIcons } from "@/lib/utils-server"
-import { MenuItem } from "@/lib/utils-types"
+import { getMenuIcons } from "@/lib/server"
+import { MenuItem } from "@/lib/types"
 import { Menu } from "lucide-react"
 import { HeaderContacts } from "./contacts"
 import { HeaderSocials } from "./socials"

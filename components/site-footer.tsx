@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { getMetadata } from "@/lib/utils-server"
+import { getMetadata } from "@/lib/server"
 
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react"
 

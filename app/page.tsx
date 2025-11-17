@@ -1,7 +1,7 @@
 import { Hero } from "@/components/hero"
 import { News } from "@/components/home/news"
 import { SiteFooter } from "@/components/site-footer"
-import { getMetadata, getMenu } from "@/lib/utils-server"
+import { getMetadata, getMenu } from "@/lib/server"
 
 import { HowToStart } from "@/components/home/how-to-start"
 import { BecomeMember } from "@/components/home/become-member"

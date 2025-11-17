@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown'
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/utils-server"
+import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
 
 import { Users, Target, FileText, LucideIcon, LibraryBig } from "lucide-react"
 import { Header } from '@/components/header'
