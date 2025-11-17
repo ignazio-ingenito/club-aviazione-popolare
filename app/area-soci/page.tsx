@@ -54,7 +54,7 @@ export default async function AreaSociPage() {
         {/* Hero Section */}
         <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Area Soci</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
             <p className="text-xl leading-relaxed max-w-3xl opacity-90">
               Accedi all'area riservata per gestire la tua iscrizione, consultare documenti e partecipare alle attività
               del club.

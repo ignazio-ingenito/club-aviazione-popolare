@@ -32,7 +32,7 @@ export default async function index() {
         {/* Hero Section */}
         <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
           <div className="container px-6 ">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Chi Siamo</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
             <div className="text-lg leading-relaxed opacity-90">
               <TextToParagraphs text={page.description ?? ""} />
             </div>
