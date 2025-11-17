@@ -60,6 +60,7 @@
     "react-resizable-panels": "^2.1.9",
     "react-use": "^17.6.0",
     "recharts": "2.15.4",
+    "resend": "^6.4.2",
     "sanitize-html": "^2.17.0",
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.3.1",
