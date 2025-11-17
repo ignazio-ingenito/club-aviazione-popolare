@@ -52,7 +52,7 @@ export default async function AreaSociPage() {
 
       <main className="flex-1 w-full max-w-7xl m-auto">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+        <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Area Soci</h1>
             <p className="text-xl leading-relaxed max-w-3xl opacity-90">
@@ -140,7 +140,7 @@ export default async function AreaSociPage() {
                 <div className="space-y-4">
                   <Card>
                     <CardContent className="p-4 flex items-start gap-4">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <FileText className="h-5 w-5 text-primary" />
                       </div>
                       <div>
@@ -154,7 +154,7 @@ export default async function AreaSociPage() {
 
                   <Card>
                     <CardContent className="p-4 flex items-start gap-4">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Calendar className="h-5 w-5 text-primary" />
                       </div>
                       <div>
@@ -168,7 +168,7 @@ export default async function AreaSociPage() {
 
                   <Card>
                     <CardContent className="p-4 flex items-start gap-4">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Users className="h-5 w-5 text-primary" />
                       </div>
                       <div>
@@ -182,7 +182,7 @@ export default async function AreaSociPage() {
 
                   <Card>
                     <CardContent className="p-4 flex items-start gap-4">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Award className="h-5 w-5 text-primary" />
                       </div>
                       <div>

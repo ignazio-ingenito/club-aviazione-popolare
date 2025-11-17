@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter, Menu } from "lucide-react"
+import { Facebook, Instagram, Twitter } from "lucide-react"
 
 type SocialsProps = {
     className?: string

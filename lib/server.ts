@@ -46,7 +46,6 @@ export const getMenu = async (): Promise<MenuItem[]> => {
     filter: { status: { _eq: "published" } },
     deep: { submenu: { _filter: { status: { _eq: 'published' } }, sort: ['sort'] } },
   }))
-  console.log(JSON.stringify(menu))
   return menu as MenuItem[]
 }
 

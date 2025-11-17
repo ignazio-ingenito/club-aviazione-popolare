@@ -7,8 +7,8 @@ import { Header } from '@/components/header'
 
 
 export default async function index() {
-  const meta = await getMetadata()
   const menu = await getMenu()
+  const meta = await getMetadata()
   const page = await getPage("cosa-facciamo")
 
   return (
@@ -22,7 +22,6 @@ export default async function index() {
         facebookUrl={meta.facebook}
         instagramUrl={meta.instagram}
         twitterUrl={meta.twitter}
-
       />
 
       <main className="flex-1 w-full max-w-7xl m-auto">
