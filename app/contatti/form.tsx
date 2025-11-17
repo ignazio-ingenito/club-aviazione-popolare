@@ -88,7 +88,7 @@ export default function FormContatti() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="Francesco Baracca"
+                            placeholder="Gianfranco Rotondi"
                             className={errors.name ? "border-destructive" : ""}
                         />
                         {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
@@ -104,7 +104,7 @@ export default function FormContatti() {
                             type="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="francesco.baracca@me.com"
+                            placeholder="gianfranco.rotondi@me.com"
                             className={errors.email ? "border-destructive" : ""}
                         />
                         {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}

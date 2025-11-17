@@ -4,16 +4,17 @@ import dynamic from "next/dynamic"
 import { Header } from "@/components/header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megaphone } from "lucide-react"
 import { getMenu, getMetadata, getPage } from "@/lib/server"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
+import MapContatti from "./map"
 
 const FormContatti = dynamic(() => import("./form"), { ssr: false })
 
 export default async function index() {
   const menu = await getMenu()
   const meta = await getMetadata()
-  const page = await getPage("cosa-facciamo")
+  const page = await getPage("contatti")
 
   return (
     <div className="contattaci flex min-h-screen flex-col">
@@ -32,10 +33,17 @@ export default async function index() {
         {/* Hero Section */}
         <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
           <div className="container px-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Contatti</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
             <div className="text-md leading-relaxed opacity-90">
               <TextToParagraphs text={page.description ?? ""} />
             </div>
+          </div>
+        </section>
+
+        <section className="px-8 bg-background">
+          <div className="flex items-center gap-3">
+            <Megaphone className="h-8 w-8" />
+            <h2 className="text-3xl font-bold">{page?.content_title}</h2>
           </div>
         </section>
 
@@ -73,7 +81,7 @@ export default async function index() {
                       <h3 className="font-bold mb-2">Email</h3>
                       <a
                         href="mailto:segreteria@clubaviazionepopolare.org"
-                        className="text-muted-foreground hover:text-primary transition-colors md:text-sm"
+                        className="text-muted-foreground hover:text-primary transition-colors text-base min-[1024px]:text-sm"
                       >
                         segreteria@clubaviazionepopolare.org
                       </a>
@@ -109,7 +117,7 @@ export default async function index() {
                     <div>
                       <h3 className="font-bold mb-2">Orari Segreteria</h3>
                       <div className="text-muted-foreground">
-                        <span className="mb-1">Gli uffici di Bresso sono aperti</span>
+                        <span className="mb-1 text-sm">Gli uffici di Bresso sono aperti</span>
                         <div className="grid grid-cols-2 mt-1">
                           <div>Lunedì</div>
                           <div>10:00 - 16:00</div>
@@ -167,7 +175,21 @@ export default async function index() {
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 flex flex-col gap-y-4">
+              <Card className="h-full">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Info className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="text-muted-foreground">
+                      In questo sito sono elencate le <a href="/le-nostre-sezioni" className="underline text-accent">associazioni affiliate</a> al Sodalizio CAP.<br />
+                      A loro potete rivolgervi per avere aiuto e trovare vicino a voi chi vi può aiutare per un nuovo progetto di costruzione amatoriale.
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardContent className="p-8">
                   <h2 className="text-2xl font-bold mb-6">Invia un Messaggio</h2>
@@ -181,19 +203,13 @@ export default async function index() {
         </section>
 
         {/* Map Section */}
-        <section className="py-16 bg-muted/50 mb-6">
-          <div className="container">
-            <h2 className="text-3xl font-bold mb-8 text-center">Come Raggiungerci</h2>
-            <Card className="overflow-hidden">
-              <div className="aspect-video bg-muted flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <MapPin className="h-12 w-12 mx-auto mb-4" />
-                  <p>Mappa interattiva del campo di volo</p>
-                  <p className="text-sm mt-2">Campo di Volo Bicianca, Monza (MB)</p>
-                </div>
-              </div>
-            </Card>
-          </div>
+        <section className="py-4 px-8 w-full bg-muted/50 mb-6">
+          <h2 className="text-3xl font-bold mb-8 text-center">Come Raggiungerci</h2>
+          <Card className="overflow-hidden">
+            <div className="aspect-video bg-muted flex items-center justify-center">
+              <MapContatti />
+            </div>
+          </Card>
         </section>
       </main>
 
