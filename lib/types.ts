@@ -10,6 +10,7 @@ export type Metadata = {
   facebook?: string
   twitter?: string
   instagram?: string
+  map_type: string
 }
 
 export type Page = {

@@ -54,3 +54,20 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 # TODO
 
 - [ ] Migrare le singole pagine delle associazioni cap in "Le nostre sezioni"
+
+
+# Package updates
+
+```
+rm -rf node_modules pnpm-lock.yaml
+```
+
+```
+pnpm store prune
+pnpm cache delete
+pnpm update
+```
+
+```
+pnpm install
+```

@@ -1,15 +1,9 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
 
-enum MapType {
-  Map,
-  Satellite
-}
-
-export default function Map() {
+export default function GoogleMap() {
   const [mapType, setMapType] = useState("map")
 
 
@@ -32,15 +26,13 @@ export default function Map() {
           </Select>
         </div>
       </div>
-      <Card className="overflow-hidden">
-        <div className="aspect-video flex items-center justify-center relative">
-          {
-            mapType == "map"
-              ? <iframe width="100%" height="100%" src="https://maps.google.com/maps?hl=it&q=Club%20Aviazione%20Popolare&t=&z=18&ie=UTF8&iwloc=B&output=embed" />
-              : <iframe width="100%" height="100%" src="https://maps.google.com/maps?hl=it&q=Club%20Aviazione%20Popolare&t=k&z=18&ie=UTF8&iwloc=B&output=embed" />
-          }
-        </div>
-      </Card>
+      <div className="aspect-video flex items-center justify-center relative">
+        {
+          mapType == "map"
+            ? <iframe width="100%" height="100%" src="https://maps.google.com/maps?hl=it&q=Club%20Aviazione%20Popolare&t=&z=18&ie=UTF8&iwloc=B&output=embed" />
+            : <iframe width="100%" height="100%" src="https://maps.google.com/maps?hl=it&q=Club%20Aviazione%20Popolare&t=k&z=18&ie=UTF8&iwloc=B&output=embed" />
+        }
+      </div>
     </div>
   )
 }

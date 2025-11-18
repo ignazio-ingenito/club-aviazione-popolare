@@ -1,33 +1,43 @@
+
 import type React from "react"
 import dynamic from "next/dynamic"
 
 import { Header } from "@/components/header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megaphone } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megaphone, MapPinCheck } from "lucide-react"
 import { getMenu, getMetadata, getPage } from "@/lib/server"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
 
-const MapContacts = dynamic(() => import("./map"), { ssr: false })
 const FormContacts = dynamic(() => import("./form"), { ssr: false })
+const GoogleMap = dynamic(() => import("./google-map"), { ssr: false })
+const OpenStreetMap = dynamic(() => import("./openstreet-map"), { ssr: false })
 
 export default async function index() {
-  const maptype = "map"
   const menu = await getMenu()
-  const meta = await getMetadata()
+  const {
+    title,
+    description,
+    phone,
+    email,
+    facebook,
+    instagram,
+    twitter,
+    map_type
+  } = await getMetadata()
   const page = await getPage("contatti")
 
   return (
     <div className="contattaci flex min-h-screen flex-col">
       <Header
-        title={meta.title}
-        description={meta.description}
+        title={title}
+        description={description}
         menu={menu}
-        phone={meta.phone}
-        email={meta.email}
-        facebookUrl={meta.facebook}
-        instagramUrl={meta.instagram}
-        twitterUrl={meta.twitter}
+        phone={phone}
+        email={email}
+        facebookUrl={facebook}
+        instagramUrl={instagram}
+        twitterUrl={twitter}
       />
 
       <main className="flex-1 w-full max-w-7xl m-auto">
@@ -44,12 +54,12 @@ export default async function index() {
         <section className="px-8 bg-background">
           <div className="flex items-center gap-3">
             <Megaphone className="h-8 w-8" />
-            <h2 className="text-3xl font-bold">{page?.content_title}</h2>
+            <h2 className="text-3xl font-bold py-8">{page?.content_title}</h2>
           </div>
         </section>
 
         {/* Contact Info and Form */}
-        <section className="py-8 px-8 min-[1300px]:px-0 bg-background">
+        <section className="px-8 min-[1300px]:px-0 bg-background">
           <div className="grid lg:grid-cols-3 gap-4">
             {/* Contact Information */}
             <div className="grid grid-cols-1 gap-y-3 w-full lg:col-span-1">
@@ -137,9 +147,9 @@ export default async function index() {
                 <CardContent className="p-6">
                   <h3 className="font-bold mb-4">Seguici sui Social</h3>
                   <div className="flex gap-4 transition-all ease-in-out duration-700">
-                    {meta.instagram && (
+                    {instagram && (
                       <a
-                        href={meta.instagram}
+                        href={instagram}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
@@ -148,9 +158,9 @@ export default async function index() {
                         <Instagram className="h-4 w-4" />
                       </a>
                     )}
-                    {meta.facebook && (
+                    {facebook && (
                       <a
-                        href={meta.facebook}
+                        href={facebook}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
@@ -159,9 +169,9 @@ export default async function index() {
                         <Facebook className="h-4 w-4" />
                       </a>
                     )}
-                    {meta.twitter && (
+                    {twitter && (
                       <a
-                        href={meta.twitter}
+                        href={twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
@@ -203,10 +213,29 @@ export default async function index() {
           </div>
         </section>
 
-        {/* Map Section */}
-        <section className="py-4 px-8 w-full bg-muted/50 mb-6">
-          <h2 className="text-3xl font-bold mb-8 text-center">Come Raggiungerci</h2>
-          <MapContacts />
+        <section className="pt-4 pb-8 px-8 min-[1300px]:px-0">
+          <Card>
+            <CardContent className="px-0 pb-0">
+              <div className="w-full flex justify-center items-center gap-x-4">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <MapPinCheck className="h-6 w-6 text-primary" />
+                </div>
+                <h2 className="py-8 text-3xl font-bold text-center">
+                  Come Raggiungerci
+                </h2>
+              </div>
+              {/* Google Map Section */}
+              <div className="rounded-b-lg overflow-hidden">
+                {map_type == "google" &&
+                  <GoogleMap />
+                }
+                {/* Leaflet Map Section */}
+                {map_type == "openstreetmap" &&
+                  <OpenStreetMap />
+                }
+              </div>
+            </CardContent>
+          </Card>
         </section>
       </main>
 
