@@ -9,23 +9,28 @@ import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megapho
 import { getMenu, getMetadata, getPage } from "@/lib/server"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
 
+
+
+
 const FormContacts = dynamic(() => import("./form"), { ssr: false })
 const GoogleMap = dynamic(() => import("./google-map"), { ssr: false })
 const OpenStreetMap = dynamic(() => import("./openstreet-map"), { ssr: false })
 
 export default async function index() {
+  const key = "contatti"
   const menu = await getMenu()
   const {
-    title,
+    address,
     description,
-    phone,
     email,
     facebook,
     instagram,
+    map_type,
+    phone,
+    title,
     twitter,
-    map_type
   } = await getMetadata()
-  const page = await getPage("contatti")
+  const page = await getPage(key)
 
   return (
     <div className="contattaci flex min-h-screen flex-col">
@@ -75,7 +80,7 @@ export default async function index() {
                         href="tel:+39026107142"
                         className="text-muted-foreground hover:text-primary transition-colors"
                       >
-                        +39 02 6107142
+                        {phone}
                       </a>
                     </div>
                   </div>
@@ -94,7 +99,7 @@ export default async function index() {
                         href="mailto:segreteria@clubaviazionepopolare.org"
                         className="text-muted-foreground hover:text-primary transition-colors text-base min-[1024px]:text-sm"
                       >
-                        segreteria@clubaviazionepopolare.org
+                        {email}
                       </a>
                     </div>
                   </div>
@@ -110,9 +115,7 @@ export default async function index() {
                     <div>
                       <h3 className="font-bold mb-2">Indirizzo</h3>
                       <div className="text-muted-foreground">
-                        Via Piave, 36
-                        <br />
-                        20091 – Bresso (Mi)
+                        {(address || "")?.replaceAll(" - ", "<br />")}
                       </div>
                     </div>
                   </div>

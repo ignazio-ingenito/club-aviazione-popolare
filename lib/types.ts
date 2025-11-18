@@ -1,6 +1,19 @@
 import { UUID } from "crypto"
 import { LucideIcon } from "lucide-react"
 
+export type Chapter = {
+  name: string
+  founded: number
+  president: string
+  website: string
+  description: string
+  link: string
+  location: string
+  members: number
+  aircrafts: number
+  highlights: string
+}
+
 export type Metadata = {
   title: string
   description?: string

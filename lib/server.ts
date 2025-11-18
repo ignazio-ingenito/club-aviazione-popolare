@@ -1,6 +1,6 @@
 import sanitize from "sanitize-html"
 import { unstable_noStore as noStore } from "next/cache"
-import { MenuIconsMap, MenuItem, Metadata, Page } from "./types"
+import { Chapter, MenuIconsMap, MenuItem, Metadata, Page } from "./types"
 import { createDirectus, readItem, readItems, readSingleton, rest } from "@directus/sdk"
 import {
   BookText,
@@ -32,6 +32,14 @@ import { json } from "stream/consumers"
 
 
 export const directus = createDirectus(process.env.DIRECTUS_URL ?? "http://localhost:8055").with(rest())
+
+export const getChapters = async (): Promise<Chapter[]> => {
+  noStore() // prevent caching
+  const rows = await directus.request(readItems("chapters", {
+    filter: { status: { _eq: "published" } },
+  }))
+  return rows as Chapter[]
+}
 
 export const getMetadata = async (): Promise<Metadata> => {
   noStore() // prevent caching
@@ -89,7 +97,7 @@ export const getMenuIcons = (): MenuIconsMap => ({
   "/costruire-un-aereo": Wrench,
   "/diventa-uno-di-noi": UserPlus2,
   "/la-nostra-storia": LibraryBig,
-  "/le-nostre-sezioni": MapPinHouse,
+  "/associazioni": MapPinHouse,
   "/organigramma": Network,
   "/corsi": GraduationCap,
   "/eventi": Calendar1,

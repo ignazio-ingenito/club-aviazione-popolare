@@ -53,7 +53,7 @@ export default function FormContatti() {
             headers: { "Content-Type": "application/json" }
         })
 
-        console.log("form submitted:", formData)
+        console.debug("form submitted:", formData)
         setSubmitted(true)
         setFormData({ name: "", email: "", phone: "", message: "" })
         setTimeout(() => setSubmitted(false), 5000)
