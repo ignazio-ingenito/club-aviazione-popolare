@@ -19,7 +19,7 @@ export const BecomeMember = () => (
             <div className='p-4 lg:basis-1/2'>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-foreground">Diventa uno di noi</h2>
                 <p className="text-md leading-relaxed my-6 dark:text-accent-foreground">
-                    I soci, o aspiranti tali, devono iscriversi direttamente a una delle otto Associazioni.
+                    I soci, o aspiranti tali, devono iscriversi direttamente a una delle associazioni locali.<br className="mb-1.5" />
                     Non è possibile iscriversi individualmente al sodalizio CAP, dato che lo stesso si occupa sopratutto dei rapporti delle proprie associazioni verso l’esterno (Autorità, Enti, altre associazioni sia in Italia che all’estero).
                 </p>
                 <div className="w-full flex justify-center">
