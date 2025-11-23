@@ -1,13 +1,40 @@
 import ReactMarkdown from 'react-markdown'
+import { findAll } from "domutils"
+import { Element } from "domhandler"
+import { parseDocument } from "htmlparser2"
+import { render as domRender } from "dom-serializer"
+
+
+import { Header } from '@/components/header'
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
 import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
-
 import { Users, Target, FileText, LucideIcon, LibraryBig } from "lucide-react"
-import { Header } from '@/components/header'
 
 const icons: LucideIcon[] = [Users, Target, FileText]
+
+export function parseContent(html: string) {
+  const doc = parseDocument(html)
+
+  // Trova TUTTI gli <img> in ordine di apparizione
+  const images = findAll(
+    (el): el is Element => el instanceof Element && el.name === "img",
+    doc.children
+  )
+
+  images.forEach((img, n) => {
+    if (n == 0) {
+      img.attribs.class += "pb-4 w-full"
+      return
+    }
+
+    img.attribs.class = "px-4"
+    img.attribs.class += n % 2 === 0 ? " pr-0 float-right" : " pl-0 float-left"
+  })
+
+  return domRender(doc)
+}
 
 export default async function index() {
   const meta = await getMetadata()
@@ -47,8 +74,8 @@ export default async function index() {
                 <LibraryBig className="h-8 w-8" />
                 <h2 className="text-3xl font-bold">{content_title}</h2>
               </div>
-              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground [&_img]:w-full [&_img]:object-cover"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(content ?? "") }}
+              <div className="space-y-4 text-lg leading-relaxed text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: parseContent(sanitizeHtml(content ?? "")) }}
               />
             </div>
           </div>
@@ -99,29 +126,6 @@ export default async function index() {
                 )
               })}
             </div>
-          </div>
-        </section>
-
-        {/* Statuto Section */}
-        <section className="py-16 bg-background">
-          <div className="container max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{sections && sections[4]?.title}</h2>
-              <p className="text-lg text-muted-foreground">
-                Il Club Aviazione Popolare è regolato da uno statuto che definisce gli obiettivi,
-                i diritti e i doveri dei soci.
-              </p>
-            </div>
-
-            <Card className="mission [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1">
-              <CardContent className="p-8">
-                <div className="space-y-6 prose">
-                  <ReactMarkdown>
-                    {sections && sections[4]?.content}
-                  </ReactMarkdown>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </section>
       </main>
