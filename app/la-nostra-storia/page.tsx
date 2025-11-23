@@ -12,7 +12,7 @@ const icons: LucideIcon[] = [Users, Target, FileText]
 export default async function index() {
   const meta = await getMetadata()
   const menu = await getMenu()
-  const page = await getPage("la-nostra-storia")
+  const { content, content_title, description, sections } = await getPage("la-nostra-storia")
 
   return (
     <div className="la-nostra-storia flex min-h-screen flex-col">
@@ -32,9 +32,9 @@ export default async function index() {
         {/* Hero Section */}
         <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
           <div className="container px-6 ">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{content_title}</h1>
             <div className="text-lg leading-relaxed opacity-90">
-              <TextToParagraphs text={page.description ?? ""} />
+              <TextToParagraphs text={description ?? ""} />
             </div>
           </div>
         </section>
@@ -45,11 +45,26 @@ export default async function index() {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <LibraryBig className="h-8 w-8" />
-                <h2 className="text-3xl font-bold">{page?.content_title}</h2>
+                <h2 className="text-3xl font-bold">{content_title}</h2>
               </div>
               <div className="space-y-4 text-lg leading-relaxed text-muted-foreground [&_img]:w-full [&_img]:object-cover"
-                dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(content ?? "") }}
               />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <a href="">
+                <img src="" alt="" />
+              </a>
+            </div>
+            <div>
+              <a href="">
+                <img src="" alt="" />
+              </a>
             </div>
           </div>
         </section>
@@ -58,25 +73,25 @@ export default async function index() {
         <section className="py-16 px-8 bg-muted/50">
           <div className="w-full">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[0].title}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{sections && sections[0].title}</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {page?.sections && page.sections[0].title}
+                {sections && sections[0].title}
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {page?.sections?.slice(1, 4).map((sec, i) => {
+              {sections?.slice(1, 4).map(({ id, title, content }, i) => {
                 const DynIcon = icons[i % icons.length]
                 return (
-                  <Card key={sec.id} data-id={sec.id}>
+                  <Card key={id} data-id={id}>
                     <CardContent className="p-6">
                       <div className="flex flex-col items-center text-center">
                         <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                           <DynIcon className="h-8 w-8 text-primary" />
                         </div>
-                        <h3 className="text-xl font-bold mb-3">{sec.title}</h3>
+                        <h3 className="text-xl font-bold mb-3">{title}</h3>
                         <p className="text-muted-foreground leading-relaxed">
-                          {sec.content}
+                          {content}
                         </p>
                       </div>
                     </CardContent>
@@ -91,7 +106,7 @@ export default async function index() {
         <section className="py-16 bg-background">
           <div className="container max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{page?.sections && page.sections[4]?.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{sections && sections[4]?.title}</h2>
               <p className="text-lg text-muted-foreground">
                 Il Club Aviazione Popolare è regolato da uno statuto che definisce gli obiettivi,
                 i diritti e i doveri dei soci.
@@ -102,7 +117,7 @@ export default async function index() {
               <CardContent className="p-8">
                 <div className="space-y-6 prose">
                   <ReactMarkdown>
-                    {page?.sections && page.sections[4]?.content}
+                    {sections && sections[4]?.content}
                   </ReactMarkdown>
                 </div>
               </CardContent>

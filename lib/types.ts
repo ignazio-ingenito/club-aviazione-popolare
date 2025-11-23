@@ -14,6 +14,13 @@ export type Chapter = {
   highlights: string
 }
 
+export type Meeting = {
+  id: number
+  year: number
+  place: string
+  date: string
+}
+
 export type Metadata = {
   title: string
   description?: string

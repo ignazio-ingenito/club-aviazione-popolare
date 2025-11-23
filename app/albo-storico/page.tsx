@@ -1,15 +1,18 @@
 import { SiteFooter } from "@/components/site-footer"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
+import { getMetadata, getMenu, getPage, getMeetings } from "@/lib/server"
 
 import { NotebookText } from "lucide-react"
 import { Header } from '@/components/header'
+
+import MeetingTable from "./table"
 
 
 export default async function index() {
   const meta = await getMetadata()
   const menu = await getMenu()
   const page = await getPage("albo-storico")
+  const meetings = await getMeetings()
 
   return (
     <div className="albo-storico flex min-h-screen flex-col">
@@ -44,16 +47,7 @@ export default async function index() {
                 <NotebookText className="h-8 w-8" />
                 <h2 className="text-3xl font-bold">{page?.content_title}</h2>
               </div>
-              <div className=
-                {
-                  `select-none text-md text-muted-foreground ` +
-                  `[&_table]:w-full [&_table]:border-collapse ` +
-                  `[&_tr]:hover:text-accent ` +
-                  `[&_th]:font-semibold [&_th]:text-accent [&_th,&_td]:text-center ` +
-                  `[&_th:nth-child(3),&_th:nth-child(4),&_td:nth-child(3),&_td:nth-child(4)]:text-left ` +
-                  `[&_td,&_th]:py-1.5 [&_tr]:border-y `
-                } dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content ?? "") }}
-              />
+              <MeetingTable meetings={meetings} />
             </div>
           </div>
         </section>

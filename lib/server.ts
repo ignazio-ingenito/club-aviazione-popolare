@@ -1,6 +1,6 @@
 import sanitize from "sanitize-html"
 import { unstable_noStore as noStore } from "next/cache"
-import { Chapter, MenuIconsMap, MenuItem, Metadata, Page } from "./types"
+import { Chapter, Meeting, MenuIconsMap, MenuItem, Metadata, Page } from "./types"
 import { createDirectus, readItem, readItems, readSingleton, rest } from "@directus/sdk"
 import {
   BookText,
@@ -44,6 +44,11 @@ export const getChapters = async (): Promise<Chapter[]> => {
 export const getMetadata = async (): Promise<Metadata> => {
   noStore() // prevent caching
   return await directus.request(readSingleton("metadata")) as Metadata
+}
+
+export const getMeetings = async (): Promise<Meeting[]> => {
+  noStore() // prevent caching
+  return await directus.request(readItems("meetings")) as Meeting[]
 }
 
 export const getMenu = async (): Promise<MenuItem[]> => {
