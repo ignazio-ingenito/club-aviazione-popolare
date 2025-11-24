@@ -1,0 +1,44 @@
+.cosa_facciamo a {
+    color: var(--accent);
+}
+
+.cosa_facciamo a:hover {
+    cursor: pointer;
+    text-decoration-line: underline;
+}
+
+.cosa_facciamo p {
+    padding-block: calc(var(--spacing) * 2);
+}
+
+.cosa_facciamo ul {
+    list-style-type: disc;
+    padding-left: calc(var(--spacing) * 8);
+    padding-bottom: calc(var(--spacing) * 4);
+}
+
+.cosa_facciamo ul li {
+    padding-block: calc(var(--spacing) * 1);
+}
+
+.cosa_facciamo h1 {
+    font-size: var(--text-3xl);
+    line-height: var(--tw-leading, var(--text-3xl--line-height));
+    margin-top: calc(var(--spacing) * 6);
+    margin-bottom: calc(var(--spacing) * 2);
+}
+
+.cosa_facciamo h2 {
+    font-size: var(--text-2xl);
+    margin-top: calc(var(--spacing) * 4);
+    margin-bottom: calc(var(--spacing) * 1);
+}
+
+.cosa_facciamo img {
+    float: inline-end;
+    background-color: transparent;
+}
+
+.cosa_facciamo hr {
+    padding-block: calc(var(--spacing) * 2);
+}

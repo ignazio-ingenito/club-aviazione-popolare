@@ -1,0 +1,38 @@
+.feed {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: red;
+}
+
+.feeds section {
+    width: 100%;
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+    justify-content: center;
+}
+
+@media (width >=640px) {
+    .feeds section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (width >=768px) {
+    .feeds section {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (width >=1024px) {
+    .feeds section {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (width >=1280px) {
+    .feeds section {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}

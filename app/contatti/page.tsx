@@ -2,69 +2,30 @@
 import type React from "react"
 import dynamic from "next/dynamic"
 
-import { Header } from "@/components/header"
-import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, Megaphone, MapPinCheck } from "lucide-react"
-import { getMenu, getMetadata, getPage } from "@/lib/server"
-import { TextToParagraphs } from "@/components/text-to-paragraphs"
+import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, MapPinCheck } from "lucide-react"
+import { getMetadata, getPage } from "@/lib/server"
+import { PageHero } from "@/components/page/hero"
+import { PageTitle } from "@/components/page/title"
 
 
-
-
-const FormContacts = dynamic(() => import("./form"), { ssr: false })
 const GoogleMap = dynamic(() => import("./google-map"), { ssr: false })
 const OpenStreetMap = dynamic(() => import("./openstreet-map"), { ssr: false })
+const FormContacts = dynamic(() => import("./form"), { ssr: false })
 
 export default async function index() {
-  const key = "contatti"
-  const menu = await getMenu()
-  const {
-    address,
-    description,
-    email,
-    facebook,
-    instagram,
-    map_type,
-    phone,
-    title,
-    twitter,
-  } = await getMetadata()
-  const page = await getPage(key)
+  const { address, email, facebook, instagram, map_type, phone, twitter } = await getMetadata()
+  const { content_title, description } = await getPage("contatti")
 
   return (
-    <div className="contattaci flex min-h-screen flex-col">
-      <Header
-        title={title}
-        description={description}
-        menu={menu}
-        phone={phone}
-        email={email}
-        facebookUrl={facebook}
-        instagramUrl={instagram}
-        twitterUrl={twitter}
-      />
+    <>
+      <PageHero title={content_title} description={description} />
 
-      <main className="flex-1 w-full max-w-7xl m-auto">
-        {/* Hero Section */}
-        <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
-          <div className="container px-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
-            <div className="text-md leading-relaxed opacity-90">
-              <TextToParagraphs text={page.description ?? ""} />
-            </div>
-          </div>
-        </section>
-
-        <section className="px-8 bg-background">
-          <div className="flex items-center gap-3">
-            <Megaphone className="h-8 w-8" />
-            <h2 className="text-3xl font-bold py-8">{page?.content_title}</h2>
-          </div>
-        </section>
+      <div className="p-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+        <PageTitle title={content_title} description={description} icon="megaphone" />
 
         {/* Contact Info and Form */}
-        <section className="px-8 min-[1300px]:px-0 bg-background">
+        <section>
           <div className="grid lg:grid-cols-3 gap-4">
             {/* Contact Information */}
             <div className="grid grid-cols-1 gap-y-3 w-full lg:col-span-1">
@@ -216,14 +177,14 @@ export default async function index() {
           </div>
         </section>
 
-        <section className="pt-4 pb-8 px-8 min-[1300px]:px-0">
+        <section>
           <Card>
-            <CardContent className="px-0 pb-0">
-              <div className="w-full flex justify-center items-center gap-x-4">
+            <CardContent>
+              <div className="w-full flex items-center gap-x-4 my-6">
                 <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <MapPinCheck className="h-6 w-6 text-primary" />
                 </div>
-                <h2 className="py-8 text-3xl font-bold text-center">
+                <h2 className="text-3xl font-bold">
                   Come Raggiungerci
                 </h2>
               </div>
@@ -240,9 +201,7 @@ export default async function index() {
             </CardContent>
           </Card>
         </section>
-      </main>
-
-      <SiteFooter />
-    </div >
+      </div>
+    </>
   )
 }

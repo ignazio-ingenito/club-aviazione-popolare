@@ -25,11 +25,11 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { getMenuIcons } from "@/lib/server"
 import { MenuItem } from "@/lib/types"
 import { Menu } from "lucide-react"
 import { HeaderContacts } from "./contacts"
 import { HeaderSocials } from "./socials"
+import { LucideIcon } from "../lucide-icon"
 
 export type HeaderProps = {
     title?: string
@@ -54,7 +54,6 @@ export function Header({
     const [open, setOpen] = useState(false)
     const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined)
     const isScrolled = useScrolled({ threshold: 10 })
-    const icons = getMenuIcons()
 
     return (
         <header
@@ -65,8 +64,9 @@ export function Header({
         >
             <div className="max-w-7xl px-1 pr-4 m-auto">
                 <div className="flex h-16 items-center justify-between gap-4">
-                    <Link href="/" className="relative flex items-center" aria-label={`${title} — Home`}>
-                        <div className="relative w-40 h-16 py-1">
+                    <Link
+                        href="/" className="relative flex items-center" aria-label={`${title} — Home`}>
+                        <section className="relative w-40 h-16 py-1">
                             <Image
                                 src={isScrolled ? darkLogo.src : lightLogo.src}
                                 alt={title || "Logo"}
@@ -74,7 +74,7 @@ export function Header({
                                 fill
                                 priority
                             />
-                        </div>
+                        </section>
                     </Link>
 
                     {/* Desktop navigation */}
@@ -91,16 +91,14 @@ export function Header({
                                                 </NavigationMenuTrigger>
                                                 <NavigationMenuContent className="p-3">
                                                     <div className={`max-w-screen w-[600px] grid gap-1 ${submenu.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
-                                                        {submenu.map(({ id, url, title }) => {
-                                                            const Icon = icons[`${url}`]
+                                                        {submenu.map(({ id, url, title, icon }) => {
                                                             return (
                                                                 <NavigationMenuLink asChild className="p-3 text-accent hover:text-secondary" key={id}>
                                                                     <Link href={url}
                                                                         className="block select-none p-3 leading-none no-underline outline-none transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                                                                        <div className="text-sm font-medium leading-none flex items-center gap-x-2">
-                                                                            {Icon ? <Icon className="size-5" /> : <></>}
-                                                                            {title}
-                                                                        </div>
+                                                                        <section className="text-sm font-medium leading-none flex items-center gap-x-2">
+                                                                            <LucideIcon name={icon} className="size-5" /> {title}
+                                                                        </section>
                                                                     </Link>
                                                                 </NavigationMenuLink>
                                                             )
@@ -177,14 +175,13 @@ export function Header({
                                                 return (
                                                     <AccordionItem value={`${id}`} key={id}>
                                                         <AccordionTrigger>{title}</AccordionTrigger>
-                                                        {submenu.map(({ id: sid, url: surl, title: stitle }) => {
-                                                            const Icon = icons[surl || ""]
+                                                        {submenu.map(({ id: sid, url: surl, title: stitle, icon }) => {
                                                             return (
                                                                 <AccordionContent
                                                                     key={sid}
                                                                     className="flex items-center p-4 gap-x-4 hover:bg-accent hover:text-accent-foreground hover:underline"
                                                                 >
-                                                                    {Icon ? <Icon className="size-5" /> : null}
+                                                                    <LucideIcon name={icon} className="size-5" />
                                                                     <Link className="text-sm transition-all outline-none" href={surl ?? "#"}>
                                                                         {stitle}
                                                                     </Link>

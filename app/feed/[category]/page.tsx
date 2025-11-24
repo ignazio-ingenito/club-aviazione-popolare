@@ -1,14 +1,13 @@
 import Link from 'next/link'
+
 import { findAll } from 'domutils'
 import { Element } from "domhandler"
 import { parseDocument } from 'htmlparser2'
 import { render as domRender } from "dom-serializer"
 
-import { Header } from '@/components/header'
-import { SiteFooter } from "@/components/site-footer"
-import { TextToParagraphs } from "@/components/text-to-paragraphs"
+import { PageHero } from '@/components/page/hero'
 import { Card, CardContent } from '@/components/ui/card'
-import { getClaim, getFeeds, getMenu, getMetadata, sanitizeHtml } from "@/lib/server"
+import { getCategory, getFeeds, sanitizeHtml } from "@/lib/server"
 
 import { Feed } from "../../../lib/types"
 
@@ -27,6 +26,7 @@ function parseContent(html: string) {
         (el): el is Element => el instanceof Element && el.name === "img",
         doc.children
     )
+
     for (let i = 0; i < images.length; i++) {
         images[i].attribs.class = `${(images[i].attribs.class || "")} float-end ml-2 rounded-md object-cover ${i > 0 ? "hidden" : ""} `
         if (images[i].attribs.src) {
@@ -51,40 +51,20 @@ function parseContent(html: string) {
 export default async function index({ params }: Props) {
     const { category: id } = params
 
-    const meta = await getMetadata()
-    const menu = await getMenu()
     const rows = await getFeeds(id) as Feed[]
-    const claim = getClaim(id)
+    const { title, description } = await getCategory(id)
 
     return (
-        <div className="feed flex min-h-screen flex-col">
-            <Header
-                title={meta.title}
-                description={meta.description}
-                menu={menu}
-                phone={meta.phone}
-                email={meta.email}
-                facebookUrl={meta.facebook}
-                instagramUrl={meta.instagram}
-                twitterUrl={meta.twitter}
-            />
+        <>
+            <PageHero title={title} description={description} />
 
-            <main className="flex-1 w-full max-w-7xl m-auto">
-                {/* Hero Section */}
-                <section className="relative pt-24 pb-6 mb-6 bg-linear-to-br from-primary to-primary/80 text-secondary-foreground">
-                    <div className="container px-6">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance capitalize">{id}</h1>
-                        <div className="text-md leading-relaxed opacity-90">
-                            <TextToParagraphs text={claim} />
-                        </div>
-                    </div>
-                </section>
-
-                {/* Page Section */}
-                <section className="py-8 px-1 sm:px-4 bg-background">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 place-items-center">
-                        {rows.map(({ id, category, title, date, content }) => (
-                            <Card key={id} className="h-full max-w-[460px] transition-shadow border-0 dark:border shadow-sm hover:shadow-lg">
+            <div className="px-2 py-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+                <div className="pb-1 grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,360px))] justify-center overflow-hidden">
+                    {rows.map(({ id, category, title, date, content }) => (
+                        <Link key={id}
+                            legacyBehavior
+                            href={`/feed/${category.id}/${id}`} className="text-sm font-medium text-primary inline-flex items-center">
+                            <Card key={id} className="h-full max-w-[460px] transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer">
                                 <CardContent className="p-6">
                                     <div className="flex items-start gap-4 mb-4">
                                         <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground rounded-lg p-3 min-w-18">
@@ -101,18 +81,15 @@ export default async function index({ params }: Props) {
                                     <div className="h-56 min-h-56 text-sm text-muted-foreground overflow-hidden"
                                         dangerouslySetInnerHTML={{ __html: parseContent(sanitizeHtml(content ?? "")) }}
                                     />
-                                    <div className="mt-2 mb-0 flex items-center justify-end text-sm font-medium text-primary">
-                                        <Link key={id} href={`/feed/${category.id}/${id}`} className="text-sm font-medium text-primary inline-flex items-center">
-                                            Leggi di più <ArrowRight className="ml-1 h-3 w-3" />
-                                        </Link>
-                                    </div>
+                                    <p className="mt-2 mb-0 flex items-center justify-end text-sm font-medium text-primary">
+                                        Leggi di più <ArrowRight className="ml-1 h-3 w-3" />
+                                    </p>
                                 </CardContent>
                             </Card>
-                        ))}
-                    </div>
-                </section>
-            </main>
-            <SiteFooter />
-        </div >
+                        </Link>
+                    ))}
+                </div>
+            </div>
+        </ >
     )
 }

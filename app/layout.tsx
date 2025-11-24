@@ -1,10 +1,13 @@
 import { ReactNode, Suspense } from "react"
-import { getMetadata } from "@/lib/server"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Montserrat } from "next/font/google"
+import { getMenu, getMetadata } from "@/lib/server"
 
-import favicon from "@/app/public/favicon.svg"
+import { Header } from "@/components/header"
+import { SiteFooter } from "@/components/site-footer"
+import { ThemeProvider } from "@/components/theme-provider"
+
 import "./globals.css"
+import { Montserrat } from "next/font/google"
+import favicon from "@/app/public/favicon.svg"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -18,7 +21,8 @@ const RootLayout = async ({
 }: Readonly<{
   children: ReactNode
 }>) => {
-  const { title, description } = await getMetadata()
+  const menu = await getMenu()
+  const { description, email, facebook, instagram, phone, title, twitter } = await getMetadata()
 
   return (
     <html lang="it" suppressHydrationWarning className={`${montserrat.variable}`}>
@@ -31,7 +35,24 @@ const RootLayout = async ({
       <body className={`font-sans antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="cap-theme" disableTransitionOnChange>
-            {children}
+            <div className="flex min-h-screen flex-col">
+              <Header
+                title={title}
+                description={description}
+                menu={menu}
+                phone={phone}
+                email={email}
+                facebookUrl={facebook}
+                instagramUrl={instagram}
+                twitterUrl={twitter}
+              />
+
+              <main className="bg-background">
+                {children}
+              </main>
+
+              <SiteFooter />
+            </div>
           </ThemeProvider>
         </Suspense>
       </body>

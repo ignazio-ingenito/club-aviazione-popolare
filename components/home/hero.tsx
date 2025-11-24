@@ -1,10 +1,12 @@
 import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Calendar, Pencil } from "lucide-react"
+
+import { Calendar, Pencil } from "lucide-react"
 
 import biplane from "@/app/public/images/biplane.jpg"
 
-export const Hero = () => {
+export const HomeHero = () => {
     return (
         <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 bg-black/30 z-10" />

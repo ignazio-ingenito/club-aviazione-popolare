@@ -28,6 +28,7 @@ export type Feed = {
   title: string
   category: Category
   date: Date
+  author?: string
   content: string
   sort: number
 }
@@ -85,6 +86,7 @@ export type SubMenuItem = {
   id: number
   title: string
   url: string
+  icon: string
   menu: number
   status: string
   sort: number

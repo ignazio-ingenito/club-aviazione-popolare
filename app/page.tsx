@@ -1,33 +1,17 @@
-import { Hero } from "@/components/hero"
+import { HomeHero } from "@/components/home/hero"
 import { News } from "@/components/home/news"
-import { SiteFooter } from "@/components/site-footer"
-import { getMetadata, getMenu } from "@/lib/server"
 
 import { HowToStart } from "@/components/home/how-to-start"
 import { BecomeMember } from "@/components/home/become-member"
-import { Header } from "@/components/header"
 
 export default async function HomePage() {
-  const meta = await getMetadata()
-  const menu = await getMenu()
 
   return (
-    <div className="home-page flex min-h-screen flex-col">
-      <Header
-        title={meta.title}
-        description={meta.description}
-        menu={menu}
-        phone={meta.phone}
-        email={meta.email}
-        facebookUrl={meta.facebook}
-        instagramUrl={meta.instagram}
-        twitterUrl={meta.twitter}
-      />
+    <>
+      {/* Hero Section */}
+      <HomeHero />
 
-      <main className="flex-1 w-full max-w-7xl m-auto">
-        {/* Hero Section */}
-        <Hero />
-
+      <div className="px-8 flex flex-col gap-y-8 max-w-7xl m-auto">
         {/* Latest News Section */}
         <News />
 
@@ -36,9 +20,7 @@ export default async function HomePage() {
 
         {/* Diventa Socio Section */}
         <BecomeMember />
-      </main>
-
-      <SiteFooter />
-    </div>
+      </div>
+    </>
   )
 }
