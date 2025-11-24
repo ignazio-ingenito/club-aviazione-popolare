@@ -1,4 +1,3 @@
-import ReactMarkdown from 'react-markdown'
 import { findAll } from "domutils"
 import { Element } from "domhandler"
 import { parseDocument } from "htmlparser2"
@@ -10,11 +9,12 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
 import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
+
 import { Users, Target, FileText, LucideIcon, LibraryBig } from "lucide-react"
 
 const icons: LucideIcon[] = [Users, Target, FileText]
 
-export function parseContent(html: string) {
+function parseContent(html: string) {
   const doc = parseDocument(html)
 
   // Trova TUTTI gli <img> in ordine di apparizione

@@ -1,6 +1,6 @@
 import sanitize from "sanitize-html"
 import { unstable_noStore as noStore } from "next/cache"
-import { Chapter, Meeting, MenuIconsMap, MenuItem, Metadata, Page } from "./types"
+import { Chapter, Feed, Meeting, MenuIconsMap, MenuItem, Metadata, Page } from "./types"
 import { createDirectus, readItem, readItems, readSingleton, rest } from "@directus/sdk"
 import {
   BookText,
@@ -28,10 +28,16 @@ import {
   ShieldUser,
 } from "lucide-react"
 import { Engine } from "@/components/svg/Engine"
-import { json } from "stream/consumers"
 
 
 export const directus = createDirectus(process.env.DIRECTUS_URL ?? "http://localhost:8055").with(rest())
+
+
+
+export const getCategories = async (): Promise<string[]> => {
+
+  return []
+}
 
 export const getChapters = async (): Promise<Chapter[]> => {
   noStore() // prevent caching
@@ -39,6 +45,34 @@ export const getChapters = async (): Promise<Chapter[]> => {
     filter: { status: { _eq: "published" } },
   }))
   return rows as Chapter[]
+}
+
+export const getClaim = (page: string): string => {
+  const claims = {
+    "corsi": "I nostri corsi accompagnano chi costruisce il proprio aeromobile passo dopo passo: materiali, tecniche, sicurezza e manutenzione. Uno spazio dove imparare con le mani, capire con la testa e crescere accanto a chi vive la costruzione amatoriale come una vera passione.",
+  }
+
+  if (!Object.keys(claims).includes(page))
+    return ""
+
+  return claims["corsi"]
+}
+
+export const getFeeds = async (id: string): Promise<Feed[]> => {
+  noStore() // prevent caching
+  const rows = await directus.request<Feed[]>(readItems("feeds", {
+    fields: ["*", "category.id", "category.description"],
+    filter: {
+      status: { _eq: "published" },
+      category: { id },
+    },
+    sort: ["-date"],
+  }))
+
+  return rows.map((e): Feed => ({
+    ...e,
+    date: new Date(e.date)
+  }))
 }
 
 export const getMetadata = async (): Promise<Metadata> => {
@@ -104,7 +138,7 @@ export const getMenuIcons = (): MenuIconsMap => ({
   "/la-nostra-storia": LibraryBig,
   "/associazioni": MapPinHouse,
   "/organigramma": Network,
-  "/corsi": GraduationCap,
+  "/feed/corsi": GraduationCap,
   "/eventi": Calendar1,
   "/storie": Speech,
   "/trofeo-caproni": Trophy,

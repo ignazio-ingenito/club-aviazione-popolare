@@ -40,7 +40,7 @@ export default async function index() {
         </section>
 
         {/* Storia Section */}
-        <section className="py-8 px-4 bg-background">
+        <section className="py-8 px-1 sm:px-4 bg-background">
           <div className="w-full">
             <div>
               <div className="flex items-center gap-3 mb-6">

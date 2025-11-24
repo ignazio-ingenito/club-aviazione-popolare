@@ -20,25 +20,25 @@ const columns: ColumnDef<Meeting>[] = [
     {
         accessorKey: "year",
         header: ({ column }) =>
-            <Button className="w-full flex justify-start" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            <Button variant="ghost" className="flex justify-start px-4" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                <span className="pl-1">Anno</span>
                 <SortIcon sorted={column.getIsSorted()} />
-                Anno
             </Button>
     },
     {
         accessorKey: "place",
         header: ({ column }) =>
-            <Button className="w-full flex justify-start" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            <Button variant="ghost" className="flex justify-start px-4" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                <span className="pl-1">Luogo</span>
                 <SortIcon sorted={column.getIsSorted()} />
-                Luogo
             </Button>
     },
     {
         accessorKey: "date",
         header: ({ column }) =>
-            <Button className="w-full flex justify-start" variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            <Button variant="ghost" className="flex justify-start px-4" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+                <span className="pl-1">Data</span>
                 <SortIcon sorted={column.getIsSorted()} />
-                Data
             </Button>
     },
 ]
@@ -64,7 +64,7 @@ export default function MeetingTable({ meetings: data }: MeetingTableProps) {
     return (
         <div className="flex flex-col gap-y-1">
             <div className="flex justify-end">
-                <InputGroup className="max-w-xs">
+                <InputGroup className="max-w-xs border border-border">
                     <InputGroupInput placeholder="Cerca..."
                         value={table.getState().globalFilter ?? ""}
                         onChange={(e) => table.setGlobalFilter(e.target.value)}
@@ -87,7 +87,7 @@ export default function MeetingTable({ meetings: data }: MeetingTableProps) {
                         <TableRow key={headerGroup.id}>
                             {
                                 headerGroup.headers.map((header) =>
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.id} className="px-0 pl-1 [&_button]:text-xs sm:[&_button]:text-base [&_button]:px-0 ">
                                         {
                                             header.isPlaceholder
                                                 ? <></>
@@ -110,7 +110,7 @@ export default function MeetingTable({ meetings: data }: MeetingTableProps) {
                                     data-state={row.getIsSelected() && "selected"}>
                                     {
                                         row.getVisibleCells().map(cell => (
-                                            <TableCell key={cell.id} className="pl-7!">
+                                            <TableCell key={cell.id} className="text-nowrap text-xs sm:text-base [&_td]:px-2">
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         ))

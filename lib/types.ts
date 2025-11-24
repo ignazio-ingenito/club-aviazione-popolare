@@ -1,6 +1,15 @@
 import { UUID } from "crypto"
 import { LucideIcon } from "lucide-react"
 
+export type Category = {
+  id: number
+  description: string
+  feeds: Feed[]
+  status: string
+  sort: number
+  title: string
+}
+
 export type Chapter = {
   name: string
   founded: number
@@ -12,6 +21,15 @@ export type Chapter = {
   members: number
   aircrafts: number
   highlights: string
+}
+
+export type Feed = {
+  id: number
+  title: string
+  category: Category
+  date: Date
+  content: string
+  sort: number
 }
 
 export type Meeting = {

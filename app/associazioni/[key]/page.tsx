@@ -1,11 +1,9 @@
 import { SiteFooter } from "@/components/site-footer"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { TextToParagraphs } from "@/components/text-to-paragraphs"
-import { getMetadata, getMenu, getPage, getChapters, sanitizeHtml } from "@/lib/server"
+import { getMetadata, getMenu, getPage, sanitizeHtml } from "@/lib/server"
 
-import { Users, MapPinHouse, MapPin, Plane, GraduationCap, ClockFading, Globe } from "lucide-react"
+import { MapPinHouse } from "lucide-react"
 import { Header } from '@/components/header'
-import Markdown from "react-markdown"
 
 interface Props {
     params: {
