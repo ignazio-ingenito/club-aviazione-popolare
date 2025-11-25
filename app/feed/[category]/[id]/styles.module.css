@@ -1,11 +1,45 @@
-.feed {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: red;
+.feeds a {
+    color: var(--accent);
 }
 
-.feeds section {
+.feeds a:hover {
+    cursor: pointer;
+    text-decoration-line: underline;
+}
+
+.feeds p {
+    padding-block: calc(var(--spacing) * 2);
+}
+
+.feeds ul {
+    list-style-type: disc;
+    padding-left: calc(var(--spacing) * 8);
+    padding-bottom: calc(var(--spacing) * 4);
+}
+
+.feeds ul li {
+    padding-block: calc(var(--spacing) * 1);
+}
+
+.feeds h1 {
+    font-size: var(--text-3xl);
+    line-height: var(--tw-leading, var(--text-3xl--line-height));
+    margin-top: calc(var(--spacing) * 6);
+    margin-bottom: calc(var(--spacing) * 2);
+}
+
+.feeds h2 {
+    font-size: var(--text-2xl);
+    margin-top: calc(var(--spacing) * 4);
+    margin-bottom: calc(var(--spacing) * 1);
+}
+
+.feeds hr {
+    padding-block: calc(var(--spacing) * 2);
+}
+
+/* Gallery */
+.feeds section:has(> img):not(:has(> :not(img))) {
     width: 100%;
     display: grid;
     gap: 0.5rem;
@@ -14,25 +48,25 @@
 }
 
 @media (width >=640px) {
-    .feeds section {
+    .feeds section:has(> img):not(:has(> :not(img))) {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (width >=768px) {
-    .feeds section {
+    .feeds section:has(> img):not(:has(> :not(img))) {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (width >=1024px) {
-    .feeds section {
+    .feeds section:has(> img):not(:has(> :not(img))) {
         grid-template-columns: repeat(4, 1fr);
     }
 }
 
 @media (width >=1280px) {
-    .feeds section {
+    .feeds section:has(> img):not(:has(> :not(img))) {
         grid-template-columns: repeat(5, 1fr);
     }
 }

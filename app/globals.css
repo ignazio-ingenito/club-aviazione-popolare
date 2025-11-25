@@ -144,3 +144,19 @@ main>section>div>p {
   @apply mb-8;
 }
 
+img.article-img-cover {
+  @apply w-full pb-4;
+}
+
+img.article-img-float-right,
+img.article-img-float-left {
+  @apply px-0 py-4 sm:px-4 sm:py-0 w-full sm:w-1/2 md:w-[45%] lg:w-[35%];
+}
+
+img.article-img-float-right {
+  @apply sm:float-right sm:pr-0;
+}
+
+img.article-img-float-left {
+  @apply sm:float-left sm:pl-0;
+}

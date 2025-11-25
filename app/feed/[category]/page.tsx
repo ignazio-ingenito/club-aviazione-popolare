@@ -67,7 +67,7 @@ export default async function index({ params }: Props) {
                             <Card key={id} className="h-full max-w-[460px] transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer">
                                 <CardContent className="p-6">
                                     <div className="flex items-start gap-4 mb-4">
-                                        <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground rounded-lg p-3 min-w-18">
+                                        <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground rounded-lg p-3 min-w-18" data-date={date.toISOString().slice(0, 10)}>
                                             <span className="text-2xl font-bold leading-none">{date.getDate()}</span>
                                             <span className="text-xs uppercase">{date.toLocaleString('it', { month: "short" })}</span>
                                             <span className="text-xs uppercase">{date.getFullYear()}</span>
