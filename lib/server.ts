@@ -80,16 +80,18 @@ export const getPage = async (key: string): Promise<Page> => {
   return page as Page
 }
 
-export const sanitizeHtml = (html: string) => {
-  return sanitize(html, {
+export const sanitizeHtml = (html?: string) => {
+  return sanitize(html || "", {
     allowedTags: sanitize.defaults.allowedTags.concat(["img"]),
     allowedAttributes: {
       ...sanitize.defaults.allowedAttributes,
-      img: ["src", "alt", "title", "width", "height", "loading", "decoding"],
-      a: ["href", "name", "target", "rel"],
+      a: ['href', 'target', 'rel', 'class'],
+      img: ["src", "alt", "title", "width", "height", "loading", "decoding", "style"],
+      "*": ['style', 'class'],
+      allowedSchemes: ['http', 'https']
     },
     transformTags: {
-      a: (attribs: any) => ({
+      a: (_: string, attribs: any) => ({
         tagName: "a",
         attribs: {
           ...attribs,

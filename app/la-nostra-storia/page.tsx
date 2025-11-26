@@ -1,42 +1,11 @@
-import { findAll } from "domutils"
-import { Element } from "domhandler"
-import { parseDocument } from "htmlparser2"
-import { render as domRender } from "dom-serializer"
-
-
-import { getPage, sanitizeHtml } from "@/lib/server"
-
 import { PageHero } from "@/components/page/hero"
 import { PageTitle } from "@/components/page/title"
-import { Card, CardContent } from "@/components/ui/card"
-import { PageSection } from "@/lib/types"
 import { LucideIcon } from "@/components/lucide-icon"
+import { PageSection } from "@/lib/types"
+import { Card, CardContent } from "@/components/ui/card"
+import { getPage, sanitizeHtml } from "@/lib/server"
 
 const icons: string[] = ["users", "target", "file-text"]
-
-function parseContent(html: string) {
-  const doc = parseDocument(html)
-
-  // find all the img tags
-  const images = findAll(
-    (el): el is Element => el instanceof Element && el.name === "img",
-    doc.children
-  )
-
-  images.forEach((img, n) => {
-    // set the classes for the first img
-    if (n == 0) {
-      img.attribs.class += `${img.attribs.class} pb-4 w-full`
-      return
-    }
-
-    // set the float-left and right accordingly
-    img.attribs.class = "w-full sm:w-auto p-4"
-    img.attribs.class += n % 2 === 1 ? " pr-0 float-right" : " pl-0 float-left"
-  })
-
-  return domRender(doc)
-}
 
 export default async function index() {
   const { content, content_title, description, sections } = await getPage("la-nostra-storia")
@@ -51,7 +20,7 @@ export default async function index() {
 
         <div
           className={`select - none text - muted - foreground`}
-          dangerouslySetInnerHTML={{ __html: parseContent(sanitizeHtml(content ?? "")) }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
         />
 
         <section className="pb-8 px-8">
