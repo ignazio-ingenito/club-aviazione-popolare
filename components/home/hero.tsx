@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 
 import { Calendar, Pencil } from "lucide-react"
 
-import biplane from "@/app/public/images/biplane.jpg"
+import biplane from "@/app/public/images/hero.png"
 
 export const HomeHero = () => {
     return (
@@ -13,7 +13,7 @@ export const HomeHero = () => {
             <img
                 src={biplane.src}
                 alt="Aeromodello storico"
-                className="absolute inset-0 w-full h-full object-none lg:object-cover pd-10"
+                className="absolute inset-0 w-full h-full object-cover pd-10"
             />
             <div className="container relative z-20 text-center text-white">
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance">Club Aviazione Popolare</h1>

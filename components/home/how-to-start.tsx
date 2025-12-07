@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Phone } from "lucide-react"
 
-import people from "@/app/public/images/people-building.jpg"
+import people from "@/app/public/images/how-to-start.1.jpg"
 
 export const HowToStart = () => (
     <section className="mx-4 bg-card">
@@ -11,8 +11,8 @@ export const HowToStart = () => (
             <div className="shadow-lg lg:basis-1/2">
                 <img
                     src={people.src}
-                    alt="Costruzione aeromodelli"
-                    className="w-full h-full object-cover"
+                    alt="Come iniziare"
+                    className="w-full h-full object-cover max-h-[650px]"
                 />
             </div>
             <div className="p-4 lg:basis-1/2">

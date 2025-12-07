@@ -31,6 +31,20 @@ export const getFeed = async (id: string): Promise<Feed> => {
   }))
 }
 
+export const getFeedBySlug = async (slug: string): Promise<Feed> => {
+  noStore() // prevent caching
+
+  const rows = await directus.request<Feed[]>(readItems("feeds", {
+    fields: ["*", "category.id", "category.title", "category.description"],
+    filter: {
+      status: { _eq: "published" },
+      slug: { _eq: slug }
+    }
+  }))
+
+  return rows[0] || {} as Feed
+}
+
 export const getFeeds = async (id: string): Promise<Feed[]> => {
   noStore() // prevent caching
   const rows = await directus.request<Feed[]>(readItems("feeds", {
@@ -80,13 +94,27 @@ export const getPage = async (key: string): Promise<Page> => {
   return page as Page
 }
 
+export const transformAssetUrls = (html: string) => {
+  const baseUrl = process.env.DIRECTUS_URL || 'http://localhost:8055'
+  const pubUrl = process.env.PUBLIC_URL || 'http://localhost:8055'
+
+  if (baseUrl == pubUrl)
+    return html
+
+  return html.replace(
+    new RegExp(`${baseUrl}/assets/`, 'g'), // Replace all instances of the base URL
+    `${pubUrl}/assets/`  // Replace with the relative URL
+  )
+}
+
 export const sanitizeHtml = (html?: string) => {
-  return sanitize(html || "", {
+  return transformAssetUrls(sanitize(html || "", {
     allowedTags: sanitize.defaults.allowedTags.concat(["img"]),
     allowedAttributes: {
       ...sanitize.defaults.allowedAttributes,
       a: ['href', 'target', 'rel', 'class'],
       img: ["src", "alt", "title", "width", "height", "loading", "decoding", "style"],
+      td: ["colspan"],
       "*": ['style', 'class'],
       allowedSchemes: ['http', 'https']
     },
@@ -99,5 +127,5 @@ export const sanitizeHtml = (html?: string) => {
         },
       }),
     },
-  })
+  }))
 }

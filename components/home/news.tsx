@@ -52,22 +52,22 @@ export const News = () => {
                             href={item.link}
                             className="text-sm font-medium text-primary inline-flex items-center"
                         >
-                            <CardContent className="p-6">
+                            <CardContent className="p-6 h-full flex flex-col">
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="flex flex-col items-center justify-center bg-primary text-primary-foreground rounded-lg p-3 min-w-[60px]">
                                         <span className="text-2xl font-bold leading-none">{item.date.day}</span>
                                         <span className="text-xs uppercase mt-1">{item.date.month}</span>
                                     </div>
-                                    <div className="flex-1">
+                                    <div className="flex-1 overflow-hidden text-ellipsis">
                                         <h3 className="font-bold text-sm leading-tight mb-2 group-hover:text-primary transition-colors">
                                             {item.title}
                                         </h3>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="flex-1">
                                     <p className="text-sm text-muted-foreground leading-relaxed mb-4">{item.excerpt}</p>
                                 </div>
-                                <div className="absolute b-0 flex items-center text-sm font-medium text-primary">
+                                <div className="flex items-center text-sm font-medium text-primary">
                                     Leggi di più <ArrowRight className="ml-1 h-3 w-3" />
                                 </div>
                             </CardContent>

@@ -28,9 +28,9 @@ const RootLayout = async ({
     <html lang="it" suppressHydrationWarning className={`${montserrat.variable}`}>
       <head>
         <link rel="icon" href={favicon.src} />
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
-        <meta name="description" content={description} />
       </head>
       <body className={`font-sans antialiased`}>
         <Suspense fallback={null}>

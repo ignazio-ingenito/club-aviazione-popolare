@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Button } from '../ui/button'
 import { UserPlus } from 'lucide-react'
 
-import aircraft from "@/app/public/images/white-and-red-vintage-aircraft.jpg"
+import aircraft from "@/app/public/images/become-member.jpg"
 
 
 export const BecomeMember = () => (

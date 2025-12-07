@@ -53,7 +53,45 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 
 # TODO
 
-- [ ] Migrare le singole pagine delle associazioni cap in "Le nostre sezioni"
+
+## Chi siamo
+
+- [x] Albo storico
+- [x] Costruire un aereo
+- [x] Le Associazioni Affiliate
+- [x] Cosa facciamo
+- [x] La Nostra Storia
+- [x] Organigramma
+- [x] Organigramma
+
+##  Attività
+
+- [x] Corsi
+- [x] Trofe Caproni
+- [x] Trofe Aldinio
+- [x] Trofe Eventi
+- [x] Trofe Rotondi
+- [x] Efficency Race
+
+## News
+
+- [ ] News
+- [x] Le storire dei soci
+- [ ] Notiziari
+- [ ] Riviste
+
+
+## Gallery
+
+- [ ] Gallery
+
+## Contatti
+
+- [ ] Contatti
+
+
+## Area Soci
+
 
 
 # Package updates
