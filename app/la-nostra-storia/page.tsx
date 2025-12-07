@@ -19,7 +19,7 @@ export default async function index() {
         <PageTitle title={content_title} description={description} icon="library-big" />
 
         <div
-          className={`select - none text - muted - foreground`}
+          className="text-muted-foreground select-none"
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
         />
 
