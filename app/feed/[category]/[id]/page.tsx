@@ -40,22 +40,17 @@ function parseContent(html: string) {
             ? new Set(images[i].attribs.class.trim().split(/\s+/))
             : new Set()
 
-        // u.searchParams.delete("height")
         if (i == 0) {
-            // u.searchParams.delete("width")
             classes.add("article-img-cover")
             images[i].attribs.class = Array.from(classes).join(" ")
         }
         else {
-            // u.searchParams.set("width", "500")
-            // images[i].attribs.class = "w-full sm:w-2/3 md:w-1/3 px-0 sm:px-4 py-2"
             i % 2 === 1
                 ? classes.add("article-img-float-right")
                 : classes.add("article-img-float-left")
             images[i].attribs.class = Array.from(classes).join(" ")
         }
         images[i].attribs.src = u.toString()
-
     }
 
     return domRender(doc)

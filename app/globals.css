@@ -123,10 +123,12 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    @apply font-sans;
   }
 
   body {
     @apply bg-background text-foreground;
+    @apply font-sans;
   }
 
   /* Add heading font class */
@@ -138,6 +140,31 @@
   h6 {
     @apply font-heading;
   }
+
+  h1 {
+    @apply text-3xl mt-8 mb-4;
+  }
+
+  h2 {
+    @apply text-2xl mt-8 mb-3;
+  }
+
+  h3 {
+    @apply text-xl mt-4 mb-2;
+  }
+
+  h4 {
+    @apply text-lg mt-2 mb-1;
+  }
+
+  h5 {
+    @apply text-base mt-2 mb-1;
+  }
+
+  h6 {
+    @apply text-sm mt-1 mb-1;
+  }
+
 }
 
 main>section>div>p {
@@ -159,4 +186,60 @@ img.article-img-float-right {
 
 img.article-img-float-left {
   @apply sm:float-left sm:pl-0;
+}
+
+
+/* Timeline */
+
+.timeline {
+  position: relative;
+  margin: 40px 0;
+  padding-left: 2px;
+  border-left: 1px solid var(--muted-foreground);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 50px;
+  padding-left: 20px;
+  display: flex;
+  gap: 0 2rem;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+}
+
+.timeline-year {
+  color: var(--accent);
+  font-size: var(--text-2xl);
+  margin-bottom: 1rem;
+}
+
+.timeline-item img {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.winners {
+  font-size: var(--text-md);
+  color: var(--color-muted-foreground);
+  margin-bottom: 0.5rem;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.winners strong {
+  color: var(--color-accent);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-normal);
+  margin: 0 0 0.25rem 0;
 }

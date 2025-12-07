@@ -79,7 +79,7 @@ export default async function index({ params }: Props) {
                                         </div>
                                     </div>
                                     <div className="h-56 min-h-56 text-sm text-muted-foreground overflow-hidden"
-                                        dangerouslySetInnerHTML={{ __html: parseContent(sanitizeHtml(content ?? "")) }}
+                                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(parseContent(content) ?? "") }}
                                     />
                                     <p className="mt-2 mb-0 flex items-center justify-end text-sm font-medium text-primary">
                                         Leggi di più <ArrowRight className="ml-1 h-3 w-3" />
