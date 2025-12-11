@@ -45,20 +45,28 @@ export const getFeedBySlug = async (slug: string): Promise<Feed> => {
   return rows[0] || {} as Feed
 }
 
-export const getFeeds = async (id: string): Promise<Feed[]> => {
+export const getFeeds = async (
+  id: string,
+  featured?: boolean,
+  limit?: number
+): Promise<Feed[]> => {
   noStore() // prevent caching
   const rows = await directus.request<Feed[]>(readItems("feeds", {
-    fields: ["*", "category.id", "category.description"],
+    fields: ["*", "category.id", "category.title", "category.description"],
     filter: {
       status: { _eq: "published" },
       category: { id },
+      featured
     },
     sort: ["-date"],
+    limit,
   }))
 
   return rows.map((e): Feed => ({
     ...e,
-    date: new Date(e.date)
+    date: e.date
+      ? new Date(e.date)
+      : new Date()
   }))
 }
 

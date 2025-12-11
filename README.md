@@ -76,9 +76,12 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 ## News
 
 - [ ] News
-- [x] Le storire dei soci
 - [ ] Notiziari
-- [ ] Riviste
+- [ ] Raduni - ER -> Migrato in `News`
+- [x] Eventi - Attività -> Migrato in `News`
+- [x] Corsi di aggiornamento
+- [x] Le storire dei soci
+- [x] Riviste -> Migrato in `La nostra storia`
 
 
 ## Gallery

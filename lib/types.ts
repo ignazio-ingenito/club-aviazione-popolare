@@ -25,12 +25,15 @@ export type Chapter = {
 
 export type Feed = {
   id: number
-  title: string
-  category: Category
-  date: Date
   author?: string
-  content: string
-  sort: number
+  category: Category
+  content?: string
+  date?: Date
+  featured?: boolean
+  slug?: string
+  sort?: number
+  status: string
+  title?: string
 }
 
 export type Meeting = {

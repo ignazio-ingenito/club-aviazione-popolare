@@ -17,7 +17,7 @@ interface Props {
     }
 }
 
-function parseContent(html: string) {
+function parseContent(html: string): string {
     const doc = parseDocument(html)
 
     // find all the img tags
