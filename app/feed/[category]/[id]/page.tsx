@@ -1,103 +1,25 @@
+import { getFeed, getSubMenuByUrl } from "@/lib/server"
 
-import { findAll } from "domutils"
-import { isTag, Element } from "domhandler"
-import { parseDocument } from "htmlparser2"
-import { render as domRender } from "dom-serializer"
+import Article from "@/components/article"
 
-import { PageHero } from "@/components/page/hero"
-import { PageTitle } from "@/components/page/title"
-import { getFeed, sanitizeHtml } from "@/lib/server"
-
-import { Calendar, User } from "lucide-react"
-
-import styles from "./styles.module.css"
 interface Props {
-    params: {
-        id: string
-    }
-}
-
-function parseContent(html: string): string {
-    const doc = parseDocument(html)
-
-    // find all the img tags
-    const images = findAll(
-        (el): el is Element => el instanceof Element && el.name === "img",
-        doc.children
-    )
-
-    for (let i = 0; i < images.length; i++) {
-        const { parent } = images[i]
-        if (parent && isTag(parent) && parent.name === "section")
-            continue
-
-        // skip if does not have any source url
-        if (!images[i].attribs.src)
-            continue
-
-        const u = new URL(images[i].attribs.src, process.env.PUBLIC_URL)
-        const classes = images[i].attribs.class
-            ? new Set(images[i].attribs.class.trim().split(/\s+/))
-            : new Set()
-
-        if (i == 0) {
-            classes.add("article-img-cover")
-            images[i].attribs.class = Array.from(classes).join(" ")
-        }
-        else {
-            i % 2 === 1
-                ? classes.add("article-img-float-right")
-                : classes.add("article-img-float-left")
-            images[i].attribs.class = Array.from(classes).join(" ")
-        }
-        images[i].attribs.src = u.toString()
-    }
-
-    return domRender(doc)
+  params: {
+    id: string
+  }
 }
 
 export default async function index({ params }: Props) {
-    const { id: id_feed } = params
-    const { author, title, category, date, content } = await getFeed(id_feed)
+  const { id: id_feed } = params
+  const { author, title, category, date, content, cover } = await getFeed(
+    id_feed
+  )
+  const { icon } = await getSubMenuByUrl("/feed/corsi")
 
-    return (
-        <>
-            <PageHero title={category?.title} description={category?.description} />
-
-            <div className="p-8 flex flex-col gap-y-8 max-w-7xl m-auto">
-                <PageTitle title={title} icon="graduation-cap" />
-
-                {
-                    date &&
-                    (
-                        <div className="flex justify-end-safe text-sm">
-                            <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                <div>
-                                    <Calendar className="size-5 text-accent" />
-                                </div>
-                                <div className="capitalize text-muted-foreground font-semibold text-right">
-                                    {new Date(date).toLocaleString("it", {
-                                        weekday: "short",
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "numeric",
-                                    })}
-                                </div>
-                                <div>
-                                    <User className="size-5 text-accent" />
-                                </div>
-                                <div className="capitalize text-muted-foreground font-semibold text-right">
-                                    {author}
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-                <div
-                    className={`${styles.feeds} select-none text-muted-foreground`}
-                    dangerouslySetInnerHTML={{ __html: parseContent(sanitizeHtml(content ?? "")) }}
-                />
-            </div >
-        </>
-    )
+  return (
+    <div className="pb-8">
+      <Article
+        params={{ category, title, cover, author, date, content, icon }}
+      />
+    </div>
+  )
 }

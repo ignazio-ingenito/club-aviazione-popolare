@@ -9,6 +9,7 @@ import "./globals.css"
 import { Montserrat } from "next/font/google"
 import favicon from "@/app/public/favicon.svg"
 
+
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],

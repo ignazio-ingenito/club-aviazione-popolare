@@ -14,7 +14,7 @@ export default async function index() {
     <>
       <PageHero title={content_title} description={description} />
 
-      <div className="p-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
         <PageTitle title={content_title} description={description} icon="notebook-text" />
         <MeetingTable meetings={meetings} />
       </div>

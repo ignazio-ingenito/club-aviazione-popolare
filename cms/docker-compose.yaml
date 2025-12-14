@@ -41,6 +41,7 @@ services:
       ADMIN_EMAIL: "ignazio.ingenito@gmail.com"
       ADMIN_PASSWORD: "19Getmail74"
 
-      PUBLIC_URL: "http://localhost:8055"
+      # PUBLIC_URL: "http://localhost:8055"
+      PUBLIC_URL: "https://cms.clubaviazionepopolare.org"
     extra_hosts:
       - "host.docker.internal:host-gateway"

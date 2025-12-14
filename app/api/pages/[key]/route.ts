@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { readItem } from "@directus/sdk"
-import { directus } from "@/lib/server"
+import { directus } from "@/lib/directus"
 import { Page } from "@/lib/types"
 
 export async function GET(

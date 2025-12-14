@@ -1,38 +1,25 @@
-"use client"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
+import { Award, Calendar, FileText, Lock, Users } from "lucide-react"
 
-import { useState } from "react"
-
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { me } from "@/lib/server"
 import { Card, CardContent } from "@/components/ui/card"
-import { Lock, User, FileText, Calendar, Users, Award } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default async function AreaSociPage() {
-  const [loginData, setLoginData] = useState({
-    username: "",
-    password: "",
-  })
-  const [error, setError] = useState("")
+  const cookieStore = cookies()
+  const token = cookieStore.get("access_token")?.value
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-
-    if (!loginData.username || !loginData.password) {
-      setError("Inserisci username e password")
-      return
-    }
-
-    // Here you would typically authenticate with your backend
-    console.log("Login attempt:", loginData)
-    setError("Funzionalità di login non ancora implementata")
+  if (!token) {
+    redirect("/login")
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setLoginData((prev) => ({ ...prev, [name]: value }))
-    setError("")
+  let user = null
+  try {
+    user = await me(token)
+  } catch (e) {
+    // Token might be invalid or expired
+    redirect("/login")
   }
 
   return (
@@ -40,141 +27,104 @@ export default async function AreaSociPage() {
       {/* Hero Section */}
       <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
         <div className="container">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">{page?.content_title}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Area Riservata Soci</h1>
           <p className="text-xl leading-relaxed max-w-3xl opacity-90">
-            Accedi all'area riservata per gestire la tua iscrizione, consultare documenti e partecipare alle attività
-            del club.
+            Benvenuto, {user?.first_name} {user?.last_name}. Qui puoi gestire la tua iscrizione e accedere ai documenti.
           </p>
         </div>
       </section>
 
-      {/* Login Section */}
+      {/* Dashboard Section */}
       <section className="py-16 bg-background">
         <div className="container max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Login Form */}
-            <Card>
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Lock className="h-6 w-6 text-primary" />
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* User Info Card */}
+            <Card className="lg:col-span-1">
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center mb-6">
+                  <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <Users className="h-10 w-10 text-primary" />
                   </div>
-                  <h2 className="text-2xl font-bold">Accedi</h2>
+                  <h3 className="text-xl font-bold">{user?.first_name} {user?.last_name}</h3>
+                  <p className="text-muted-foreground">{user?.email}</p>
                 </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="username">Username o Email</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="username"
-                        name="username"
-                        value={loginData.username}
-                        onChange={handleChange}
-                        placeholder="Il tuo username"
-                        className="pl-10"
-                      />
-                    </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-muted-foreground">Ruolo</span>
+                    <span className="font-medium">{user?.role?.name || "Socio"}</span>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={loginData.password}
-                        onChange={handleChange}
-                        placeholder="La tua password"
-                        className="pl-10"
-                      />
-                    </div>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-muted-foreground">Stato</span>
+                    <span className="font-medium capitalize">{user?.status || "Attivo"}</span>
                   </div>
-
-                  {error && (
-                    <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-                      <p className="text-sm text-destructive">{error}</p>
-                    </div>
-                  )}
-
-                  <Button type="submit" size="lg" className="w-full">
-                    Accedi all'Area Riservata
-                  </Button>
-
-                  <div className="text-center">
-                    <a href="#" className="text-sm text-primary hover:underline">
-                      Password dimenticata?
-                    </a>
-                  </div>
-                </form>
+                </div>
+                <div className="mt-8">
+                  <Button variant="outline" className="w-full">Modifica Profilo</Button>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Benefits Section */}
-            <div className="space-y-6">
+            {/* Content Area */}
+            <div className="lg:col-span-2 space-y-8">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Vantaggi dell'Area Soci</h2>
+                <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  L'area riservata ti permette di accedere a contenuti esclusivi e gestire la tua partecipazione alle
-                  attività del club.
+                  Accedi a tutte le funzionalità riservate ai soci del club.
                 </p>
               </div>
 
-              <div className="space-y-4">
-                <Card>
-                  <CardContent className="p-4 flex items-start gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-6 flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <FileText className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">Documenti Riservati</h3>
+                      <h3 className="font-bold mb-1">Documenti</h3>
                       <p className="text-sm text-muted-foreground">
-                        Accedi a statuto, regolamenti, verbali e documentazione tecnica del club.
+                        Statuto, regolamenti e verbali.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-4 flex items-start gap-4">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-6 flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Calendar className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">Calendario Eventi</h3>
+                      <h3 className="font-bold mb-1">Eventi</h3>
                       <p className="text-sm text-muted-foreground">
-                        Visualizza il calendario completo e iscriviti agli eventi riservati ai soci.
+                        Calendario e iscrizioni eventi.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-4 flex items-start gap-4">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-6 flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Users className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">Forum e Comunità</h3>
+                      <h3 className="font-bold mb-1">Forum</h3>
                       <p className="text-sm text-muted-foreground">
-                        Partecipa alle discussioni, condividi esperienze e chiedi consigli agli altri soci.
+                        Discussioni della community.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-4 flex items-start gap-4">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-6 flex items-start gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Award className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold mb-1">Gestione Iscrizione</h3>
+                      <h3 className="font-bold mb-1">Iscrizione</h3>
                       <p className="text-sm text-muted-foreground">
-                        Rinnova la tua iscrizione, aggiorna i tuoi dati e consulta lo storico delle attività.
+                        Stato rinnovo e pagamenti.
                       </p>
                     </div>
                   </CardContent>
@@ -182,72 +132,6 @@ export default async function AreaSociPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Membership Info */}
-      <section className="py-16 bg-muted/50">
-        <div className="container max-w-4xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Non Sei Ancora Socio?</h2>
-            <p className="text-lg text-muted-foreground">
-              Unisciti al Club Aviazione Popolare e scopri il mondo dell'aeromodellismo insieme a noi.
-            </p>
-          </div>
-
-          <Card>
-            <CardContent className="p-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-bold mb-4">Come Diventare Socio</h3>
-                  <ul className="space-y-3 text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">1.</span>
-                      <span>Compila il modulo di iscrizione disponibile in segreteria o online</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">2.</span>
-                      <span>Effettua il pagamento della quota associativa annuale</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">3.</span>
-                      <span>Ottieni il tesseramento presso l'Aeroclub d'Italia</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">4.</span>
-                      <span>Ricevi le credenziali per accedere all'area riservata</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold mb-4">Requisiti</h3>
-                  <ul className="space-y-3 text-muted-foreground mb-6">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Maggiore età o autorizzazione dei genitori per i minorenni</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Passione per l'aviazione e l'aeromodellismo</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Rispetto del regolamento interno del club</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-1">•</span>
-                      <span>Tesseramento presso ente riconosciuto (Aeroclub d'Italia)</span>
-                    </li>
-                  </ul>
-
-                  <Button asChild size="lg" className="w-full">
-                    <a href="/contatti">Richiedi Informazioni</a>
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </section>
     </>

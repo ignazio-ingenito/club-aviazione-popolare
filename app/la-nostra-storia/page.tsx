@@ -3,7 +3,8 @@ import { PageTitle } from "@/components/page/title"
 import { LucideIcon } from "@/components/lucide-icon"
 import { PageSection } from "@/lib/types"
 import { Card, CardContent } from "@/components/ui/card"
-import { getPage, sanitizeHtml } from "@/lib/server"
+import { getPage } from "@/lib/server"
+import { sanitizeHtml } from "@/lib/directus"
 
 const icons: string[] = ["users", "target", "file-text"]
 
@@ -15,7 +16,7 @@ export default async function index() {
       <PageHero title={content_title} description={description} />
 
       {/* Storia Section */}
-      <div className="p-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
         <PageTitle title={content_title} description={description} icon="library-big" />
 
         <div

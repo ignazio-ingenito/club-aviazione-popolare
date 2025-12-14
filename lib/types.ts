@@ -27,6 +27,7 @@ export type Feed = {
   id: number
   author?: string
   category: Category
+  cover?: string
   content?: string
   date?: Date
   featured?: boolean
@@ -113,3 +114,7 @@ export type MenuItem = {
 }
 
 export type MenuIconsMap = Record<string, LucideIcon>
+
+export type DirectusResponse<T> = {
+  data: T
+}

@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plane, Ruler, Weight, Calendar } from "lucide-react"
-import { getMetadata } from "@/lib/utils"
+import { getMetadata } from "@/lib/server"
 
 const aircraft = [
   {
@@ -103,7 +103,7 @@ export default async function FlottaPage() {
         facebookUrl={meta.facebook}
         twitterUrl={meta.twitter} />
 
-      <main className="flex-1 w-full max-w-7xl m-auto">
+      <main className="flex-1 w-full max-w-5xl m-auto">
         {/* Hero Section */}
         <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">

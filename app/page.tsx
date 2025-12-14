@@ -11,7 +11,7 @@ export default async function HomePage() {
       {/* Hero Section */}
       <HomeHero />
 
-      <div className="px-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+      <div className="px-8 flex flex-col gap-y-4 max-w-7xl m-auto">
         {/* Latest News Section */}
         <News />
 

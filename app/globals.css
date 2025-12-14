@@ -142,52 +142,49 @@
   }
 
   h1 {
-    @apply text-3xl mt-8 mb-4;
+    @apply text-5xl mt-8 mb-4 font-bold;
   }
 
   h2 {
-    @apply text-2xl mt-8 mb-3;
+    @apply text-4xl mt-8 mb-3 font-bold;
   }
 
   h3 {
-    @apply text-xl mt-4 mb-2;
+    @apply text-3xl mt-4 mb-2 font-bold;
   }
 
   h4 {
-    @apply text-lg mt-2 mb-1;
+    @apply text-2xl mt-2 mb-1 font-bold;
   }
 
   h5 {
-    @apply text-base mt-2 mb-1;
+    @apply text-xl mt-2 mb-1 font-bold;
   }
 
   h6 {
-    @apply text-sm mt-1 mb-1;
+    @apply text-lg mt-1 mb-1 font-bold;
   }
-
 }
 
-main>section>div>p {
-  @apply mb-8;
+.article img {
+  @apply block w-3xl py-4;
 }
 
-img.article-img-cover {
-  @apply w-full pb-4;
+.article>p {
+  @apply py-2;
 }
 
-img.article-img-float-right,
-img.article-img-float-left {
-  @apply px-0 py-4 sm:px-4 sm:py-0 w-full sm:w-1/2 md:w-[45%] lg:w-[35%];
+.article p.gallery {
+  @apply grid gap-1 grid-cols-1 min-[450px]:grid-cols-2 sm:grid-cols-3;
 }
 
-img.article-img-float-right {
-  @apply sm:float-right sm:pr-0;
+.article p.gallery>img {
+  @apply m-0 p-0;
 }
 
-img.article-img-float-left {
-  @apply sm:float-left sm:pl-0;
+.article p.masonry {
+  @apply columns-1 min-[460px]:columns-2 md:columns-3 [&>img]:shadow [&>img]:m-1 [&>img]:p-0 [&>img]:overflow-hidden [&>img]:w-full [&>img]:h-auto [&>img]:rounded [&>img]:break-inside-avoid;
 }
-
 
 /* Timeline */
 

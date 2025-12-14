@@ -44,7 +44,7 @@ export const News = () => {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                 {newsItems.map((item, index) => (
                     <Card key={index} className="group hover:shadow-lg transition-shadow border-0 dark:border shadow-sm hover:cursor-pointer">
                         <Link
@@ -59,13 +59,13 @@ export const News = () => {
                                         <span className="text-xs uppercase mt-1">{item.date.month}</span>
                                     </div>
                                     <div className="flex-1 overflow-hidden text-ellipsis">
-                                        <h3 className="font-bold text-sm leading-tight mb-2 group-hover:text-primary transition-colors">
+                                        <h3 className="p-0 m-0 font-bold text-sm leading-tight mb-2 group-hover:text-primary transition-colors">
                                             {item.title}
                                         </h3>
                                     </div>
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{item.excerpt}</p>
+                                    <p className="text-sm text-muted-foreground leading-normal mb-4">{item.excerpt}</p>
                                 </div>
                                 <div className="flex items-center text-sm font-medium text-primary">
                                     Leggi di più <ArrowRight className="ml-1 h-3 w-3" />

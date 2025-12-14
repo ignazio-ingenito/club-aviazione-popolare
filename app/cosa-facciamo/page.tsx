@@ -1,5 +1,5 @@
-
-import { getPage, sanitizeHtml } from "@/lib/server"
+import { getPage } from "@/lib/server"
+import { sanitizeHtml } from "@/lib/directus"
 import { PageHero } from "@/components/page/hero"
 import { PageTitle } from "@/components/page/title"
 
@@ -12,7 +12,7 @@ export default async function index() {
     <>
       <PageHero title={content_title} description={description} />
 
-      <div className="p-8 flex flex-col gap-y-8 max-w-7xl m-auto">
+      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
         <PageTitle title={content_title} description={description} icon="traffic-cone" />
 
         <div

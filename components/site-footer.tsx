@@ -11,7 +11,7 @@ export const SiteFooter = async () => {
   return (
     <footer className="border-t bg-muted/50">
       <div className="py-8">
-        <div className="grid grid-cols-1 md:flex gap-y-8 max-w-7xl m-auto px-4">
+        <div className="grid grid-cols-1 md:flex gap-y-8 max-w-5xl m-auto px-4">
           {/* About */}
           <div className="basis-1/3 px-1">
             <h3 className="font-bold text-lg mb-4">{title}</h3>
