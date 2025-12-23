@@ -5,14 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Current File",
+            "name": "wordpress import",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "cwd": "${workspaceFolder}/cms/utils/wordpress",
             "args": [
-                "raduni",
-                "--rebuild"
+                "import",
+                "3"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "directus delete",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "cwd": "${workspaceFolder}/cms/utils/wordpress",
+            "args": [
+                "delete",
             ],
             "console": "integratedTerminal"
         }

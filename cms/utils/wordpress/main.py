@@ -1,161 +1,60 @@
-import re
+import parser
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import asdict
-from pathlib import Path
-from urllib.parse import urlparse
+from typing import Optional
 
+import directus
 import polars as pl
 import typer
-from bs4 import BeautifulSoup
-from cache import from_db, to_db
-from directus import (
-    Post,
-    create_folder,
-    download,
-    remove_empty_folders,
-    submit_post,
-    upload,
-)
+import wordpress
 from loguru import logger
-from wordpress import from_json, to_json, to_posts
 
-BASEURL = "https://www.clubaviazionepopolare.org"
-FORMAT_PATTERN = "ddd, DD MMM YYYY HH:mm:ss ZZ"
-
-app = typer.Typer()
-
-
-def make_slug(df: pl.DataFrame) -> pl.DataFrame:
-    return df.with_columns(
-        (
-            df["pub_date"].dt.strftime("%Y-%m-")
-            + df["title"]
-            .str.to_lowercase()
-            .str.replace_all(r"[^a-z0-9\s]", "", literal=False)
-            .str.replace_all(r"\s+", "-", literal=False)
-            .str.replace_all(r"-\d{4}$", "", literal=False)
-        ).alias("slug")
-    )
+app = typer.Typer(
+    help="WordPress Utility Tool",
+    add_completion=False,
+    no_args_is_help=True,
+)
 
 
-def sanitize_attrs(df: pl.DataFrame) -> pl.DataFrame:
-    # Define the sanitization function
-    def _sanitize(_html: str) -> str:
-        soup = BeautifulSoup(_html, "html.parser")
-        tags = (
-            "border",
-            "class",
-            "data-canvas-width",
-            "height",
-            "margin",
-            "style",
-            "width",
-        )
-        # Remove specified attributes from tags
-        for tag in tags:
-            for item in soup.select(f"[{tag}]"):
-                del item.attrs[tag]
-
-        # Replace &nbsp; with a space, and clean up excess whitespace
-        out = str(soup).replace("&nbsp;", " ")
-        return re.sub(r"\s+", " ", out, re.MULTILINE)
-
-    # Step 1: Extract the content column to be sanitized
-    contents = df["content"].to_list()
-
-    # Step 2: Use ThreadPoolExecutor for parallel processing
-    with ThreadPoolExecutor() as executor:
-        sanitized_contents = list(executor.map(_sanitize, contents))
-
-    # Step 3: Add the sanitized content back to the DataFrame
-    return df.with_columns(pl.Series("content", sanitized_contents))
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context):
+    """
+    WordPress Utility.
+    """
+    # If the user didn't type a subcommand (like 'import'), show help
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
+        raise typer.Exit()
 
 
-def submit(df: pl.DataFrame):
-    EXT_RE = re.compile(r"\.[a-zA-Z0-9]+$")
+@app.command("import")
+def import_data(category: int):
+    """
+    Import data from WordPress to Directus.
 
-    assets: dict = {}
-    for row in df.iter_rows(named=True):
-        soup = BeautifulSoup(row["content"], "html.parser")
+    category_id: Category ID.
+    """
+    logger.info("Getting data from WordPress...")
+    wp_posts = wordpress.get_posts()
+    df = pl.from_dicts(wp_posts).sort("date")
+    logger.info(f"Fetched {len(wp_posts)} feeds from Directus.")
 
-        tags: list = soup.select("a[href], img[src]")
-        if not tags:
-            continue
+    df = df.filter(pl.col("categories").list.contains(category))
+    logger.info(f"{df.shape[0]} posts for '{wordpress.CATEGORIES.get(str(category))}'")
 
-        # process assets
-        urls = []
-        id_folder: str = create_folder(row["folder"])
-        for tag in tags:
-            attr = "href" if tag.name == "a" else "src"
-            url = tag.get(attr)
-            if not url:
-                continue
-
-            parsed = urlparse(url)
-            if not EXT_RE.search(parsed.path):
-                continue
-
-            urls.append(url)
-
-        for url in set(urls):
-            # upload
-            bytes, name = download(parsed.path)
-
-            # download
-            mime: str = f"image/{Path(url).suffix[1:]}".replace("jpg", "jpeg")
-            id_file: str = upload(id_folder, bytes, name, mime)
-
-            assets[url] = id_file
-
-        # process content
-        count = 0
-        content = row["content"]
-        for key, val in assets.items():
-            content = content.replace(key, f"/assets/{val}")
-            count += 1
-
-        # submit the article
-        submit_post(row["slug"], row["title"], content, row["pub_date"])
-
-    return assets
+    posts = map(lambda p: directus.DirectusPost(**p), df.to_dicts())
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        executor.map(parser.process_post, list(posts)[:1])
 
 
-@app.command()
-def main(task: str, rebuild: bool = False):
-    basedir: Path = Path(__file__).parent / "import"
-    xml_file: Path = Path(basedir / f"{task}.xml")
-    json_file: Path = Path(basedir / f"{task}.json")
-    duck_db: Path = Path(basedir / f"{task}.db")
-
-    if rebuild:
-        logger.info(f"Force rebuilding")
-        Path(json_file).unlink(missing_ok=True)
-        Path(duck_db).unlink(missing_ok=True)
-
-    remove_empty_folders()
-
-    logger.info(f"Loading {task}")
-    if not xml_file.exists():
-        logger.error(f"{xml_file} missing")
-        exit(0)
-    if not json_file.exists():
-        logger.info(f"Parsing xml to json")
-        to_json(xml_file, json_file)
-    if not duck_db.exists():
-        logger.info(f"Building cache from json")
-        rows: list[Post] = to_posts(from_json(json_file).get("posts", {}))
-        to_db(duck_db, [asdict(r) for r in rows if r.status == "publish"])
-
-    df: pl.DataFrame = from_db(duck_db)
-    # create slug
-    df = make_slug(df)
-    df = df.with_columns(pl.col("slug").alias("folder"))
-    # fix html tags
-    df = sanitize_attrs(df)
-    # get images from content
-    submit(df)
-
-    logger.info("Completed!")
+@app.command("delete")
+def delete_feeds(id: Optional[int] = 15):
+    """
+    Delete feeds from Directus.
+    """
+    logger.info(f"Deleting feeds from Directus id={id or 0}...")
+    directus.delete_items("feeds", id)
+    logger.info(f"Deleting folders from News folder...")
+    directus.delete_folders(directus.NEWS_FOLDER_ID)
 
 
 if __name__ == "__main__":
