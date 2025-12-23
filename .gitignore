@@ -37,5 +37,12 @@ yarn-error.log*
 *.tsbuildinfo
 # next-env.d.ts
 
-cms/uploads
-cms/utils/tmp
+# python
+__pycache__/
+*.pyc
+
+# joblib cache
+.cache/
+
+# directus
+cms/uploads/

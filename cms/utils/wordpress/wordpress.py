@@ -31,6 +31,7 @@ CATEGORIES = {
     "15": "Notiziari",
 }
 
+cores = cpu_count()
 memory = Memory(".cache", verbose=0)
 client = httpx.Client(timeout=120, follow_redirects=True, verify=False)
 
@@ -107,7 +108,6 @@ def get_posts() -> list[dict]:
     logger.info(f"Total pages to fetch: {total_pages}")
 
     # Use ThreadPoolExecutor to fetch posts concurrently
-    cores = cpu_count()
     with ThreadPoolExecutor(max_workers=cores) as executor:
         futures = [executor.submit(fetch_page, p) for p in range(1, total_pages + 1)]
         posts = [

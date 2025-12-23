@@ -1,8 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from html import unescape
 from pathlib import Path
-from urllib.parse import ParseResult, urljoin, urlparse
+from urllib.parse import urlparse
 
 import directus
 import wordpress
@@ -50,19 +50,30 @@ class Cache:
         return id_wordpress in self.data.keys()
 
 
+cores = cpu_count()
 cache = Cache()
 
 
-def get_cover(mappings: tuple[Mapping]) -> directus.DirectusUpload:
-    """Get the image with the largest size from the mappings upload.
+def get_cover(mappings: Mapping) -> str:
+    """
+    Return the id of the largest image in the mappings.
+
+    If the mappings is empty, return the default cover id.
+
+    The largest image is determined by its size in bytes.
 
     Args:
-        mappings (tuple[Mapping]): A tuple of mappings.
+        mappings (Mapping): The mappings to use.
 
     Returns:
-        str: The image with the largest size.
+        str: The id of the largest image.
     """
-    return max(mappings, key=lambda m: m.upload.directus_size).upload
+    if not mappings:
+        return directus.DIRECTUS_DEFAULT_COVER
+    return max(
+        [m for m in mappings if m.upload.directus_content_type.startswith("image")],
+        key=lambda m: m.upload.directus_size,
+    ).upload.directus_id
 
 
 def process_tags(html: str, remove_empty_tags: bool = False) -> str:
@@ -88,7 +99,7 @@ def process_tags(html: str, remove_empty_tags: bool = False) -> str:
         tag.attrs = {
             k: v for k, v in tag.attrs.items() if k in "alt,src,title".split(",")
         }
-        if not tag.attrs["alt"]:
+        if not tag.attrs.get("alt"):
             tag.attrs["alt"] = Path(tag.attrs["src"]).name
 
     # Remove empty tags
@@ -104,6 +115,21 @@ def process_title(title: str) -> str:
     return unescape(title).strip()
 
 
+def remove_cover(
+    post: directus.DirectusPost, mappings: Mapping
+) -> directus.DirectusPost:
+    try:
+        cover = tuple(m for m in mappings if m.upload.directus_id == post.cover)[0]
+        soup = BeautifulSoup(post.content, "html.parser")
+        for tag in soup.select("img"):
+            if tag.attrs["src"] == cover.upload.directus_url:
+                tag.unwrap()
+
+        return soup.decode()
+    except (KeyError, ValueError):
+        return post.content
+
+
 def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Mapping]:
     soup = BeautifulSoup(post.content, "html.parser")
     urls = tuple(
@@ -114,20 +140,20 @@ def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Ma
             if Path(urlparse(tag.attrs[attr]).path).suffix
         )
     )
+    if post.cover:
+        urls = tuple(set([*[post.cover], *urls]))
+
     excluded = tuple(
         (
-            tag
+            tag.attrs[attr]
             for query, attr in (("img", "src"), ("a", "href"))
             for tag in soup.select(query)
             if not Path(urlparse(tag.attrs[attr]).path).suffix
         )
     )
     for e in excluded:
-        logger.warning(
-            f"{e.prettify().replace('\n', '')} skipped as it's not downloadable"
-        )
+        logger.warning(f"{e} skipped as it's not downloadable")
 
-    cores = cpu_count()
     with ThreadPoolExecutor(max_workers=cores) as executor:
         # Use ThreadPoolExecutor to download from wordpress concurrently
         futures = (executor.submit(wordpress.download, url) for url in urls)
@@ -139,6 +165,9 @@ def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Ma
             folder_id, _, _ = directus.create_folder(
                 post.slug.lower().strip(), directus.NEWS_FOLDER_ID
             )
+        else:
+            logger.warning(f"No downloads for post ID {post.id_wordpress}")
+            return post, None
 
         # Use ThreadPoolExecutor to upload to Directus concurrently
         futures = (
@@ -174,8 +203,9 @@ def process_post(post: directus.DirectusPost) -> directus.DirectusPost:
         logger.info(f"Post ID {post.id_wordpress} already processed. Skipping.")
         return
 
-    soup = BeautifulSoup(post.content, "html.parser")
-    logger.debug(f"Parsed HTML:\n{soup.prettify()}")
+    if post.cover:
+        logger.info(f"Post ID {post.id_wordpress} already has a cover.")
+
     # Process title
     post.title = process_title(post.title)
 
@@ -186,7 +216,10 @@ def process_post(post: directus.DirectusPost) -> directus.DirectusPost:
     post.content, mappings = upload_media(post)
 
     # Set cover image if media exists
-    post.cover = get_cover(mappings).directus_id
+    post.cover = get_cover(mappings)
+
+    # Remove the cover from the content
+    post.content = remove_cover(post, mappings)
 
     # Post to Directus
     post = directus.create_item(post)
@@ -194,6 +227,4 @@ def process_post(post: directus.DirectusPost) -> directus.DirectusPost:
     # Save the post as processed
     cache.add(post)
 
-    soup = BeautifulSoup(post.content, "html.parser")
-    logger.debug(f"Proceseesd HTML:\n{soup.prettify()}")
     return post

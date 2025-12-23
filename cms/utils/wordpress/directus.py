@@ -1,4 +1,3 @@
-import parser
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from typing import Optional
@@ -14,7 +13,9 @@ DIRECTUS_FEEDS_URL = "http://localhost:8055/items/feeds"
 DIRECTUS_FILES_URL = "http://localhost:8055/files/"
 DIRECTUS_FOLDERS_URL = "http://localhost:8055/folders/"
 NEWS_FOLDER_ID = "032e5563-7527-4f0d-8659-c8717f7f82ef"
+DIRECTUS_DEFAULT_COVER = "4f92d286-a525-4f7d-90ba-1dfbf719e04e"
 
+cores = cpu_count()
 memory = Memory(".cache", verbose=0)
 client = httpx.Client(timeout=120, follow_redirects=True, verify=False)
 
@@ -29,8 +30,9 @@ class DirectusPost:
     slug: str
     title: str
     content: str
-    categories: list
+    category: str
     cover: Optional[str] = None
+    featured: Optional[bool] = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -70,7 +72,8 @@ def create_item(post: DirectusPost) -> DirectusPost:
         post (DirectusPost): The post to create.
         mappings (Mapping): The mappings to use.
     """
-    res = client.post(DIRECTUS_FEEDS_URL, json=asdict(post))
+    data: dict = asdict(post)
+    res = client.post(DIRECTUS_FEEDS_URL, json=data)
     res.raise_for_status()
     post.id_directus = res.json().get("data", {}).get("id")
     logger.info(f"Created item {post.id_directus} in Directus.")
@@ -169,7 +172,6 @@ def delete_items(collection: str, id: int) -> None:
     Notes:
         This function will skip deletion of items with ID <= 15 to protect essential data.
     """
-    cores = cpu_count()
     with ThreadPoolExecutor(max_workers=cores) as executor:
         executor.map(
             lambda id: delete_item(collection, id),
@@ -248,6 +250,9 @@ def upload(
     )
     response.raise_for_status()
     data: dict = response.json()
+    logger.debug(
+        f"Uploaded file {filename} with ID {data.get('data', {}).get('id')} to Directus."
+    )
     return DirectusUpload(
         directus_id=data.get("data", {}).get("id"),
         directus_filename=data.get("data", {}).get("filename_disk"),

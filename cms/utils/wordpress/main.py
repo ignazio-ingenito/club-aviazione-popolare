@@ -6,7 +6,10 @@ import directus
 import polars as pl
 import typer
 import wordpress
+from joblib import cpu_count
 from loguru import logger
+
+cores = cpu_count()
 
 app = typer.Typer(
     help="WordPress Utility Tool",
@@ -15,19 +18,23 @@ app = typer.Typer(
 )
 
 
-@app.callback(invoke_without_command=True)
-def main(ctx: typer.Context):
+def get_workers() -> int:
+    return cpu_count()
+
+
+@app.command("delete")
+def delete_feeds(id: Optional[int] = 15):
     """
-    WordPress Utility.
+    Delete feeds from Directus.
     """
-    # If the user didn't type a subcommand (like 'import'), show help
-    if ctx.invoked_subcommand is None:
-        typer.echo(ctx.get_help())
-        raise typer.Exit()
+    logger.info(f"Deleting feeds from Directus id={id or 0}...")
+    directus.delete_items("feeds", id)
+    logger.info(f"Deleting folders from News folder...")
+    directus.delete_folders(directus.NEWS_FOLDER_ID)
 
 
 @app.command("import")
-def import_data(category: int):
+def import_data(category: int, new_category: str):
     """
     Import data from WordPress to Directus.
 
@@ -41,20 +48,24 @@ def import_data(category: int):
     df = df.filter(pl.col("categories").list.contains(category))
     logger.info(f"{df.shape[0]} posts for '{wordpress.CATEGORIES.get(str(category))}'")
 
+    df = df.drop("categories")
+    df = df.with_columns(pl.lit(new_category, dtype=pl.Utf8).alias("category"))
+
     posts = map(lambda p: directus.DirectusPost(**p), df.to_dicts())
+
     with ThreadPoolExecutor(max_workers=1) as executor:
-        executor.map(parser.process_post, list(posts)[:1])
+        executor.map(parser.process_post, list(posts))
 
 
-@app.command("delete")
-def delete_feeds(id: Optional[int] = 15):
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context):
     """
-    Delete feeds from Directus.
+    WordPress Utility.
     """
-    logger.info(f"Deleting feeds from Directus id={id or 0}...")
-    directus.delete_items("feeds", id)
-    logger.info(f"Deleting folders from News folder...")
-    directus.delete_folders(directus.NEWS_FOLDER_ID)
+    # If the user didn't type a subcommand (like 'import'), show help
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
+        raise typer.Exit()
 
 
 if __name__ == "__main__":
