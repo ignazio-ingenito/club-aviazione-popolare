@@ -73,7 +73,7 @@ export default async function EventiPage() {
         facebookUrl={meta.facebook}
         twitterUrl={meta.twitter} />
 
-      <main className="flex-1 w-full max-w-5xl m-auto">
+      <main className="flex-1 w-full max-w-7xl m-auto">
         {/* Hero Section */}
         <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">

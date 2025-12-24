@@ -1,8 +1,17 @@
 import { createDirectus, rest } from "@directus/sdk"
 import { JSDOM } from "jsdom"
 import createDOMPurify, { WindowLike } from "dompurify"
+import { Cover } from "./types"
 
-export const DEFAULT_COVER = "8f79eaaf-1e06-459c-8c81-18f02c8c72f3"
+export const DEFAULT_COVER: Cover = {
+  id: "4f92d286-a525-4f7d-90ba-1dfbf719e04e",
+  title: "Cover",
+  type: "image",
+  width: 1536,
+  height: 1024,
+  focal_point_x: 732,
+  focal_point_y: 472,
+}
 
 const window = new JSDOM("").window as unknown as WindowLike
 const DOMPurify = createDOMPurify(window)
@@ -29,14 +38,10 @@ export const directus = createDirectus(
   })
 )
 
-export const getImageUrl = (
-  id: string = DEFAULT_COVER,
-  width?: number,
-  height?: number
-): string => {
+export const getImageUrl = ({ id, width, height }: Cover = DEFAULT_COVER): string => {
   const url = new URL(`assets/${id}`, process.env.DIRECTUS_URL)
-  if (width) url.searchParams.set("width", width?.toString())
-  if (height) url.searchParams.set("height", height?.toString())
+  if (width) url.searchParams.set("width", width.toString())
+  if (height) url.searchParams.set("height", height.toString())
   return url.toString()
 }
 
@@ -71,6 +76,7 @@ export const sanitizeHtml = (html: string = "") =>
       "tr",
       "td",
       "th",
+      "hr",
     ],
     ALLOWED_ATTR: [
       "href",

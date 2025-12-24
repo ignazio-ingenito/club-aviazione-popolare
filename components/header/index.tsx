@@ -62,7 +62,7 @@ export function Header({
                 : "bg-transparent"
                 }`}
         >
-            <div className="max-w-7xl px-1 pr-4 m-auto">
+            <div className="max-w-7xl mx-8 xl:mx-auto">
                 <div className="flex h-16 items-center justify-between gap-4">
                     <Link
                         href="/" className="relative flex items-center" aria-label={`${title} — Home`}>

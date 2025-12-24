@@ -1,5 +1,5 @@
 import parser
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 
 import directus
@@ -54,7 +54,8 @@ def import_data(category: int, new_category: str):
     posts = map(lambda p: directus.DirectusPost(**p), df.to_dicts())
 
     with ThreadPoolExecutor(max_workers=1) as executor:
-        executor.map(parser.process_post, list(posts))
+        futures = executor.map(parser.process_post, list(posts))
+        _ = [f for f in futures]
 
 
 @app.callback(invoke_without_command=True)

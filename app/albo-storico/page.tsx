@@ -14,9 +14,11 @@ export default async function index() {
     <>
       <PageHero title={content_title} description={description} />
 
-      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
-        <PageTitle title={content_title} description={description} icon="notebook-text" />
-        <MeetingTable meetings={meetings} />
+      <div className="px-4 sm:px-8">
+        <div className="max-w-7xl m-auto flex flex-col gap-y-8">
+          <PageTitle title={content_title} description={description} icon="notebook-text" />
+          <MeetingTable meetings={meetings} />
+        </div>
       </div>
     </>
   )

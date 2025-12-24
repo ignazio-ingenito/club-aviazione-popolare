@@ -1,0 +1,120 @@
+'2734':
+  cover: 1fc02a11-a3f5-4eb3-bcb5-e50f09b1a0b4
+  date: '2015-08-05T20:00:00+02:00'
+  id_directus: 20
+  id_wordpress: '2734'
+  slug: 2015-eas-meeting
+  title: Meeting EAS 2015
+  wp_link: https://www.clubaviazionepopolare.org/2015-eas-meeting/
+'2740':
+  cover: f0cd6108-ab3d-4f28-a3da-880f1fd0d104
+  date: '2015-12-23T13:18:51+01:00'
+  id_directus: 21
+  id_wordpress: '2740'
+  slug: 2015-auguri
+  title: Auguri !!!
+  wp_link: https://www.clubaviazionepopolare.org/2015-auguri/
+'2755':
+  cover: 2a58cf4d-eb0c-4f56-8bc6-5eaeeee01ce2
+  date: '2017-10-21T03:58:06+02:00'
+  id_directus: 22
+  id_wordpress: '2755'
+  slug: 2017-corso-thiene
+  title: Iniziativa CAP Experimental
+  wp_link: https://www.clubaviazionepopolare.org/2017-corso-thiene/
+'3957':
+  cover: 5a845f7c-e09d-400a-8c9b-009beb5b4752
+  date: '2020-03-03T14:42:48+01:00'
+  id_directus: 23
+  id_wordpress: '3957'
+  slug: seminario-sulla-storia-della-carburazione
+  title: Seminario sulla storia della carburazione
+  wp_link: https://www.clubaviazionepopolare.org/seminario-sulla-storia-della-carburazione/
+'5786':
+  cover: d7a9510e-f64f-4bbe-98c6-0515221853bc
+  date: '2022-06-14T06:33:53+02:00'
+  id_directus: 24
+  id_wordpress: '5786'
+  slug: 31-raduno-cap-toscana
+  title: "31\xB0 Raduno CAP \u2013 Toscana"
+  wp_link: https://www.clubaviazionepopolare.org/31-raduno-cap-toscana/
+'5789':
+  cover: f9f934bf-9924-4252-8e53-30bc5a1f7b69
+  date: '2022-06-15T15:15:59+02:00'
+  id_directus: 25
+  id_wordpress: '5789'
+  slug: 50-raduno-club-aviazione-popolare
+  title: "50\xB0 Raduno Club Aviazione Popolare"
+  wp_link: https://www.clubaviazionepopolare.org/50-raduno-club-aviazione-popolare/
+'5793':
+  cover: d3bfc698-b77f-443c-a04b-410a4141f652
+  date: '2022-06-15T15:39:19+02:00'
+  id_directus: 26
+  id_wordpress: '5793'
+  slug: 21-raduno-costruttori-amatoriali-francesi-17-18-giugno-2022-flyin-saint-yan
+  title: "21\xB0 FLYIN Saint YAN \u2013 17 /18 Giugno 2022"
+  wp_link: https://www.clubaviazionepopolare.org/21-raduno-costruttori-amatoriali-francesi-17-18-giugno-2022-flyin-saint-yan/
+'5801':
+  cover: 9dbbf8bd-0646-4bc0-bb3a-29dbcf97f186
+  date: '2022-06-16T12:33:40+02:00'
+  id_directus: 27
+  id_wordpress: '5801'
+  slug: 73-raduno-della-federazione-rsa
+  title: "73\xB0 Raduno\_ della Federazione RSA"
+  wp_link: https://www.clubaviazionepopolare.org/73-raduno-della-federazione-rsa/
+'6843':
+  cover: e6ee8eff-0f22-444e-918e-eb1e605cc78e
+  date: '2023-05-16T09:15:24+02:00'
+  id_directus: 28
+  id_wordpress: '6843'
+  slug: efficiency-race-rinviata-al-27-maggio
+  title: EFFICIENCY RACE  RINVIATA AL 27 MAGGIO
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-rinviata-al-27-maggio/
+'6853':
+  cover: 84b481fc-b3c0-41da-9058-f0ac963ed7d5
+  date: '2023-06-14T13:37:40+02:00'
+  id_directus: 29
+  id_wordpress: '6853'
+  slug: raduno-cap-toscana-programma
+  title: "Raduno CAP Toscana \u2013 Programma"
+  wp_link: https://www.clubaviazionepopolare.org/raduno-cap-toscana-programma/
+'6902':
+  cover: f8cb16c1-6718-4780-a123-981b061e83e5
+  date: '2023-08-27T12:45:12+02:00'
+  id_directus: 30
+  id_wordpress: '6902'
+  slug: 51-raduno-club-aviazione-popolare
+  title: "51\xB0 Raduno Club Aviazione Popolare"
+  wp_link: https://www.clubaviazionepopolare.org/51-raduno-club-aviazione-popolare/
+'7129':
+  cover: 8a5ea121-67ea-4798-bd3b-25a5c2f1c334
+  date: '2024-05-13T10:15:18+02:00'
+  id_directus: 31
+  id_wordpress: '7129'
+  slug: 32-raduno-cap-toscana-2
+  title: "32\xB0 Raduno CAP \u2013 TOSCANA"
+  wp_link: https://www.clubaviazionepopolare.org/32-raduno-cap-toscana-2/
+'7146':
+  cover: 9c9e75d1-6fe0-47ee-ba9c-3688b632263e
+  date: '2024-06-05T10:20:46+02:00'
+  id_directus: 32
+  id_wordpress: '7146'
+  slug: flyin-saint-yan-lfbk-sabato-29-giugno-2024
+  title: Flyin Saint YAN (LFBK)- Sabato 29 Giugno 2024
+  wp_link: https://www.clubaviazionepopolare.org/flyin-saint-yan-lfbk-sabato-29-giugno-2024/
+'7177':
+  cover: 117e14a4-de4f-4765-b206-6066283c1ad0
+  date: '2024-07-09T14:38:47+02:00'
+  id_directus: 33
+  id_wordpress: '7177'
+  slug: 52-raduno-club-aviazione-popolare
+  title: "52\xB0 Raduno Club Aviazione Popolare"
+  wp_link: https://www.clubaviazionepopolare.org/52-raduno-club-aviazione-popolare/
+'8071':
+  cover: d1e085f8-452f-41ad-b163-4ff2cc841890
+  date: '2025-05-08T13:03:44+02:00'
+  id_directus: 34
+  id_wordpress: '8071'
+  slug: 33-raduno-cap-toscana-5-luglio-2025
+  title: "33\xB0 RADUNO CAP TOSCANA \u2013 5 LUGLIO 2025"
+  wp_link: https://www.clubaviazionepopolare.org/33-raduno-cap-toscana-5-luglio-2025/

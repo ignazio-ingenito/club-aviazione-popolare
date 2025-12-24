@@ -115,19 +115,14 @@ def process_title(title: str) -> str:
     return unescape(title).strip()
 
 
-def remove_cover(
-    post: directus.DirectusPost, mappings: Mapping
-) -> directus.DirectusPost:
-    try:
-        cover = tuple(m for m in mappings if m.upload.directus_id == post.cover)[0]
-        soup = BeautifulSoup(post.content, "html.parser")
-        for tag in soup.select("img"):
-            if tag.attrs["src"] == cover.upload.directus_url:
-                tag.unwrap()
-
-        return soup.decode()
-    except (KeyError, ValueError):
-        return post.content
+def remove_cover(post: directus.DirectusPost, mappings: Mapping) -> str:
+    cover = tuple(m for m in mappings if m.upload.directus_id == post.cover)[0]
+    soup = BeautifulSoup(post.content, "html.parser")
+    for tag in soup.select("img"):
+        if tag.attrs["src"] == cover.upload.directus_url:
+            logger.info(f"Removing cover from post ID {post.id_wordpress}")
+            tag.unwrap()
+    return soup.decode()
 
 
 def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Mapping]:
@@ -155,20 +150,19 @@ def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Ma
         logger.warning(f"{e} skipped as it's not downloadable")
 
     with ThreadPoolExecutor(max_workers=cores) as executor:
-        # Use ThreadPoolExecutor to download from wordpress concurrently
         futures = (executor.submit(wordpress.download, url) for url in urls)
-        downloads: tuple[wordpress.WordpressDownload, bytes] = tuple(
-            future.result() for future in as_completed(futures)
+        downloads: tuple[wordpress.WordpressDownload, bytes] = [
+            f.result() for f in as_completed(futures)
+        ]
+    if downloads:
+        folder_id, _, _ = directus.create_folder(
+            post.slug.lower().strip(), directus.NEWS_FOLDER_ID
         )
+    else:
+        logger.warning(f"No downloads for post ID {post.id_wordpress}")
+        return post, None
 
-        if downloads:
-            folder_id, _, _ = directus.create_folder(
-                post.slug.lower().strip(), directus.NEWS_FOLDER_ID
-            )
-        else:
-            logger.warning(f"No downloads for post ID {post.id_wordpress}")
-            return post, None
-
+    with ThreadPoolExecutor(max_workers=cores) as executor:
         # Use ThreadPoolExecutor to upload to Directus concurrently
         futures = (
             executor.submit(

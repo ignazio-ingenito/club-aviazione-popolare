@@ -36,7 +36,7 @@ export default async function AreaSociPage() {
 
       {/* Dashboard Section */}
       <section className="py-16 bg-background">
-        <div className="container max-w-6xl">
+        <div className="container max-w-7xl">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* User Info Card */}
             <Card className="lg:col-span-1">

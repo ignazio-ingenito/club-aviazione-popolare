@@ -23,11 +23,21 @@ export type Chapter = {
   highlights: string
 }
 
+export type Cover = {
+  id: string
+  title: string
+  type: string
+  width: number
+  height: number
+  focal_point_x: number
+  focal_point_y: number
+}
+
 export type Feed = {
   id: number
   author?: string
   category: Category
-  cover?: string
+  cover?: Cover
   content?: string
   date?: Date
   featured?: boolean

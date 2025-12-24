@@ -18,7 +18,7 @@ export default async function index({ params }: Props) {
     <>
       <PageHero description={description} title={content_title} />
 
-      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
+      <div className="py-8 flex flex-col gap-y-8 max-w-7xl m-auto">
         <PageTitle title={content_title} icon="map-pin-house" />
 
         <div

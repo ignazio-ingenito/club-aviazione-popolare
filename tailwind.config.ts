@@ -2,11 +2,27 @@ import type { Config } from "tailwindcss"
 
 const config: Config = {
   darkMode: "class",
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: {
+    files: [
+      "./app/**/*.{js,ts,jsx,tsx,mdx}",
+      "./components/**/*.{js,ts,jsx,tsx,mdx}",
+      "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
+    safelist: [
+      "hidden",
+      "block",
+      "sm:hidden",
+      "sm:block",
+      "md:hidden",
+      "md:block",
+      "lg:hidden",
+      "lg:block",
+      "sm:!hidden",
+      "sm:!block",
+      "ml-4",
+      "mr-4",
+    ],
+  },
   theme: {
     extend: {
       colors: {
@@ -58,6 +74,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
-}
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    require('@tailwindcss/line-clamp')
+  ],
+} satisfies Config
+
 export default config

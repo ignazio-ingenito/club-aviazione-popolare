@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from typing import Optional
 from urllib.parse import urljoin
@@ -73,7 +73,7 @@ def create_item(post: DirectusPost) -> DirectusPost:
         mappings (Mapping): The mappings to use.
     """
     data: dict = asdict(post)
-    res = client.post(DIRECTUS_FEEDS_URL, json=data)
+    res = client.post(DIRECTUS_FEEDS_URL, json={**data, "status": "published"})
     res.raise_for_status()
     post.id_directus = res.json().get("data", {}).get("id")
     logger.info(f"Created item {post.id_directus} in Directus.")
@@ -92,8 +92,9 @@ def delete_folder(folder_id: str) -> None:
         This function deletes all the files within the folder before deleting the folder itself.
     """
     files: tuple[str] = list_files(folder_id)
-    with ThreadPoolExecutor() as executor:
-        executor.map(delete_file, files)
+    with ThreadPoolExecutor(max_workers=cores) as executor:
+        futures = executor.map(delete_file, files)
+        _ = [f for f in futures]
 
     # Delete the folder
     url: str = urljoin(DIRECTUS_FOLDERS_URL, f"{folder_id}")
@@ -135,8 +136,9 @@ def delete_folders(parent_id: str) -> None:
     response.raise_for_status()
     folders = response.json().get("data")
 
-    with ThreadPoolExecutor() as executor:
-        executor.map(delete_folder, [f.get("id") for f in folders])
+    with ThreadPoolExecutor(max_workers=cores) as executor:
+        futures = executor.map(delete_folder, [f.get("id") for f in folders])
+        _ = [f for f in futures]
 
 
 def delete_item(collection: str, id: int) -> None:
@@ -173,10 +175,11 @@ def delete_items(collection: str, id: int) -> None:
         This function will skip deletion of items with ID <= 15 to protect essential data.
     """
     with ThreadPoolExecutor(max_workers=cores) as executor:
-        executor.map(
+        futures = executor.map(
             lambda id: delete_item(collection, id),
             [i.get("id") for i in get_items(collection, id)],
         )
+        _ = [f for f in futures]
 
 
 def get_items(collection: str, id: int) -> list[dict]:

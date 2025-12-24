@@ -26,18 +26,18 @@ export default async function index({ params }: Props) {
     <>
       <PageHero title={title} description={description} />
 
-      <div className="px-2 py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
-        <div className="pb-1 grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,360px))] justify-center overflow-hidden">
-          {rows.map(({ id, category, title, date, content, cover }) => (
+      <div className="px-4 sm:px-8">
+        <div className="max-w-7xl m-auto py-8 grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))] justify-center overflow-hidden">
+          {rows.map(({ id, slug, category, title, date, content, cover }) => (
             <Link
               key={id}
               legacyBehavior
-              href={`/feed/${category.id}/${id}`}
+              href={`/feed/${category.id}/${slug}`}
               className="text-sm font-medium text-primary inline-flex items-center"
             >
               <Card
                 key={id}
-                className="h-full max-w-[460px] transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer"
+                className="h-full w-full min-w-0 transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4 mb-2">

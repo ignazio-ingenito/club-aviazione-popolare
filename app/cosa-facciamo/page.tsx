@@ -12,13 +12,13 @@ export default async function index() {
     <>
       <PageHero title={content_title} description={description} />
 
-      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
-        <PageTitle title={content_title} description={description} icon="traffic-cone" />
-
-        <div
-          className={`${styles.cosa_facciamo} select-none text-muted-foreground`}
-          dangerouslySetInnerHTML={{ __html: sanitizeHtml(content ?? "") }}
-        />
+      <div className="px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto py-8 flex flex-col gap-y-8">
+          <span
+            className={`${styles.cosa_facciamo} select-none text-muted-foreground`}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(content ?? "") }}
+          />
+        </div>
       </div>
     </>
   )

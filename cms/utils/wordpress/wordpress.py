@@ -107,7 +107,6 @@ def get_posts() -> list[dict]:
     total_pages = ceil(int(resp.headers.get("X-WP-TotalPages", "1")) / 100)
     logger.info(f"Total pages to fetch: {total_pages}")
 
-    # Use ThreadPoolExecutor to fetch posts concurrently
     with ThreadPoolExecutor(max_workers=cores) as executor:
         futures = [executor.submit(fetch_page, p) for p in range(1, total_pages + 1)]
         posts = [
@@ -125,7 +124,7 @@ def get_posts() -> list[dict]:
                     p, "_embedded.wp:featuredmedia.0.source_url", default=None
                 ),
             }
-            for p in chain.from_iterable(f.result() for f in futures)
+            for p in chain.from_iterable([f.result() for f in futures])
         ]
 
         logger.info(f"Fetched {len(posts)} posts from WordPress.")
