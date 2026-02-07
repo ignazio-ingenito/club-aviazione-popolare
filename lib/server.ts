@@ -13,7 +13,6 @@ import { directus } from "./directus"
 import {
   Category,
   Chapter,
-  Cover,
   Feed,
   Meeting,
   MenuItem,
@@ -100,17 +99,6 @@ export const getFeeds = async (
       date: e.date ? new Date(e.date) : new Date(),
     })
   )
-}
-
-export const getImageUrl = (cover: Cover | undefined): string => {
-  const { id, width, height } = cover || {}
-
-  const url = new URL(`assets/${id}`, process.env.DIRECTUS_URL)
-
-  if (width) url.searchParams.set("width", width?.toString())
-  if (height) url.searchParams.set("height", height?.toString())
-
-  return url.toString()
 }
 
 export const getMetadata = async (): Promise<Metadata> => {
