@@ -126,7 +126,7 @@ jobs:
     steps:
       - name: Trigger update in manifests repo
         if: secrets.HOMELAB_REPO != '' && secrets.HOMELAB_DISPATCH_TOKEN != ''
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.HOMELAB_DISPATCH_TOKEN }}
           repository: ${{ secrets.HOMELAB_REPO }}
