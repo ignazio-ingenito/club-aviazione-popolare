@@ -1,0 +1,7 @@
+uploads
+sql
+utils
+docker-compose.yaml
+readme.md
+.env
+.env.*

@@ -5,8 +5,14 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     const { id } = params
-    console.log(`${process.env.DIRECTUS_URL}/assets/${id}`)
-    const res = await fetch(`${process.env.DIRECTUS_URL}/assets/${id}`)
+    const directusInternalUrl =
+        process.env.DIRECTUS_INTERNAL_URL ?? process.env.DIRECTUS_URL
+
+    if (!directusInternalUrl) {
+        return NextResponse.json({ error: 'DIRECTUS_INTERNAL_URL not set' }, { status: 500 })
+    }
+
+    const res = await fetch(`${directusInternalUrl}/assets/${id}`)
     // const res = await fetch(`${process.env.DIRECTUS_URL}/assets/${id}`, {
     //     headers: {
     //         Authorization: `Bearer ${process.env.DIRECTUS_PRIVATE_TOKEN}`,

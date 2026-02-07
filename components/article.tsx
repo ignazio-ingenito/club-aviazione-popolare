@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { DEFAULT_COVER, sanitizeHtml } from "@/lib/directus"
+import { DEFAULT_COVER, getImageUrl, sanitizeHtml } from "@/lib/directus"
 import { Calendar, User } from "lucide-react"
 
 interface ArticleProps {
@@ -40,7 +40,7 @@ export default async function Article(
     <>
       <ArticleMeta author={author} date={date} />
       <Image
-        src={`${process.env.DIRECTUS_URL}/assets/${cover || DEFAULT_COVER}`}
+        src={getImageUrl({ id: cover || DEFAULT_COVER.id }, 1024)}
         width={1024}
         height={0}
         alt={title || ""}
