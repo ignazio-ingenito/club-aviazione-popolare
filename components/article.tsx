@@ -1,10 +1,11 @@
 import Image from "next/image"
-import { DEFAULT_COVER, sanitizeHtml } from "@/lib/directus"
+import { DEFAULT_COVER, getImageUrl, sanitizeHtml } from "@/lib/directus"
 import { Calendar, User } from "lucide-react"
+import type { Cover } from "@/lib/types"
 
 interface ArticleProps {
   title?: string
-  cover?: string
+  cover?: string | Cover
   author?: string
   date?: Date
   content?: string
@@ -36,11 +37,14 @@ const ArticleMeta = ({ author, date }: ArticleMetaProps) => {
 
 export default async function Article(
   { title, cover, author, date, content }: ArticleProps) {
+  const coverForUrl =
+    typeof cover === "string" ? ({ id: cover } as Partial<Cover>) : cover
+
   return (
     <>
       <ArticleMeta author={author} date={date} />
       <Image
-        src={`${process.env.DIRECTUS_URL}/assets/${cover || DEFAULT_COVER}`}
+        src={getImageUrl(coverForUrl ?? DEFAULT_COVER, 1024)}
         width={1024}
         height={0}
         alt={title || ""}

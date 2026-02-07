@@ -3,6 +3,8 @@ import { readItems } from "@directus/sdk"
 import { directus } from "@/lib/directus"
 import { MenuItem } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
     const menu = await directus.request(readItems("site_menu", {
         fields: ["*", "submenu.*"],

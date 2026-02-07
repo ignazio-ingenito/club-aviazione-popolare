@@ -3,6 +3,8 @@ import { readItem } from "@directus/sdk"
 import { directus } from "@/lib/directus"
 import { Page } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 export async function GET(
     request: Request,
     context: { params: { key: string } }

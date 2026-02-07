@@ -9,6 +9,7 @@ import "./globals.css"
 import { Montserrat } from "next/font/google"
 import favicon from "@/app/public/favicon.svg"
 
+export const dynamic = "force-dynamic"
 
 const montserrat = Montserrat({
   subsets: ["latin"],

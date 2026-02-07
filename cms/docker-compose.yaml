@@ -24,24 +24,24 @@ services:
       cache:
         condition: service_healthy
     environment:
-      SECRET: "Nutshell-Suspense-Domestic6"
-      DB_CLIENT: "pg"
-      DB_HOST: "ep-rough-resonance-agpkrnq8-pooler.c-2.eu-central-1.aws.neon.tech"
-      DB_PORT: "5432"
-      DB_DATABASE: "neondb"
-      DB_USER: "neondb_owner"
-      DB_PASSWORD: "npg_vZMNOR4hq6xW"
-      DB_SSL: "true"
+      SECRET: "${DIRECTUS_SECRET}"
+      DB_CLIENT: "${DB_CLIENT:-pg}"
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_DATABASE: "${DB_DATABASE}"
+      DB_USER: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_SSL: "${DB_SSL:-true}"
 
       CACHE_ENABLED: "true"
       CACHE_AUTO_PURGE: "true"
       CACHE_STORE: "redis"
       REDIS: "redis://cache:6379"
 
-      ADMIN_EMAIL: "ignazio.ingenito@gmail.com"
-      ADMIN_PASSWORD: "19Getmail74"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
 
       # PUBLIC_URL: "http://localhost:8055"
-      PUBLIC_URL: "https://cms.clubaviazionepopolare.org"
+      PUBLIC_URL: "${PUBLIC_URL:-https://cms.clubaviazionepopolare.org}"
     extra_hosts:
       - "host.docker.internal:host-gateway"

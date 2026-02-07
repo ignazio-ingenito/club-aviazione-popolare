@@ -1,11 +1,19 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const email_to = process.env.RESEND_EMAIL_TO || "ignazio.ingenito@gmail.com"
 const email_from = process.env.RESEND_EMAIL_FROM || "noreply@skunklabs.uk"
 const email_lang = process.env.RESEND_EMAIL_LANG || "it"
 
 export async function POST(req: Request) {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+        return Response.json(
+            { ok: false, error: "RESEND_API_KEY not set" },
+            { status: 500 }
+        )
+    }
+
+    const resend = new Resend(apiKey)
     const body = await req.json()
     const email = {
         from: `${email_from}`,
@@ -63,18 +71,16 @@ export async function POST(req: Request) {
             route: `/api/mail`,
             method: `POST`,
             email: email,
-            respose: res
+            response: res
         })
         return Response.json({ ok: true })
     }
     catch (exception) {
-        console.info({
+        console.error({
             route: `/api/mail`,
             method: `POST`,
             email: email,
             error: exception,
-            resend_api_key: `${process.env.RESEND_API_KEY}`
-
         })
         return Response.json({ ok: false, error: exception })
     }
