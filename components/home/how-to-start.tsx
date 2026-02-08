@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { Phone } from "lucide-react"
@@ -8,11 +9,11 @@ import people from "@/app/public/images/how-to-start.jpg"
 export const HowToStart = () => (
     <section className="mx-4 bg-card">
         <div className="flex flex-col lg:flex-row gap-y-2 items-center">
-            <div className="w-full shadow-lg lg:basis-1/2">
-                <img
-                    src={people.src}
+            <div className="w-full h-full shadow-lg lg:basis-1/2 lg:h-190">
+                <Image
+                    src={people}
                     alt="Come iniziare"
-                    className="w-full h-full object-cover max-h-[650px]"
+                    className="w-full h-full object-cover"
                 />
             </div>
             <div className="lg:basis-1/2 px-4">
@@ -24,7 +25,7 @@ export const HowToStart = () => (
                     La sede degli incontri può essere diversa in base all’associazione CAP che organizza lo stage teorico/pratico. La partecipazione ai corsi è gratuita per i soci CAP, per tutti gli altri viene richiesto un contributo variabile in funzione del materiale didattico messo a disposizione. Alle volte è prevista anche una convenzione con alberghi e ristoranti locali per vitto ed alloggio. Il numero massimo di partecipanti è sempre limitato ad una quindicina di persone per dar modo a tutti di prender parte attivamente alle esercitazioni in laboratorio.
                     I soci, o aspiranti tali, devono iscriversi direttamente a una delle otto Associazioni.
                 </p>
-                <div className="w-full flex justify-center">
+                <div className="w-full flex justify-center pb-6 lg:pb-0">
                     <Button asChild size="lg" className="text-lg">
                         <Link href="/contatti">
                             Contatti

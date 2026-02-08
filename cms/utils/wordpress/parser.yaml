@@ -62,6 +62,22 @@
   slug: 73-raduno-della-federazione-rsa
   title: "73\xB0 Raduno\_ della Federazione RSA"
   wp_link: https://www.clubaviazionepopolare.org/73-raduno-della-federazione-rsa/
+'6181':
+  cover: 58f96202-4637-4b0f-834d-45fbd11e3117
+  date: '2022-10-10T09:55:56+02:00'
+  id_directus: 12
+  id_wordpress: '6181'
+  slug: diario-di-un-volo-bellissimo
+  title: Diario di un volo bellissimo
+  wp_link: https://www.clubaviazionepopolare.org/diario-di-un-volo-bellissimo/
+'6514':
+  cover: 57d54fa6-0a79-4b78-acef-41dbba10996a
+  date: '2022-11-14T10:55:05+01:00'
+  id_directus: 13
+  id_wordpress: '6514'
+  slug: mai-perdere-la-speranza
+  title: Mai perdere la speranza
+  wp_link: https://www.clubaviazionepopolare.org/mai-perdere-la-speranza/
 '6843':
   cover: e6ee8eff-0f22-444e-918e-eb1e605cc78e
   date: '2023-05-16T09:15:24+02:00'
@@ -118,3 +134,11 @@
   slug: 33-raduno-cap-toscana-5-luglio-2025
   title: "33\xB0 RADUNO CAP TOSCANA \u2013 5 LUGLIO 2025"
   wp_link: https://www.clubaviazionepopolare.org/33-raduno-cap-toscana-5-luglio-2025/
+'8222':
+  cover: 345382a0-0a11-4d49-a924-09b9add306c5
+  date: '2025-10-10T11:41:57+02:00'
+  id_directus: 14
+  id_wordpress: '8222'
+  slug: trofeo-damiani-2025-il-volo-di-lucio-castrogiovanni
+  title: "TROFEO DAMIANI  2025 \u2013 il volo di  Lucio Castrogiovanni"
+  wp_link: https://www.clubaviazionepopolare.org/trofeo-damiani-2025-il-volo-di-lucio-castrogiovanni/

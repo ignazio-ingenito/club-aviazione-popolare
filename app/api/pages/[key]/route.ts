@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 import { readItem } from "@directus/sdk"
 import { directus } from "@/lib/directus"
 import { Page } from "@/lib/types"
@@ -6,13 +7,13 @@ import { Page } from "@/lib/types"
 export const dynamic = "force-dynamic"
 
 export async function GET(
-    request: Request,
-    context: { params: { key: string } }
+    _request: NextRequest,
+    context: { params: Promise<{ key: string }> }
 ) {
-    const { key } = context.params
+    const { key } = await context.params
 
     const page = await directus.request(readItem("pages", key, {
-        fields: ["*", "sections.*"],
+        fields: ["*", "cover.*", "sections.*"],
         filter: { status: { _eq: "published" } },
         deep: { sections: { filter: { status: { _eq: 'published' } }, sort: ['sort'] } },
     }))

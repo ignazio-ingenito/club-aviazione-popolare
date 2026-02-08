@@ -12,8 +12,8 @@
             "cwd": "${workspaceFolder}/cms/utils/wordpress",
             "args": [
                 "import",
-                "3",
-                "news",
+                "5",
+                "corsi",
             ],
             "console": "integratedTerminal"
         },
@@ -25,6 +25,7 @@
             "cwd": "${workspaceFolder}/cms/utils/wordpress",
             "args": [
                 "delete",
+                "corsi",
             ],
             "console": "integratedTerminal"
         }

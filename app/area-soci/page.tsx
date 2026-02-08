@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default async function AreaSociPage() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const token = cookieStore.get("access_token")?.value
 
   if (!token) {

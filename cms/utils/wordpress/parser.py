@@ -51,6 +51,7 @@ class Cache:
 
 
 cores = cpu_count()
+# cores = 1
 cache = Cache()
 
 
@@ -127,12 +128,19 @@ def remove_cover(post: directus.DirectusPost, mappings: Mapping) -> str:
 
 def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Mapping]:
     soup = BeautifulSoup(post.content, "html.parser")
+    def is_downloadable(url: str) -> bool:
+        parsed = urlparse(url)
+        # Allow relative URLs and explicit http(s) URLs only.
+        if parsed.scheme and parsed.scheme not in {"http", "https"}:
+            return False
+        return bool(Path(parsed.path).suffix)
+
     urls = tuple(
         set(
             tag.attrs[attr]
             for query, attr in (("img", "src"), ("a", "href"))
             for tag in soup.select(query)
-            if Path(urlparse(tag.attrs[attr]).path).suffix
+            if is_downloadable(tag.attrs[attr])
         )
     )
     if post.cover:
@@ -143,7 +151,7 @@ def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Ma
             tag.attrs[attr]
             for query, attr in (("img", "src"), ("a", "href"))
             for tag in soup.select(query)
-            if not Path(urlparse(tag.attrs[attr]).path).suffix
+            if not is_downloadable(tag.attrs[attr])
         )
     )
     for e in excluded:
@@ -151,9 +159,12 @@ def upload_media(post: directus.DirectusPost) -> tuple[directus.DirectusPost, Ma
 
     with ThreadPoolExecutor(max_workers=cores) as executor:
         futures = (executor.submit(wordpress.download, url) for url in urls)
-        downloads: tuple[wordpress.WordpressDownload, bytes] = [
-            f.result() for f in as_completed(futures)
-        ]
+        downloads: list[tuple[wordpress.WordpressDownload, bytes]] = []
+        for f in as_completed(futures):
+            try:
+                downloads.append(f.result())
+            except Exception as exc:
+                logger.warning(f"Failed to download media asset: {exc}")
     if downloads:
         folder_id, _, _ = directus.create_folder(
             post.slug.lower().strip(), directus.NEWS_FOLDER_ID
@@ -216,9 +227,11 @@ def process_post(post: directus.DirectusPost) -> directus.DirectusPost:
     post.content = remove_cover(post, mappings)
 
     # Post to Directus
-    post = directus.create_item(post)
-
-    # Save the post as processed
-    cache.add(post)
+    try:
+        post = directus.create_item(post)
+        # Save the post as processed
+        cache.add(post)
+    except Exception as exc:
+        logger.error(f"Failed to import post ID {post.id_wordpress}: {exc}")
 
     return post
