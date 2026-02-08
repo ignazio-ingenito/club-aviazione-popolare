@@ -2,147 +2,160 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+const formSchema = z.object({
+  name: z.string().trim().min(1, "Il nome è obbligatorio"),
+  email: z.email("Inserisci un'email valida"),
+  phone: z.string().trim().optional(),
+  message: z
+    .string()
+    .trim()
+    .min(1, "Il messaggio è obbligatorio")
+    .min(10, "Il messaggio deve contenere almeno 10 caratteri"),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 export default function FormContatti() {
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-    })
-    const [errors, setErrors] = useState<Record<string, string>>({})
-    const [submitted, setSubmitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
-    const validateForm = () => {
-        const newErrors: Record<string, string> = {}
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+    mode: "onBlur",
+  })
 
-        if (!formData.name.trim()) {
-            newErrors.name = "Il nome è obbligatorio"
-        }
+  const onSubmit = async (values: FormValues) => {
+    setSubmitError(null)
+    setSubmitted(false)
 
-        if (!formData.email.trim()) {
-            newErrors.email = "L'email è obbligatoria"
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = "Inserisci un'email valida"
-        }
+    try {
+      const res = await fetch("/api/mail", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: { "Content-Type": "application/json" },
+      })
 
-        if (!formData.message.trim()) {
-            newErrors.message = "Il messaggio è obbligatorio"
-        } else if (formData.message.trim().length < 10) {
-            newErrors.message = "Il messaggio deve contenere almeno 10 caratteri"
-        }
+      if (!res.ok) {
+        throw new Error("Failed to send mail")
+      }
 
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
+      setSubmitted(true)
+      form.reset()
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (_err) {
+      setSubmitError("Invio non riuscito. Riprova tra qualche minuto.")
     }
+  }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = form
 
-        if (!validateForm()) {
-            return
-        }
-
-        // send the email
-        fetch("/api/mail", {
-            method: "POST",
-            body: JSON.stringify(formData),
-            headers: { "Content-Type": "application/json" }
-        })
-
-        console.debug("form submitted:", formData)
-        setSubmitted(true)
-        setFormData({ name: "", email: "", phone: "", message: "" })
-        setTimeout(() => setSubmitted(false), 5000)
-    }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
-        // Clear error when user starts typing
-        if (errors[name]) {
-            setErrors((prev) => ({ ...prev, [name]: "" }))
-        }
-    }
-
-    return (
-        <div className="form-contatti">
-            {submitted && (
-                <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
-                    <p className="text-green-800 dark:text-green-200">
-                        Grazie per averci contattato! Ti risponderemo al più presto.
-                    </p>
-                </div>
-            )}
-            <div className="form">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="space-y-2">
-                        <Label htmlFor="name">
-                            Nome <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder="Gianfranco Rotondi"
-                            className={errors.name ? "border-destructive" : ""}
-                        />
-                        {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="email">
-                            Email <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
-                            id="email"
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="gianfranco.rotondi@me.com"
-                            className={errors.email ? "border-destructive" : ""}
-                        />
-                        {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="phone">Telefono (opzionale)</Label>
-                        <Input
-                            id="phone"
-                            name="phone"
-                            type="tel"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder="+39 1234567890"
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="message">
-                            Messaggio <span className="text-destructive">*</span>
-                        </Label>
-                        <Textarea
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            placeholder="Scrivi qui il tuo messaggio..."
-                            rows={6}
-                            className={errors.message ? "border-destructive" : ""}
-                        />
-                        {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
-                    </div>
-
-                    <Button type="submit" size="lg" className="w-full md:w-auto">
-                        Invia Messaggio
-                    </Button>
-                </form>
-            </div>
+  return (
+    <div className="form-contatti">
+      {submitted && (
+        <div className="mb-6 rounded-md border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+          <p className="text-green-800 dark:text-green-200">
+            Grazie per averci contattato! Ti risponderemo al più presto.
+          </p>
         </div>
-    )
+      )}
+
+      {submitError && (
+        <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4">
+          <p className="text-destructive">{submitError}</p>
+        </div>
+      )}
+
+      <div className="form">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="min-h-139.5 space-y-6 [&_input]:border-border/60 [&_input]:shadow-none [&_textarea]:border-border/60 [&_textarea]:shadow-none"
+        >
+          <FieldSet>
+            <FieldGroup>
+              <Field data-invalid={Boolean(errors.name)}>
+                <FieldLabel htmlFor="name">
+                  Nome <span className="text-destructive">*</span>
+                </FieldLabel>
+                <Input
+                  id="name"
+                  placeholder="Gianfranco Rotondi"
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? "name-error" : undefined}
+                  {...register("name")}
+                />
+                <FieldError id="name-error" errors={errors.name?.message} />
+              </Field>
+
+              <Field data-invalid={Boolean(errors.email)}>
+                <FieldLabel htmlFor="email">
+                  Email <span className="text-destructive">*</span>
+                </FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="gianfranco.rotondi@me.com"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  {...register("email")}
+                />
+                <FieldError id="email-error" errors={errors.email?.message} />
+              </Field>
+
+              <Field>
+                <FieldLabel htmlFor="phone">Telefono (opzionale)</FieldLabel>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+39 1234567890"
+                  {...register("phone")}
+                />
+              </Field>
+
+              <Field data-invalid={Boolean(errors.message)}>
+                <FieldLabel htmlFor="message">
+                  Messaggio <span className="text-destructive">*</span>
+                </FieldLabel>
+                <Textarea
+                  id="message"
+                  rows={6}
+                  placeholder="Scrivi qui il tuo messaggio..."
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? "message-error" : undefined}
+                  {...register("message")}
+                />
+                <FieldError id="message-error" errors={errors.message?.message} />
+              </Field>
+            </FieldGroup>
+          </FieldSet>
+
+          <Button type="submit" size="lg" className="w-full md:w-auto" disabled={isSubmitting}>
+            {isSubmitting ? "Invio in corso..." : "Invia Messaggio"}
+          </Button>
+        </form>
+      </div>
+    </div>
+  )
 }

@@ -1,9 +1,10 @@
 import { Header } from "@/components/header"
-import { SiteFooter } from "@/components/site-footer"
+import { SiteFooter } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Plane, Ruler, Weight, Calendar } from "lucide-react"
 import { getMetadata } from "@/lib/server"
+import Image from "next/image"
 
 const aircraft = [
   {
@@ -103,7 +104,7 @@ export default async function FlottaPage() {
         facebookUrl={meta.facebook}
         twitterUrl={meta.twitter} />
 
-      <main className="flex-1 w-full max-w-7xl m-auto">
+      <main className="flex-1 w-full max-w-5xl m-auto">
         {/* Hero Section */}
         <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">
@@ -122,9 +123,11 @@ export default async function FlottaPage() {
               {aircraft.map((plane, index) => (
                 <Card key={index} className="overflow-hidden group hover:shadow-xl transition-all">
                   <div className="relative h-64 overflow-hidden bg-muted">
-                    <img
+                    <Image
                       src={plane.image || "/placeholder.svg"}
                       alt={plane.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <Badge className="absolute top-4 right-4 bg-secondary text-secondary-foreground">
@@ -189,7 +192,7 @@ export default async function FlottaPage() {
                   </div>
                   <h3 className="text-xl font-bold mb-3">Trainer</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Aeromodelli stabili e facili da pilotare, ideali per principianti e per l'addestramento.
+                    Aeromodelli stabili e facili da pilotare, ideali per principianti e per l&apos;addestramento.
                     Caratterizzati da ali alte e comportamento di volo prevedibile.
                   </p>
                 </CardContent>
@@ -230,7 +233,7 @@ export default async function FlottaPage() {
             <h2 className="text-3xl font-bold mb-6">Vuoi Costruire il Tuo Aeromodello?</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
               Il CAP organizza corsi di costruzione per tutti i livelli. Impara le tecniche di costruzione tradizionale
-              e moderna con l'aiuto di istruttori esperti.
+              e moderna con l&apos;aiuto di istruttori esperti.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

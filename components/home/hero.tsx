@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 
@@ -10,9 +11,12 @@ export const HomeHero = () => {
     return (
         <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 bg-black/30 z-10" />
-            <img
-                src={biplane.src}
+            <Image
+                src={biplane}
                 alt="Aeromodello storico"
+                fill
+                priority
+                sizes="100vw"
                 className="absolute inset-0 w-full h-full object-cover pd-10"
             />
             <div className="container relative z-20 text-center text-white">

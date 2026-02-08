@@ -1,5 +1,5 @@
 import parser
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from typing import Optional
 
 import directus
@@ -23,13 +23,13 @@ def get_workers() -> int:
 
 
 @app.command("delete")
-def delete_feeds(id: Optional[int] = 15):
+def delete_feeds(category: int):
     """
     Delete feeds from Directus.
     """
-    logger.info(f"Deleting feeds from Directus id={id or 0}...")
-    directus.delete_items("feeds", id)
-    logger.info(f"Deleting folders from News folder...")
+    logger.info(f"Deleting feeds from Directus id={category}...")
+    directus.delete_items("feeds", category)
+    logger.info("Deleting folders from News folder...")
     directus.delete_folders(directus.NEWS_FOLDER_ID)
 
 

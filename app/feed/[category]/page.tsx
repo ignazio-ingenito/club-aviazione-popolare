@@ -1,44 +1,55 @@
 import Link from "next/link"
 import Image from "next/image"
+import * as cheerio from "cheerio"
+
+import { Card, CardContent } from "@/components/ui/card"
+import { getCategory, getFeeds, getSubMenuByUrl } from "@/lib/server"
+import { getImageUrl } from "@/lib/directus"
 
 import { PageHero } from "@/components/page/hero"
-import { Card, CardContent } from "@/components/ui/card"
-import { getCategory, getFeeds } from "@/lib/server"
-import { getImageUrl, sanitizeHtml } from "@/lib/directus"
+import { PageTitle } from "@/components/page/title"
 
 import { Feed } from "../../../lib/types"
 
 import { ArrowRight } from "lucide-react"
 
 interface Props {
-  params: {
+  params: Promise<{
     category: string
-  }
+  }>
+}
+
+const sanitizeHtml = (html: string) => {
+  const $ = cheerio.load(html)
+  $("img, script, style, iframe, object, embed").remove()
+  // Card preview is wrapped in a Link (<a>), so nested anchors are invalid HTML.
+  $("a").each((_, element) => {
+    $(element).replaceWith($(element).html() || "")
+  })
+  return ($("body").html() || "").replaceAll(/&nbsp;/g, " ")
 }
 
 export default async function index({ params }: Props) {
-  const { category: id } = params
-
-  const rows = (await getFeeds(id)) as Feed[]
-  const { title, description } = await getCategory(id)
+  const { category: categoryPath } = await params
+  const { key: categoryKey, title: categoryTitle, description: categoryDescription } = await getCategory(categoryPath)
+  const feeds = (await getFeeds(categoryKey)) as Feed[]
+  const { icon } = await getSubMenuByUrl(`/feed/${categoryKey}`)
 
   return (
     <>
-      <PageHero title={title} description={description} />
-
+      <PageHero title={categoryTitle} description={categoryDescription || "description"} />
       <div className="px-4 sm:px-8">
-        <div className="max-w-7xl m-auto py-8 grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))] justify-center overflow-hidden">
-          {rows.map(({ id, slug, category, title, date, content, cover }) => (
+        <div className="max-w-5xl m-auto py-8 grid gap-4 grid-cols-[repeat(auto-fit,minmax(320px,1fr))] justify-center overflow-hidden">
+          <div className="col-span-full">
+            <PageTitle title={categoryTitle} icon={icon} />
+          </div>
+          {feeds.map(({ id, slug, title, date, content, cover }) => (
             <Link
               key={id}
-              legacyBehavior
-              href={`/feed/${category.id}/${slug}`}
-              className="text-sm font-medium text-primary inline-flex items-center"
+              href={`/feed/${categoryKey}/${slug}`}
+              className="block h-full w-full min-w-0 text-sm font-medium text-primary"
             >
-              <Card
-                key={id}
-                className="h-full w-full min-w-0 transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer"
-              >
+              <Card className="h-full w-full min-w-0 transition-shadow border-0 dark:border shadow-sm hover:shadow-lg hover:cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4 mb-2">
                     <div
@@ -64,16 +75,16 @@ export default async function index({ params }: Props) {
 
                   <div className="h-50 overflow-hidden text-ellipsis">
                     <Image
-                      src={getImageUrl(cover, 150, 150)}
+                      src={getImageUrl(cover, 160, 160)}
                       alt={title || ""}
-                      width={150}
-                      height={150}
+                      width={160}
+                      height={160}
                       className="float-right ml-4"
                     />
-                    <span
+                    <div
                       className="text-sm text-muted-foreground"
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeHtml(content || ""),
+                        __html: sanitizeHtml(content ?? ""),
                       }}
                     />
                   </div>

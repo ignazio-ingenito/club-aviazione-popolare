@@ -167,7 +167,7 @@
 }
 
 .article ul {
-  @apply list-disc list-inside py-2 leading-loose;
+  @apply list-disc list-inside py-2 pl-4 leading-loose;
 }
 
 .article>p {
@@ -176,18 +176,31 @@
 
 
 .article img {
-  @apply w-full py-4;
+  @apply w-full not-first-of-type:my-4;
+}
+
+.article hr {
+  @apply mt-8 mb-8;
 }
 
 
 .gallery {
-  @apply grid gap-1 [&_img]:m-0 [&_img]:p-0;
+  @apply grid gap-1;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
-.masonry {
-  @apply columns-1 min-[460px]:columns-2 md:columns-3 [&_img]:m-0 [&_img]:mb-1 [&_img]:p-0 gap-1;
+.gallery img {
+  @apply object-cover p-0 m-0! w-full h-full;
 }
+
+.masonry {
+  @apply columns-1 min-[460px]:columns-2 md:columns-3 gap-1;
+}
+
+.masonry {
+  @apply m-0 p-0 mb-1;
+}
+
 
 /* Timeline */
 

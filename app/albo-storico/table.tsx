@@ -50,6 +50,8 @@ type MeetingTableProps = {
 export default function MeetingTable({ meetings: data }: MeetingTableProps) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
+    // TanStack Table currently triggers React Compiler incompatibility checks.
+    // eslint-disable-next-line react-hooks/incompatible-library
     const table = useReactTable({
         data,
         columns,

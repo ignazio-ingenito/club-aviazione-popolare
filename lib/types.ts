@@ -2,35 +2,47 @@ import { UUID } from "crypto"
 import { LucideIcon } from "lucide-react"
 
 export type Category = {
-  id: number
-  description: string
+  key: string
+  title: string
+  description?: string
   feeds: Feed[]
   status: string
   sort: number
-  title: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date
 }
 
 export type Chapter = {
+  id: number
+  slug?: string
   name: string
   founded: number
   president: string
   website: string
   description: string
-  link: string
   location: string
   members: number
   aircrafts: number
   highlights: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date  
 }
 
 export type Cover = {
   id: string
   title: string
-  type: string
   width: number
   height: number
   focal_point_x: number
   focal_point_y: number
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date
 }
 
 export type Feed = {
@@ -38,13 +50,20 @@ export type Feed = {
   author?: string
   category: Category
   cover?: Cover
+  cover_offset_x?: number
+  cover_offset_y?: number
   content?: string
+  description?: string
   date?: Date
   featured?: boolean
   slug?: string
   sort?: number
   status: string
   title?: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date    
 }
 
 export type Meeting = {
@@ -52,6 +71,10 @@ export type Meeting = {
   year: number
   place: string
   date: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date    
 }
 
 export type Metadata = {
@@ -70,8 +93,11 @@ export type Page = {
   id: number
   key: string
   title: string
-  content_title?: string
   content?: string
+  description?: string
+  cover?: Cover
+  cover_offset_x?: number
+  cover_offset_y?: number
   sections?: PageSection[]
   status: string
   sort: number
@@ -79,7 +105,6 @@ export type Page = {
   date_created: Date
   user_updated: UUID
   date_updated: Date
-  description?: string
 }
 
 export type PageSection = {
