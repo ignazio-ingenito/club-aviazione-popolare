@@ -1,4 +1,4 @@
-import { BookText, Calendar1, Coins, Drill, FileText, GraduationCap, HardHat, LibraryBig, MapPinHouse, Megaphone, MessagesSquare, Network, Newspaper, NotebookText, Plane, PlaneTakeoff, Rss, Share2, ShieldUser, Speech, Target, TrafficCone, TriangleAlert, Trophy, Users, Wrench } from "lucide-react"
+import { BookText, Calendar1, ClockFading, Coins, Drill, FileText, GraduationCap, HardHat, LibraryBig, MapPinHouse, Megaphone, MessagesSquare, Network, Newspaper, NotebookText, Plane, PlaneTakeoff, Rss, Share2, ShieldUser, Speech, Target, TrafficCone, TriangleAlert, Trophy, Users, Wrench } from "lucide-react"
 import { SVGProps } from "react"
 import { Engine } from "./svg/Engine"
 
@@ -11,6 +11,7 @@ export interface DynamicLucideIconProps
 const iconMap: Record<string, React.FC<any>> = {
     "book-text": BookText,
     "calendar-1": Calendar1,
+    "clock-fading": ClockFading,
     "coins": Coins,
     "drill": Drill,
     "engine": Engine,

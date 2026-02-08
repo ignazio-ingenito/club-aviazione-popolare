@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from typing import Optional
 from urllib.parse import urljoin
@@ -13,7 +13,7 @@ DIRECTUS_FEEDS_URL = "http://localhost:8055/items/feeds"
 DIRECTUS_FILES_URL = "http://localhost:8055/files/"
 DIRECTUS_FOLDERS_URL = "http://localhost:8055/folders/"
 NEWS_FOLDER_ID = "032e5563-7527-4f0d-8659-c8717f7f82ef"
-DIRECTUS_DEFAULT_COVER = "4f92d286-a525-4f7d-90ba-1dfbf719e04e"
+DIRECTUS_DEFAULT_COVER = "41a1944b-7e1d-457d-9504-0fd14585753c"
 
 cores = cpu_count()
 memory = Memory(".cache", verbose=0)

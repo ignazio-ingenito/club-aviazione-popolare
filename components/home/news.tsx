@@ -48,9 +48,8 @@ export const News = () => {
                 {newsItems.map((item, index) => (
                     <Card key={index} className="group hover:shadow-lg transition-shadow border-0 dark:border shadow-sm hover:cursor-pointer">
                         <Link
-                            legacyBehavior
                             href={item.link}
-                            className="text-sm font-medium text-primary inline-flex items-center"
+                            className="block h-full text-sm font-medium text-primary"
                         >
                             <CardContent className="p-6 h-full flex flex-col">
                                 <div className="flex items-start gap-4 mb-4">

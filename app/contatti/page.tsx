@@ -1,6 +1,4 @@
-
 import type React from "react"
-import dynamic from "next/dynamic"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, MapPinCheck } from "lucide-react"
@@ -8,21 +6,20 @@ import { getMetadata, getPage } from "@/lib/server"
 import { PageHero } from "@/components/page/hero"
 import { PageTitle } from "@/components/page/title"
 
-
-const GoogleMap = dynamic(() => import("./google-map"), { ssr: false })
-const OpenStreetMap = dynamic(() => import("./openstreet-map"), { ssr: false })
-const FormContacts = dynamic(() => import("./form"), { ssr: false })
+import GoogleMap from "./google-map"
+import OpenStreetMap from "./openstreet-map"
+import FormContacts from "./form"
 
 export default async function index() {
   const { address, email, facebook, instagram, map_type, phone, twitter } = await getMetadata()
-  const { content_title, description } = await getPage("contatti")
+  const { title, description } = await getPage("contatti")
 
   return (
     <>
-      <PageHero title={content_title} description={description} />
+      <PageHero title={title} description={description} />
 
-      <div className="py-8 flex flex-col gap-y-8 max-w-7xl m-auto">
-        <PageTitle title={content_title} description={description} icon="megaphone" />
+      <div className="py-8 flex flex-col gap-y-8 max-w-5xl m-auto">
+        <PageTitle title={title} description={description} icon="megaphone" />
 
         {/* Contact Info and Form */}
         <section>

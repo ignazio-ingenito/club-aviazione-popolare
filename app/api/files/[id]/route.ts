@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
+import type { NextRequest } from "next/server"
 
 export async function GET(
-    request: Request,
-    { params }: { params: { id: string } }
+    _request: NextRequest,
+    context: { params: Promise<{ id: string }> }
 ) {
-    const { id } = params
+    const { id } = await context.params
     const directusInternalUrl =
         process.env.DIRECTUS_INTERNAL_URL ?? process.env.DIRECTUS_URL
 

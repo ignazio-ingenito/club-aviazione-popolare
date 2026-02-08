@@ -1,19 +1,23 @@
 import Link from "next/link"
 import { getMetadata } from "@/lib/server"
+import { Metadata } from "@/lib/types"
 
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react"
 
-export const SiteFooter = async () => {
-  const { title, description, phone, email, address, facebook, twitter, instagram } = await getMetadata()
+type SiteFooterProps = Partial<Metadata>
+
+export const SiteFooter = async (props: SiteFooterProps) => {
+  const metadata = Object.keys(props).length > 0 ? props : await getMetadata()
+  const { title, description, phone, email, address, facebook, twitter, instagram } = metadata
   const telHref = phone ? `tel:${phone.replace(/\s+/g, "")}` : undefined
   const mailHref = email ? `mailto:${email}` : undefined
 
   return (
-    <footer className="border-t bg-muted/50">
+    <footer className="mt-4 border-t bg-muted/50">
       <div className="py-8">
-        <div className="grid grid-cols-1 md:flex gap-y-8 max-w-7xl m-auto px-4">
+        <div className="grid grid-cols-1 gap-x-6 md:grid-cols-[1.8fr_2fr_auto] max-w-4xl m-auto">
           {/* About */}
-          <div className="basis-1/3 px-1">
+          <div className="px-1 min-w-0">
             <h3 className="font-bold text-lg mb-4">{title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {description ?? ""}
@@ -21,7 +25,7 @@ export const SiteFooter = async () => {
           </div>
 
           {/* Contact */}
-          <div className="basis-1/3 px-1">
+          <div className="px-1 min-w-0">
             <h3 className="font-bold text-lg mb-4">Contatti</h3>
             <div className="space-y-3 text-sm">
               <a
@@ -36,17 +40,17 @@ export const SiteFooter = async () => {
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                <span className="overflow-hidden overflow-ellipsis">{email}</span>
+                <span className="min-w-0 break-all">{email}</span>
               </a>
-              <div className="flex items-start gap-2 text-muted-foreground">
-                <MapPin className="h-4 w-4 mt-0.5" />
-                <span>{address}</span>
-              </div>
+              <span className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                <MapPin className="h-6 w-6" />
+                <span className="wrap-break-word">{address}</span>
+              </span>
             </div>
           </div>
 
           {/* Links */}
-          <div className="basis-1/3 px-1">
+          <div className="px-1 min-w-0">
             <h3 className="font-bold text-lg mb-4">Link Utili</h3>
             <div className="space-y-2 text-sm">
               <Link href="/chi-siamo" className="block text-muted-foreground hover:text-foreground transition-colors">

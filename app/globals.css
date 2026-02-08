@@ -167,7 +167,7 @@
 }
 
 .article ul {
-  @apply list-disc list-inside py-2 leading-loose;
+  @apply list-disc list-inside py-2 pl-4 leading-loose;
 }
 
 .article>p {
@@ -176,7 +176,11 @@
 
 
 .article img {
-  @apply w-full py-4;
+  @apply w-full not-first-of-type:my-4;
+}
+
+.article hr {
+  @apply mt-8 mb-8;
 }
 
 

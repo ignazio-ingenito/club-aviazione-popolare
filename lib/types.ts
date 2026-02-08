@@ -8,29 +8,40 @@ export type Category = {
   status: string
   sort: number
   title: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date
 }
 
 export type Chapter = {
+  id: number
   name: string
   founded: number
   president: string
   website: string
   description: string
-  link: string
   location: string
   members: number
   aircrafts: number
   highlights: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date  
 }
 
 export type Cover = {
   id: string
   title: string
-  type: string
   width: number
   height: number
   focal_point_x: number
   focal_point_y: number
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date
 }
 
 export type Feed = {
@@ -45,6 +56,10 @@ export type Feed = {
   sort?: number
   status: string
   title?: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date    
 }
 
 export type Meeting = {
@@ -52,6 +67,10 @@ export type Meeting = {
   year: number
   place: string
   date: string
+  user_created: UUID
+  date_created: Date
+  user_updated: UUID
+  date_updated: Date    
 }
 
 export type Metadata = {
@@ -70,8 +89,9 @@ export type Page = {
   id: number
   key: string
   title: string
-  content_title?: string
   content?: string
+  description?: string
+  cover?: Cover
   sections?: PageSection[]
   status: string
   sort: number
@@ -79,7 +99,6 @@ export type Page = {
   date_created: Date
   user_updated: UUID
   date_updated: Date
-  description?: string
 }
 
 export type PageSection = {

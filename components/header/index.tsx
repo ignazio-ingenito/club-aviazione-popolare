@@ -6,7 +6,7 @@ import { useState } from "react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { useScrolled } from "@/lib/useScrolled"
 
 import darkLogo from "@/app/public/logo-dark.svg"
@@ -49,11 +49,16 @@ export function Header({
     facebookUrl,
     instagramUrl,
     twitterUrl,
-    menu,
+    menu = [],
 }: HeaderProps) {
     const [open, setOpen] = useState(false)
     const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined)
     const isScrolled = useScrolled({ threshold: 10 })
+    const menuItems: MenuItem[] = Array.isArray(menu)
+        ? menu
+        : Array.isArray((menu as unknown as { data?: unknown })?.data)
+            ? ((menu as unknown as { data: MenuItem[] }).data ?? [])
+            : []
 
     return (
         <header
@@ -81,17 +86,17 @@ export function Header({
                     <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" aria-label="desktop menu">
                         <NavigationMenu>
                             <NavigationMenuList>
-                                {menu?.map(({ id, url, title, submenu }) => {
-                                    if (!submenu) return <></>
-                                    if (submenu?.length > 0) {
+                                {menuItems.map(({ id, url, title, submenu }) => {
+                                    const submenuItems = Array.isArray(submenu) ? submenu : []
+                                    if (submenuItems.length > 0) {
                                         return (
-                                            <NavigationMenuItem key={title} data-submenu-len={submenu.length}>
+                                            <NavigationMenuItem key={title} data-submenu-len={submenuItems.length}>
                                                 <NavigationMenuTrigger className={`${isScrolled ? "text-accent" : "text-white"} text-sm font-medium bg-transparent cursor-pointer transition-all`}>
                                                     {title}
                                                 </NavigationMenuTrigger>
                                                 <NavigationMenuContent className="p-3">
-                                                    <div className={`max-w-screen w-[600px] grid gap-1 ${submenu.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
-                                                        {submenu.map(({ id, url, title, icon }) => {
+                                                    <div className={`max-w-screen w-[600px] grid gap-1 ${submenuItems.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
+                                                        {submenuItems.map(({ id, url, title, icon }) => {
                                                             return (
                                                                 <NavigationMenuLink asChild className="p-3 text-accent hover:text-secondary" key={id}>
                                                                     <Link href={url}
@@ -109,18 +114,18 @@ export function Header({
 
                                         )
                                     }
-                                    if (submenu.length === 0) {
-                                        return (
-                                            <NavigationMenuItem key={id}>
-                                                <Link href={url} legacyBehavior passHref>
-                                                    <NavigationMenuLink
-                                                        className={`${isScrolled ? "text-accent hover:text-white" : "text-white"} group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary hover:text-secondary hover:bg-accent transition-colors`}>
-                                                        {title}
-                                                    </NavigationMenuLink>
+                                    return (
+                                        <NavigationMenuItem key={id}>
+                                            <NavigationMenuLink asChild>
+                                                <Link
+                                                    href={url ?? "#"}
+                                                    className={`${isScrolled ? "text-accent hover:text-white" : "text-white"} group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary hover:text-secondary hover:bg-accent transition-colors`}
+                                                >
+                                                    {title}
                                                 </Link>
-                                            </NavigationMenuItem>
-                                        )
-                                    }
+                                            </NavigationMenuLink>
+                                        </NavigationMenuItem>
+                                    )
                                 })}
                             </NavigationMenuList>
                         </NavigationMenu>
@@ -160,6 +165,7 @@ export function Header({
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="right" className="w-[300px] sm:w-[400px] focus:ring-0 focus:ring-transparent focus:ring-offset-0">
+                                <SheetTitle className="sr-only">Menu di navigazione</SheetTitle>
                                 <nav className="flex flex-col pt-8 transition-all" aria-label="Menu mobile">
                                     <Accordion
                                         type="single"
@@ -168,21 +174,25 @@ export function Header({
                                         onValueChange={(v) => setAccordionValue(v ?? undefined)}
                                         className="flex flex-col"
                                     >
-                                        {menu?.map(({ id, url, title, submenu }) => {
-                                            if (!submenu) return null
+                                        {menuItems.map(({ id, url, title, submenu }) => {
+                                            const submenuItems = Array.isArray(submenu) ? submenu : []
 
-                                            if (submenu.length > 0) {
+                                            if (submenuItems.length > 0) {
                                                 return (
                                                     <AccordionItem value={`${id}`} key={id}>
                                                         <AccordionTrigger>{title}</AccordionTrigger>
-                                                        {submenu.map(({ id: sid, url: surl, title: stitle, icon }) => {
+                                                        {submenuItems.map(({ id: sid, url: surl, title: stitle, icon }) => {
                                                             return (
                                                                 <AccordionContent
                                                                     key={sid}
                                                                     className="flex items-center p-4 gap-x-4 hover:bg-accent hover:text-accent-foreground hover:underline"
                                                                 >
                                                                     <LucideIcon name={icon} className="size-5" />
-                                                                    <Link className="text-sm transition-all outline-none" href={surl ?? "#"}>
+                                                                    <Link
+                                                                        className="text-sm transition-all outline-none"
+                                                                        href={surl ?? "#"}
+                                                                        onClick={() => setOpen(false)}
+                                                                    >
                                                                         {stitle}
                                                                     </Link>
                                                                 </AccordionContent>
@@ -194,7 +204,11 @@ export function Header({
 
                                             return (
                                                 <div key={id} className="py-4 border-b">
-                                                    <Link className="text-left text-sm font-medium transition-all outline-none hover:underline" href={url ?? "#"}>
+                                                    <Link
+                                                        className="text-left text-sm font-medium transition-all outline-none hover:underline"
+                                                        href={url ?? "#"}
+                                                        onClick={() => setOpen(false)}
+                                                    >
                                                         {title}
                                                     </Link>
                                                 </div>

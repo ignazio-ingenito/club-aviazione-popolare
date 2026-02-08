@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers'
+import { NextResponse } from "next/server"
 
 // app/api/auth/login/route.ts
 export async function POST(req: Request) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const payload = await res.json().catch(() => ({}))
 
     if (!res.ok) {
-        return Response.json(
+        return NextResponse.json(
             { ok: false, error: payload?.errors ?? payload ?? "Login failed" },
             { status: res.status }
         )
@@ -34,15 +34,17 @@ export async function POST(req: Request) {
         refresh_token?: string
     }
 
+    const response = NextResponse.json({ ok: true })
+
     if (access_token && refresh_token) {
-        cookies().set('access_token', access_token, {
+        response.cookies.set('access_token', access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
             path: '/',
             maxAge: 60 * 60 * 24 * 7 // 1 week
         })
-        cookies().set('refresh_token', refresh_token, {
+        response.cookies.set('refresh_token', refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
@@ -51,5 +53,5 @@ export async function POST(req: Request) {
         })
     }
 
-    return Response.json({ ok: true })
+    return response
 }
