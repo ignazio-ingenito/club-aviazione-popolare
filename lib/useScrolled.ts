@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 
 type Options = {
     threshold?: number
@@ -17,13 +17,15 @@ export function useScrolled({ threshold = 10, withResize = true }: Options = {})
             typeof document !== "undefined" ? document.documentElement.scrollTop : 0
         )
 
-    const update = () => setIsScrolled(readY() > threshold)
+    const update = useCallback(() => {
+        setIsScrolled(readY() > threshold)
+    }, [threshold])
 
     // 1) Prima del paint: evita il flash al refresh con scroll ripristinato
     useLayoutEffect(() => {
         if (typeof window === "undefined") return
         update()
-    }, [threshold])
+    }, [update])
 
     // 2) Eventi: scroll / (opz.) resize / load / pageshow (bfcache)
     useEffect(() => {
@@ -60,7 +62,7 @@ export function useScrolled({ threshold = 10, withResize = true }: Options = {})
             window.removeEventListener("pageshow", onPageShow as EventListener)
             if (raf.current) cancelAnimationFrame(raf.current)
         }
-    }, [threshold, withResize])
+    }, [update, withResize])
 
     return isScrolled
 }

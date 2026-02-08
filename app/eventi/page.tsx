@@ -1,9 +1,10 @@
 import { Header } from "@/components/header"
-import { SiteFooter } from "@/components/site-footer"
+import { SiteFooter } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MapPin, Clock, Users } from "lucide-react"
 import { getMetadata } from "@/lib/server"
+import Image from "next/image"
 
 const upcomingEvents = [
   {
@@ -73,7 +74,7 @@ export default async function EventiPage() {
         facebookUrl={meta.facebook}
         twitterUrl={meta.twitter} />
 
-      <main className="flex-1 w-full max-w-7xl m-auto">
+      <main className="flex-1 w-full max-w-5xl m-auto">
         {/* Hero Section */}
         <section className="relative py-20 bg-linear-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container">
@@ -90,7 +91,7 @@ export default async function EventiPage() {
             <div className="mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Prossimi Eventi</h2>
               <p className="text-lg text-muted-foreground">
-                Partecipa alle nostre attività e vivi la passione per l'aeromodellismo insieme a noi.
+                Partecipa alle nostre attività e vivi la passione per l&apos;aeromodellismo insieme a noi.
               </p>
             </div>
 
@@ -151,9 +152,11 @@ export default async function EventiPage() {
               {pastEvents.map((event, index) => (
                 <Card key={index} className="overflow-hidden group hover:shadow-lg transition-shadow">
                   <div className="relative h-48 overflow-hidden">
-                    <img
+                    <Image
                       src={event.image || "/placeholder.svg"}
                       alt={event.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -181,14 +184,14 @@ export default async function EventiPage() {
             <h2 className="text-3xl font-bold mb-6">Calendario Completo</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
               Per accedere al calendario completo degli eventi, alle iscrizioni e ai dettagli riservati ai soci,
-              effettua il login nell'area riservata.
+              effettua il login nell&apos;area riservata.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/area-soci"
                 className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
-                Accedi all'Area Soci
+                Accedi all&apos;Area Soci
               </a>
               <a
                 href="/contatti"

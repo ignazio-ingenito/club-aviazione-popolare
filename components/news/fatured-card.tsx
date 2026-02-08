@@ -57,7 +57,7 @@ const FeaturedCard = ({
                 </section>
                 <section className="pt-4 p-0 flex items-center justify-end text-primary hover:underline cursor-pointer">
                     <Link href={`/news/${slug}`} className="text-sm inline-flex items-center">
-                        Leggi l'articolo completo
+                        Leggi l&apos;articolo completo
                         <ArrowRight className="ml-2 size-4" />
                     </Link>
                 </section>

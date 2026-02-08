@@ -1,12 +1,13 @@
 
 
 interface Props {
-    params: {
+    params: Promise<{
         id: string
-    }
+    }>
 }
 
-export default async function index({ params: { id } }: Props) {
+export default async function index({ params }: Props) {
+    const { id } = await params
 
 
     return <div>

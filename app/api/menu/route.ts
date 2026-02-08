@@ -1,16 +1,9 @@
 import { NextResponse } from "next/server"
-import { readItems } from "@directus/sdk"
-import { directus } from "@/lib/directus"
-import { MenuItem } from "@/lib/types"
+import { getMenu } from "@/lib/server"
 
 export const dynamic = "force-dynamic"
 
 export async function GET() {
-    const menu = await directus.request(readItems("site_menu", {
-        fields: ["*", "submenu.*"],
-        filter: { status: { _eq: "published" } },
-        sort: ["sort"],
-        deep: { submenu: { filter: { status: { _eq: 'published' } }, sort: ['sort'] } },
-    }))
-    return NextResponse.json(menu as MenuItem[])
+    const menu = await getMenu()
+    return NextResponse.json(menu)
 }

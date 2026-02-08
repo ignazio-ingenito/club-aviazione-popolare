@@ -6,15 +6,9 @@ import { PageHero } from "@/components/page/hero"
 import { Cover } from "@/components/page/cover"
 import Gallery from "@/components/gallery"
 
-interface Props {
-  params: Promise<{
-    slug: string
-  }>
-}
-
-export default async function index({ params }: Props) {
-  const { slug } = await params
-  const { icon } = await getSubMenuByUrl("/feed/corsi")
+export default async function index() {
+  const slug = "efficiency-race"
+  const { icon } = await getSubMenuByUrl("/efficiency-race")
   const { author, title, category, date, content, cover } = await getFeedBySlug(slug)
 
   return (

@@ -2,7 +2,7 @@ import { ReactNode, Suspense } from "react"
 import { getMenu, getMetadata } from "@/lib/server"
 
 import { Header } from "@/components/header"
-import { SiteFooter } from "@/components/site-footer"
+import { SiteFooter } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css"
@@ -24,7 +24,7 @@ const RootLayout = async ({
   children: ReactNode
 }>) => {
   const menu = await getMenu()
-  const { description, email, facebook, instagram, phone, title, twitter } = await getMetadata()
+  const { address, description, email, facebook, instagram, phone, title, twitter } = await getMetadata()
 
   return (
     <html lang="it" suppressHydrationWarning className={`${montserrat.variable}`}>
@@ -53,7 +53,16 @@ const RootLayout = async ({
                 {children}
               </main>
 
-              <SiteFooter />
+              <SiteFooter
+                title={title}
+                description={description}
+                phone={phone}
+                email={email}
+                address={address}
+                facebook={facebook}
+                twitter={twitter}
+                instagram={instagram}
+              />
             </div>
           </ThemeProvider>
         </Suspense>

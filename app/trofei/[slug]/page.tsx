@@ -7,13 +7,13 @@ import Article from "@/components/article"
 import { PageTitle } from "@/components/page/title"
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function index({ params }: Props) {
-  const { slug } = params
+  const { slug } = await params
 
   const { author, title, category, date, content, cover } = await getFeedBySlug(
     slug

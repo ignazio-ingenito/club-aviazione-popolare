@@ -1,5 +1,3 @@
-WORDPRESS_API_URL = "https://www.clubaviazionepopolare.org/wp-json/wp/v2/"
-
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from html import unescape
@@ -7,7 +5,7 @@ from itertools import chain
 from math import ceil
 from pathlib import Path
 from typing import Optional
-from urllib.parse import urljoin, urlparse
+from urllib.parse import unquote, urljoin, urlparse
 
 import httpx
 import pendulum
@@ -22,7 +20,7 @@ CATEGORIES = {
     # "2": "Area riservata",
     "3": "Eventi - Attività",  # To be imported in News
     # "4": "Consiglieri / Tecnici", -> Not used
-    # "5": "Corsi di aggiornamento", -> Completed
+    "5": "Corsi di aggiornamento", # -> Completed
     "6": "News",
     # "7": "Presidenti / Vicepresidenti", -> Not used
     "8": "Raduni - Efficiency Race",  # To be imported in News
@@ -70,7 +68,7 @@ def download(url) -> tuple[WordpressDownload, bytes]:
         WordpressDownload(
             wordpress_url=url,
             wordpress_size=int(resp.headers.get("content-length", 0)),
-            wordpress_filename=Path(urlparse(f"{resp.url}").path).name,
+            wordpress_filename=unquote(Path(urlparse(f"{resp.url}").path).name),
             wordpress_content_type=resp.headers.get("content-type"),
             wordpress_redirect_location=redirect_location,
         ),

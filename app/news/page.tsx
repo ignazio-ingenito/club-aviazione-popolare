@@ -20,7 +20,7 @@ export default async function NewsPage() {
       <PageHero title={title} description={description} />
 
       <div className="px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col">
+        <div className="max-w-5xl m-auto flex flex-col">
           {/* Featured Articles */}
           <section>
             <h3 className="text-3xl font-bold mb-2">In evidenza...</h3>
