@@ -49,11 +49,16 @@ export function Header({
     facebookUrl,
     instagramUrl,
     twitterUrl,
-    menu,
+    menu = [],
 }: HeaderProps) {
     const [open, setOpen] = useState(false)
     const [accordionValue, setAccordionValue] = useState<string | undefined>(undefined)
     const isScrolled = useScrolled({ threshold: 10 })
+    const menuItems: MenuItem[] = Array.isArray(menu)
+        ? menu
+        : Array.isArray((menu as unknown as { data?: unknown })?.data)
+            ? ((menu as unknown as { data: MenuItem[] }).data ?? [])
+            : []
 
     return (
         <header
@@ -81,17 +86,17 @@ export function Header({
                     <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" aria-label="desktop menu">
                         <NavigationMenu>
                             <NavigationMenuList>
-                                {menu?.map(({ id, url, title, submenu }) => {
-                                    if (!submenu) return <></>
-                                    if (submenu?.length > 0) {
+                                {menuItems.map(({ id, url, title, submenu }) => {
+                                    const submenuItems = Array.isArray(submenu) ? submenu : []
+                                    if (submenuItems.length > 0) {
                                         return (
-                                            <NavigationMenuItem key={title} data-submenu-len={submenu.length}>
+                                            <NavigationMenuItem key={title} data-submenu-len={submenuItems.length}>
                                                 <NavigationMenuTrigger className={`${isScrolled ? "text-accent" : "text-white"} text-sm font-medium bg-transparent cursor-pointer transition-all`}>
                                                     {title}
                                                 </NavigationMenuTrigger>
                                                 <NavigationMenuContent className="p-3">
-                                                    <div className={`max-w-screen w-[600px] grid gap-1 ${submenu.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
-                                                        {submenu.map(({ id, url, title, icon }) => {
+                                                    <div className={`max-w-screen w-[600px] grid gap-1 ${submenuItems.length < 9 ? "grid-cols-2" : "grid-cols-3"}`}>
+                                                        {submenuItems.map(({ id, url, title, icon }) => {
                                                             return (
                                                                 <NavigationMenuLink asChild className="p-3 text-accent hover:text-secondary" key={id}>
                                                                     <Link href={url}
@@ -109,18 +114,16 @@ export function Header({
 
                                         )
                                     }
-                                    if (submenu.length === 0) {
-                                        return (
-                                            <NavigationMenuItem key={id}>
-                                                <Link href={url} legacyBehavior passHref>
-                                                    <NavigationMenuLink
-                                                        className={`${isScrolled ? "text-accent hover:text-white" : "text-white"} group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary hover:text-secondary hover:bg-accent transition-colors`}>
-                                                        {title}
-                                                    </NavigationMenuLink>
-                                                </Link>
-                                            </NavigationMenuItem>
-                                        )
-                                    }
+                                    return (
+                                        <NavigationMenuItem key={id}>
+                                            <Link href={url ?? "#"} legacyBehavior passHref>
+                                                <NavigationMenuLink
+                                                    className={`${isScrolled ? "text-accent hover:text-white" : "text-white"} group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary hover:text-secondary hover:bg-accent transition-colors`}>
+                                                    {title}
+                                                </NavigationMenuLink>
+                                            </Link>
+                                        </NavigationMenuItem>
+                                    )
                                 })}
                             </NavigationMenuList>
                         </NavigationMenu>
@@ -168,14 +171,14 @@ export function Header({
                                         onValueChange={(v) => setAccordionValue(v ?? undefined)}
                                         className="flex flex-col"
                                     >
-                                        {menu?.map(({ id, url, title, submenu }) => {
-                                            if (!submenu) return null
+                                        {menuItems.map(({ id, url, title, submenu }) => {
+                                            const submenuItems = Array.isArray(submenu) ? submenu : []
 
-                                            if (submenu.length > 0) {
+                                            if (submenuItems.length > 0) {
                                                 return (
                                                     <AccordionItem value={`${id}`} key={id}>
                                                         <AccordionTrigger>{title}</AccordionTrigger>
-                                                        {submenu.map(({ id: sid, url: surl, title: stitle, icon }) => {
+                                                        {submenuItems.map(({ id: sid, url: surl, title: stitle, icon }) => {
                                                             return (
                                                                 <AccordionContent
                                                                     key={sid}

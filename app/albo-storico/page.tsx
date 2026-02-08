@@ -7,7 +7,9 @@ import { PageTitle } from "@/components/page/title"
 import MeetingTable from "./table"
 
 export default async function index() {
-  const { content_title, description } = await getPage("albo-storico")
+  const res = await getPage("albo-storico")
+  console.log(res)
+  const { content_title, description } = res 
   const meetings = await getMeetings()
 
   return (
@@ -15,8 +17,7 @@ export default async function index() {
       <PageHero title={content_title} description={description} />
 
       <div className="px-4 sm:px-8">
-        <div className="max-w-7xl m-auto flex flex-col gap-y-8">
-          <PageTitle title={content_title} description={description} icon="notebook-text" />
+        <div className="max-w-7xl m-auto flex flex-col gap-y-8 py-8">
           <MeetingTable meetings={meetings} />
         </div>
       </div>

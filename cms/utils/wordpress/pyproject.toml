@@ -1,0 +1,17 @@
+[project]
+name = "wp2d"
+version = "0.0.1"
+description = "Wordpress to Directus import tool"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bs4>=0.0.2",
+    "glom>=25.12.0",
+    "httpx>=0.28.1",
+    "joblib>=1.5.3",
+    "loguru>=0.7.3",
+    "pendulum>=3.2.0",
+    "polars>=1.38.1",
+    "pyyaml>=6.0.3",
+    "typer>=0.21.1",
+]
