@@ -120,8 +120,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       directus:
-        specifier: ^11.15.2
-        version: 11.15.2(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
+        specifier: ^11.15.4
+        version: 11.15.4(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
       dom-serializer:
         specifier: ^2.0.0
         version: 2.0.0
@@ -630,37 +630,37 @@ packages:
   '@directus/ai@1.1.0':
     resolution: {integrity: sha512-1nRyZAQXlwsgtko6TkVRHFN/p3Di/cPNFQ95GL37q/8u+G8vRFOix1tpVR53c2UkBDWcghoZX1Wwz8iKJsPdow==}
 
-  '@directus/api@33.2.0':
-    resolution: {integrity: sha512-euDcDPsRjNme/41585TiWCeHSS18S/LTnPqI5XxFfmatGyu4gFxoQ7Lj8pweTbrHPqDcMwNKMIjas1InZmXZ/A==}
+  '@directus/api@33.3.1':
+    resolution: {integrity: sha512-n1XsJrGNT23OyjhHHcrpFUCITMUsBClmipgnpSQthD7T7Pw+9ag7XbJDA9+w2/Pim7C9uSVpgEK0McwRJSSxMw==}
     engines: {node: '>=22'}
 
-  '@directus/app@15.2.0':
-    resolution: {integrity: sha512-Vbuc1Sq10El6TjbgYvYz/4M8lq6i+aneW3k6OODNgzvY4yNODRgJtThBd+sMu5BtsPVi/LOj0hdpuq8cfdgmOw==}
+  '@directus/app@15.4.0':
+    resolution: {integrity: sha512-JcktlEP+EUfUj5n1+GjW1krRFWyGQa9msZ7aAMrpUseKopF9MoafsbstgH/QsSg8SVOOKGNqA3PPekX1lmy9oA==}
 
-  '@directus/composables@11.2.12':
-    resolution: {integrity: sha512-V0HE/FH4ueNBwcNjaIFZEs2kcrwdDsDFkuijkYAdFDEv9Z7uTkJ1cBXHBNHPPW2JtEW2WG2Cd3MIYVOgBJMmhA==}
+  '@directus/composables@11.2.13':
+    resolution: {integrity: sha512-l5p5jDEro+eNl81za3Lo4STMZo1PZrmccOjwcj8/codua33RhQSPIXIw6pM8S9YEnbbY7tnY95uUe0ZlIuhoUQ==}
     peerDependencies:
       vue: 3.5.24
 
-  '@directus/constants@14.0.0':
-    resolution: {integrity: sha512-l4gsGIiZBV5WYkNTv3+HjxDBZJEkwPSo5tYpJ3fk6xOr7b2Km60aq8LOBmfuKwlLGLnvUzD4Y4S3ebgrwBE2iQ==}
+  '@directus/constants@14.1.0':
+    resolution: {integrity: sha512-R0Tskv59JKVFDmzmtgDoZNJkxuLnjAIb0/h8aYw1q2TdJ6TGF8PuV0J6HljPW26Iit9+QmoVV5WatQHfWpMVpQ==}
 
-  '@directus/env@5.5.2':
-    resolution: {integrity: sha512-hcTk/mhtIYOOA0ErWQoJyyr+s9RZYwknPCVCKToFBjgILrfrtNkHr/26P8ZxOZIQU82Ymp63kWs/mWU55kR7ig==}
+  '@directus/env@5.5.3':
+    resolution: {integrity: sha512-O+9FY1PTLMVq1dpsF44YfOhyRb2WZVpws+Y86BICKOV/hOKRS8b1y5UetB6ov/B8m6WkPe/Mxa7AgUmP/eKOfg==}
 
   '@directus/errors@2.2.0':
     resolution: {integrity: sha512-KT7rpUO9qqYyVijkJW72r9A2+ud3OWXYb+PmF4PobitprL0dBnvhaUm7wq/Eu59Ke+Uy/DH1I4iv+l2LV6+eEw==}
 
-  '@directus/extensions-registry@3.0.18':
-    resolution: {integrity: sha512-/Z1Dgl7XJhY6pTna6U8EXyjC+B3mu457wOxOzL8vsNmnV8CWS/ST5jXVbeyM3DfW3RAR/P7L0Q3mI3/0wADJvQ==}
+  '@directus/extensions-registry@3.0.19':
+    resolution: {integrity: sha512-oImXl9ir49fEB4LWLqNdG2s5Uqbbn1W5QrwmlBpYeKODhx98a9y+gmh2xmnH3IfX/pD8/35+4CSIEa9SqDQCrA==}
 
-  '@directus/extensions-sdk@17.0.8':
-    resolution: {integrity: sha512-wrFpZffqhQkR6BBD/Po53Ttyvi46igNCI2+OLnbEqLVDP9tLeq5VeGv29QvU02EZdQ9tL7AtVZNZ1Laf35wx0w==}
+  '@directus/extensions-sdk@17.0.9':
+    resolution: {integrity: sha512-fDIbC3csttOvxE/snJPkUXNf8IercLWiLnQYaIkBw53XQOmXak+KsIcbmgG054G8t9Fyh0vdkeNJnHKWPBnd/Q==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
-  '@directus/extensions@3.0.18':
-    resolution: {integrity: sha512-6MAJbhox3AaAixGZAKY6pPYfikT8IorbaooNyM8o2lkkZxXX34sUf+0aS2LVjpW+Rfod+gHLHlcem53AAQLEOA==}
+  '@directus/extensions@3.0.19':
+    resolution: {integrity: sha512-FGD/Y1Xj3kCuS6kPSUeiFbpxmLi3OPTa8+u1klGB83DMXytLw6mpM0QnzvsMuaRdO6tWpLLb02gFqlzyM28USQ==}
     peerDependencies:
       knex: 3.1.0
       pino: 9.7.0
@@ -679,14 +679,14 @@ packages:
   '@directus/format-title@12.1.1':
     resolution: {integrity: sha512-/tuygozCua2bTh7wmRXu8AMbwet9/uzRb7hBRrF8yudrWbWTBdoS60Q20FLcEV01+dlUjYZh1VJr4GPoQpa8Nw==}
 
-  '@directus/memory@3.1.1':
-    resolution: {integrity: sha512-l35pv3kKMET3fVREDP/bGau+V7EVRvWO715wvOCGVnd+R+W6wYCebsA0jEgBLJd1R7jYzE3H5M2Ht9DQ4TEctg==}
+  '@directus/memory@3.1.2':
+    resolution: {integrity: sha512-b/+GjCuRPplCN2xv2PsV8SEsVKSWwOn2gf6swkim6k+Bj8LbaGb+qX8LD8pkil31wSZisky1rJ69bW2MNLaN/w==}
 
-  '@directus/pressure@3.0.16':
-    resolution: {integrity: sha512-ySpjiCtzx9sSfajJOgHTDOeY9HT2JknXkcPTcKkA9n6Av1nnaG25kQAEtHl26lClRDPINPGVye1d85YPMfBaDQ==}
+  '@directus/pressure@3.0.17':
+    resolution: {integrity: sha512-51FAVW8N48XBj/CG3T6UxStvDiBF6MXx/H1w+dBGwkDmz2cD0VL7p87LzRcxBVdlPlkDxqm6R2E63HLbaRds5w==}
 
-  '@directus/schema-builder@0.0.13':
-    resolution: {integrity: sha512-CebheuITY+lfoCxtCJIoitRYeLgsreh5oWnw83rVpCRAfUlhVro5Ah/dCDuy4KzKZzhRfMhMwZ8pjgAyV25XgA==}
+  '@directus/schema-builder@0.0.14':
+    resolution: {integrity: sha512-cJwDwy2KwlYb5K5a89Yf2jQ2ThATVIs2oXivgJ3h55AoHFaDL2Zn+5FRQOhm9KRcA5GtC93/PbLRxNwk7rSFtQ==}
 
   '@directus/schema@13.0.5':
     resolution: {integrity: sha512-SoxMPLvXSHnaOlUQlpBoHWmevTGXc9sgLLXRfLC7v8HwRHtWiNYfgWR5gVt7S+yVXYvnBVbu0IL5sDU+lyxlbg==}
@@ -698,23 +698,23 @@ packages:
   '@directus/specs@12.0.0':
     resolution: {integrity: sha512-30hJOG8cFZoF169pAQ5/W/0u19+SyxKb0u7QpSSzmrRHCJtfhtvmB9TKJX1QnkVSgkhGTCG2NUxUVN9NRQCF/g==}
 
-  '@directus/storage-driver-azure@12.0.16':
-    resolution: {integrity: sha512-SFuJiFhiHxBTzR99KNeIK1SvlmrxJmF3ebccMUOWZcYrRl0oiNKx7+lLZF3Uh+aqZ3nynQcYgehToY2Wt+Nglg==}
+  '@directus/storage-driver-azure@12.0.17':
+    resolution: {integrity: sha512-Gi/OM+E+jjD6FHlBwRN0gbw7duQGvH8xqUZ0h5u/rAcR3HtUrEUU2/NFH2rkuwWCfiXnWmRinFYaQ3FxVPgCFQ==}
 
-  '@directus/storage-driver-cloudinary@12.0.16':
-    resolution: {integrity: sha512-N65jYcd28BPSEvSIFnHCJcUL8y0SzFwYkGKlDOi788lT+xak271XvDdM1WOBSKWG4NxpaB1TS0c99npK35WIeA==}
+  '@directus/storage-driver-cloudinary@12.0.17':
+    resolution: {integrity: sha512-bjYbfZ9G6Awp3dddJSiT5gMBpgkx4AuQZDHEZG76ef5qYqz6PiTiXgE5rWDX8pJUy8IQnVYZlv6mnv1uGaL+uw==}
 
-  '@directus/storage-driver-gcs@12.0.16':
-    resolution: {integrity: sha512-7bsqbjHyJCz1T5B6llsZneGwaA5pXjxxsOA7vTdCjKtGxK2g3JFbpnH+LHYSFg28q/yaDrIaHKbqj0w6Mp8NFA==}
+  '@directus/storage-driver-gcs@12.0.17':
+    resolution: {integrity: sha512-ox3L1rEbQ06uBH6V1Q7k+VsqPd8fx2aFuEoI1OaglNKCklDb3WY5P7a1EAR/5twXruK7qXHmZCglY2B1vjBaUw==}
 
   '@directus/storage-driver-local@12.0.3':
     resolution: {integrity: sha512-srC/N6ApAbTqeOthnk+aPIjYjMRAfpdqmimoiqaxmZECnBt91JXCb/XRCEuz7VcyADBK6oTM9hb3KKhXNOgEYA==}
 
-  '@directus/storage-driver-s3@12.1.2':
-    resolution: {integrity: sha512-gaRw0ZqDXmfO7ZrxW34JR9fKFYDXMDj7pfaSzVRF+Lh01CeU75E6LcRQsDp/ZR7gCkymlKOm2tgdEqt3KaxvUQ==}
+  '@directus/storage-driver-s3@12.1.3':
+    resolution: {integrity: sha512-ZuPLg1QgAXlJMzyu2PVM2cO1rDjIk4A59RWDbidMBZUkVaYdKpXx2dQ2Ah7CkZWvQJEzwRKjuv8QhZtVqTWF3w==}
 
-  '@directus/storage-driver-supabase@3.0.16':
-    resolution: {integrity: sha512-PzFI4XFKxft8uGJP7x02PxKICqd/+TUaQlW0qdF5VwlsyNa4UDlp/ncSp6StqI2UJxp/DPI+z7+ZJoVUJRMrIQ==}
+  '@directus/storage-driver-supabase@3.0.17':
+    resolution: {integrity: sha512-R5b1n6HmDrZqm1zU0TSuLbWKHGOBZmvvg8JrqUUSPnfTJHeJSJOXnn0blecsHKyNtwk7P0sBEWlR+N9yIQql5g==}
 
   '@directus/storage@12.0.3':
     resolution: {integrity: sha512-LgMrBnxfLC5vtkPhFYfBcnXGeFRrdBOQzLEqnk6j5UPnmDABGe2WuY+PCq1qWm3YbZSt/gJq9I6mcTcjCoKtTw==}
@@ -722,15 +722,15 @@ packages:
   '@directus/system-data@4.1.0':
     resolution: {integrity: sha512-4Rt+6xnUdfbrWYYUwDI13jBysQ2Vu+0/Hcs2m+R5Z7/UgUGdeibY7zhRQyY8UCxRqH04BI5VtgayHI9H/KzVBg==}
 
-  '@directus/themes@1.2.3':
-    resolution: {integrity: sha512-I9OXdz0zvHK29+YGYDOxn05Fm4pCYvVnX3+P/xTv9a70rZL5YVVkbK90Ywq7uyJZvkBhiftRQ9zwb9DZpsvhrw==}
+  '@directus/themes@1.2.4':
+    resolution: {integrity: sha512-7545OAAE0TfOzbvYkP2/gExEhWCabRscfgUh/tAYtEk/BCX0woeINyT2heP9v/wBS+9V6+2xW6TV8TksJX3Zwg==}
     peerDependencies:
       '@unhead/vue': 1.11.20
       pinia: 2.3.1
       vue: 3.5.24
 
-  '@directus/types@14.2.0':
-    resolution: {integrity: sha512-sQsLjSt8HgFwJuOcaUKUIu13GZPVTLkRsXQXhWQ6/xICMv+GB4mj2Bb3Z2aQr1Klte0cxNNndayUpXZEN7QaRA==}
+  '@directus/types@14.2.1':
+    resolution: {integrity: sha512-fgt6Lz1xCoFzGveGzwlFYLv3LUKS6t+JcXDmQ8dkJV2epYSlCxHSIjgRT6F7T78Wmxxj/RCFDeDxtvhCSUbNdQ==}
     peerDependencies:
       deep-diff: 1.0.2
       express: 4.21.2
@@ -770,16 +770,16 @@ packages:
   '@directus/update-check@13.0.4':
     resolution: {integrity: sha512-4hUKnqDVDSuzZbkg+r6FJF9Tbo+YADBYXB6Ua1Y3oGLdHpf6c4/cMjZ6YFKr9F/+hRHdqVaHMqCWFCdv5/RFLA==}
 
-  '@directus/utils@13.2.1':
-    resolution: {integrity: sha512-SyJJQQuwS8IQIevwfDRY2wjthG29Uk/g0TgMV6G06fhTnfpBHWxwz9QjtaGPtITf7m9GVndh3eM7DLhJj2yBYQ==}
+  '@directus/utils@13.2.2':
+    resolution: {integrity: sha512-Vvbi1rtci9JWi8B2M0BooosxUXQMimoi7YsYTctnB2tb9+5NAvV9NNnwc3eseW3sagjexlDrV05I81Wa+8cOmg==}
     peerDependencies:
       vue: 3.5.24
     peerDependenciesMeta:
       vue:
         optional: true
 
-  '@directus/validation@2.0.16':
-    resolution: {integrity: sha512-g9OCA3ueLsZWWXoAKXpfMkDZIGePsn2YlYB6aogL3WSdSAgr3fO5UjYsFT4baOT87xKYSiTrmj19H41JSZp6YQ==}
+  '@directus/validation@2.0.17':
+    resolution: {integrity: sha512-9WKHtKg7Q+1RTH7PjNwPIAlYFWLTNvppiOJDgrQdHLQaAH1HkEd+XbcshZ7euS8ogx05GOGKtT1c3C11LpYfUQ==}
 
   '@emnapi/core@1.8.1':
     resolution: {integrity: sha512-AvT9QFpxK0Zd8J0jopedNm+w/2fIzvtPKPjqyw9jwvBaReTTqPBk9Hixaz7KbjimP+QNz605/XnjFcDAL2pqBg==}
@@ -1193,8 +1193,8 @@ packages:
   '@hapi/pinpoint@2.0.1':
     resolution: {integrity: sha512-EKQmr16tM8s16vTT3cA5L0kZZcTMU5DUOZTuvpnY738m+jyP3JIUj+Mm1xc1rsLkGBQ/gVnfKYPwOmPg1tUR4Q==}
 
-  '@hapi/tlds@1.1.5':
-    resolution: {integrity: sha512-Vq/1gnIIsvFUpKlDdfrPd/ssHDpAyBP/baVukh3u2KSG2xoNjsnRNjQiPmuyPPGqsn1cqVWWhtZHfOBaLizFRQ==}
+  '@hapi/tlds@1.1.6':
+    resolution: {integrity: sha512-xdi7A/4NZokvV0ewovme3aUO5kQhW9pQ2YD1hRqZGhhSi5rBv4usHYidVocXSi9eihYsznZxLtAiEYYUL6VBGw==}
     engines: {node: '>=14.0.0'}
 
   '@hapi/topo@6.0.2':
@@ -1673,8 +1673,8 @@ packages:
     resolution: {integrity: sha512-/YwcFbI0RsKXof+e+f48pVqmELzkGWOrhqZuL5xCUNdHYhvUd9El0jQDv7fBjdhxHSrflnZfXFUW56xaI69k4A==}
     engines: {node: '>=18.14.0'}
 
-  '@netlify/open-api@2.49.0':
-    resolution: {integrity: sha512-zr8dElQUsZo+gqZh3SA2NYv44IKaASwYBC97pO7sPI9GKaDW6dbeJ8P+fOI3VuQaodQSuIcyda0sM3dZAyqHnA==}
+  '@netlify/open-api@2.49.1':
+    resolution: {integrity: sha512-4jFX59dqSBJIlFK/qXrEmWsMDHBErS9cFSFweWmPFKRNCuIVlkeibQrRQcVtqKfek3al1UuXscVVIZEYM05LMA==}
     engines: {node: '>=14.8.0'}
 
   '@next/env@16.1.6':
@@ -2780,8 +2780,8 @@ packages:
     resolution: {integrity: sha512-qJpzYC64kaj3S0fueiu3kXm8xPrR3PcXDPEgnaNMRn0EjNSZFoFjvbUp0YUDsRhN1CB90EnHJtbxWKevnH99UQ==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/core@3.23.0':
-    resolution: {integrity: sha512-Yq4UPVoQICM9zHnByLmG8632t2M0+yap4T7ANVw482J0W7HW0pOuxwVmeOwzJqX2Q89fkXz0Vybz55Wj2Xzrsg==}
+  '@smithy/core@3.23.2':
+    resolution: {integrity: sha512-HaaH4VbGie4t0+9nY3tNBRSxVTr96wzIqexUa6C2qx3MPePAuz7lIxPxYtt1Wc//SPfJLNoZJzfdt0B6ksj2jA==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/credential-provider-imds@4.2.8':
@@ -2844,12 +2844,12 @@ packages:
     resolution: {integrity: sha512-RO0jeoaYAB1qBRhfVyq0pMgBoUK34YEJxVxyjOWYZiOKOq2yMZ4MnVXMZCUDenpozHue207+9P5ilTV1zeda0A==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/middleware-endpoint@4.4.14':
-    resolution: {integrity: sha512-FUFNE5KVeaY6U/GL0nzAAHkaCHzXLZcY1EhtQnsAqhD8Du13oPKtMB9/0WK4/LK6a/T5OZ24wPoSShff5iI6Ag==}
+  '@smithy/middleware-endpoint@4.4.16':
+    resolution: {integrity: sha512-L5GICFCSsNhbJ5JSKeWFGFy16Q2OhoBizb3X2DrxaJwXSEujVvjG9Jt386dpQn2t7jINglQl0b4K/Su69BdbMA==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/middleware-retry@4.4.31':
-    resolution: {integrity: sha512-RXBzLpMkIrxBPe4C8OmEOHvS8aH9RUuCOH++Acb5jZDEblxDjyg6un72X9IcbrGTJoiUwmI7hLypNfuDACypbg==}
+  '@smithy/middleware-retry@4.4.33':
+    resolution: {integrity: sha512-jLqZOdJhtIL4lnA9hXnAG6GgnJlo1sD3FqsTxm9wSfjviqgWesY/TMBVnT84yr4O0Vfe0jWoXlfFbzsBVph3WA==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/middleware-serde@4.2.9':
@@ -2900,8 +2900,8 @@ packages:
     resolution: {integrity: sha512-6A4vdGj7qKNRF16UIcO8HhHjKW27thsxYci+5r/uVRkdcBEkOEiY8OMPuydLX4QHSrJqGHPJzPRwwVTqbLZJhg==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/smithy-client@4.11.3':
-    resolution: {integrity: sha512-Q7kY5sDau8OoE6Y9zJoRGgje8P4/UY0WzH8R2ok0PDh+iJ+ZnEKowhjEqYafVcubkbYxQVaqwm3iufktzhprGg==}
+  '@smithy/smithy-client@4.11.5':
+    resolution: {integrity: sha512-xixwBRqoeP2IUgcAl3U9dvJXc+qJum4lzo3maaJxifsZxKUYLfVfCXvhT4/jD01sRrHg5zjd1cw2Zmjr4/SuKQ==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/types@4.12.0':
@@ -2936,12 +2936,12 @@ packages:
     resolution: {integrity: sha512-YEjpl6XJ36FTKmD+kRJJWYvrHeUvm5ykaUS5xK+6oXffQPHeEM4/nXlZPe+Wu0lsgRUcNZiliYNh/y7q9c2y6Q==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/util-defaults-mode-browser@4.3.30':
-    resolution: {integrity: sha512-cMni0uVU27zxOiU8TuC8pQLC1pYeZ/xEMxvchSK/ILwleRd1ugobOcIRr5vXtcRqKd4aBLWlpeBoDPJJ91LQng==}
+  '@smithy/util-defaults-mode-browser@4.3.32':
+    resolution: {integrity: sha512-092sjYfFMQ/iaPH798LY/OJFBcYu0sSK34Oy9vdixhsU36zlZu8OcYjF3TD4e2ARupyK7xaxPXl+T0VIJTEkkg==}
     engines: {node: '>=18.0.0'}
 
-  '@smithy/util-defaults-mode-node@4.2.33':
-    resolution: {integrity: sha512-LEb2aq5F4oZUSzWBG7S53d4UytZSkOEJPXcBq/xbG2/TmK9EW5naUZ8lKu1BEyWMzdHIzEVN16M3k8oxDq+DJA==}
+  '@smithy/util-defaults-mode-node@4.2.35':
+    resolution: {integrity: sha512-miz/ggz87M8VuM29y7jJZMYkn7+IErM5p5UgKIf8OtqVs/h2bXr1Bt3uTsREsI/4nK8a0PQERbAPsVPVNIsG7Q==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/util-endpoints@3.2.8':
@@ -3548,6 +3548,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.16.0:
+    resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
@@ -3768,8 +3773,8 @@ packages:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
 
-  b4a@1.7.4:
-    resolution: {integrity: sha512-u20zJLDaSWpxaZ+zaAkEIB2dZZ1o+DF4T/MRbmsvGp9nletHOyiai19OzX1fF8xUBYsO1bPXxODvcd0978pnug==}
+  b4a@1.8.0:
+    resolution: {integrity: sha512-qRuSmNSkGQaHwNbM7J78Wwy+ghLEYF1zNrSeMxj4Kgw6y33O3mXcQ6Ie9fRvfU/YnxWkOchPXbaLb73TkIsfdg==}
     peerDependencies:
       react-native-b4a: '*'
     peerDependenciesMeta:
@@ -3933,6 +3938,9 @@ packages:
 
   caniuse-lite@1.0.30001769:
     resolution: {integrity: sha512-BCfFL1sHijQlBGWBMuJyhZUhzo7wer5sVj9hqekB/7xn0Ypy+pER/edCYQm4exbXj4WiySGp40P8UuTh6w1srg==}
+
+  caniuse-lite@1.0.30001770:
+    resolution: {integrity: sha512-x/2CLQ1jHENRbHg5PSId2sXq1CIO1CISvwWAj027ltMVG2UNgW+w9oH2+HzgEIRFembL8bUlXtfbBHR1fCg2xw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -4646,8 +4654,8 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
-  directus@11.15.2:
-    resolution: {integrity: sha512-rdEbfK5U6VUoUN+T75YNkyrnQozHS3nzAG/nA/cHTjjZwr9qx50McO02IRPUBRky0ZUwng0tpofz1/sqdoQRBA==}
+  directus@11.15.4:
+    resolution: {integrity: sha512-qKdMJEQ4yOKgc93c6b1cMHsqQ1Q2UcJ9wRNNHlYFjKsqIk5BPt2nwafOM9uh+lRD83SeICCftSL64MPi1Yce8A==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -5074,8 +5082,8 @@ packages:
     resolution: {integrity: sha512-pfX9uG9Ki0yekDHx2SiuRIyFdyAr1kMIMitPvb0YBo8SUfKvia7w7FIyd/l6av85pFYRhZscS75MwMnbvY+hcQ==}
     hasBin: true
 
-  fast-xml-parser@5.3.6:
-    resolution: {integrity: sha512-QNI3sAvSvaOiaMl8FYU4trnEzCwiRr8XMWgAHzlrWpTSj+QaCSvOf1h82OEP1s4hiAXhnbXSyFWCf4ldZzZRVA==}
+  fast-xml-parser@5.3.7:
+    resolution: {integrity: sha512-JzVLro9NQv92pOM/jTCR6mHlJh2FGwtomH8ZQjhFj/R29P2Fnj38OgPJVtcvYw6SuKClhgYuwUZf5b3rd8u2mA==}
     hasBin: true
 
   fastest-stable-stringify@2.0.2:
@@ -5256,8 +5264,8 @@ packages:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
 
-  get-east-asian-width@1.4.0:
-    resolution: {integrity: sha512-QZjmEOC+IT1uk6Rx0sX22V6uHWVwbdbxf1faPqJ1QhLdGgsRGCZoyaQBm/piRdJy/D2um6hM1UP7ZEeQ4EkP+Q==}
+  get-east-asian-width@1.5.0:
+    resolution: {integrity: sha512-CQ+bEO+Tva/qlmw24dCejulK5pMzVnUOFOijVogd3KQs07HnRIgp8TGipvCCRT06xeYEbpbgwaCxglFyiuIcmA==}
     engines: {node: '>=18'}
 
   get-intrinsic@1.3.0:
@@ -5445,8 +5453,8 @@ packages:
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
 
-  hono@4.11.9:
-    resolution: {integrity: sha512-Eaw2YTGM6WOxA6CXbckaEvslr2Ne4NFsKrvc0v97JD5awbmeBLO5w9Ho9L9kmKonrwF9RJlW6BxT1PVv/agBHQ==}
+  hono@4.12.1:
+    resolution: {integrity: sha512-hi9afu8g0lfJVLolxElAZGANCTTl6bewIdsRNhaywfP9K8BPf++F2z6OLrYGIinUwpRKzbZHMhPwvc0ZEpAwGw==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -5800,8 +5808,8 @@ packages:
     resolution: {integrity: sha512-mfcwb6IzQyOKTs84CQMrOwW4gQcaTOAWJ0zzJCl2WSPDrWk/OzDaImWFH3djXhb24g4eudZfLRozAvPGw4d9hQ==}
     engines: {node: '>= 0.4'}
 
-  is-wsl@3.1.0:
-    resolution: {integrity: sha512-UcVfVfaK4Sc4m7X3dUSoHoozQGBEFeDC+zVo06t98xe8CzHSZZBekNXH+tu0NalHolcJ/QAGqS46Hef7QXBIMw==}
+  is-wsl@3.1.1:
+    resolution: {integrity: sha512-e6rvdUCiQCAuumZslxRJWR/Doq4VpPR82kqclvcS0efgt430SlGIk05vdCN58+VrzgtIcfNODjozVielycD4Sw==}
     engines: {node: '>=16'}
 
   isarray@1.0.0:
@@ -6427,8 +6435,8 @@ packages:
     resolution: {integrity: sha512-3FnjYuehv9k6ovOEbyOswadCDPX1piCfhV8ncmYtHOjuPwylVWsghTLo7rabjC3Rx5xD4HDx8Wm1xnMF7S5qFQ==}
     engines: {node: '>=8'}
 
-  minipass@7.1.2:
-    resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
+  minipass@7.1.3:
+    resolution: {integrity: sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A==}
     engines: {node: '>=16 || 14 >=14.17'}
 
   minizlib@2.1.2:
@@ -7239,6 +7247,7 @@ packages:
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
+    deprecated: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
     hasBin: true
 
   prelude-ls@1.2.1:
@@ -8098,8 +8107,8 @@ packages:
   svix@1.84.1:
     resolution: {integrity: sha512-K8DPPSZaW/XqXiz1kEyzSHYgmGLnhB43nQCMeKjWGCUpLIpAMMM8kx3rVVOSm6Bo6EHyK1RQLPT4R06skM/MlQ==}
 
-  systeminformation@5.30.8:
-    resolution: {integrity: sha512-imB8LwJCc2DkufKlSRHfzbjhheGzpg1P31A4c55IKTq/ll6Agn1rhBOY+WmS/hyg5inGFp7AyZIK0gvq5rFO2Q==}
+  systeminformation@5.31.1:
+    resolution: {integrity: sha512-6pRwxoGeV/roJYpsfcP6tN9mep6pPeCtXbUOCdVa0nme05Brwcwdge/fVNhIZn2wuUitAKZm4IYa7QjnRIa9zA==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
@@ -8159,8 +8168,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  text-decoder@1.2.6:
-    resolution: {integrity: sha512-27FeW5GQFDfw0FpwMQhMagB7BztOOlmjcSRi97t2oplhKVTZtp0DZbSegSaXS5IIC6mxMvBG4AR1Sgc6BX3CQg==}
+  text-decoder@1.2.7:
+    resolution: {integrity: sha512-vlLytXkeP4xvEq2otHeJfSQIRyWxo/oZGEbXrtEEF9Hnmrdly59sUbzZ/QgyWuLYHctCHxFF4tRQZNQ9k60ExQ==}
 
   thirty-two@1.0.2:
     resolution: {integrity: sha512-OEI0IWCe+Dw46019YLl6V10Us5bi574EvlJEOcAkB29IzQ/mYD1A6RyNHLjZPiHCmuodxvgF6U+vZO1L15lxVA==}
@@ -8832,7 +8841,7 @@ snapshots:
       '@aws-sdk/util-user-agent-node': 3.928.0
       '@aws-sdk/xml-builder': 3.921.0
       '@smithy/config-resolver': 4.4.6
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/eventstream-serde-browser': 4.2.8
       '@smithy/eventstream-serde-config-resolver': 4.3.8
       '@smithy/eventstream-serde-node': 4.2.8
@@ -8843,21 +8852,21 @@ snapshots:
       '@smithy/invalid-dependency': 4.2.8
       '@smithy/md5-js': 4.2.8
       '@smithy/middleware-content-length': 4.2.8
-      '@smithy/middleware-endpoint': 4.4.14
-      '@smithy/middleware-retry': 4.4.31
+      '@smithy/middleware-endpoint': 4.4.16
+      '@smithy/middleware-retry': 4.4.33
       '@smithy/middleware-serde': 4.2.9
       '@smithy/middleware-stack': 4.2.8
       '@smithy/node-config-provider': 4.3.8
-      '@smithy/node-http-handler': 4.4.5
+      '@smithy/node-http-handler': 4.4.10
       '@smithy/protocol-http': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/url-parser': 4.2.8
       '@smithy/util-base64': 4.3.0
       '@smithy/util-body-length-browser': 4.2.0
       '@smithy/util-body-length-node': 4.2.1
-      '@smithy/util-defaults-mode-browser': 4.3.30
-      '@smithy/util-defaults-mode-node': 4.2.33
+      '@smithy/util-defaults-mode-browser': 4.3.32
+      '@smithy/util-defaults-mode-node': 4.2.35
       '@smithy/util-endpoints': 3.2.8
       '@smithy/util-middleware': 4.2.8
       '@smithy/util-retry': 4.2.8
@@ -8886,26 +8895,26 @@ snapshots:
       '@aws-sdk/util-user-agent-browser': 3.922.0
       '@aws-sdk/util-user-agent-node': 3.928.0
       '@smithy/config-resolver': 4.4.6
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/fetch-http-handler': 5.3.9
       '@smithy/hash-node': 4.2.8
       '@smithy/invalid-dependency': 4.2.8
       '@smithy/middleware-content-length': 4.2.8
-      '@smithy/middleware-endpoint': 4.4.14
-      '@smithy/middleware-retry': 4.4.31
+      '@smithy/middleware-endpoint': 4.4.16
+      '@smithy/middleware-retry': 4.4.33
       '@smithy/middleware-serde': 4.2.9
       '@smithy/middleware-stack': 4.2.8
       '@smithy/node-config-provider': 4.3.8
       '@smithy/node-http-handler': 4.4.10
       '@smithy/protocol-http': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/url-parser': 4.2.8
       '@smithy/util-base64': 4.3.0
       '@smithy/util-body-length-browser': 4.2.0
       '@smithy/util-body-length-node': 4.2.1
-      '@smithy/util-defaults-mode-browser': 4.3.30
-      '@smithy/util-defaults-mode-node': 4.2.33
+      '@smithy/util-defaults-mode-browser': 4.3.32
+      '@smithy/util-defaults-mode-node': 4.2.35
       '@smithy/util-endpoints': 3.2.8
       '@smithy/util-middleware': 4.2.8
       '@smithy/util-retry': 4.2.8
@@ -8929,26 +8938,26 @@ snapshots:
       '@aws-sdk/util-user-agent-browser': 3.922.0
       '@aws-sdk/util-user-agent-node': 3.928.0
       '@smithy/config-resolver': 4.4.6
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/fetch-http-handler': 5.3.9
       '@smithy/hash-node': 4.2.8
       '@smithy/invalid-dependency': 4.2.8
       '@smithy/middleware-content-length': 4.2.8
-      '@smithy/middleware-endpoint': 4.4.14
-      '@smithy/middleware-retry': 4.4.31
+      '@smithy/middleware-endpoint': 4.4.16
+      '@smithy/middleware-retry': 4.4.33
       '@smithy/middleware-serde': 4.2.9
       '@smithy/middleware-stack': 4.2.8
       '@smithy/node-config-provider': 4.3.8
       '@smithy/node-http-handler': 4.4.10
       '@smithy/protocol-http': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/url-parser': 4.2.8
       '@smithy/util-base64': 4.3.0
       '@smithy/util-body-length-browser': 4.2.0
       '@smithy/util-body-length-node': 4.2.1
-      '@smithy/util-defaults-mode-browser': 4.3.30
-      '@smithy/util-defaults-mode-node': 4.2.33
+      '@smithy/util-defaults-mode-browser': 4.3.32
+      '@smithy/util-defaults-mode-node': 4.2.35
       '@smithy/util-endpoints': 3.2.8
       '@smithy/util-middleware': 4.2.8
       '@smithy/util-retry': 4.2.8
@@ -8961,12 +8970,12 @@ snapshots:
     dependencies:
       '@aws-sdk/types': 3.922.0
       '@aws-sdk/xml-builder': 3.921.0
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/node-config-provider': 4.3.8
       '@smithy/property-provider': 4.2.8
       '@smithy/protocol-http': 5.3.8
       '@smithy/signature-v4': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/util-base64': 4.3.0
       '@smithy/util-middleware': 4.2.8
@@ -8989,7 +8998,7 @@ snapshots:
       '@smithy/node-http-handler': 4.4.10
       '@smithy/property-provider': 4.2.8
       '@smithy/protocol-http': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/util-stream': 4.5.12
       tslib: 2.8.1
@@ -9067,8 +9076,8 @@ snapshots:
     dependencies:
       '@aws-sdk/client-s3': 3.928.0
       '@smithy/abort-controller': 4.2.8
-      '@smithy/middleware-endpoint': 4.4.14
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/middleware-endpoint': 4.4.16
+      '@smithy/smithy-client': 4.11.5
       buffer: 5.6.0
       events: 3.3.0
       stream-browserify: 3.0.0
@@ -9139,11 +9148,11 @@ snapshots:
       '@aws-sdk/core': 3.928.0
       '@aws-sdk/types': 3.922.0
       '@aws-sdk/util-arn-parser': 3.893.0
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/node-config-provider': 4.3.8
       '@smithy/protocol-http': 5.3.8
       '@smithy/signature-v4': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/util-config-provider': 4.2.0
       '@smithy/util-middleware': 4.2.8
@@ -9162,7 +9171,7 @@ snapshots:
       '@aws-sdk/core': 3.928.0
       '@aws-sdk/types': 3.922.0
       '@aws-sdk/util-endpoints': 3.922.0
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/protocol-http': 5.3.8
       '@smithy/types': 4.12.0
       tslib: 2.8.1
@@ -9182,26 +9191,26 @@ snapshots:
       '@aws-sdk/util-user-agent-browser': 3.922.0
       '@aws-sdk/util-user-agent-node': 3.928.0
       '@smithy/config-resolver': 4.4.6
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/fetch-http-handler': 5.3.9
       '@smithy/hash-node': 4.2.8
       '@smithy/invalid-dependency': 4.2.8
       '@smithy/middleware-content-length': 4.2.8
-      '@smithy/middleware-endpoint': 4.4.14
-      '@smithy/middleware-retry': 4.4.31
+      '@smithy/middleware-endpoint': 4.4.16
+      '@smithy/middleware-retry': 4.4.33
       '@smithy/middleware-serde': 4.2.9
       '@smithy/middleware-stack': 4.2.8
       '@smithy/node-config-provider': 4.3.8
       '@smithy/node-http-handler': 4.4.10
       '@smithy/protocol-http': 5.3.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/url-parser': 4.2.8
       '@smithy/util-base64': 4.3.0
       '@smithy/util-body-length-browser': 4.2.0
       '@smithy/util-body-length-node': 4.2.1
-      '@smithy/util-defaults-mode-browser': 4.3.30
-      '@smithy/util-defaults-mode-node': 4.2.33
+      '@smithy/util-defaults-mode-browser': 4.3.32
+      '@smithy/util-defaults-mode-node': 4.2.35
       '@smithy/util-endpoints': 3.2.8
       '@smithy/util-middleware': 4.2.8
       '@smithy/util-retry': 4.2.8
@@ -9364,7 +9373,7 @@ snapshots:
 
   '@azure/core-xml@1.5.0':
     dependencies:
-      fast-xml-parser: 5.3.6
+      fast-xml-parser: 5.3.7
       tslib: 2.8.1
 
   '@azure/identity@4.13.0':
@@ -9579,7 +9588,7 @@ snapshots:
 
   '@directus/ai@1.1.0': {}
 
-  '@directus/api@33.2.0(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)':
+  '@directus/api@33.3.1(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)':
     dependencies:
       '@ai-sdk/anthropic': 3.0.9(zod@4.1.12)
       '@ai-sdk/google': 3.0.6(zod@4.1.12)
@@ -9588,29 +9597,29 @@ snapshots:
       '@authenio/samlify-node-xmllint': 2.0.0(samlify@2.10.2)
       '@aws-sdk/client-sesv2': 3.928.0
       '@directus/ai': 1.1.0
-      '@directus/app': 15.2.0
-      '@directus/constants': 14.0.0
-      '@directus/env': 5.5.2(vue@3.5.24(typescript@5.9.3))
+      '@directus/app': 15.4.0
+      '@directus/constants': 14.1.0
+      '@directus/env': 5.5.3(vue@3.5.24(typescript@5.9.3))
       '@directus/errors': 2.2.0
-      '@directus/extensions': 3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
-      '@directus/extensions-registry': 3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
-      '@directus/extensions-sdk': 17.0.8(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(jiti@2.6.1)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(lightningcss@1.30.2)(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(terser@5.46.0)(tsx@4.20.6)(typescript@5.9.3)(ws@8.18.3)(yaml@2.8.2)
+      '@directus/extensions': 3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/extensions-registry': 3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/extensions-sdk': 17.0.9(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(jiti@2.6.1)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(lightningcss@1.30.2)(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(terser@5.46.0)(tsx@4.20.6)(typescript@5.9.3)(ws@8.18.3)(yaml@2.8.2)
       '@directus/format-title': 12.1.1
-      '@directus/memory': 3.1.1(vue@3.5.24(typescript@5.9.3))
-      '@directus/pressure': 3.0.16(vue@3.5.24(typescript@5.9.3))
+      '@directus/memory': 3.1.2(vue@3.5.24(typescript@5.9.3))
+      '@directus/pressure': 3.0.17(vue@3.5.24(typescript@5.9.3))
       '@directus/schema': 13.0.5(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))
-      '@directus/schema-builder': 0.0.13(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/schema-builder': 0.0.14(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
       '@directus/specs': 12.0.0
       '@directus/storage': 12.0.3
-      '@directus/storage-driver-azure': 12.0.16(vue@3.5.24(typescript@5.9.3))
-      '@directus/storage-driver-cloudinary': 12.0.16(vue@3.5.24(typescript@5.9.3))
-      '@directus/storage-driver-gcs': 12.0.16(encoding@0.1.13)(vue@3.5.24(typescript@5.9.3))
+      '@directus/storage-driver-azure': 12.0.17(vue@3.5.24(typescript@5.9.3))
+      '@directus/storage-driver-cloudinary': 12.0.17(vue@3.5.24(typescript@5.9.3))
+      '@directus/storage-driver-gcs': 12.0.17(encoding@0.1.13)(vue@3.5.24(typescript@5.9.3))
       '@directus/storage-driver-local': 12.0.3
-      '@directus/storage-driver-s3': 12.1.2(vue@3.5.24(typescript@5.9.3))
-      '@directus/storage-driver-supabase': 3.0.16(vue@3.5.24(typescript@5.9.3))
+      '@directus/storage-driver-s3': 12.1.3(vue@3.5.24(typescript@5.9.3))
+      '@directus/storage-driver-supabase': 3.0.17(vue@3.5.24(typescript@5.9.3))
       '@directus/system-data': 4.1.0
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
-      '@directus/validation': 2.0.16(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
+      '@directus/validation': 2.0.17(vue@3.5.24(typescript@5.9.3))
       '@godaddy/terminus': 4.12.1
       '@modelcontextprotocol/sdk': 1.26.0(zod@4.1.12)
       '@netlify/api': 14.0.14
@@ -9639,7 +9648,7 @@ snapshots:
       date-fns: 4.1.0
       deep-diff: 1.0.2
       destroy: 1.2.0
-      directus: 11.15.2(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
+      directus: 11.15.4(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
       dotenv: 17.2.3
       encodeurl: 2.0.0
       eventemitter2: 6.4.9
@@ -9804,12 +9813,12 @@ snapshots:
       - whiskers
       - yaml
 
-  '@directus/app@15.2.0': {}
+  '@directus/app@15.4.0': {}
 
-  '@directus/composables@11.2.12(vue@3.5.24(typescript@5.9.3))':
+  '@directus/composables@11.2.13(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/constants': 14.0.0
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/constants': 14.1.0
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       axios: 1.12.2
       lodash-es: 4.17.21
       nanoid: 5.1.6
@@ -9817,12 +9826,12 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@directus/constants@14.0.0': {}
+  '@directus/constants@14.1.0': {}
 
-  '@directus/env@5.5.2(vue@3.5.24(typescript@5.9.3))':
+  '@directus/env@5.5.3(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/constants': 14.0.0
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/constants': 14.1.0
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       dotenv: 17.2.3
       lodash-es: 4.17.21
     transitivePeerDependencies:
@@ -9833,11 +9842,11 @@ snapshots:
       '@directus/storage': 12.0.3
       ms: 2.1.3
 
-  '@directus/extensions-registry@3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
+  '@directus/extensions-registry@3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
     dependencies:
-      '@directus/constants': 14.0.0
+      '@directus/constants': 14.1.0
       '@directus/errors': 2.2.0
-      '@directus/extensions': 3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/extensions': 3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
       ky: 1.14.0
       zod: 4.1.12
     transitivePeerDependencies:
@@ -9862,14 +9871,14 @@ snapshots:
       - vue-router
       - ws
 
-  '@directus/extensions-sdk@17.0.8(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(jiti@2.6.1)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(lightningcss@1.30.2)(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(terser@5.46.0)(tsx@4.20.6)(typescript@5.9.3)(ws@8.18.3)(yaml@2.8.2)':
+  '@directus/extensions-sdk@17.0.9(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(jiti@2.6.1)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(lightningcss@1.30.2)(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(terser@5.46.0)(tsx@4.20.6)(typescript@5.9.3)(ws@8.18.3)(yaml@2.8.2)':
     dependencies:
-      '@directus/composables': 11.2.12(vue@3.5.24(typescript@5.9.3))
-      '@directus/constants': 14.0.0
-      '@directus/extensions': 3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
-      '@directus/themes': 1.2.3(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))
-      '@directus/types': 14.2.0(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/composables': 11.2.13(vue@3.5.24(typescript@5.9.3))
+      '@directus/constants': 14.1.0
+      '@directus/extensions': 3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/themes': 1.2.4(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))
+      '@directus/types': 14.2.1(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@rollup/plugin-commonjs': 28.0.9(rollup@4.52.5)
       '@rollup/plugin-json': 6.1.0(rollup@4.52.5)
       '@rollup/plugin-node-resolve': 16.0.3(rollup@4.52.5)
@@ -9926,11 +9935,11 @@ snapshots:
       - ws
       - yaml
 
-  '@directus/extensions@3.0.18(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
+  '@directus/extensions@3.0.19(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
     dependencies:
-      '@directus/constants': 14.0.0
-      '@directus/types': 14.2.0(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/constants': 14.1.0
+      '@directus/types': 14.2.1(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@types/express': 4.17.21
       fs-extra: 11.3.2
       lodash-es: 4.17.21
@@ -9959,10 +9968,10 @@ snapshots:
 
   '@directus/format-title@12.1.1': {}
 
-  '@directus/memory@3.1.1(vue@3.5.24(typescript@5.9.3))':
+  '@directus/memory@3.1.2(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@directus/errors': 2.2.0
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@sesamecare-oss/redlock': 1.4.0(ioredis@5.8.2)
       ioredis: 5.8.2
       lru-cache: 11.2.2
@@ -9971,15 +9980,15 @@ snapshots:
       - supports-color
       - vue
 
-  '@directus/pressure@3.0.16(vue@3.5.24(typescript@5.9.3))':
+  '@directus/pressure@3.0.17(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
     transitivePeerDependencies:
       - vue
 
-  '@directus/schema-builder@0.0.13(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
+  '@directus/schema-builder@0.0.14(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
     dependencies:
-      '@directus/types': 14.2.0(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
+      '@directus/types': 14.2.1(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - aws-crt
@@ -10022,29 +10031,29 @@ snapshots:
     dependencies:
       openapi3-ts: 4.5.0
 
-  '@directus/storage-driver-azure@12.0.16(vue@3.5.24(typescript@5.9.3))':
+  '@directus/storage-driver-azure@12.0.17(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@azure/storage-blob': 12.29.1
       '@directus/storage': 12.0.3
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
     transitivePeerDependencies:
       - supports-color
       - vue
 
-  '@directus/storage-driver-cloudinary@12.0.16(vue@3.5.24(typescript@5.9.3))':
+  '@directus/storage-driver-cloudinary@12.0.17(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@directus/storage': 12.0.3
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       p-queue: 8.1.0
       undici: 7.16.0
     transitivePeerDependencies:
       - vue
 
-  '@directus/storage-driver-gcs@12.0.16(encoding@0.1.13)(vue@3.5.24(typescript@5.9.3))':
+  '@directus/storage-driver-gcs@12.0.17(encoding@0.1.13)(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/constants': 14.0.0
+      '@directus/constants': 14.1.0
       '@directus/storage': 12.0.3
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@google-cloud/storage': 7.18.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
@@ -10055,12 +10064,12 @@ snapshots:
     dependencies:
       '@directus/storage': 12.0.3
 
-  '@directus/storage-driver-s3@12.1.2(vue@3.5.24(typescript@5.9.3))':
+  '@directus/storage-driver-s3@12.1.3(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@aws-sdk/client-s3': 3.928.0
       '@aws-sdk/lib-storage': 3.928.0(@aws-sdk/client-s3@3.928.0)
       '@directus/storage': 12.0.3
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@shopify/semaphore': 3.1.0
       '@smithy/node-http-handler': 4.4.5
       '@tus/utils': 0.6.0
@@ -10069,11 +10078,11 @@ snapshots:
       - aws-crt
       - vue
 
-  '@directus/storage-driver-supabase@3.0.16(vue@3.5.24(typescript@5.9.3))':
+  '@directus/storage-driver-supabase@3.0.17(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/constants': 14.0.0
+      '@directus/constants': 14.1.0
       '@directus/storage': 12.0.3
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@supabase/storage-js': 2.81.0
       tus-js-client: 4.3.1
       undici: 7.16.0
@@ -10084,9 +10093,9 @@ snapshots:
 
   '@directus/system-data@4.1.0': {}
 
-  '@directus/themes@1.2.3(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))':
+  '@directus/themes@1.2.4(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       '@unhead/vue': 1.11.20(vue@3.5.24(typescript@5.9.3))
       decamelize: 6.0.1
       flat: 6.0.1
@@ -10094,10 +10103,10 @@ snapshots:
       pinia: 2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))
       vue: 3.5.24(typescript@5.9.3)
 
-  '@directus/types@14.2.0(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
+  '@directus/types@14.2.1(deep-diff@1.0.2)(express@4.21.2)(graphql@16.12.0)(knex@3.1.0(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1)))(mysql2@3.15.3)(nodemailer@7.0.11)(openapi3-ts@4.5.0)(pg@8.16.3)(pino@9.7.0)(sharp@0.34.5)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))(vue@3.5.24(typescript@5.9.3))(ws@8.18.3)':
     dependencies:
       '@directus/ai': 1.1.0
-      '@directus/constants': 14.0.0
+      '@directus/constants': 14.1.0
       '@directus/schema': 13.0.5(mysql2@3.15.3)(pg@8.16.3)(sqlite3@5.1.7)(tedious@18.6.1(@azure/core-client@1.10.1))
       '@sinclair/typebox': 0.34.41
       '@types/archiver': 7.0.0
@@ -10139,9 +10148,9 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@directus/utils@13.2.1(vue@3.5.24(typescript@5.9.3))':
+  '@directus/utils@13.2.2(vue@3.5.24(typescript@5.9.3))':
     dependencies:
-      '@directus/constants': 14.0.0
+      '@directus/constants': 14.1.0
       '@directus/system-data': 4.1.0
       date-fns: 4.1.0
       fs-extra: 11.3.2
@@ -10154,10 +10163,10 @@ snapshots:
     optionalDependencies:
       vue: 3.5.24(typescript@5.9.3)
 
-  '@directus/validation@2.0.16(vue@3.5.24(typescript@5.9.3))':
+  '@directus/validation@2.0.17(vue@3.5.24(typescript@5.9.3))':
     dependencies:
       '@directus/errors': 2.2.0
-      '@directus/utils': 13.2.1(vue@3.5.24(typescript@5.9.3))
+      '@directus/utils': 13.2.2(vue@3.5.24(typescript@5.9.3))
       joi: 18.0.1
     transitivePeerDependencies:
       - vue
@@ -10446,15 +10455,15 @@ snapshots:
 
   '@hapi/pinpoint@2.0.1': {}
 
-  '@hapi/tlds@1.1.5': {}
+  '@hapi/tlds@1.1.6': {}
 
   '@hapi/topo@6.0.2':
     dependencies:
       '@hapi/hoek': 11.0.7
 
-  '@hono/node-server@1.19.9(hono@4.11.9)':
+  '@hono/node-server@1.19.9(hono@4.12.1)':
     dependencies:
-      hono: 4.11.9
+      hono: 4.12.1
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.71.1(react@19.2.4))':
     dependencies:
@@ -10712,7 +10721,7 @@ snapshots:
 
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
-      minipass: 7.1.2
+      minipass: 7.1.3
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -10752,7 +10761,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.26.0(zod@4.1.12)':
     dependencies:
-      '@hono/node-server': 1.19.9(hono@4.11.9)
+      '@hono/node-server': 1.19.9(hono@4.12.1)
       ajv: 8.18.0
       ajv-formats: 3.0.1(ajv@8.18.0)
       content-type: 1.0.5
@@ -10762,7 +10771,7 @@ snapshots:
       eventsource-parser: 3.0.6
       express: 5.2.1
       express-rate-limit: 8.2.1(express@5.2.1)
-      hono: 4.11.9
+      hono: 4.12.1
       jose: 6.1.3
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -10844,12 +10853,12 @@ snapshots:
 
   '@netlify/api@14.0.14':
     dependencies:
-      '@netlify/open-api': 2.49.0
+      '@netlify/open-api': 2.49.1
       node-fetch: 3.3.2
       p-wait-for: 5.0.2
       picoquery: 2.5.0
 
-  '@netlify/open-api@2.49.0': {}
+  '@netlify/open-api@2.49.1': {}
 
   '@next/env@16.1.6': {}
 
@@ -11917,7 +11926,7 @@ snapshots:
       '@smithy/util-middleware': 4.2.8
       tslib: 2.8.1
 
-  '@smithy/core@3.23.0':
+  '@smithy/core@3.23.2':
     dependencies:
       '@smithy/middleware-serde': 4.2.9
       '@smithy/protocol-http': 5.3.8
@@ -12021,9 +12030,9 @@ snapshots:
       '@smithy/types': 4.12.0
       tslib: 2.8.1
 
-  '@smithy/middleware-endpoint@4.4.14':
+  '@smithy/middleware-endpoint@4.4.16':
     dependencies:
-      '@smithy/core': 3.23.0
+      '@smithy/core': 3.23.2
       '@smithy/middleware-serde': 4.2.9
       '@smithy/node-config-provider': 4.3.8
       '@smithy/shared-ini-file-loader': 4.4.3
@@ -12032,12 +12041,12 @@ snapshots:
       '@smithy/util-middleware': 4.2.8
       tslib: 2.8.1
 
-  '@smithy/middleware-retry@4.4.31':
+  '@smithy/middleware-retry@4.4.33':
     dependencies:
       '@smithy/node-config-provider': 4.3.8
       '@smithy/protocol-http': 5.3.8
       '@smithy/service-error-classification': 4.2.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       '@smithy/util-middleware': 4.2.8
       '@smithy/util-retry': 4.2.8
@@ -12119,10 +12128,10 @@ snapshots:
       '@smithy/util-utf8': 4.2.0
       tslib: 2.8.1
 
-  '@smithy/smithy-client@4.11.3':
+  '@smithy/smithy-client@4.11.5':
     dependencies:
-      '@smithy/core': 3.23.0
-      '@smithy/middleware-endpoint': 4.4.14
+      '@smithy/core': 3.23.2
+      '@smithy/middleware-endpoint': 4.4.16
       '@smithy/middleware-stack': 4.2.8
       '@smithy/protocol-http': 5.3.8
       '@smithy/types': 4.12.0
@@ -12167,20 +12176,20 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@smithy/util-defaults-mode-browser@4.3.30':
+  '@smithy/util-defaults-mode-browser@4.3.32':
     dependencies:
       '@smithy/property-provider': 4.2.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       tslib: 2.8.1
 
-  '@smithy/util-defaults-mode-node@4.2.33':
+  '@smithy/util-defaults-mode-node@4.2.35':
     dependencies:
       '@smithy/config-resolver': 4.4.6
       '@smithy/credential-provider-imds': 4.2.8
       '@smithy/node-config-provider': 4.3.8
       '@smithy/property-provider': 4.2.8
-      '@smithy/smithy-client': 4.11.3
+      '@smithy/smithy-client': 4.11.5
       '@smithy/types': 4.12.0
       tslib: 2.8.1
 
@@ -12791,7 +12800,7 @@ snapshots:
 
   accepts@2.0.0:
     dependencies:
-      mime-types: 3.0.1
+      mime-types: 3.0.2
       negotiator: 1.0.0
 
   acorn-jsx@5.3.2(acorn@8.15.0):
@@ -12799,6 +12808,8 @@ snapshots:
       acorn: 8.15.0
 
   acorn@8.15.0: {}
+
+  acorn@8.16.0: {}
 
   agent-base@6.0.2:
     dependencies:
@@ -13070,7 +13081,7 @@ snapshots:
 
   axobject-query@4.1.0: {}
 
-  b4a@1.7.4: {}
+  b4a@1.8.0: {}
 
   bail@2.0.2: {}
 
@@ -13270,11 +13281,13 @@ snapshots:
   caniuse-api@3.0.0:
     dependencies:
       browserslist: 4.28.1
-      caniuse-lite: 1.0.30001769
+      caniuse-lite: 1.0.30001770
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001769: {}
+
+  caniuse-lite@1.0.30001770: {}
 
   ccount@2.0.1: {}
 
@@ -13793,9 +13806,9 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
-  directus@11.15.2(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2):
+  directus@11.15.4(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2):
     dependencies:
-      '@directus/api': 33.2.0(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
+      '@directus/api': 33.3.1(@azure/core-client@1.10.1)(@types/node@25.2.3)(@unhead/vue@1.11.20(vue@3.5.24(typescript@5.9.3)))(encoding@0.1.13)(jiti@2.6.1)(lightningcss@1.30.2)(lodash@4.17.23)(pinia@2.3.1(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(terser@5.46.0)(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3))(yaml@2.8.2)
       '@directus/update-check': 13.0.4
     transitivePeerDependencies:
       - '@azure/core-client'
@@ -14487,7 +14500,7 @@ snapshots:
       fresh: 2.0.0
       http-errors: 2.0.1
       merge-descriptors: 2.0.0
-      mime-types: 3.0.1
+      mime-types: 3.0.2
       on-finished: 2.4.1
       once: 1.4.0
       parseurl: 1.3.3
@@ -14551,7 +14564,7 @@ snapshots:
     dependencies:
       strnum: 2.1.2
 
-  fast-xml-parser@5.3.6:
+  fast-xml-parser@5.3.7:
     dependencies:
       strnum: 2.1.2
 
@@ -14753,7 +14766,7 @@ snapshots:
 
   get-caller-file@2.0.5: {}
 
-  get-east-asian-width@1.4.0: {}
+  get-east-asian-width@1.5.0: {}
 
   get-intrinsic@1.3.0:
     dependencies:
@@ -14825,7 +14838,7 @@ snapshots:
       foreground-child: 3.3.1
       jackspeak: 3.4.3
       minimatch: 9.0.5
-      minipass: 7.1.2
+      minipass: 7.1.3
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
@@ -14952,7 +14965,7 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
-  hono@4.11.9: {}
+  hono@4.12.1: {}
 
   hookable@5.5.3: {}
 
@@ -15313,7 +15326,7 @@ snapshots:
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
 
-  is-wsl@3.1.0:
+  is-wsl@3.1.1:
     dependencies:
       is-inside-container: 1.0.0
     optional: true
@@ -15351,7 +15364,7 @@ snapshots:
       '@hapi/formula': 3.0.2
       '@hapi/hoek': 11.0.7
       '@hapi/pinpoint': 2.0.1
-      '@hapi/tlds': 1.1.5
+      '@hapi/tlds': 1.1.6
       '@hapi/topo': 6.0.2
       '@standard-schema/spec': 1.1.0
 
@@ -16036,7 +16049,7 @@ snapshots:
   minipass@5.0.0:
     optional: true
 
-  minipass@7.1.2: {}
+  minipass@7.1.3: {}
 
   minizlib@2.1.2:
     dependencies:
@@ -16046,7 +16059,7 @@ snapshots:
 
   minizlib@3.1.0:
     dependencies:
-      minipass: 7.1.2
+      minipass: 7.1.3
 
   mkdirp-classic@0.5.3: {}
 
@@ -16548,7 +16561,7 @@ snapshots:
   path-scurry@1.11.1:
     dependencies:
       lru-cache: 10.4.3
-      minipass: 7.1.2
+      minipass: 7.1.3
 
   path-to-regexp@0.1.12: {}
 
@@ -16752,7 +16765,7 @@ snapshots:
       async: 3.2.6
       debug: 4.4.3
       pidusage: 2.0.21
-      systeminformation: 5.30.8
+      systeminformation: 5.31.1
       tx2: 1.0.5
     transitivePeerDependencies:
       - supports-color
@@ -17970,7 +17983,7 @@ snapshots:
     dependencies:
       events-universal: 1.0.1
       fast-fifo: 1.3.2
-      text-decoder: 1.2.6
+      text-decoder: 1.2.7
     transitivePeerDependencies:
       - bare-abort-controller
       - react-native-b4a
@@ -17992,7 +18005,7 @@ snapshots:
   string-width@7.2.0:
     dependencies:
       emoji-regex: 10.6.0
-      get-east-asian-width: 1.4.0
+      get-east-asian-width: 1.5.0
       strip-ansi: 7.1.2
 
   string.prototype.includes@2.0.1:
@@ -18132,7 +18145,7 @@ snapshots:
       standardwebhooks: 1.0.0
       uuid: 10.0.0
 
-  systeminformation@5.30.8:
+  systeminformation@5.31.1:
     optional: true
 
   tailwind-merge@3.4.0: {}
@@ -18162,7 +18175,7 @@ snapshots:
 
   tar-stream@3.1.7:
     dependencies:
-      b4a: 1.7.4
+      b4a: 1.8.0
       fast-fifo: 1.3.2
       streamx: 2.23.0
     transitivePeerDependencies:
@@ -18183,7 +18196,7 @@ snapshots:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
-      minipass: 7.1.2
+      minipass: 7.1.3
       minizlib: 3.1.0
       yallist: 5.0.0
 
@@ -18224,13 +18237,13 @@ snapshots:
   terser@5.46.0:
     dependencies:
       '@jridgewell/source-map': 0.3.11
-      acorn: 8.15.0
+      acorn: 8.16.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  text-decoder@1.2.6:
+  text-decoder@1.2.7:
     dependencies:
-      b4a: 1.7.4
+      b4a: 1.8.0
     transitivePeerDependencies:
       - react-native-b4a
 
@@ -18339,7 +18352,7 @@ snapshots:
     dependencies:
       content-type: 1.0.5
       media-typer: 1.1.0
-      mime-types: 3.0.1
+      mime-types: 3.0.2
 
   typed-array-buffer@1.0.3:
     dependencies:
@@ -18729,7 +18742,7 @@ snapshots:
 
   wsl-utils@0.1.0:
     dependencies:
-      is-wsl: 3.1.0
+      is-wsl: 3.1.1
     optional: true
 
   xml-crypto@6.1.2:
