@@ -43,7 +43,7 @@ jobs:
 
       - name: Docker meta (web)
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_WEB }}
           tags: |
@@ -90,7 +90,7 @@ jobs:
 
       - name: Docker meta (cms)
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_CMS }}
           tags: |
