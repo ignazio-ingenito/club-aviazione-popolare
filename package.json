@@ -52,7 +52,7 @@
     "date-fns": "4.1.0",
     "directus": "^11.16.0",
     "dom-serializer": "^3.0.0",
-    "domhandler": "^5.0.3",
+    "domhandler": "^6.0.1",
     "domutils": "^3.2.2",
     "embla-carousel-react": "8.6.0",
     "htmlparser2": "^10.1.0",
