@@ -62,6 +62,30 @@
   slug: 73-raduno-della-federazione-rsa
   title: "73\xB0 Raduno\_ della Federazione RSA"
   wp_link: https://www.clubaviazionepopolare.org/73-raduno-della-federazione-rsa/
+'5873':
+  cover: a597a0e8-2bf5-42bf-906e-4d842e4b8df3
+  date: '2022-08-28T11:00:17+02:00'
+  id_directus: 45
+  id_wordpress: '5873'
+  slug: cari-soci-notiziario-agosto-2022
+  title: "Cari soci \u2013 Notiziario Agosto  2022"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-agosto-2022/
+'5946':
+  cover: d35b27c4-c442-4ed5-87a2-195b6792ddb4
+  date: '2022-09-25T10:00:38+02:00'
+  id_directus: 46
+  id_wordpress: '5946'
+  slug: cari-soci-notiziario-cap-settembre-2022
+  title: "Cari Soci \u2013 Notiziario Settembre 2022"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-settembre-2022/
+'5990':
+  cover: 3f8c0f34-f8d8-4c87-8e14-fb5d605b3ce2
+  date: '2022-10-24T10:00:33+02:00'
+  id_directus: 47
+  id_wordpress: '5990'
+  slug: cari-soci-notiziario-cap-ottobre-2022
+  title: "Cari Soci \u2013 Notiziario Ottobre 2022"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-ottobre-2022/
 '6181':
   cover: 58f96202-4637-4b0f-834d-45fbd11e3117
   date: '2022-10-10T09:55:56+02:00'
@@ -70,6 +94,14 @@
   slug: diario-di-un-volo-bellissimo
   title: Diario di un volo bellissimo
   wp_link: https://www.clubaviazionepopolare.org/diario-di-un-volo-bellissimo/
+'6187':
+  cover: 1df47c77-2085-448b-b590-e8da2446840d
+  date: '2022-11-28T11:00:04+01:00'
+  id_directus: 48
+  id_wordpress: '6187'
+  slug: cari-soci-notiziario-novembre-2022
+  title: "Cari Soci \u2013 Notiziario Novembre 2022"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-novembre-2022/
 '6514':
   cover: 57d54fa6-0a79-4b78-acef-41dbba10996a
   date: '2022-11-14T10:55:05+01:00'
@@ -78,6 +110,54 @@
   slug: mai-perdere-la-speranza
   title: Mai perdere la speranza
   wp_link: https://www.clubaviazionepopolare.org/mai-perdere-la-speranza/
+'6591':
+  cover: 0a0a782b-c167-4c13-9f6d-5e65a4d81609
+  date: '2022-12-27T11:00:39+01:00'
+  id_directus: 49
+  id_wordpress: '6591'
+  slug: cari-soci-notiziario-dicembre-2022
+  title: "Cari Soci \u2013 Notiziario Dicembre 2022"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-dicembre-2022/
+'6683':
+  cover: 3c4b6727-0d29-4eb5-b7ff-04ae05f3ecca
+  date: '2023-01-23T11:00:20+01:00'
+  id_directus: 50
+  id_wordpress: '6683'
+  slug: cari-soci-notiziario-gennaio-2023
+  title: "Cari Soci \u2013 Notiziario Gennaio 2023"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-gennaio-2023/
+'6721':
+  cover: cc3aa29b-1d1a-49aa-aa5b-6e713e1029b8
+  date: '2023-02-21T11:00:33+01:00'
+  id_directus: 51
+  id_wordpress: '6721'
+  slug: cari-soci-notiziario-febbraio-2023
+  title: "Cari Soci \u2013  Notiziario Febbraio 2023"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-febbraio-2023/
+'6723':
+  cover: 92352726-ba3f-4a15-992a-1fdcfd5de2d0
+  date: '2023-03-21T11:00:28+01:00'
+  id_directus: 52
+  id_wordpress: '6723'
+  slug: cari-soci-notiziario-marzo-2023
+  title: "Cari Soci \u2013 Notiziario Marzo 2023"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-marzo-2023/
+'6780':
+  cover: c6c9f8a5-1c6c-4177-a804-9b282ab79f4d
+  date: '2023-05-15T10:00:25+02:00'
+  id_directus: 54
+  id_wordpress: '6780'
+  slug: cari-soci-notiziario-maggio-2022-lanno-che-verra
+  title: "\u201CL\u2019ANNO CHE VERRA\u201D \u2013 NOTIZIARIO MAGGIO 2023"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-maggio-2022-lanno-che-verra/
+'6785':
+  cover: 81cf415a-869e-48c4-8de1-b3f9b0cf07c7
+  date: '2023-04-24T10:00:15+02:00'
+  id_directus: 53
+  id_wordpress: '6785'
+  slug: da-quanto-non-proviamo-lelt-notiziario-aprile-2023
+  title: "Da quanto non proviamo l\u2019ELT?  \u2013 NOTIZIARIO APRILE 2023"
+  wp_link: https://www.clubaviazionepopolare.org/da-quanto-non-proviamo-lelt-notiziario-aprile-2023/
 '6843':
   cover: e6ee8eff-0f22-444e-918e-eb1e605cc78e
   date: '2023-05-16T09:15:24+02:00'
@@ -94,6 +174,30 @@
   slug: raduno-cap-toscana-programma
   title: "Raduno CAP Toscana \u2013 Programma"
   wp_link: https://www.clubaviazionepopolare.org/raduno-cap-toscana-programma/
+'6857':
+  cover: 2c444159-f8ea-4b43-81af-eaf57c07dabc
+  date: '2023-07-05T10:00:38+02:00'
+  id_directus: 55
+  id_wordpress: '6857'
+  slug: notiziario-cap-lutilita-degli-schiaffi
+  title: "L\u2019utilit\xE0 degli schiaffi \u2013 NOTIZIARIO GIUGNO 2023"
+  wp_link: https://www.clubaviazionepopolare.org/notiziario-cap-lutilita-degli-schiaffi/
+'6860':
+  cover: 27957b04-ecd5-4188-a4a8-e7916e4419a9
+  date: '2023-07-24T10:00:52+02:00'
+  id_directus: 56
+  id_wordpress: '6860'
+  slug: notiziario-cap
+  title: Notiziario CAP LUGLIO 2023
+  wp_link: https://www.clubaviazionepopolare.org/notiziario-cap/
+'6879':
+  cover: 08406813-e6cb-41a8-84ea-a9b6553a398c
+  date: '2023-08-27T10:03:58+02:00'
+  id_directus: 57
+  id_wordpress: '6879'
+  slug: i-puntini-sulle-i-di-india-notiziario-agosto-2023
+  title: "I puntini sulle I (di india) \u2013 NOTIZIARIO AGOSTO  2023"
+  wp_link: https://www.clubaviazionepopolare.org/i-puntini-sulle-i-di-india-notiziario-agosto-2023/
 '6902':
   cover: f8cb16c1-6718-4780-a123-981b061e83e5
   date: '2023-08-27T12:45:12+02:00'
@@ -102,6 +206,14 @@
   slug: 51-raduno-club-aviazione-popolare
   title: "51\xB0 Raduno Club Aviazione Popolare"
   wp_link: https://www.clubaviazionepopolare.org/51-raduno-club-aviazione-popolare/
+'6929':
+  cover: ccfbb718-514f-4fc9-bfca-ad1e515efe39
+  date: '2024-01-02T11:10:17+01:00'
+  id_directus: 58
+  id_wordpress: '6929'
+  slug: stop-non-consentito-notiziario-ottobe-2024
+  title: "Stop non consentito \u2013 Notiziario Ottobre 2024"
+  wp_link: https://www.clubaviazionepopolare.org/stop-non-consentito-notiziario-ottobe-2024/
 '7129':
   cover: 8a5ea121-67ea-4798-bd3b-25a5c2f1c334
   date: '2024-05-13T10:15:18+02:00'

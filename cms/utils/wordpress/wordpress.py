@@ -25,7 +25,7 @@ CATEGORIES = {
     # "7": "Presidenti / Vicepresidenti", -> Not used
     "8": "Raduni - Efficiency Race",  # To be imported in News
     # "9": "Soci CAP",  -> Not used
-    "14": "Storie dei Soci",
+    # "14": "Storie dei Soci",
     "15": "Notiziari",
 }
 
