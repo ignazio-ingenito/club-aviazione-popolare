@@ -1,3 +1,1032 @@
+'2582':
+  category: news
+  cover: 588994fe-06e4-4ce1-b4b2-074c8395c685
+  date: '2011-01-15T10:17:26+01:00'
+  id_directus: 175
+  id_wordpress: '2582'
+  slug: welcome
+  title: Benvenuti sul sito del CAP
+  wp_link: https://www.clubaviazionepopolare.org/welcome/
+'2584':
+  category: news
+  cover: 0683ccd0-8a71-48b8-88cf-33f7037c3c23
+  date: '2011-01-15T10:17:45+01:00'
+  id_directus: 176
+  id_wordpress: '2584'
+  slug: come-iniziare
+  title: Come iniziare
+  wp_link: https://www.clubaviazionepopolare.org/come-iniziare/
+'2585':
+  category: news
+  cover: cb2cc317-243c-4e72-929d-f1a30839ffda
+  date: '2013-03-27T10:07:12+01:00'
+  id_directus: 201
+  id_wordpress: '2585'
+  slug: contattaci
+  title: Contattaci
+  wp_link: https://www.clubaviazionepopolare.org/contattaci/
+'2587':
+  category: news
+  cover: 9a98e74e-e089-468d-9c73-fe0e0b96c052
+  date: '2011-01-15T10:18:02+01:00'
+  id_directus: 177
+  id_wordpress: '2587'
+  slug: diventa-uno-di-noi
+  title: Diventa uno di noi
+  wp_link: https://www.clubaviazionepopolare.org/diventa-uno-di-noi/
+'2588':
+  category: news
+  cover: e116f501-f155-4716-8ac5-2d7d9fc54cc1
+  date: '2013-09-11T06:31:26+02:00'
+  id_directus: 218
+  id_wordpress: '2588'
+  slug: 2013-raduno-fcap-resoconto
+  title: "41\xB0 Raduno F-CAP 2013 \u2013 Il resoconto"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-resoconto/
+'2589':
+  category: news
+  cover: 350700df-4834-4426-961d-a01c7da9ee2c
+  date: '2012-09-17T22:00:00+02:00'
+  id_directus: 192
+  id_wordpress: '2589'
+  slug: 2012-raduno-fcap-winners
+  title: "I Vincitori del 40\xB0 Raduno F-CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2012-raduno-fcap-winners/
+'2590':
+  category: news
+  cover: e877bf04-f8ec-4cf8-bc95-761d0a4cdf3c
+  date: '2012-09-30T22:00:00+02:00'
+  id_directus: 195
+  id_wordpress: '2590'
+  slug: 40-galli
+  title: "40\xB0 Raduno \u2013 La lettera dell\u2019Ing. Galli"
+  wp_link: https://www.clubaviazionepopolare.org/40-galli/
+'2591':
+  category: news
+  cover: bcf6b755-2f6c-432d-9468-b5685adfc411
+  date: '2013-03-21T13:26:46+01:00'
+  id_directus: 199
+  id_wordpress: '2591'
+  slug: settori-hp
+  title: Settori
+  wp_link: https://www.clubaviazionepopolare.org/settori-hp/
+'2592':
+  category: news
+  cover: 23aca564-e1dd-4f63-a11a-7c82e63eeeb0
+  date: '2002-12-31T23:00:00+01:00'
+  id_directus: 134
+  id_wordpress: '2592'
+  slug: 2003-lancair-super-es
+  title: "2003 \u2013 Lancair Super ES"
+  wp_link: https://www.clubaviazionepopolare.org/2003-lancair-super-es/
+'2593':
+  category: news
+  cover: 6700645a-9d86-4403-a7c8-46fd271b6e68
+  date: '2013-09-20T05:26:06+02:00'
+  id_directus: 223
+  id_wordpress: '2593'
+  slug: 2013-41mo-galli-home
+  title: "41\xB0 Raduno \u2013 La lettera dell\u2019Ing. Galli"
+  wp_link: https://www.clubaviazionepopolare.org/2013-41mo-galli-home/
+'2594':
+  category: news
+  cover: 576f97c0-bd0c-41e6-a3c7-9ab2c6de6160
+  date: '2013-09-18T08:47:54+02:00'
+  id_directus: 221
+  id_wordpress: '2594'
+  slug: 2013-raduno-fcap-summary
+  title: "41\xB0 Raduno F-CAP 2013"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-summary/
+'2595':
+  category: news
+  cover: afae3c5e-b426-4b55-bb4b-2b5e3bb87b0a
+  date: '2013-09-20T04:50:59+02:00'
+  id_directus: 222
+  id_wordpress: '2595'
+  slug: 2013-41mo-folchini
+  title: "41\xB0 Raduno \u2013 La lettera del presidente"
+  wp_link: https://www.clubaviazionepopolare.org/2013-41mo-folchini/
+'2596':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-09-11T17:55:09+02:00'
+  id_directus: 219
+  id_wordpress: '2596'
+  slug: 2013-we-have-a-dream
+  title: We have a dream
+  wp_link: https://www.clubaviazionepopolare.org/2013-we-have-a-dream/
+'2597':
+  category: news
+  cover: 2dc0045a-83d8-4c49-bb6f-baaa16f87f60
+  date: '2013-09-12T05:24:04+02:00'
+  id_directus: 220
+  id_wordpress: '2597'
+  slug: 2013-raduno-fcap-vincitori
+  title: "41\xB0 Raduno F-CAP 2013 \u2013 And the winner is\u2026"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-vincitori/
+'2598':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-03-22T07:36:10+01:00'
+  id_directus: 200
+  id_wordpress: '2598'
+  slug: consiglio-fcap
+  title: Consiglio FCAP
+  wp_link: https://www.clubaviazionepopolare.org/consiglio-fcap/
+'2599':
+  category: news
+  cover: 54c9efe7-4b1f-414c-add9-7afd006d26a7
+  date: '2012-09-25T22:00:00+02:00'
+  id_directus: 193
+  id_wordpress: '2599'
+  slug: 2012-folchini
+  title: "40\xB0 Raduno \u2013 La lettera del presidente"
+  wp_link: https://www.clubaviazionepopolare.org/2012-folchini/
+'2600':
+  category: news
+  cover: 3295cccf-877e-4f31-96df-b3c80c18a87a
+  date: '2012-06-24T22:00:00+02:00'
+  id_directus: 191
+  id_wordpress: '2600'
+  slug: 2012-6-cap-toscana
+  title: Raduno CAP Toscana 22 e 23 Giugno 2012
+  wp_link: https://www.clubaviazionepopolare.org/2012-6-cap-toscana/
+'2601':
+  category: news
+  cover: f6091050-e3ba-479e-8472-cbe10354a4a4
+  date: '2013-05-15T05:18:58+02:00'
+  id_directus: 209
+  id_wordpress: '2601'
+  slug: 2013-meazza
+  title: "24\xB0 Trofeo \u201CGigi e Jusy Meazza\u201D"
+  wp_link: https://www.clubaviazionepopolare.org/2013-meazza/
+'2602':
+  category: news
+  cover: b850168a-333f-43fd-9786-da05e14acaf8
+  date: '2009-04-21T22:00:00+02:00'
+  id_directus: 155
+  id_wordpress: '2602'
+  slug: stage-2009-04
+  title: "Seminario di manutenzione velivoli leggeri \u2013 Costruzioni in legno"
+  wp_link: https://www.clubaviazionepopolare.org/stage-2009-04/
+'2603':
+  category: news
+  cover: df06e0bb-4ee4-4272-a9d6-1699650b076b
+  date: '2009-02-24T23:00:00+01:00'
+  id_directus: 154
+  id_wordpress: '2603'
+  slug: 2009-folchini
+  title: Lettera ai soci del Prof. Alberto Folchini
+  wp_link: https://www.clubaviazionepopolare.org/2009-folchini/
+'2604':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2012-04-06T22:00:00+02:00'
+  id_directus: 189
+  id_wordpress: '2604'
+  slug: 2012-corsi
+  title: I corsi organizzati dai CAP Nazionali
+  wp_link: https://www.clubaviazionepopolare.org/2012-corsi/
+'2605':
+  category: news
+  cover: 9e4d203a-ad62-4ada-9a61-5f367263af9c
+  date: '2012-05-13T22:00:00+02:00'
+  id_directus: 190
+  id_wordpress: '2605'
+  slug: 2012-efficiency-race
+  title: "Efficiency Race 2012 \u2013 Risultati"
+  wp_link: https://www.clubaviazionepopolare.org/2012-efficiency-race/
+'2606':
+  category: news
+  cover: 96ed412e-a9e5-4e4a-b041-3924fe8d16a0
+  date: '2012-04-05T22:00:00+02:00'
+  id_directus: 188
+  id_wordpress: '2606'
+  slug: 2012-corsi-toscana
+  title: "Costruzione Amatoriale dei Velivoli in Legno \u2013 CAP Toscana"
+  wp_link: https://www.clubaviazionepopolare.org/2012-corsi-toscana/
+'2607':
+  category: news
+  cover: 876967ee-36b7-45eb-871a-8dca73b67f6a
+  date: '2012-02-24T23:00:00+01:00'
+  id_directus: 187
+  id_wordpress: '2607'
+  slug: 2012-raduno-fcap
+  title: "40\xB0 Raduno F-CAP 2012"
+  wp_link: https://www.clubaviazionepopolare.org/2012-raduno-fcap/
+'2608':
+  category: news
+  cover: 90f8cecd-16b2-40b6-a88d-288fd40d8245
+  date: '2008-09-07T22:00:00+02:00'
+  id_directus: 153
+  id_wordpress: '2608'
+  slug: 2008-raduno-fcap
+  title: "36\xB0 Raduno F-CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2008-raduno-fcap/
+'2609':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2012-01-31T23:00:00+01:00'
+  id_directus: 186
+  id_wordpress: '2609'
+  slug: 2012-lettera-aperta-galli
+  title: Lettera aperta del Responsabile Tecnico
+  wp_link: https://www.clubaviazionepopolare.org/2012-lettera-aperta-galli/
+'2610':
+  category: news
+  cover: fc9f6585-f6e3-490d-9b61-50924e9ba571
+  date: '2012-01-26T23:00:00+01:00'
+  id_directus: 185
+  id_wordpress: '2610'
+  slug: 2012-un-sibilo-storico-mb326
+  title: "Un sibilo storico \u2013 MB 326"
+  wp_link: https://www.clubaviazionepopolare.org/2012-un-sibilo-storico-mb326/
+'2611':
+  category: news
+  cover: d924728a-2a7a-4b63-9894-dfb7d0d2e528
+  date: '2011-12-26T23:00:00+01:00'
+  id_directus: 184
+  id_wordpress: '2611'
+  slug: un-gallo-volante
+  title: Un gallo volante
+  wp_link: https://www.clubaviazionepopolare.org/un-gallo-volante/
+'2612':
+  category: news
+  cover: e44c69f0-8d30-42b8-87a1-4199a001960f
+  date: '2011-12-17T23:00:00+01:00'
+  id_directus: 183
+  id_wordpress: '2612'
+  slug: 2012-fcap-in-tv
+  title: La federazione in TV
+  wp_link: https://www.clubaviazionepopolare.org/2012-fcap-in-tv/
+'2613':
+  category: news
+  cover: 1e3eb3b1-e466-4cf9-9821-a77d71d2d262
+  date: '2012-12-23T23:00:00+01:00'
+  id_directus: 196
+  id_wordpress: '2613'
+  slug: auguri-natale
+  title: "Festivita\u2019 2012 & 2013"
+  wp_link: https://www.clubaviazionepopolare.org/auguri-natale/
+'2614':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2011-12-06T23:00:00+01:00'
+  id_directus: 182
+  id_wordpress: '2614'
+  slug: 2011-lettera-monti
+  title: Lettera aperta al Presidente Napolitano e al prof. Monti, Primo Ministro
+    del Consiglio Italiano
+  wp_link: https://www.clubaviazionepopolare.org/2011-lettera-monti/
+'2615':
+  category: news
+  cover: 447634e3-8a8a-48a2-b185-841ae665070f
+  date: '2011-12-03T23:00:00+01:00'
+  id_directus: 181
+  id_wordpress: '2615'
+  slug: 2011-mb326-un-mito-italiano
+  title: "MB326 \u2013 Un mito italiano"
+  wp_link: https://www.clubaviazionepopolare.org/2011-mb326-un-mito-italiano/
+'2616':
+  category: news
+  cover: 8db50d04-e5b6-4c06-aa5c-6c92e4044316
+  date: '2011-11-26T23:00:00+01:00'
+  id_directus: 180
+  id_wordpress: '2616'
+  slug: 2011-baricchi
+  title: "Gone West \u2013 Giordano Baricchi"
+  wp_link: https://www.clubaviazionepopolare.org/2011-baricchi/
+'2617':
+  category: news
+  cover: 208eeb86-58a1-4264-9f7d-cae78122f0c6
+  date: '2011-04-11T12:53:20+02:00'
+  id_directus: 178
+  id_wordpress: '2617'
+  slug: 2011-il-p166-vola
+  title: Il P166 ha volato!
+  wp_link: https://www.clubaviazionepopolare.org/2011-il-p166-vola/
+'2618':
+  category: news
+  cover: 447ad73a-9e3e-4da1-8bc0-937b9474d3e9
+  date: '2011-08-01T22:00:00+02:00'
+  id_directus: 179
+  id_wordpress: '2618'
+  slug: 2011-raduno-fcap
+  title: "39\xB0 Raduno F-CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2011-raduno-fcap/
+'2619':
+  category: news
+  cover: 2fa2d8d0-8ef9-47d3-a148-11eec75a20c9
+  date: '2010-07-23T22:00:00+02:00'
+  id_directus: 173
+  id_wordpress: '2619'
+  slug: 2010-raduno-fcap
+  title: "38\xB0 Raduno F-CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2010-raduno-fcap/
+'2620':
+  category: news
+  cover: d96d2bfc-dc98-4620-89bb-eded6cd6c62d
+  date: '2010-07-14T22:00:00+02:00'
+  id_directus: 172
+  id_wordpress: '2620'
+  slug: 2010-igo-etrich-club
+  title: "26\xB0 Raduno Internazionale IGO ETRICH CLUB 2010"
+  wp_link: https://www.clubaviazionepopolare.org/2010-igo-etrich-club/
+'2621':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2010-09-05T22:00:00+02:00'
+  id_directus: 174
+  id_wordpress: '2621'
+  slug: 2010-raduno-fcap-foto
+  title: "Foto del 38\xB0 raduno \u2013 Ferrara 2010"
+  wp_link: https://www.clubaviazionepopolare.org/2010-raduno-fcap-foto/
+'2622':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2010-05-28T22:00:00+02:00'
+  id_directus: 171
+  id_wordpress: '2622'
+  slug: 2010-efficiency-race
+  title: Efficiency Race 2010
+  wp_link: https://www.clubaviazionepopolare.org/2010-efficiency-race/
+'2623':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2010-05-09T22:00:00+02:00'
+  id_directus: 170
+  id_wordpress: '2623'
+  slug: 2010-meazza
+  title: "21\xB0 Trofeo Meazza"
+  wp_link: https://www.clubaviazionepopolare.org/2010-meazza/
+'2624':
+  category: news
+  cover: 68aa15d3-96c8-452e-a25e-368db58cc79a
+  date: '2010-04-30T22:00:00+02:00'
+  id_directus: 169
+  id_wordpress: '2624'
+  slug: 2010-eurofly
+  title: Euro Fly-in 2010
+  wp_link: https://www.clubaviazionepopolare.org/2010-eurofly/
+'2625':
+  category: news
+  cover: 3bde425c-61f8-4c9a-87f8-0271ab6274e7
+  date: '2009-12-18T23:00:00+01:00'
+  id_directus: 168
+  id_wordpress: '2625'
+  slug: 2010-lettera-auguri-folchini
+  title: Auguri 2010
+  wp_link: https://www.clubaviazionepopolare.org/2010-lettera-auguri-folchini/
+'2626':
+  category: news
+  cover: 7da8798c-d655-491f-9566-8b825f70b34f
+  date: '2009-12-03T23:00:00+01:00'
+  id_directus: 167
+  id_wordpress: '2626'
+  slug: 2009-lettera-fine-anno
+  title: Lettera di Fine anno del Responsabile Tecnico della Federazione
+  wp_link: https://www.clubaviazionepopolare.org/2009-lettera-fine-anno/
+'2627':
+  category: news
+  cover: 9b69262d-1e87-475f-9dd3-7f3f16a656be
+  date: '2009-09-17T22:00:00+02:00'
+  id_directus: 166
+  id_wordpress: '2627'
+  slug: stage-2012-11
+  title: "Seminari di manutenzione velivoli leggeri \u2013 Costruzioni in legno"
+  wp_link: https://www.clubaviazionepopolare.org/stage-2012-11/
+'2628':
+  category: news
+  cover: 4b1eb070-2dda-4e9b-b5c1-58e17d00a3f8
+  date: '2009-09-06T22:00:00+02:00'
+  id_directus: 165
+  id_wordpress: '2628'
+  slug: 2009-raduno-fcap-presidente
+  title: "37\xB0 Raduno F-CAP \u2013 La lettera del presidente"
+  wp_link: https://www.clubaviazionepopolare.org/2009-raduno-fcap-presidente/
+'2629':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2009-09-05T22:00:00+02:00'
+  id_directus: 164
+  id_wordpress: '2629'
+  slug: 2009-raduno-fcap-foto
+  title: "Foto del 37\xB0 raduno \u2013 Ferrara 2009"
+  wp_link: https://www.clubaviazionepopolare.org/2009-raduno-fcap-foto/
+'2630':
+  category: news
+  cover: 58113807-2db3-439b-a51e-31d94df0239f
+  date: '2009-07-31T22:00:00+02:00'
+  id_directus: 163
+  id_wordpress: '2630'
+  slug: 2009-raduno-fcap
+  title: "37\xB0 Raduno F-CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2009-raduno-fcap/
+'2631':
+  category: news
+  cover: 063535af-f331-46fd-962c-3b94c99d3e4f
+  date: '2009-07-17T22:00:00+02:00'
+  id_directus: 162
+  id_wordpress: '2631'
+  slug: 2009-raduno-fcap-riferimenti
+  title: "37\xB0 Raduno F-CAP \u2013 Riferimenti per il raduno"
+  wp_link: https://www.clubaviazionepopolare.org/2009-raduno-fcap-riferimenti/
+'2632':
+  category: news
+  cover: 13643d27-2c64-42d9-96bc-2f31907b82a0
+  date: '2009-06-28T22:00:00+02:00'
+  id_directus: 161
+  id_wordpress: '2632'
+  slug: 2009-raduno-cap-toscana
+  title: Il Raduno 2009 del CAP Toscana
+  wp_link: https://www.clubaviazionepopolare.org/2009-raduno-cap-toscana/
+'2633':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2009-06-11T22:00:00+02:00'
+  id_directus: 158
+  id_wordpress: '2633'
+  slug: 2009-trofeo-rotondi
+  title: "Trofeo Rotondi \u2013 Modulo di Iscrizione"
+  wp_link: https://www.clubaviazionepopolare.org/2009-trofeo-rotondi/
+'2634':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2009-06-11T22:00:00+02:00'
+  id_directus: 157
+  id_wordpress: '2634'
+  slug: 2009-trofeo-caproni
+  title: "Trofeo Caproni \u2013 Modulo di Iscrizione"
+  wp_link: https://www.clubaviazionepopolare.org/2009-trofeo-caproni/
+'2635':
+  category: news
+  cover: 6493a52c-411d-4b07-83f5-e65507832055
+  date: '2009-05-24T22:00:00+02:00'
+  id_directus: 156
+  id_wordpress: '2635'
+  slug: 2009-efficiency-race
+  title: "Efficiency Race 2009 \u2013 Risultati"
+  wp_link: https://www.clubaviazionepopolare.org/2009-efficiency-race/
+'2636':
+  category: news
+  cover: 225ef938-4085-4bc9-8bb6-e5d4b6f81cc2
+  date: '2012-12-30T23:00:00+01:00'
+  id_directus: 198
+  id_wordpress: '2636'
+  slug: er-albo-d-oro
+  title: "Albo d\u2019Oro Efficiency Race Italia"
+  wp_link: https://www.clubaviazionepopolare.org/er-albo-d-oro/
+'2638':
+  category: news
+  cover: c9276e14-c804-4ec8-863f-c5e1223f7ce5
+  date: '2009-06-13T22:00:00+02:00'
+  id_directus: 159
+  id_wordpress: '2638'
+  slug: wag-2009-news
+  title: "WAG 2009 \u2013 News"
+  wp_link: https://www.clubaviazionepopolare.org/wag-2009-news/
+'2639':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2009-06-15T22:00:00+02:00'
+  id_directus: 160
+  id_wordpress: '2639'
+  slug: 2009-meazza
+  title: "20\xB0 Trofeo Meazza"
+  wp_link: https://www.clubaviazionepopolare.org/2009-meazza/
+'2640':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2006-05-05T22:00:00+02:00'
+  id_directus: 140
+  id_wordpress: '2640'
+  slug: 2006-raduno-cap-eng
+  title: "34\xB0 Raduno CAP \u2013 ENG"
+  wp_link: https://www.clubaviazionepopolare.org/2006-raduno-cap-eng/
+'2641':
+  category: news
+  cover: 3ecacbb3-73a7-4596-832d-96b90b215cfa
+  date: '2007-03-18T23:00:00+01:00'
+  id_directus: 143
+  id_wordpress: '2641'
+  slug: 2007-efficiency-race
+  title: Efficiency Race 2007
+  wp_link: https://www.clubaviazionepopolare.org/2007-efficiency-race/
+'2642':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-04-15T10:02:53+02:00'
+  id_directus: 203
+  id_wordpress: '2642'
+  slug: cap-toscana
+  title: CAP Toscana
+  wp_link: https://www.clubaviazionepopolare.org/cap-toscana/
+'2643':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-04-15T10:02:53+02:00'
+  id_directus: 202
+  id_wordpress: '2643'
+  slug: cap-lombardia
+  title: CAP Lombardia
+  wp_link: https://www.clubaviazionepopolare.org/cap-lombardia/
+'2644':
+  category: news
+  cover: 83c62503-dd39-4549-9f3b-aa795fe26b45
+  date: '2001-12-31T23:00:00+01:00'
+  id_directus: 133
+  id_wordpress: '2644'
+  slug: 2002-vans-rv6a
+  title: "2002 \u2013 Van Grunsven RV 6A"
+  wp_link: https://www.clubaviazionepopolare.org/2002-vans-rv6a/
+'2645':
+  category: news
+  cover: 94297796-e756-48d3-b15e-3b0cef0a5dfe
+  date: '2005-12-31T23:00:00+01:00'
+  id_directus: 138
+  id_wordpress: '2645'
+  slug: 2006-mj-77
+  title: "2006 \u2013 MJ-77"
+  wp_link: https://www.clubaviazionepopolare.org/2006-mj-77/
+'2646':
+  category: news
+  cover: a22c3ab7-a2bc-45a3-8415-a1dc6f15e94c
+  date: '2000-12-31T23:00:00+01:00'
+  id_directus: 132
+  id_wordpress: '2646'
+  slug: 2001-pitts-s1-tgm
+  title: "2001 \u2013 Pitts S1 TGM"
+  wp_link: https://www.clubaviazionepopolare.org/2001-pitts-s1-tgm/
+'2647':
+  category: news
+  cover: 9c4fa76d-4707-4d75-b86a-6ca3290fa1be
+  date: '1999-12-31T23:00:00+01:00'
+  id_directus: 131
+  id_wordpress: '2647'
+  slug: 2000-steward-p51
+  title: "2000 \u2013 Steward 51 Mustang"
+  wp_link: https://www.clubaviazionepopolare.org/2000-steward-p51/
+'2648':
+  category: news
+  cover: b9a959bb-0606-4f1d-b6d9-6be003286f35
+  date: '1998-12-31T23:00:00+01:00'
+  id_directus: 130
+  id_wordpress: '2648'
+  slug: 1999-se5a-replica
+  title: "1999 \u2013 SE5a Replica"
+  wp_link: https://www.clubaviazionepopolare.org/1999-se5a-replica/
+'2649':
+  category: news
+  cover: d6c95799-2ab0-42f3-8de2-c2474789377f
+  date: '1997-12-31T23:00:00+01:00'
+  id_directus: 129
+  id_wordpress: '2649'
+  slug: 1998-lancair-235d
+  title: "1998 \u2013 Lancair 235 D"
+  wp_link: https://www.clubaviazionepopolare.org/1998-lancair-235d/
+'2650':
+  category: news
+  cover: 1d553d99-7d7e-4e74-8427-38da0d2ab8d9
+  date: '1996-12-31T23:00:00+01:00'
+  id_directus: 128
+  id_wordpress: '2650'
+  slug: 1997-rv7-lampu
+  title: "1997 \u2013 Van Grunsven RV 4 \u201CLampu\u201D"
+  wp_link: https://www.clubaviazionepopolare.org/1997-rv7-lampu/
+'2651':
+  category: news
+  cover: 7929637d-06d1-4fc2-8b0a-7db288b98bb7
+  date: '1995-12-31T23:00:00+01:00'
+  id_directus: 127
+  id_wordpress: '2651'
+  slug: 1996-as-10
+  title: "1996 \u2013 Aerosviluppi AS 10"
+  wp_link: https://www.clubaviazionepopolare.org/1996-as-10/
+'2652':
+  category: news
+  cover: e97a717d-76f8-4416-88c7-c98bf035c0d0
+  date: '1993-12-31T23:00:00+01:00'
+  id_directus: 125
+  id_wordpress: '2652'
+  slug: 1995-sonerai-2
+  title: "1994 \u2013 Sonerai II"
+  wp_link: https://www.clubaviazionepopolare.org/1995-sonerai-2/
+'2653':
+  category: news
+  cover: 4320face-746f-4ac6-b503-4a415b6d3e3a
+  date: '1994-12-31T23:00:00+01:00'
+  id_directus: 126
+  id_wordpress: '2653'
+  slug: 1995-kr2
+  title: "1995 \u2013 Rand Robinson KR 2"
+  wp_link: https://www.clubaviazionepopolare.org/1995-kr2/
+'2654':
+  category: news
+  cover: a576b8f4-edf7-44a0-a6f1-7073b1bbe8f8
+  date: '1992-12-31T23:00:00+01:00'
+  id_directus: 124
+  id_wordpress: '2654'
+  slug: 1993-rand-robinson-kr2
+  title: "1993 \u2013 Rand Robinson KR 2"
+  wp_link: https://www.clubaviazionepopolare.org/1993-rand-robinson-kr2/
+'2655':
+  category: news
+  cover: fee31809-3495-4943-a873-47cd3bd561e6
+  date: '1991-12-31T23:00:00+01:00'
+  id_directus: 123
+  id_wordpress: '2655'
+  slug: 1992-rutan-varieze
+  title: "1992 \u2013 Rutan Vari Eze"
+  wp_link: https://www.clubaviazionepopolare.org/1992-rutan-varieze/
+'2656':
+  category: news
+  cover: 923aac7e-fa59-4c06-8772-aae8bba06c8f
+  date: '1990-12-31T23:00:00+01:00'
+  id_directus: 122
+  id_wordpress: '2656'
+  slug: 1992-glasair-2
+  title: "1991 \u2013 Glasair II \u2013 S RG"
+  wp_link: https://www.clubaviazionepopolare.org/1992-glasair-2/
+'2657':
+  category: news
+  cover: 9f527001-96da-4c0d-b384-e3f545fbec54
+  date: '1989-12-31T23:00:00+01:00'
+  id_directus: 121
+  id_wordpress: '2657'
+  slug: 1992-pieal-cp80
+  title: "1990 \u2013 Piel CP 80"
+  wp_link: https://www.clubaviazionepopolare.org/1992-pieal-cp80/
+'2658':
+  category: news
+  cover: ba5c3e38-612a-4443-a639-8a67ecb67bf7
+  date: '1988-12-31T23:00:00+01:00'
+  id_directus: 120
+  id_wordpress: '2658'
+  slug: 1989-bleriot-xi-2-m
+  title: "1989 \u2013 Bleriot XI-2-M"
+  wp_link: https://www.clubaviazionepopolare.org/1989-bleriot-xi-2-m/
+'2659':
+  category: news
+  cover: fa14edb0-0388-4559-944a-d9fa9806cbd5
+  date: '1987-12-31T23:00:00+01:00'
+  id_directus: 119
+  id_wordpress: '2659'
+  slug: 1988-rutan-varieze
+  title: "1988 \u2013 Rutan Vari Eze"
+  wp_link: https://www.clubaviazionepopolare.org/1988-rutan-varieze/
+'2660':
+  category: news
+  cover: 2e91a4da-e049-456d-912c-a8dcc20e1035
+  date: '1986-12-31T23:00:00+01:00'
+  id_directus: 118
+  id_wordpress: '2660'
+  slug: 1987-asso-rd-95
+  title: "1987 \u2013 Asso RD 95"
+  wp_link: https://www.clubaviazionepopolare.org/1987-asso-rd-95/
+'2661':
+  category: news
+  cover: 093ac604-f9e6-4f77-bd9b-13c335c69485
+  date: '1985-12-31T23:00:00+01:00'
+  id_directus: 117
+  id_wordpress: '2661'
+  slug: 1986-brugger-mb2
+  title: "1986 \u2013 Brugger MB 2 Colibri\u2019"
+  wp_link: https://www.clubaviazionepopolare.org/1986-brugger-mb2/
+'2662':
+  category: news
+  cover: b2e46df0-d1a9-4e7f-87f1-0833b8cffc22
+  date: '1984-12-31T23:00:00+01:00'
+  id_directus: 116
+  id_wordpress: '2662'
+  slug: 1985-aerosviluppi-as10
+  title: "1985 \u2013 Aerosviluppi AS10"
+  wp_link: https://www.clubaviazionepopolare.org/1985-aerosviluppi-as10/
+'2664':
+  category: news
+  cover: 99297ae7-4553-4beb-9c40-912ef3f3285b
+  date: '2012-12-30T23:00:00+01:00'
+  id_directus: 197
+  id_wordpress: '2664'
+  slug: rotondi-albo-d-oro
+  title: "Albo d\u2019Oro Trofeo Rotondi"
+  wp_link: https://www.clubaviazionepopolare.org/rotondi-albo-d-oro/
+'2665':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-06-30T22:00:00+02:00'
+  id_directus: 152
+  id_wordpress: '2665'
+  slug: 2008-raduno-fcap-riferimenti
+  title: "36\xB0 Raduno F-CAP \u2013 Riferimenti per il raduno"
+  wp_link: https://www.clubaviazionepopolare.org/2008-raduno-fcap-riferimenti/
+'2666':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-05-06T22:00:00+02:00'
+  id_directus: 151
+  id_wordpress: '2666'
+  slug: 2008-efficiency-race
+  title: Efficiency Race 2008
+  wp_link: https://www.clubaviazionepopolare.org/2008-efficiency-race/
+'2667':
+  category: news
+  cover: c5adf535-9252-4d5e-a16c-7ba46ce13fe6
+  date: '2008-05-04T22:00:00+02:00'
+  id_directus: 150
+  id_wordpress: '2667'
+  slug: 2008-frecce
+  title: Il CAP a Rivolto incontra le Frecce Ticolori
+  wp_link: https://www.clubaviazionepopolare.org/2008-frecce/
+'2668':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-04-17T22:00:00+02:00'
+  id_directus: 149
+  id_wordpress: '2668'
+  slug: 2008-galli
+  title: A tutti gli appassionati del volo e degli aeroplani
+  wp_link: https://www.clubaviazionepopolare.org/2008-galli/
+'2669':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-02-22T23:00:00+01:00'
+  id_directus: 148
+  id_wordpress: '2669'
+  slug: 2008-corsi-cap-italia
+  title: I corsi organizzati dal CAP Italia
+  wp_link: https://www.clubaviazionepopolare.org/2008-corsi-cap-italia/
+'2670':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-01-27T23:00:00+01:00'
+  id_directus: 147
+  id_wordpress: '2670'
+  slug: 2008-enac-riconoscimento-fcap
+  title: "ENAC ha riconosciuto ufficialmente la Federazione CAP idonea a svolgere\
+    \ l\u2019attivit\xE0 di sorveglianza"
+  wp_link: https://www.clubaviazionepopolare.org/2008-enac-riconoscimento-fcap/
+'2671':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2008-01-26T23:00:00+01:00'
+  id_directus: 146
+  id_wordpress: '2671'
+  slug: 2008-lettera-galli
+  title: Tempi nuovi
+  wp_link: https://www.clubaviazionepopolare.org/2008-lettera-galli/
+'2672':
+  category: news
+  cover: ada517dc-00d1-4704-9803-2e4e52676f91
+  date: '2007-09-09T22:00:00+02:00'
+  id_directus: 145
+  id_wordpress: '2672'
+  slug: 2007-raduno-cap
+  title: "35\xB0 Raduno CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2007-raduno-cap/
+'2673':
+  category: news
+  cover: 216a1443-2471-4111-92d3-971104ea49a4
+  date: '2006-07-06T22:00:00+02:00'
+  id_directus: 141
+  id_wordpress: '2673'
+  slug: 2006-raduno-cap-riferimenti
+  title: "34\xB0 Raduno CAP \u2013 Riferimenti per il raduno"
+  wp_link: https://www.clubaviazionepopolare.org/2006-raduno-cap-riferimenti/
+'2674':
+  category: news
+  cover: eacc8f6c-2bed-423d-a33f-2e01523e00ee
+  date: '2007-07-27T22:00:00+02:00'
+  id_directus: 144
+  id_wordpress: '2674'
+  slug: 2007-raduno-vichy
+  title: "Il CAP a Vichy al 60\xB0 Raduno dell\u2019RSA"
+  wp_link: https://www.clubaviazionepopolare.org/2007-raduno-vichy/
+'2676':
+  category: news
+  cover: e1d246eb-685b-4e18-802a-89b16e9b1a52
+  date: '2013-08-27T05:26:10+02:00'
+  id_directus: 214
+  id_wordpress: '2676'
+  slug: 2013-raduno-fcap-instr
+  title: "41\xB0 Raduno F-CAP 2013 \u2013 Come arrivare in volo\u2026"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-instr/
+'2677':
+  category: news
+  cover: 851491c7-ad60-464c-b833-fc4414832b92
+  date: '2006-09-14T22:00:00+02:00'
+  id_directus: 142
+  id_wordpress: '2677'
+  slug: 2006-raduno-cap
+  title: "34\xB0 Raduno CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2006-raduno-cap/
+'2678':
+  category: news
+  cover: 4c1f99d8-49f1-42dc-bbc2-605094ff7712
+  date: '2005-09-04T22:00:00+02:00'
+  id_directus: 137
+  id_wordpress: '2678'
+  slug: 2005-raduno
+  title: "33\xB0 Raduno CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2005-raduno/
+'2679':
+  category: news
+  cover: 1cc95eb7-7ac0-4aff-a2cf-dc0fa1406401
+  date: '2006-04-26T22:00:00+02:00'
+  id_directus: 139
+  id_wordpress: '2679'
+  slug: 2006-nuova-sede
+  title: La nuova sede della F-CAP
+  wp_link: https://www.clubaviazionepopolare.org/2006-nuova-sede/
+'2680':
+  category: news
+  cover: 9f3f2d5b-9342-40ab-af08-42a449bd743d
+  date: '2005-06-30T22:00:00+02:00'
+  id_directus: 135
+  id_wordpress: '2680'
+  slug: 2005-raduno-cap-riferimenti
+  title: "33\xB0 Raduno CAP \u2013 Riferimenti per il raduno"
+  wp_link: https://www.clubaviazionepopolare.org/2005-raduno-cap-riferimenti/
+'2681':
+  category: news
+  cover: a7d5aa9d-53b7-4be7-9c2a-c7348b7fd218
+  date: '2005-07-19T22:00:00+02:00'
+  id_directus: 136
+  id_wordpress: '2681'
+  slug: 2005-nevers
+  title: "Il CAP a Nevers al raduno della RSA l\u2019Associazione dei Costruttori\
+    \ Amatoriali Francesi"
+  wp_link: https://www.clubaviazionepopolare.org/2005-nevers/
+'2684':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-04-23T10:06:57+02:00'
+  id_directus: 206
+  id_wordpress: '2684'
+  slug: contatti-arrivare-in-auto
+  title: Come arrivare in auto
+  wp_link: https://www.clubaviazionepopolare.org/contatti-arrivare-in-auto/
+'2685':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-04-23T10:06:57+02:00'
+  id_directus: 205
+  id_wordpress: '2685'
+  slug: contatti-arrivare-in-volo
+  title: Come arrivare in volo
+  wp_link: https://www.clubaviazionepopolare.org/contatti-arrivare-in-volo/
+'2686':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-04-23T10:06:57+02:00'
+  id_directus: 204
+  id_wordpress: '2686'
+  slug: contatti-arrivare-mezzi-pubblici
+  title: Come arrivare con i mezzi pubblici
+  wp_link: https://www.clubaviazionepopolare.org/contatti-arrivare-mezzi-pubblici/
+'2689':
+  category: news
+  cover: 17102408-6b9b-4cbd-a473-f2a7050fbc66
+  date: '2013-08-27T05:26:10+02:00'
+  id_directus: 213
+  id_wordpress: '2689'
+  slug: 2013-raduno-fcap-prog
+  title: "41\xB0 Raduno F-CAP 2013 \u2013 Il programma"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-prog/
+'2690':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-05-14T06:00:00+02:00'
+  id_directus: 208
+  id_wordpress: '2690'
+  slug: 2013-corsi-cap-italia
+  title: "CAP Italia \u2013 Corsi anno 2013"
+  wp_link: https://www.clubaviazionepopolare.org/2013-corsi-cap-italia/
+'2691':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-09-03T08:26:23+02:00'
+  id_directus: 216
+  id_wordpress: '2691'
+  slug: fcap-moduli-e-procedure
+  title: "F-CAP \u2013 Moduli e procedure"
+  wp_link: https://www.clubaviazionepopolare.org/fcap-moduli-e-procedure/
+'2692':
+  category: news
+  cover: 6aa161d6-d63b-4d96-a8bf-f571ffc89100
+  date: '2013-09-05T14:10:25+02:00'
+  id_directus: 217
+  id_wordpress: '2692'
+  slug: 2013-raduno-fcap-volare-sicuri
+  title: "Raduno FCAP 2013 \u2013 Seminario SV Volare sicuri"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-volare-sicuri/
+'2694':
+  category: news
+  cover: 0c26f5a1-1657-4faa-be92-b703a82d12a6
+  date: '2013-08-27T05:26:10+02:00'
+  id_directus: 212
+  id_wordpress: '2694'
+  slug: 2013-raduno-fcap-alberghi
+  title: "41\xB0 Raduno F-CAP 2013 \u2013 Elenco Alberghi"
+  wp_link: https://www.clubaviazionepopolare.org/2013-raduno-fcap-alberghi/
+'2696':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2013-08-23T08:33:00+02:00'
+  id_directus: 210
+  id_wordpress: '2696'
+  slug: 2013-poberezny-2
+  title: Paul Howard Poberezny
+  wp_link: https://www.clubaviazionepopolare.org/2013-poberezny-2/
+'2697':
+  category: news
+  cover: 2876d61d-e5c8-4484-990b-bb9cba17503c
+  date: '2013-09-03T06:14:37+02:00'
+  id_directus: 215
+  id_wordpress: '2697'
+  slug: 2013-sport-aviation-italy-ercoupe
+  title: "EAA Sport Aviation \u2013 Italy Ercoupe"
+  wp_link: https://www.clubaviazionepopolare.org/2013-sport-aviation-italy-ercoupe/
+'2698':
+  category: news
+  cover: 60a9c0cd-8163-43dc-97bf-92b1a694a901
+  date: '2013-12-02T09:48:05+01:00'
+  id_directus: 225
+  id_wordpress: '2698'
+  slug: 2013-revisione-sa-ne
+  title: Revisione Spazi Aerei del Nord Est
+  wp_link: https://www.clubaviazionepopolare.org/2013-revisione-sa-ne/
+'2699':
+  category: news
+  cover: 11059b44-fc81-4fa0-af0c-50a1e83ccb7f
+  date: '2013-10-08T20:00:00+02:00'
+  id_directus: 224
+  id_wordpress: '2699'
+  slug: 2013-fcap-su-jp4
+  title: Il Club Aviazione Popolare ritorna su JP4!
+  wp_link: https://www.clubaviazionepopolare.org/2013-fcap-su-jp4/
+'2700':
+  category: news
+  cover: 3c6bc6b6-bbab-4f3d-b7f8-4649f8b91b51
+  date: '2014-02-03T07:44:10+01:00'
+  id_directus: 227
+  id_wordpress: '2700'
+  slug: 2014-tieppo
+  title: Gianni Tieppo
+  wp_link: https://www.clubaviazionepopolare.org/2014-tieppo/
+'2701':
+  category: news
+  cover: 0ce6fd3a-139f-431f-a483-c5eef4b888f7
+  date: '2014-02-03T07:44:10+01:00'
+  id_directus: 226
+  id_wordpress: '2701'
+  slug: 2014-varieze-ulm
+  title: "VariEze Jabiru \u201CProvocator\u201D"
+  wp_link: https://www.clubaviazionepopolare.org/2014-varieze-ulm/
+'2702':
+  category: news
+  cover: dd4a5966-f2de-461c-89e2-a0b129d7a2ed
+  date: '2014-02-11T08:45:16+01:00'
+  id_directus: 228
+  id_wordpress: '2702'
+  slug: 2014-rsa-meeting
+  title: Meeting RSA 2014
+  wp_link: https://www.clubaviazionepopolare.org/2014-rsa-meeting/
+'2703':
+  category: news
+  cover: 28c94725-259a-49c7-a362-d0cd1fe63670
+  date: '2014-02-18T08:30:00+01:00'
+  id_directus: 229
+  id_wordpress: '2703'
+  slug: 2014-seminario-lyco
+  title: "Seminario motori Lycoming \u2013 Milano"
+  wp_link: https://www.clubaviazionepopolare.org/2014-seminario-lyco/
+'2705':
+  category: news
+  cover: b4b6bd17-1e56-4a4d-a495-6428cae1ed49
+  date: '2014-03-15T22:00:00+01:00'
+  id_directus: 230
+  id_wordpress: '2705'
+  slug: 2014-efficiency
+  title: Efficiency Race 2014
+  wp_link: https://www.clubaviazionepopolare.org/2014-efficiency/
+'2706':
+  category: news
+  cover: 114eacb0-1650-4f3d-8b34-bc83e28c9bd7
+  date: '2014-03-20T08:01:35+01:00'
+  id_directus: 231
+  id_wordpress: '2706'
+  slug: 2014-raduno-fcap-savethedate
+  title: "42\xB0 Raduno F-CAP 2014 \u2013 Save the date"
+  wp_link: https://www.clubaviazionepopolare.org/2014-raduno-fcap-savethedate/
+'2712':
+  category: news
+  cover: 37e37c45-c326-4250-9a4f-310cb7d317f9
+  date: '2012-09-30T22:00:00+02:00'
+  id_directus: 194
+  id_wordpress: '2712'
+  slug: 40-galli-2
+  title: "40\xB0 Raduno \u2013 La lettera dell\u2019Ing. Galli (2)"
+  wp_link: https://www.clubaviazionepopolare.org/40-galli-2/
 '2734':
   cover: 1fc02a11-a3f5-4eb3-bcb5-e50f09b1a0b4
   date: '2015-08-05T20:00:00+02:00'
@@ -63,28 +1092,31 @@
   title: "73\xB0 Raduno\_ della Federazione RSA"
   wp_link: https://www.clubaviazionepopolare.org/73-raduno-della-federazione-rsa/
 '5873':
-  cover: a597a0e8-2bf5-42bf-906e-4d842e4b8df3
+  category: notiziari
+  cover: ed5c8e75-bddf-44db-a420-ae2d07ae32bb
   date: '2022-08-28T11:00:17+02:00'
-  id_directus: 45
+  id_directus: 78
   id_wordpress: '5873'
-  slug: cari-soci-notiziario-agosto-2022
-  title: "Cari soci \u2013 Notiziario Agosto  2022"
+  slug: notiziario-agosto-2022
+  title: Notiziario Agosto  2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-agosto-2022/
 '5946':
-  cover: d35b27c4-c442-4ed5-87a2-195b6792ddb4
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2022-09-25T10:00:38+02:00'
-  id_directus: 46
+  id_directus: 79
   id_wordpress: '5946'
-  slug: cari-soci-notiziario-cap-settembre-2022
-  title: "Cari Soci \u2013 Notiziario Settembre 2022"
+  slug: notiziario-cap-settembre-2022
+  title: Notiziario Settembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-settembre-2022/
 '5990':
-  cover: 3f8c0f34-f8d8-4c87-8e14-fb5d605b3ce2
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2022-10-24T10:00:33+02:00'
-  id_directus: 47
+  id_directus: 82
   id_wordpress: '5990'
-  slug: cari-soci-notiziario-cap-ottobre-2022
-  title: "Cari Soci \u2013 Notiziario Ottobre 2022"
+  slug: notiziario-cap-ottobre-2022
+  title: Notiziario Ottobre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-ottobre-2022/
 '6181':
   cover: 58f96202-4637-4b0f-834d-45fbd11e3117
@@ -95,12 +1127,13 @@
   title: Diario di un volo bellissimo
   wp_link: https://www.clubaviazionepopolare.org/diario-di-un-volo-bellissimo/
 '6187':
-  cover: 1df47c77-2085-448b-b590-e8da2446840d
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2022-11-28T11:00:04+01:00'
-  id_directus: 48
+  id_directus: 81
   id_wordpress: '6187'
-  slug: cari-soci-notiziario-novembre-2022
-  title: "Cari Soci \u2013 Notiziario Novembre 2022"
+  slug: notiziario-novembre-2022
+  title: Notiziario Novembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-novembre-2022/
 '6514':
   cover: 57d54fa6-0a79-4b78-acef-41dbba10996a
@@ -111,49 +1144,55 @@
   title: Mai perdere la speranza
   wp_link: https://www.clubaviazionepopolare.org/mai-perdere-la-speranza/
 '6591':
-  cover: 0a0a782b-c167-4c13-9f6d-5e65a4d81609
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2022-12-27T11:00:39+01:00'
-  id_directus: 49
+  id_directus: 80
   id_wordpress: '6591'
-  slug: cari-soci-notiziario-dicembre-2022
-  title: "Cari Soci \u2013 Notiziario Dicembre 2022"
+  slug: notiziario-dicembre-2022
+  title: Notiziario Dicembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-dicembre-2022/
 '6683':
-  cover: 3c4b6727-0d29-4eb5-b7ff-04ae05f3ecca
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-01-23T11:00:20+01:00'
-  id_directus: 50
+  id_directus: 83
   id_wordpress: '6683'
-  slug: cari-soci-notiziario-gennaio-2023
-  title: "Cari Soci \u2013 Notiziario Gennaio 2023"
+  slug: notiziario-gennaio-2023
+  title: Notiziario Gennaio 2023
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-gennaio-2023/
 '6721':
-  cover: cc3aa29b-1d1a-49aa-aa5b-6e713e1029b8
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-02-21T11:00:33+01:00'
-  id_directus: 51
+  id_directus: 84
   id_wordpress: '6721'
-  slug: cari-soci-notiziario-febbraio-2023
-  title: "Cari Soci \u2013  Notiziario Febbraio 2023"
+  slug: notiziario-febbraio-2023
+  title: Notiziario Febbraio 2023
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-febbraio-2023/
 '6723':
-  cover: 92352726-ba3f-4a15-992a-1fdcfd5de2d0
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-03-21T11:00:28+01:00'
-  id_directus: 52
+  id_directus: 85
   id_wordpress: '6723'
-  slug: cari-soci-notiziario-marzo-2023
-  title: "Cari Soci \u2013 Notiziario Marzo 2023"
+  slug: notiziario-marzo-2023
+  title: Notiziario Marzo 2023
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-marzo-2023/
 '6780':
-  cover: c6c9f8a5-1c6c-4177-a804-9b282ab79f4d
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-05-15T10:00:25+02:00'
-  id_directus: 54
+  id_directus: 86
   id_wordpress: '6780'
-  slug: cari-soci-notiziario-maggio-2022-lanno-che-verra
+  slug: notiziario-maggio-2022-lanno-che-verra
   title: "\u201CL\u2019ANNO CHE VERRA\u201D \u2013 NOTIZIARIO MAGGIO 2023"
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-maggio-2022-lanno-che-verra/
 '6785':
-  cover: 81cf415a-869e-48c4-8de1-b3f9b0cf07c7
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-04-24T10:00:15+02:00'
-  id_directus: 53
+  id_directus: 87
   id_wordpress: '6785'
   slug: da-quanto-non-proviamo-lelt-notiziario-aprile-2023
   title: "Da quanto non proviamo l\u2019ELT?  \u2013 NOTIZIARIO APRILE 2023"
@@ -175,21 +1214,32 @@
   title: "Raduno CAP Toscana \u2013 Programma"
   wp_link: https://www.clubaviazionepopolare.org/raduno-cap-toscana-programma/
 '6857':
-  cover: 2c444159-f8ea-4b43-81af-eaf57c07dabc
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-07-05T10:00:38+02:00'
-  id_directus: 55
+  id_directus: 88
   id_wordpress: '6857'
   slug: notiziario-cap-lutilita-degli-schiaffi
   title: "L\u2019utilit\xE0 degli schiaffi \u2013 NOTIZIARIO GIUGNO 2023"
   wp_link: https://www.clubaviazionepopolare.org/notiziario-cap-lutilita-degli-schiaffi/
 '6860':
-  cover: 27957b04-ecd5-4188-a4a8-e7916e4419a9
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
   date: '2023-07-24T10:00:52+02:00'
-  id_directus: 56
+  id_directus: 89
   id_wordpress: '6860'
   slug: notiziario-cap
   title: Notiziario CAP LUGLIO 2023
   wp_link: https://www.clubaviazionepopolare.org/notiziario-cap/
+'6863':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2023-09-25T10:00:15+02:00'
+  id_directus: 90
+  id_wordpress: '6863'
+  slug: notiziario-cap-i-dodici-comandamenti
+  title: "I dodici comandamenti \u2013 NOTIZIARIO SETTEMBRE 2023"
+  wp_link: https://www.clubaviazionepopolare.org/notiziario-cap-i-dodici-comandamenti/
 '6879':
   cover: 08406813-e6cb-41a8-84ea-a9b6553a398c
   date: '2023-08-27T10:03:58+02:00'
@@ -214,6 +1264,61 @@
   slug: stop-non-consentito-notiziario-ottobe-2024
   title: "Stop non consentito \u2013 Notiziario Ottobre 2024"
   wp_link: https://www.clubaviazionepopolare.org/stop-non-consentito-notiziario-ottobe-2024/
+'6936':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-01-02T11:17:24+01:00'
+  id_directus: 94
+  id_wordpress: '6936'
+  slug: prevedere-il-cambiamento-notiziario-dicembre-2023
+  title: "Prevedere il cambiamento \u2013 Notiziario Dicembre 2023"
+  wp_link: https://www.clubaviazionepopolare.org/prevedere-il-cambiamento-notiziario-dicembre-2023/
+'6938':
+  category: notiziari
+  cover: ffa7ad73-b76f-456a-8f2b-07db16919727
+  date: '2024-01-22T11:30:02+01:00'
+  id_directus: 93
+  id_wordpress: '6938'
+  slug: guardiamoci-dentro-non-soltanto-agli-aeroplani-notiziario-gennaio-2024
+  title: "Guardiamoci dentro (non soltanto agli aeroplani) \u2013 Notiziario Gennaio\
+    \ 2024"
+  wp_link: https://www.clubaviazionepopolare.org/guardiamoci-dentro-non-soltanto-agli-aeroplani-notiziario-gennaio-2024/
+'6945':
+  category: notiziari
+  cover: e4ec2aff-09e7-43a4-a2d5-4c1e0261f7d3
+  date: '2024-02-26T11:30:41+01:00'
+  id_directus: 92
+  id_wordpress: '6945'
+  slug: facite-a-faccia-feroce-notiziario-febbraio-2024
+  title: "Facite \u2018a faccia feroce \u2013 Notiziario Febbraio 2024"
+  wp_link: https://www.clubaviazionepopolare.org/facite-a-faccia-feroce-notiziario-febbraio-2024/
+'6950':
+  category: notiziari
+  cover: 24c4dd0d-a851-4c22-90e8-f67a05c0836d
+  date: '2024-01-02T15:33:04+01:00'
+  id_directus: 95
+  id_wordpress: '6950'
+  slug: il-fantasma-di-in-civilavia-notiziario-novembre-2023
+  title: "Il fantasma di in-Civilavia \u2013 Notiziario Novembre 2023"
+  wp_link: https://www.clubaviazionepopolare.org/il-fantasma-di-in-civilavia-notiziario-novembre-2023/
+'6961':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-03-20T11:00:00+01:00'
+  id_directus: 91
+  id_wordpress: '6961'
+  slug: la-corte-dei-miracoli-notiziario-marzo-2024
+  title: "La Corte dei Miracoli \u2013 NOTIZIARIO MARZO 2024"
+  wp_link: https://www.clubaviazionepopolare.org/la-corte-dei-miracoli-notiziario-marzo-2024/
+'6987':
+  category: notiziari
+  cover: faff4ec1-ced6-4a5d-85d8-ad5188eae8f9
+  date: '2024-04-24T10:00:21+02:00'
+  id_directus: 99
+  id_wordpress: '6987'
+  slug: pezze-su-pezze-ma-comunque-andiamo-avanti-notiziario-aprile-2024
+  title: "Pezze su pezze, ma comunque andiamo avanti \u2013 NOTIZIARIO APRILE 2024"
+  wp_link: https://www.clubaviazionepopolare.org/pezze-su-pezze-ma-comunque-andiamo-avanti-notiziario-aprile-2024/
 '7129':
   cover: 8a5ea121-67ea-4798-bd3b-25a5c2f1c334
   date: '2024-05-13T10:15:18+02:00'
@@ -222,6 +1327,34 @@
   slug: 32-raduno-cap-toscana-2
   title: "32\xB0 Raduno CAP \u2013 TOSCANA"
   wp_link: https://www.clubaviazionepopolare.org/32-raduno-cap-toscana-2/
+'7138':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-06-05T09:36:48+02:00'
+  id_directus: 100
+  id_wordpress: '7138'
+  slug: tempo-di-farsi-avanti-notiziario-maggio-2024
+  title: "Tempo di farsi avanti \u2013 NOTIZIARIO MAGGIO 2024"
+  wp_link: https://www.clubaviazionepopolare.org/tempo-di-farsi-avanti-notiziario-maggio-2024/
+'7142':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-06-24T10:00:28+02:00'
+  id_directus: 97
+  id_wordpress: '7142'
+  slug: notiziario-giugno-2024
+  title: NOTIZIARIO GIUGNO 2024
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-giugno-2024/
+'7144':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-07-23T10:42:09+02:00'
+  id_directus: 96
+  id_wordpress: '7144'
+  slug: equipaggi-di-condotta-e-permessi-di-volo-smaterializzati-notiziario-luglio-2024
+  title: "Equipaggi di condotta e permessi di volo smaterializzati \u2013 NOTIZIARIO\
+    \ LUGLIO 2024"
+  wp_link: https://www.clubaviazionepopolare.org/equipaggi-di-condotta-e-permessi-di-volo-smaterializzati-notiziario-luglio-2024/
 '7146':
   cover: 9c9e75d1-6fe0-47ee-ba9c-3688b632263e
   date: '2024-06-05T10:20:46+02:00'
@@ -238,6 +1371,88 @@
   slug: 52-raduno-club-aviazione-popolare
   title: "52\xB0 Raduno Club Aviazione Popolare"
   wp_link: https://www.clubaviazionepopolare.org/52-raduno-club-aviazione-popolare/
+'7339':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-09-25T10:00:23+02:00'
+  id_directus: 104
+  id_wordpress: '7339'
+  slug: notiziario-settembre-2024
+  title: Notiziario Settembre 2024
+  wp_link: https://www.clubaviazionepopolare.org/notiziario-settembre-2024/
+'7341':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-08-31T10:00:12+02:00'
+  id_directus: 98
+  id_wordpress: '7341'
+  slug: notiziario-agosto-2024
+  title: "Scuola di costruzione presso le aziende \u2013 Notiziario Agosto 2024"
+  wp_link: https://www.clubaviazionepopolare.org/notiziario-agosto-2024/
+'7467':
+  category: notiziari
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-10-27T11:00:11+01:00'
+  id_directus: 101
+  id_wordpress: '7467'
+  slug: il-tempo-giusto-notiziario-ottobre-2024
+  title: "Il tempo giusto \u2013 Notiziario Ottobre 2024"
+  wp_link: https://www.clubaviazionepopolare.org/il-tempo-giusto-notiziario-ottobre-2024/
+'7868':
+  category: notiziari
+  cover: bcfa0aea-3b54-4875-9c47-4b9c98e3ef48
+  date: '2024-12-09T10:28:41+01:00'
+  id_directus: 102
+  id_wordpress: '7868'
+  slug: tempo-di-fare-investimenti-notiziario-novembre-2024
+  title: "Tempo di fare investimenti \u2013 Notiziario Novembre 2024"
+  wp_link: https://www.clubaviazionepopolare.org/tempo-di-fare-investimenti-notiziario-novembre-2024/
+'7873':
+  category: notiziari
+  cover: 8e37fcb7-bbdf-4f95-8a3b-1b772ada7c06
+  date: '2025-01-20T11:00:23+01:00'
+  id_directus: 103
+  id_wordpress: '7873'
+  slug: il-meteorite-2025-notiziario-gennaio-2025
+  title: "Il meteorite 2025 \u2013 Notiziario Gennaio 2025"
+  wp_link: https://www.clubaviazionepopolare.org/il-meteorite-2025-notiziario-gennaio-2025/
+'7878':
+  category: notiziari
+  cover: a36199b1-f164-4cea-8115-60b621a467cf
+  date: '2024-12-22T11:00:22+01:00'
+  id_directus: 105
+  id_wordpress: '7878'
+  slug: il-rebus-delle-rivalidazioni-notiziario-dicembre-2024
+  title: "Il rebus delle rivalidazioni \u2013 Notiziario Dicembre 2024"
+  wp_link: https://www.clubaviazionepopolare.org/il-rebus-delle-rivalidazioni-notiziario-dicembre-2024/
+'7976':
+  category: notiziari
+  cover: ff8c1b11-23be-4339-bcfa-00c3d6f61e68
+  date: '2025-02-24T11:00:14+01:00'
+  id_directus: 107
+  id_wordpress: '7976'
+  slug: checklist-di-fine-inverno-notiziario-febbraio-2025
+  title: "Checklist di fine inverno \u2013 Notiziario Febbraio 2025"
+  wp_link: https://www.clubaviazionepopolare.org/checklist-di-fine-inverno-notiziario-febbraio-2025/
+'7985':
+  category: notiziari
+  cover: 3f7fbd52-85d5-42f8-9ef7-df0859df5501
+  date: '2025-03-24T11:00:09+01:00'
+  id_directus: 108
+  id_wordpress: '7985'
+  slug: ancora-sul-rinnovo-sep-sopportazione-e-pazienza-notiziario-marzo-2025
+  title: "Ancora sul rinnovo SEP (Sopportazione e Pazienza) \u2013 Notiziario Marzo\
+    \ 2025"
+  wp_link: https://www.clubaviazionepopolare.org/ancora-sul-rinnovo-sep-sopportazione-e-pazienza-notiziario-marzo-2025/
+'8033':
+  category: notiziari
+  cover: b73d55f1-e007-4602-b88c-959e8e938130
+  date: '2025-04-21T10:00:24+02:00'
+  id_directus: 110
+  id_wordpress: '8033'
+  slug: che-cosa-bolle-e-cosa-sobbolle-in-pentola-notiziario-aprile-2025
+  title: "Che cosa bolle (e cosa sobbolle) in pentola \u2013 Notiziario Aprile 2025"
+  wp_link: https://www.clubaviazionepopolare.org/che-cosa-bolle-e-cosa-sobbolle-in-pentola-notiziario-aprile-2025/
 '8071':
   cover: d1e085f8-452f-41ad-b163-4ff2cc841890
   date: '2025-05-08T13:03:44+02:00'
@@ -246,6 +1461,70 @@
   slug: 33-raduno-cap-toscana-5-luglio-2025
   title: "33\xB0 RADUNO CAP TOSCANA \u2013 5 LUGLIO 2025"
   wp_link: https://www.clubaviazionepopolare.org/33-raduno-cap-toscana-5-luglio-2025/
+'8090':
+  category: notiziari
+  cover: 19ad8e32-2b03-4d38-bb51-3f5006d23b78
+  date: '2025-06-25T07:59:40+02:00'
+  id_directus: 109
+  id_wordpress: '8090'
+  slug: speranze-e-certezze-notiziario-maggio-2025
+  title: "Speranze e certezze \u2013  Notiziario Maggio 2025"
+  wp_link: https://www.clubaviazionepopolare.org/speranze-e-certezze-notiziario-maggio-2025/
+'8098':
+  category: notiziari
+  cover: a5c24b71-c16c-4b09-ab33-7ba99ac2c747
+  date: '2025-06-25T08:05:19+02:00'
+  id_directus: 106
+  id_wordpress: '8098'
+  slug: la-nostra-scuola-notiziario-giugno-2025
+  title: "La nostra scuola \u2013 Notiziario Giugno 2025"
+  wp_link: https://www.clubaviazionepopolare.org/la-nostra-scuola-notiziario-giugno-2025/
+'8103':
+  category: notiziari
+  cover: db13a816-b09b-4981-be3b-f83c4e372b62
+  date: '2025-07-21T10:00:47+02:00'
+  id_directus: 114
+  id_wordpress: '8103'
+  slug: lestate-experimental-notiziario-luglio-2025
+  title: "L\u2019estate Experimental \u2013 Notiziario Luglio 2025"
+  wp_link: https://www.clubaviazionepopolare.org/lestate-experimental-notiziario-luglio-2025/
+'8207':
+  category: notiziari
+  cover: 78e5994d-d668-4f26-9b0a-af4f76285828
+  date: '2025-10-10T07:42:58+02:00'
+  id_directus: 111
+  id_wordpress: '8207'
+  slug: tutti-al-raduno-per-il-futuro-notiziario-agosto-2025
+  title: "Tutti al Raduno, per il futuro \u2013 Notiziario Agosto 2025"
+  wp_link: https://www.clubaviazionepopolare.org/tutti-al-raduno-per-il-futuro-notiziario-agosto-2025/
+'8211':
+  category: notiziari
+  cover: bb602338-ec2b-41d6-9e93-0e0e0c300b70
+  date: '2025-10-10T07:45:15+02:00'
+  id_directus: 115
+  id_wordpress: '8211'
+  slug: carta-canta-notiziario-settembre-2025
+  title: "Carta canta \u2013 Notiziario Settembre 2025"
+  wp_link: https://www.clubaviazionepopolare.org/carta-canta-notiziario-settembre-2025/
+'8215':
+  category: notiziari
+  cover: b6d2befd-a120-4a3e-969c-f5f2a50eb3ef
+  date: '2025-10-26T11:00:44+01:00'
+  id_directus: 113
+  id_wordpress: '8215'
+  slug: voliamo-alto-vale-la-pena-notiziario-ottobre-2025
+  title: "Voliamo alto, vale la pena \u2013 Notiziario Ottobre 2025"
+  wp_link: https://www.clubaviazionepopolare.org/voliamo-alto-vale-la-pena-notiziario-ottobre-2025/
+'8218':
+  category: notiziari
+  cover: fa91bec4-fb6b-4eaa-b8b7-b41dbd495514
+  date: '2025-11-23T11:00:55+01:00'
+  id_directus: 112
+  id_wordpress: '8218'
+  slug: maggiore-o-minore-ogni-modifica-e-importante-notiziario-novembre-2025
+  title: "Maggiore o minore, ogni modifica \xE8 importante \u2013 Notiziario Novembre\
+    \ 2025"
+  wp_link: https://www.clubaviazionepopolare.org/maggiore-o-minore-ogni-modifica-e-importante-notiziario-novembre-2025/
 '8222':
   cover: 345382a0-0a11-4d49-a924-09b9add306c5
   date: '2025-10-10T11:41:57+02:00'

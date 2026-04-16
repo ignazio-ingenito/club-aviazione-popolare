@@ -623,6 +623,7 @@ dependencies = [
     { name = "polars" },
     { name = "pyarrow" },
     { name = "pyyaml" },
+    { name = "rich" },
     { name = "typer" },
 ]
 
@@ -639,5 +640,6 @@ requires-dist = [
     { name = "polars", specifier = ">=1.38.1" },
     { name = "pyarrow", specifier = ">=23.0.0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
+    { name = "rich", specifier = ">=14.3.2" },
     { name = "typer", specifier = ">=0.21.1" },
 ]

@@ -1,16 +1,23 @@
 import os
-from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from copy import deepcopy
+from pathlib import Path
 from typing import Optional
 from urllib.parse import urljoin
 
 import httpx
+from dotenv import dotenv_values
 from joblib import Memory, cpu_count
 from loguru import logger
 
-load_dotenv()
+SCRIPT_DIR = Path(__file__).resolve().parent
+env_values = dotenv_values(SCRIPT_DIR / ".env")
+if "DIRECTUS_TOKEN" not in env_values:
+    os.environ.pop("DIRECTUS_TOKEN", None)
+for key, value in env_values.items():
+    if value is not None and not os.environ.get(key):
+        os.environ[key] = value
 
 DIRECTUS_API_URL = os.getenv("DIRECTUS_API_URL", "http://localhost:8055").rstrip("/") + "/"
 DIRECTUS_ASSETS_URL = urljoin(DIRECTUS_API_URL, "assets/")
@@ -20,7 +27,7 @@ DIRECTUS_COLLECTION_URL = urljoin(DIRECTUS_ITEMS_URL, DIRECTUS_COLLECTION)
 DIRECTUS_FILES_URL = urljoin(DIRECTUS_API_URL, "files/")
 DIRECTUS_FOLDERS_URL = urljoin(DIRECTUS_API_URL, "folders/")
 NEWS_FOLDER_ID = os.getenv("NEWS_FOLDER_ID", "032e5563-7527-4f0d-8659-c8717f7f82ef")
-DIRECTUS_DEFAULT_COVER = "b52ad437-35b5-407d-a7b1-6c0f3f8a1c97"
+DIRECTUS_DEFAULT_COVER = "a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f"
 
 cores = cpu_count()
 memory = Memory(".cache", verbose=0)
@@ -46,6 +53,8 @@ class DirectusPost:
     category: str
     cover: Optional[str] = None
     featured: Optional[bool] = False
+    original_uri: Optional[str] = None
+    formatted_by: Optional[str] = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -66,14 +75,10 @@ def create_folder(folder_name: str, parent: str) -> tuple[str, str, str]:
     """
     Create a folder in Directus.
     """
-    query = client.get(
-        DIRECTUS_FOLDERS_URL,
-        params={
-            "filter[name][_eq]": folder_name,
-            "filter[parent][_eq]": parent,
-            "limit": 1,
-        },
-    )
+    params = {"filter[name][_eq]": folder_name, "limit": 1}
+    if parent is not None:
+        params["filter[parent][_eq]"] = parent
+    query = client.get(DIRECTUS_FOLDERS_URL, params=params)
     query.raise_for_status()
     existing = query.json().get("data", [])
     if existing:
@@ -81,7 +86,10 @@ def create_folder(folder_name: str, parent: str) -> tuple[str, str, str]:
         logger.info(f"Reusing folder {data.get('name')} ({data.get('id')}) in Directus.")
         return data.get("id"), data.get("name"), data.get("parent")
 
-    response = client.post(DIRECTUS_FOLDERS_URL, json={"name": folder_name, "parent": parent})
+    payload = {"name": folder_name}
+    if parent is not None:
+        payload["parent"] = parent
+    response = client.post(DIRECTUS_FOLDERS_URL, json=payload)
     response.raise_for_status()
     data = (response.json()).get("data", {})
     folder_id = data.get("id")
@@ -91,28 +99,25 @@ def create_folder(folder_name: str, parent: str) -> tuple[str, str, str]:
     return folder_id, created_folder_name, folder_parent
 
 
-def create_item(post: DirectusPost) -> DirectusPost:
-    """Create a new collection item in Directus.
-
-    Args:
-        post (DirectusPost): The post to create.
-        mappings (Mapping): The mappings to use.
-    """
+def _item_payload(post: DirectusPost) -> dict:
     data: dict = asdict(post)
-    # Internal tracking field; not part of the Directus payload.
+    # Import tracking fields; not part of the Directus feeds payload.
     data.pop("id_directus", None)
+    data.pop("id_wordpress", None)
+    data.pop("link", None)
+    if data.get("formatted_by") is None:
+        data.pop("formatted_by", None)
     data["status"] = "published"
 
     category = data.get("category")
     if isinstance(category, str):
         category = category.strip()
-        if category.isdigit():
+        if not category:
+            data.pop("category", None)
+        elif category.isdigit():
             data["category"] = int(category)
         else:
-            logger.warning(
-                f"Dropping unsupported category value '{category}' for post '{post.slug}'. Expected numeric ID."
-            )
-            data.pop("category", None)
+            data["category"] = category
     elif isinstance(category, int):
         data["category"] = category
     elif category is not None:
@@ -122,10 +127,14 @@ def create_item(post: DirectusPost) -> DirectusPost:
         data.pop("category", None)
 
     # The target collection cover is UUID-backed, so keep cover as-is.
+    return data
+
+
+def _payload_attempts(data: dict) -> list[dict]:
     attempts: list[dict] = [
         data,
-        {k: v for k, v in data.items() if k != "cover"},
         {k: v for k, v in data.items() if k != "category"},
+        {k: v for k, v in data.items() if k != "cover"},
         {k: v for k, v in data.items() if k not in {"category", "cover"}},
     ]
     # Remove duplicate payload variants while preserving order.
@@ -137,8 +146,20 @@ def create_item(post: DirectusPost) -> DirectusPost:
             continue
         seen.add(key)
         unique_attempts.append(payload)
-    attempts = unique_attempts
+    return unique_attempts
 
+
+def _append_content_fallbacks(attempts: list[dict], payload: dict) -> None:
+    shorter = deepcopy(payload)
+    shorter["content"] = str(shorter["content"])[:255]
+    attempts.append(shorter)
+    no_content = {k: v for k, v in payload.items() if k != "content"}
+    attempts.append(no_content)
+
+
+def create_item(post: DirectusPost) -> DirectusPost:
+    """Create a new collection item in Directus."""
+    attempts = _payload_attempts(_item_payload(post))
     last_error: Optional[httpx.HTTPStatusError] = None
     content_fallback_added = False
     for idx, payload in enumerate(attempts, start=1):
@@ -158,18 +179,18 @@ def create_item(post: DirectusPost) -> DirectusPost:
             # If record already exists (e.g. unique slug/id_wordpress), treat as idempotent.
             if exc.response.status_code == 400 and "RECORD_NOT_UNIQUE" in exc.response.text:
                 existing = None
-                id_wordpress = payload.get("id_wordpress")
+                original_uri = payload.get("original_uri")
                 slug = payload.get("slug")
-                if id_wordpress:
-                    existing = find_item("id_wordpress", id_wordpress)
+                if original_uri:
+                    existing = find_item("original_uri", original_uri)
                 if not existing and slug:
                     existing = find_item("slug", slug)
                 if existing:
                     post.id_directus = existing
                     logger.info(
-                        f"Item already exists for post '{post.slug}'. Reusing Directus ID {post.id_directus}."
+                        f"Item already exists for post '{post.slug}'. Updating Directus ID {post.id_directus}."
                     )
-                    return post
+                    return update_item(post)
 
             # Some target schemas enforce short content lengths.
             # Retry once with truncated content and once with content removed.
@@ -180,11 +201,7 @@ def create_item(post: DirectusPost) -> DirectusPost:
                 and "content" in payload
                 and not content_fallback_added
             ):
-                shorter = deepcopy(payload)
-                shorter["content"] = str(shorter["content"])[:255]
-                attempts.append(shorter)
-                no_content = {k: v for k, v in payload.items() if k != "content"}
-                attempts.append(no_content)
+                _append_content_fallbacks(attempts, payload)
                 content_fallback_added = True
             last_error = exc
             logger.warning(
@@ -198,6 +215,75 @@ def create_item(post: DirectusPost) -> DirectusPost:
     raise last_error
 
 
+def update_item(post: DirectusPost) -> DirectusPost:
+    """Update an existing collection item in Directus."""
+    if not post.id_directus:
+        raise ValueError("Cannot update a Directus item without id_directus.")
+
+    attempts = _payload_attempts(_item_payload(post))
+    last_error: Optional[httpx.HTTPStatusError] = None
+    content_fallback_added = False
+    for idx, payload in enumerate(attempts, start=1):
+        try:
+            res = client.patch(
+                urljoin(DIRECTUS_COLLECTION_URL + "/", str(post.id_directus)),
+                json=payload,
+            )
+            res.raise_for_status()
+            post.id_directus = res.json().get("data", {}).get("id", post.id_directus)
+            logger.info(f"Updated item {post.id_directus} in Directus (attempt {idx}).")
+            return post
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 403:
+                logger.error(
+                    f"Forbidden while updating collection '{DIRECTUS_COLLECTION}' at "
+                    f"{DIRECTUS_COLLECTION_URL}. Ensure DIRECTUS_TOKEN is set and its role has "
+                    f"update permission on fields: {', '.join(payload.keys())}."
+                )
+                raise
+            if (
+                exc.response.status_code == 400
+                and "VALUE_TOO_LONG" in exc.response.text
+                and '"field":"content"' in exc.response.text
+                and "content" in payload
+                and not content_fallback_added
+            ):
+                _append_content_fallbacks(attempts, payload)
+                content_fallback_added = True
+            last_error = exc
+            logger.warning(
+                f"Update item failed (attempt {idx}) with {exc.response.status_code}: {exc.response.text[:300]}"
+            )
+
+    assert last_error is not None
+    logger.error(
+        f"Failed to update item {post.id_directus} for post '{post.slug}' after retries. "
+        f"Response: {last_error.response.text}"
+    )
+    raise last_error
+
+
+def save_item(post: DirectusPost) -> DirectusPost:
+    """Create or update a Directus item for a WordPress post."""
+    existing = find_item("slug", post.slug)
+    if existing:
+        if post.id_directus and str(post.id_directus) != str(existing):
+            logger.warning(
+                f"Cached Directus item {post.id_directus} for post '{post.slug}' is stale. "
+                f"Using existing Directus item {existing} found by slug."
+            )
+        post.id_directus = existing
+        return update_item(post)
+
+    if post.id_directus:
+        logger.info(
+            f"Updating cached Directus item {post.id_directus} for post '{post.slug}'."
+        )
+        return update_item(post)
+
+    return create_item(post)
+
+
 def find_item(field: str, value: str) -> Optional[str]:
     response = client.get(
         DIRECTUS_COLLECTION_URL, params={f"filter[{field}][_eq]": value, "limit": 1}
@@ -207,6 +293,18 @@ def find_item(field: str, value: str) -> Optional[str]:
     if not data:
         return None
     return data[0].get("id")
+
+
+def get_item(item_id: str | int, fields: str | None = None) -> Optional[dict]:
+    params = {"fields": fields} if fields else None
+    response = client.get(
+        urljoin(DIRECTUS_COLLECTION_URL + "/", str(item_id)),
+        params=params,
+    )
+    if response.status_code == 404:
+        return None
+    response.raise_for_status()
+    return response.json().get("data")
 
 
 def delete_folder(folder_id: str) -> None:
@@ -334,6 +432,30 @@ def get_items(collection: str, id: int) -> list[dict]:
     return data.get("data", [])
 
 
+def get_post_by_wordpress_id(wordpress_id: str) -> Optional[dict]:
+    """
+    Fetch a post from Directus by its WordPress ID.
+
+    Args:
+        wordpress_id (str): The WordPress post ID.
+
+    Returns:
+        Optional[dict]: The post data if found, None otherwise.
+
+    Notes:
+        This function checks if a post with the given WordPress ID already exists in Directus.
+    """
+    url: str = urljoin(DIRECTUS_ITEMS_URL, DIRECTUS_COLLECTION)
+    url += f"?filter[id_wordpress][_eq]={wordpress_id}"
+    logger.info(f"Checking if post with wordpress_id {wordpress_id} exists: {url}")
+
+    response = client.get(url)
+    response.raise_for_status()
+    data = response.json()
+    items = data.get("data", [])
+    return items[0] if items else None
+
+
 def list_files(folder_id: str) -> tuple[str]:
     """
     List files in a given folder.
@@ -350,6 +472,18 @@ def list_files(folder_id: str) -> tuple[str]:
     response = client.get(DIRECTUS_FILES_URL, params={"filter[folder]": folder_id})
     response.raise_for_status()
     return tuple(f.get("id") for f in response.json().get("data"))
+
+
+def list_files_in_folder(folder_id: str) -> list[dict]:
+    """
+    List file metadata in a given folder.
+    """
+    response = client.get(
+        DIRECTUS_FILES_URL,
+        params={"filter[folder]": folder_id, "fields": "id,filename_disk,filename_download"},
+    )
+    response.raise_for_status()
+    return response.json().get("data", [])
 
 
 def upload(

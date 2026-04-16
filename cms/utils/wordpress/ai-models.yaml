@@ -1,0 +1,29 @@
+bad_samples: []
+blacklist:
+- arcee-ai/trinity-large-preview:free
+- google/gemma-3n-e2b-it:free
+- liquid/lfm-2.5-1.2b-instruct-20260120:free
+- liquid/lfm-2.5-1.2b-thinking-20260120:free
+- nvidia/nemotron-3-nano-30b-a3b:free
+- nvidia/nemotron-nano-12b-v2-vl:free
+whitelist:
+- openai/gpt-oss-120b
+- google/gemma-3-27b-it
+- minimax/minimax-m2.5-20260211
+- z-ai/glm-4.5-air
+- openai/gpt-oss-20b
+- nvidia/nemotron-3-nano-30b-a3b
+- nvidia/nemotron-nano-9b-v2
+- arcee-ai/trinity-large-preview
+- google/gemma-3n-e4b-it
+- openai/gpt-oss-120b:free
+- google/gemma-3n-e4b-it:free
+- openai/gpt-oss-20b:free
+- nvidia/nemotron-nano-9b-v2:free
+- arcee-ai/trinity-large-preview:free
+- google/gemma-3-4b-it:free
+- minimax/minimax-m2.5-20260211:free
+- google/gemma-3-27b-it:free
+- z-ai/glm-4.5-air:free
+- google/gemma-4-26b-a4b-it-20260403:free
+- google/gemma-4-31b-it-20260402:free
