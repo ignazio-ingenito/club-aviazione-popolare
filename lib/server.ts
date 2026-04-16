@@ -151,13 +151,21 @@ export const getFeedBySlug = async (slug: string): Promise<Feed> => {
     })
   )
 
-  return rows[0] || ({} as Feed)
+  const feed = rows[0] || ({} as Feed)
+
+  // Check if content ends with "Sergio Barlocchetti" and set as author
+  if (feed.content && feed.content.trim().endsWith("Sergio Barlocchetti")) {
+    feed.author = "Sergio Barlocchetti"
+  }
+
+  return feed
 }
 
 export const getFeeds = async (
   id: string,
   featured?: boolean,
-  limit?: number
+  limit?: number,
+  offset?: number
 ): Promise<Feed[]> => {
   const normalized = normalizeCategoryKey(id)
   const filter: Record<string, unknown> = {
@@ -177,6 +185,7 @@ export const getFeeds = async (
       filter,
       sort: ["-date"],
       limit,
+      offset,
     })
   )
 

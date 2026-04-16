@@ -43,19 +43,21 @@ const NewsCard = ({
             key={id}
             className="overflow-hidden group hover:shadow-lg transition-shadow flex flex-col hover:cursor-pointer"
         >
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative h-48 shrink-0 overflow-hidden">
                 <Image
                     src={getImageUrl(cover)}
                     width={width}
                     height={height}
                     alt={coverTitle}
                     loading="lazy"
+                    quality={90}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     style={{
                         objectPosition: `${focalPointXPercentage}% ${focalPointYPercentage}%`
                     }}
                 />
-                <Badge className="absolute top-4 right-4 bg-background/90 text-foreground">
+                <Badge className="absolute top-4 right-4 bg-background/90 text-[#0056a4] hover:bg-background/90">
                     {category.title}
                 </Badge>
             </div>
@@ -72,11 +74,12 @@ const NewsCard = ({
                         <span>{author}</span>
                     </div>
                 </div>
-                <span className="text-xl font-bold mt-1 mb-3 group-hover:text-primary transition-colors line-clamp-1">
+                <span className="text-xl font-bold mt-1 mb-3 text-accent group-hover:text-primary transition-colors line-clamp-1">
                     {title}
                 </span>
                 {/* text-sm text-muted-foreground leading-relaxed mb-4 flex-1 line-clamp-3 */}
-                <div className="overflow-hidden text-sm text-muted-foreground leading-relaxed line-clamp-5"
+                <div
+                    className="overflow-hidden text-sm text-muted-foreground leading-relaxed line-clamp-5 max-h-[8.5rem] block whitespace-normal break-words"
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(content || "") }}
                 />
                 <Link

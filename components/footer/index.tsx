@@ -2,7 +2,8 @@ import Link from "next/link"
 import { getMetadata } from "@/lib/server"
 import { Metadata } from "@/lib/types"
 
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"
 
 type SiteFooterProps = Partial<Metadata>
 
@@ -73,7 +74,7 @@ export const SiteFooter = async (props: SiteFooterProps) => {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Facebook className="h-5 w-5" />
+                <FaFacebook className="h-5 w-5" />
                 <span className="sr-only">Facebook</span>
               </a>
               <a
@@ -82,7 +83,7 @@ export const SiteFooter = async (props: SiteFooterProps) => {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Instagram className="h-5 w-5" />
+                <FaInstagram className="h-5 w-5" />
                 <span className="sr-only">Instagram</span>
               </a>
               <a
@@ -91,7 +92,7 @@ export const SiteFooter = async (props: SiteFooterProps) => {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
-                <Twitter className="h-5 w-5" />
+                <FaTwitter className="h-5 w-5" />
                 <span className="sr-only">Twitter</span>
               </a>
             </div>

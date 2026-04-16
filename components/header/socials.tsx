@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter } from "lucide-react"
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"
 
 type SocialsProps = {
     className?: string
@@ -30,9 +30,9 @@ export function HeaderSocials({
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${css} flex items-center gap-1 hover:scale-150 transition-all ease-in-out duration-300`}
-                    aria-label="Apri Twitter"
+                    aria-label="Apri Instagram"
                 >
-                    <Instagram className="h-4 w-4" />
+                    <FaInstagram className="h-4 w-4" />
                 </a>
             )}
             {facebookUrl && (
@@ -43,7 +43,7 @@ export function HeaderSocials({
                     className={`${css} flex items-center gap-1 hover:scale-150 transition-all ease-in-out duration-300`}
                     aria-label="Apri Facebook"
                 >
-                    <Facebook className="h-4 w-4" />
+                    <FaFacebook className="h-4 w-4" />
                 </a>
             )}
             {twitterUrl && (
@@ -54,7 +54,7 @@ export function HeaderSocials({
                     className={`${css} flex items-center gap-1 hover:scale-150 transition-all ease-in-out duration-300`}
                     aria-label="Apri Twitter"
                 >
-                    <Twitter className="h-4 w-4" />
+                    <FaTwitter className="h-4 w-4" />
                 </a>
             )}
         </div>

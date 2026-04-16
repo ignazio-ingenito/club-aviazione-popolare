@@ -30,26 +30,30 @@ const FeaturedCard = ({
         : 50 // Default to center if focal point is missing or invalid
 
     return (
-        <Card key={id} className="relative p-6 pb-4 mb-1">
-            <Badge className="absolute top-2 right-2 rounded-xs font-semibold">
+        <Card key={id} className="relative overflow-hidden group flex min-h-[25rem] sm:min-h-0 mb-1 hover:shadow-lg transition-shadow">
+            <div className="relative w-2/5 shrink-0 overflow-hidden">
+                <Image
+                    src={coverUrl}
+                    width={width}
+                    height={height}
+                    alt={coverTitle}
+                    loading="lazy"
+                    quality={90}
+                    sizes="40vw"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    style={{
+                        objectPosition: `${focalPointXPercentage}% ${focalPointYPercentage}%`
+                    }}
+                />
+            </div>
+            <Badge className="absolute top-4 right-4 rounded-xs font-semibold">
                 in Evidenza
             </Badge>
-            <CardContent className="overflow-hidden p-0 m-0">
-                <section className="pt-3 pb-1 text-2xl text-accent whitespace-nowrap overflow-hidden text-ellipsis uppercase">
+            <CardContent className="overflow-hidden px-6 pt-10 pb-4 flex flex-col flex-1 min-w-0">
+                <section className="text-xl font-bold mb-2 text-accent group-hover:text-primary transition-colors line-clamp-2">
                     {title}
                 </section>
-                <section className="h-54 overflow-hidden line-clamp-9 text-ellipsis">
-                    <Image
-                        src={coverUrl}
-                        width={width}
-                        height={height}
-                        alt={coverTitle}
-                        loading="lazy"
-                        className="float-left object-cover pr-2 pt-2 w-[40%]"
-                        style={{
-                            objectPosition: `${focalPointXPercentage}% ${focalPointYPercentage}%`
-                        }}
-                    />
+                <section className="mt-2 flex-1 overflow-hidden line-clamp-7 text-ellipsis">
                     <div
                         className="text-muted-foreground"
                         dangerouslySetInnerHTML={{ __html: html }}

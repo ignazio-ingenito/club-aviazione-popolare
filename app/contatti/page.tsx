@@ -1,7 +1,8 @@
 import type React from "react"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, Phone, MapPin, Clock, Facebook, Twitter, Instagram, Info, MapPinCheck } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, Info, MapPinCheck } from "lucide-react"
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"
 import { getMetadata, getPage } from "@/lib/server"
 import { PageHero } from "@/components/page/hero"
 
@@ -114,9 +115,9 @@ export default async function index() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
-                          aria-label="Apri Twitter"
+                          aria-label="Apri Instagram"
                         >
-                          <Instagram className="h-4 w-4" />
+                          <FaInstagram className="h-4 w-4" />
                         </a>
                       )}
                       {facebook && (
@@ -127,7 +128,7 @@ export default async function index() {
                           className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
                           aria-label="Apri Facebook"
                         >
-                          <Facebook className="h-4 w-4" />
+                          <FaFacebook className="h-4 w-4" />
                         </a>
                       )}
                       {twitter && (
@@ -138,7 +139,7 @@ export default async function index() {
                           className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:text-primary-foreground hover:bg-primary"
                           aria-label="Apri Twitter"
                         >
-                          <Twitter className="h-4 w-4" />
+                          <FaTwitter className="h-4 w-4" />
                         </a>
                       )}
                     </div>

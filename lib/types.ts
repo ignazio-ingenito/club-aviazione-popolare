@@ -61,6 +61,7 @@ export type Feed = {
   sort?: number
   status: string
   title?: string
+  original_uri?: string
   user_created: UUID
   date_created: Date
   user_updated: UUID

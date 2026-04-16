@@ -11,5 +11,19 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "chat.tools.terminal.autoApprove": {
+    "/^cd /home/iingenito/projects/personal/club-avizione-popolare/cms/utils/wordpress && python -m py_compile ai\\.py$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^cd /home/iingenito/projects/personal/club-avizione-popolare/cms/utils/wordpress && python -m py_compile wordpress\\.py directus\\.py$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^cd /home/iingenito/projects/personal/club-avizione-popolare/cms/utils/wordpress && python -c \"\nimport wordpress\nimport directus\nposts = wordpress\\.get_posts\\(\\)\nif posts:\n    post_dict = posts\\[0\\]\n    print\\('Post dict keys:', list\\(post_dict\\.keys\\(\\)\\)\\)\n    print\\('original_uri:', post_dict\\.get\\('original_uri'\\)\\)\n    post_obj = directus\\.DirectusPost\\(\\*\\*post_dict\\)\n    print\\('DirectusPost original_uri:', post_obj\\.original_uri\\)\n\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
   }
 }

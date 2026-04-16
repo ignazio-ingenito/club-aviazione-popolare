@@ -14,7 +14,7 @@ interface Props {
 
 export default async function index({ params }: Props) {
   const { slug } = await params
-  const { author, title, category, content, cover, date, description, cover_offset_x, cover_offset_y, gallery } = await getFeedBySlug(slug)
+  const { author, title, category, content, cover, date, description, cover_offset_x, cover_offset_y, gallery, original_uri } = await getFeedBySlug(slug)
   const { icon } = await getSubMenuByUrl(`/feed/${category.key}`)
 
 
@@ -27,7 +27,13 @@ export default async function index({ params }: Props) {
           <div className="w-full flex justify-center">
             <Cover cover={cover} className={`h-auto w-full max-h-120 object-cover`} offset_x={cover_offset_x} offset_y={cover_offset_y} />
           </div>
-
+          {
+            original_uri && (
+              <div className="text-sm text-gray-500 mt-4">
+                Original article: <a href={original_uri} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">{original_uri}</a>
+              </div>
+            )
+          }
           <Article
             title={title}
             cover={cover}
