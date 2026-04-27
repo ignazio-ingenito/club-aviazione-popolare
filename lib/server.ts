@@ -184,7 +184,7 @@ export const getFeeds = async (
       fields: ["*", "category.key", "category.title", "cover.*"],
       filter,
       sort: ["-date"],
-      limit,
+      limit: limit ?? -1,
       offset,
     })
   )

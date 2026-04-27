@@ -1394,6 +1394,42 @@
   slug: 2017-er
   title: Efficiency Race 2017
   wp_link: https://www.clubaviazionepopolare.org/2017-er/
+'2751':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2017-07-17T04:00:00+02:00'
+  id_directus: 277
+  id_wordpress: '2751'
+  slug: 2017-raduno-fcap-savethedate
+  title: "45\xB0 Raduno CAP \u2013 Save the date \u2013 9 e10 settembre  \u2013 Pavullo"
+  wp_link: https://www.clubaviazionepopolare.org/2017-raduno-fcap-savethedate/
+'2752':
+  category: news
+  cover: faa85dde-6153-4a70-86c8-ec99ee7c6a43
+  date: '2017-07-21T10:46:00+02:00'
+  id_directus: 278
+  id_wordpress: '2752'
+  slug: 2017-pavullo
+  title: "45\xB0 Raduno CAP"
+  wp_link: https://www.clubaviazionepopolare.org/2017-pavullo/
+'2753':
+  category: news
+  cover: 840943a8-3d68-43a1-865c-5dbb06b06a85
+  date: '2017-08-21T09:10:04+02:00'
+  id_directus: 279
+  id_wordpress: '2753'
+  slug: ciao-gianni-zamboni
+  title: Ciao Gianni
+  wp_link: https://www.clubaviazionepopolare.org/ciao-gianni-zamboni/
+'2754':
+  category: news
+  cover: 7fc1979b-e170-42f6-bf27-9c49b2060aa0
+  date: '2017-09-02T14:00:00+02:00'
+  id_directus: 281
+  id_wordpress: '2754'
+  slug: 2017-pavullo-programma
+  title: "45\xB0 Raduno CAP \u2013 Il programma"
+  wp_link: https://www.clubaviazionepopolare.org/2017-pavullo-programma/
 '2755':
   cover: 2a58cf4d-eb0c-4f56-8bc6-5eaeeee01ce2
   date: '2017-10-21T03:58:06+02:00'
@@ -1402,6 +1438,24 @@
   slug: 2017-corso-thiene
   title: Iniziativa CAP Experimental
   wp_link: https://www.clubaviazionepopolare.org/2017-corso-thiene/
+'2756':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2019-02-18T19:35:42+01:00'
+  id_directus: 285
+  id_wordpress: '2756'
+  slug: gonewestczajkowski
+  title: GONE WEST Delio Czajkowski
+  wp_link: https://www.clubaviazionepopolare.org/gonewestczajkowski/
+'2757':
+  category: news
+  cover: 89dc99f8-529a-457a-8ace-47384fa7a73c
+  date: '2018-04-26T04:44:02+02:00'
+  id_directus: 282
+  id_wordpress: '2757'
+  slug: ozzano-sky-venture-2018
+  title: Ozzano sky venture 2018
+  wp_link: https://www.clubaviazionepopolare.org/ozzano-sky-venture-2018/
 '2758':
   category: news
   cover: 46c000b9-892b-422e-9fc1-119c798d31e6
@@ -1420,6 +1474,33 @@
   slug: 2018-raduno-cap-toscana-2
   title: Raduno Cap Toscana 2018
   wp_link: https://www.clubaviazionepopolare.org/2018-raduno-cap-toscana-2/
+'2760':
+  category: news
+  cover: 80ee953c-6963-4761-a2c7-0730e1e401a9
+  date: '2018-04-26T05:09:17+02:00'
+  id_directus: 284
+  id_wordpress: '2760'
+  slug: jp4-2016
+  title: "Articoli JP4 \u2013 2016"
+  wp_link: https://www.clubaviazionepopolare.org/jp4-2016/
+'2761':
+  category: news
+  cover: ed0bd980-9553-4242-8ec0-5944236a8f54
+  date: '2018-04-26T05:09:17+02:00'
+  id_directus: 283
+  id_wordpress: '2761'
+  slug: jp4-2017
+  title: "Articoli JP4 \u2013 2017"
+  wp_link: https://www.clubaviazionepopolare.org/jp4-2017/
+'2762':
+  category: news
+  cover: 912333aa-ec5d-433b-92d0-21246db25231
+  date: '2017-09-02T14:00:00+02:00'
+  id_directus: 280
+  id_wordpress: '2762'
+  slug: dominelli-260
+  title: SF-260 La Ferrari dei cieli
+  wp_link: https://www.clubaviazionepopolare.org/dominelli-260/
 '2763':
   category: news
   cover: 1ff973d0-e82b-4cb6-b655-d13fc4d5c79e
@@ -1456,6 +1537,42 @@
   slug: er-2019
   title: Efficiency Race 2019
   wp_link: https://www.clubaviazionepopolare.org/er-2019/
+'2767':
+  category: news
+  cover: fdf8d1fa-87dd-4972-b150-942f20c47649
+  date: '2019-04-08T18:01:13+02:00'
+  id_directus: 286
+  id_wordpress: '2767'
+  slug: cap-piemonte
+  title: Raduno CAP Piemonte 2019
+  wp_link: https://www.clubaviazionepopolare.org/cap-piemonte/
+'2768':
+  category: news
+  cover: 4649afdf-97d7-469b-ac60-9d635a1b5656
+  date: '2019-04-08T18:54:13+02:00'
+  id_directus: 287
+  id_wordpress: '2768'
+  slug: club-aviazione-popolare
+  title: "47\xB0 Raduno Nazionale Sodalizio CAP 2019"
+  wp_link: https://www.clubaviazionepopolare.org/club-aviazione-popolare/
+'2769':
+  category: news
+  cover: 28cfc1ce-e47b-41e3-acab-b6d24256ecbd
+  date: '2019-04-08T19:09:55+02:00'
+  id_directus: 288
+  id_wordpress: '2769'
+  slug: cap-toscana-2
+  title: "30\xB0 Raduno CAP Toscana 2019"
+  wp_link: https://www.clubaviazionepopolare.org/cap-toscana-2/
+'2770':
+  category: news
+  cover: 5030519a-e0f9-41c2-9ddd-ff915c0b4c08
+  date: '2019-05-05T09:12:38+02:00'
+  id_directus: 289
+  id_wordpress: '2770'
+  slug: corso-intelaggio-cap-toscana
+  title: "Corso intelaggio 2019 \u2013 CAP Toscana"
+  wp_link: https://www.clubaviazionepopolare.org/corso-intelaggio-cap-toscana/
 '3957':
   cover: 5a845f7c-e09d-400a-8c9b-009beb5b4752
   date: '2020-03-03T14:42:48+01:00'
@@ -1464,6 +1581,187 @@
   slug: seminario-sulla-storia-della-carburazione
   title: Seminario sulla storia della carburazione
   wp_link: https://www.clubaviazionepopolare.org/seminario-sulla-storia-della-carburazione/
+'5041':
+  category: news
+  cover: b5721976-4a87-442d-a416-84e51a953a02
+  date: '2020-03-22T15:07:30+01:00'
+  id_directus: 290
+  id_wordpress: '5041'
+  slug: pino-ci-ha-lasciato
+  title: Pino ci ha lasciato
+  wp_link: https://www.clubaviazionepopolare.org/pino-ci-ha-lasciato/
+'5099':
+  category: news
+  cover: f0076529-2967-4a85-895b-2c6dd88c5118
+  date: '2020-03-30T18:03:14+02:00'
+  id_directus: 291
+  id_wordpress: '5099'
+  slug: comunicato-stampa
+  title: Comunicato Stampa
+  wp_link: https://www.clubaviazionepopolare.org/comunicato-stampa/
+'5516':
+  category: news
+  cover: 4d3df628-744a-4c9c-bda2-01ff5e7939ed
+  date: '2020-04-05T13:52:08+02:00'
+  id_directus: 292
+  id_wordpress: '5516'
+  slug: nuovo-inserimento
+  title: Nuovo Inserimento
+  wp_link: https://www.clubaviazionepopolare.org/nuovo-inserimento/
+'5534':
+  category: news
+  cover: 6243a976-677e-4df0-b0a2-52115fcbc2a8
+  date: '2020-04-16T16:32:31+02:00'
+  id_directus: 293
+  id_wordpress: '5534'
+  slug: webinar-motori
+  title: Webinar motori
+  wp_link: https://www.clubaviazionepopolare.org/webinar-motori/
+'5551':
+  category: news
+  cover: 5470b286-e2ff-4704-8b26-26df92206561
+  date: '2020-04-24T18:08:58+02:00'
+  id_directus: 294
+  id_wordpress: '5551'
+  slug: webinar-ripresa-volo
+  title: "Webinar \u201CRipresa volo\u201D"
+  wp_link: https://www.clubaviazionepopolare.org/webinar-ripresa-volo/
+'5575':
+  category: news
+  cover: 7d8006c9-b7e0-4093-90d0-265699f8a988
+  date: '2020-09-09T14:23:26+02:00'
+  id_directus: 295
+  id_wordpress: '5575'
+  slug: raduno-ozzano
+  title: RADUNO OZZANO
+  wp_link: https://www.clubaviazionepopolare.org/raduno-ozzano/
+'5585':
+  category: news
+  cover: 2c3fcb45-e0a4-4688-b56f-1e0ca323f2dd
+  date: '2020-10-30T08:31:45+01:00'
+  id_directus: 296
+  id_wordpress: '5585'
+  slug: il-nostro-ing-galli-compie-90-anni
+  title: Il nostro ing. Galli compie 90 anni !
+  wp_link: https://www.clubaviazionepopolare.org/il-nostro-ing-galli-compie-90-anni/
+'5601':
+  category: news
+  cover: 8a056189-64b9-40b0-8edd-e311d4abf877
+  date: '2020-12-08T12:15:46+01:00'
+  id_directus: 297
+  id_wordpress: '5601'
+  slug: gone-west-charles-elwood-chuck-yeager
+  title: "Gone West \u2013 Charles Elwood \u201CChuck\u201D Yeager"
+  wp_link: https://www.clubaviazionepopolare.org/gone-west-charles-elwood-chuck-yeager/
+'5610':
+  category: news
+  cover: 3a183999-55ce-4ba4-98a4-256136c485e8
+  date: '2021-01-06T17:08:47+01:00'
+  id_directus: 298
+  id_wordpress: '5610'
+  slug: vanni
+  title: Vanni
+  wp_link: https://www.clubaviazionepopolare.org/vanni/
+'5624':
+  category: news
+  cover: 08f72b46-199c-4454-ac9e-b8cb6e8c5bf9
+  date: '2021-09-03T15:28:32+02:00'
+  id_directus: 299
+  id_wordpress: '5624'
+  slug: raduno-nazionale-2021-ozzano
+  title: RADUNO NAZIONALE 2021 OZZANO 10-11-12 SETTEMBRE
+  wp_link: https://www.clubaviazionepopolare.org/raduno-nazionale-2021-ozzano/
+'5635':
+  category: news
+  cover: 41dcca81-3e4e-4eba-9623-53c1181b7036
+  date: '2021-11-14T18:15:33+01:00'
+  id_directus: 300
+  id_wordpress: '5635'
+  slug: incontro-aggiornamento-ist
+  title: Incontro aggiornamento IST
+  wp_link: https://www.clubaviazionepopolare.org/incontro-aggiornamento-ist/
+'5651':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2021-11-15T18:38:19+01:00'
+  id_directus: 301
+  id_wordpress: '5651'
+  slug: 5651-2
+  title: Pubblicati i seminari tecnici
+  wp_link: https://www.clubaviazionepopolare.org/5651-2/
+'5662':
+  category: news
+  cover: 3af467a6-b983-4d9e-ba9a-05000f4992bb
+  date: '2021-11-18T08:29:48+01:00'
+  id_directus: 302
+  id_wordpress: '5662'
+  slug: aggiornamento-pagina-seminari-tecnici
+  title: Aggiornamento pagina seminari tecnici (Motori)
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-pagina-seminari-tecnici/
+'5668':
+  category: news
+  cover: a5db9edc-9eae-4aea-9a12-bc8cc1da32ab
+  date: '2021-11-18T08:33:26+01:00'
+  id_directus: 303
+  id_wordpress: '5668'
+  slug: aggiornamento-pagina-seminari-tecnici-manutenzione-on-condition
+  title: Aggiornamento pagina seminari tecnici (Manutenzione on Condition)
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-pagina-seminari-tecnici-manutenzione-on-condition/
+'5671':
+  category: news
+  cover: 7546b7c8-e0c6-42c9-91c3-7d14dbd9c355
+  date: '2021-11-19T09:49:49+01:00'
+  id_directus: 304
+  id_wordpress: '5671'
+  slug: pdv-definitivo-per-lrv-di-marco-cherubini
+  title: "PdV definitivo per L\u2019RV di Marco Cherubini"
+  wp_link: https://www.clubaviazionepopolare.org/pdv-definitivo-per-lrv-di-marco-cherubini/
+'5738':
+  category: news
+  cover: 556b5e62-f984-487b-8ead-4deac72f325c
+  date: '2021-11-20T09:00:24+01:00'
+  id_directus: 305
+  id_wordpress: '5738'
+  slug: galleria-fotografica-49-raduno-cap-ozzano-emilia-10-11-12-settembre-2021
+  title: "Galleria Fotografica 49\xB0 Raduno CAP \u2013 OZZANO EMILIA 10/11/12 Settembre\
+    \ 2021"
+  wp_link: https://www.clubaviazionepopolare.org/galleria-fotografica-49-raduno-cap-ozzano-emilia-10-11-12-settembre-2021/
+'5746':
+  category: news
+  cover: ffcdc2a1-0428-4096-af3c-c74f8ce5a88f
+  date: '2021-11-24T08:37:09+01:00'
+  id_directus: 306
+  id_wordpress: '5746'
+  slug: aggiornamento-pagina-seminari-tecnici-modifiche-pa-sb
+  title: Aggiornamento pagina Seminari Tecnici (Modifiche / PA / SB)
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-pagina-seminari-tecnici-modifiche-pa-sb/
+'5753':
+  category: news
+  cover: 1fa8b123-965f-49f4-a1b1-d9c3ec992de0
+  date: '2021-12-20T20:41:26+01:00'
+  id_directus: 307
+  id_wordpress: '5753'
+  slug: gli-auguri-del-presidente
+  title: Gli auguri del Presidente
+  wp_link: https://www.clubaviazionepopolare.org/gli-auguri-del-presidente/
+'5773':
+  category: news
+  cover: 33ba01ee-b445-407e-a065-dc19d483abb3
+  date: '2022-03-07T14:18:30+01:00'
+  id_directus: 308
+  id_wordpress: '5773'
+  slug: aggiornamento-pagina-seminari-tecnici-il-manuale-di-volo
+  title: Aggiornamento pagina Seminari Tecnici (Il manuale di volo)
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-pagina-seminari-tecnici-il-manuale-di-volo/
+'5782':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2022-03-21T15:49:20+01:00'
+  id_directus: 309
+  id_wordpress: '5782'
+  slug: vademecum-cap
+  title: VADEMECUM CAP
+  wp_link: https://www.clubaviazionepopolare.org/vademecum-cap/
 '5786':
   cover: d7a9510e-f64f-4bbe-98c6-0515221853bc
   date: '2022-06-14T06:33:53+02:00'
@@ -1496,6 +1794,24 @@
   slug: 73-raduno-della-federazione-rsa
   title: "73\xB0 Raduno\_ della Federazione RSA"
   wp_link: https://www.clubaviazionepopolare.org/73-raduno-della-federazione-rsa/
+'5848':
+  category: news
+  cover: 6cc69fba-cb09-4774-ab05-9f61c2892a25
+  date: '2022-07-07T07:51:03+02:00'
+  id_directus: 310
+  id_wordpress: '5848'
+  slug: aggiornata-modulistica-trofeo
+  title: Aggiornata modulistica trofeo
+  wp_link: https://www.clubaviazionepopolare.org/aggiornata-modulistica-trofeo/
+'5867':
+  category: news
+  cover: 41a7a562-d46f-447a-ba1c-5a4720544952
+  date: '2022-07-16T15:01:04+02:00'
+  id_directus: 311
+  id_wordpress: '5867'
+  slug: info-ulm-basici-raduno-foligno
+  title: "INFO ULM BASICI  \u2013 RADUNO FOLIGNO"
+  wp_link: https://www.clubaviazionepopolare.org/info-ulm-basici-raduno-foligno/
 '5873':
   category: notiziari
   cover: ed5c8e75-bddf-44db-a420-ae2d07ae32bb
@@ -1514,6 +1830,43 @@
   slug: notiziario-cap-settembre-2022
   title: Notiziario Settembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-settembre-2022/
+'5955':
+  category: news
+  cover: f652bc88-4407-483e-91cb-9babb71f5557
+  date: '2022-08-31T13:17:43+02:00'
+  id_directus: 312
+  id_wordpress: '5955'
+  slug: 5955-2
+  title: "50\xB0 Raduno Nazionale CAP \u2013 Programma Eventi"
+  wp_link: https://www.clubaviazionepopolare.org/5955-2/
+'5961':
+  category: news
+  cover: 28a51622-0283-4863-8283-d57cc0425373
+  date: '2022-09-02T10:20:26+02:00'
+  id_directus: 313
+  id_wordpress: '5961'
+  slug: 50-raduno-nazionale-cap-mercatino-usato
+  title: "50\xB0 Raduno Nazionale CAP \u2013 Mercatino usato"
+  wp_link: https://www.clubaviazionepopolare.org/50-raduno-nazionale-cap-mercatino-usato/
+'5965':
+  category: news
+  cover: 8424d389-4ae2-4ad2-85d0-5ceecfeccc38
+  date: '2022-09-02T15:35:37+02:00'
+  id_directus: 314
+  id_wordpress: '5965'
+  slug: 50-raduno-nazionale-regole-e-informazioni-generali-informazioni-e-regolamento
+  title: "50\xB0 Raduno Nazionale \u2013 REGOLE E INFORMAZIONI GENERALI INFORMAZIONI\
+    \ E REGOLAMENTO"
+  wp_link: https://www.clubaviazionepopolare.org/50-raduno-nazionale-regole-e-informazioni-generali-informazioni-e-regolamento/
+'5974':
+  category: news
+  cover: 6084df12-a75d-4142-b508-aa61c364249a
+  date: '2022-09-06T07:43:59+02:00'
+  id_directus: 315
+  id_wordpress: '5974'
+  slug: 50-raduno-last-minute-visita-officine-oma
+  title: "50\xB0 Raduno \u2013 Last minute visita officine OMA"
+  wp_link: https://www.clubaviazionepopolare.org/50-raduno-last-minute-visita-officine-oma/
 '5990':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1523,6 +1876,51 @@
   slug: notiziario-cap-ottobre-2022
   title: Notiziario Ottobre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-cap-ottobre-2022/
+'5998':
+  category: news
+  cover: 6d5904d8-dd04-4fa5-a6f9-5ee643d31450
+  date: '2022-09-14T13:04:48+02:00'
+  id_directus: 316
+  id_wordpress: '5998'
+  slug: cari-soci-notiziario-straordinario-50-raduno
+  title: "Cari Soci \u2013 Notiziario straordinario 50\xB0 Raduno"
+  wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-straordinario-50-raduno/
+'6018':
+  category: news
+  cover: 42e48d88-0aed-4048-b898-f67bc767480f
+  date: '2022-09-16T10:00:05+02:00'
+  id_directus: 317
+  id_wordpress: '6018'
+  slug: 50-raduno-i-trofei-e-le-premiazioni
+  title: "50\xB0  Raduno \u2013 I trofei e le premiazioni"
+  wp_link: https://www.clubaviazionepopolare.org/50-raduno-i-trofei-e-le-premiazioni/
+'6097':
+  category: news
+  cover: da66eda7-a3f1-40c3-8ca2-910deb05b81f
+  date: '2022-09-20T10:00:05+02:00'
+  id_directus: 318
+  id_wordpress: '6097'
+  slug: conoscere-il-sito
+  title: Conoscere il sito
+  wp_link: https://www.clubaviazionepopolare.org/conoscere-il-sito/
+'6109':
+  category: news
+  cover: af24a774-8793-4451-9aee-4a6ac9b63d43
+  date: '2022-09-23T10:00:17+02:00'
+  id_directus: 319
+  id_wordpress: '6109'
+  slug: i-seminari-degli-ist-luca-perazzolli
+  title: "I seminari degli IST \u2013 Luca Perazzolli"
+  wp_link: https://www.clubaviazionepopolare.org/i-seminari-degli-ist-luca-perazzolli/
+'6160':
+  category: news
+  cover: 44d1f892-31d6-494b-8e4a-bcd7375595ca
+  date: '2022-10-03T13:44:18+02:00'
+  id_directus: 320
+  id_wordpress: '6160'
+  slug: hey-i-want-you
+  title: HEY !! I WANT YOU
+  wp_link: https://www.clubaviazionepopolare.org/hey-i-want-you/
 '6181':
   cover: 58f96202-4637-4b0f-834d-45fbd11e3117
   date: '2022-10-10T09:55:56+02:00'
@@ -1540,6 +1938,51 @@
   slug: notiziario-novembre-2022
   title: Notiziario Novembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-novembre-2022/
+'6228':
+  category: news
+  cover: 037b2629-92c9-4a58-b23b-b634cc4e3042
+  date: '2022-10-17T10:00:51+02:00'
+  id_directus: 322
+  id_wordpress: '6228'
+  slug: il-mercatino-dei-soci
+  title: Il mercatino dei soci
+  wp_link: https://www.clubaviazionepopolare.org/il-mercatino-dei-soci/
+'6338':
+  category: news
+  cover: 55df569f-e4f0-42da-a56f-aa9d5ca41ac4
+  date: '2022-10-21T06:32:58+02:00'
+  id_directus: 323
+  id_wordpress: '6338'
+  slug: last-minute-cap-lombardia-cena-dei-soci
+  title: "Last Minute \u2013 CAP Lombardia Cena dei Soci"
+  wp_link: https://www.clubaviazionepopolare.org/last-minute-cap-lombardia-cena-dei-soci/
+'6382':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2022-10-31T11:00:09+01:00'
+  id_directus: 324
+  id_wordpress: '6382'
+  slug: convenzioni-e-servizi-esclusivi
+  title: Convenzioni e servizi esclusivi
+  wp_link: https://www.clubaviazionepopolare.org/convenzioni-e-servizi-esclusivi/
+'6496':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2022-11-07T11:00:42+01:00'
+  id_directus: 327
+  id_wordpress: '6496'
+  slug: conoscere-il-sito-2-parte
+  title: "CONOSCERE IL SITO \u2013 2\xB0 Parte"
+  wp_link: https://www.clubaviazionepopolare.org/conoscere-il-sito-2-parte/
+'6501':
+  category: news
+  cover: ef9c20c5-06dc-4f7a-83e5-1873785d93e4
+  date: '2022-11-01T11:00:08+01:00'
+  id_directus: 325
+  id_wordpress: '6501'
+  slug: corso-addestramento-ist-toscana
+  title: "Corso addestramento IST \u2013 TOSCANA"
+  wp_link: https://www.clubaviazionepopolare.org/corso-addestramento-ist-toscana/
 '6514':
   cover: 57d54fa6-0a79-4b78-acef-41dbba10996a
   date: '2022-11-14T10:55:05+01:00'
@@ -1548,6 +1991,33 @@
   slug: mai-perdere-la-speranza
   title: Mai perdere la speranza
   wp_link: https://www.clubaviazionepopolare.org/mai-perdere-la-speranza/
+'6530':
+  category: news
+  cover: 3cc8972e-228e-41b8-bd8d-07e04a3d9bc9
+  date: '2022-11-05T07:34:59+01:00'
+  id_directus: 326
+  id_wordpress: '6530'
+  slug: lultimo-decollo
+  title: "L\u2019ultimo decollo"
+  wp_link: https://www.clubaviazionepopolare.org/lultimo-decollo/
+'6536':
+  category: news
+  cover: 1c2ff442-45ff-465b-8353-a8dc248ce9b2
+  date: '2022-11-08T15:29:08+01:00'
+  id_directus: 328
+  id_wordpress: '6536'
+  slug: salvatore-sciacchitano-confermato-presidente-icao
+  title: "Salvatore Sciacchitano  \u2013 Confermato presidente ICAO"
+  wp_link: https://www.clubaviazionepopolare.org/salvatore-sciacchitano-confermato-presidente-icao/
+'6547':
+  category: news
+  cover: 72438ccc-984c-4723-95db-5982c9738bad
+  date: '2022-11-09T08:24:59+01:00'
+  id_directus: 329
+  id_wordpress: '6547'
+  slug: mercatino-soci-nuovo-articolo
+  title: "Mercatino Soci \u2013 Nuovo articolo"
+  wp_link: https://www.clubaviazionepopolare.org/mercatino-soci-nuovo-articolo/
 '6591':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1557,6 +2027,42 @@
   slug: notiziario-dicembre-2022
   title: Notiziario Dicembre 2022
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-dicembre-2022/
+'6595':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2022-11-22T09:35:54+01:00'
+  id_directus: 330
+  id_wordpress: '6595'
+  slug: certificazione-apparati-radio-portatili
+  title: Certificazione apparati radio portatili
+  wp_link: https://www.clubaviazionepopolare.org/certificazione-apparati-radio-portatili/
+'6667':
+  category: news
+  cover: 1abb762b-d94e-4057-848c-99ad6250b24d
+  date: '2022-11-24T09:15:10+01:00'
+  id_directus: 331
+  id_wordpress: '6667'
+  slug: nuovi-annunci
+  title: Nuovi Annunci
+  wp_link: https://www.clubaviazionepopolare.org/nuovi-annunci/
+'6670':
+  category: news
+  cover: e18a352d-128c-4454-b3f8-5e9fe61a6182
+  date: '2022-11-30T09:48:10+01:00'
+  id_directus: 332
+  id_wordpress: '6670'
+  slug: last-minute-news-seminario-aviazione-imbarcata-seminar-naval-aviation
+  title: "Last Minute news \u2013 Seminario aviazione imbarcata / Seminar naval aviation"
+  wp_link: https://www.clubaviazionepopolare.org/last-minute-news-seminario-aviazione-imbarcata-seminar-naval-aviation/
+'6676':
+  category: news
+  cover: c46c9ed9-1a0f-417d-92e8-8caa21c93306
+  date: '2022-12-04T21:59:37+01:00'
+  id_directus: 333
+  id_wordpress: '6676'
+  slug: lultimo-decollo-2
+  title: "L\u2019ultimo decollo"
+  wp_link: https://www.clubaviazionepopolare.org/lultimo-decollo-2/
 '6683':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1566,6 +2072,24 @@
   slug: notiziario-gennaio-2023
   title: Notiziario Gennaio 2023
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-gennaio-2023/
+'6686':
+  category: news
+  cover: 879545b8-fada-41ca-b365-1580d7d311c3
+  date: '2022-12-23T11:00:13+01:00'
+  id_directus: 334
+  id_wordpress: '6686'
+  slug: buon-natale-2022
+  title: Buon Natale 2022
+  wp_link: https://www.clubaviazionepopolare.org/buon-natale-2022/
+'6712':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2023-01-20T09:05:56+01:00'
+  id_directus: 335
+  id_wordpress: '6712'
+  slug: gt-propellers-s-n-c-di-tonini-gian-carlo-c-comunicazione
+  title: "GT Propellers s.n.c. di Tonini Gian Carlo & c \u2013 comunicazione"
+  wp_link: https://www.clubaviazionepopolare.org/gt-propellers-s-n-c-di-tonini-gian-carlo-c-comunicazione/
 '6721':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1584,6 +2108,15 @@
   slug: notiziario-marzo-2023
   title: Notiziario Marzo 2023
   wp_link: https://www.clubaviazionepopolare.org/cari-soci-notiziario-marzo-2023/
+'6774':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2023-02-22T11:00:52+01:00'
+  id_directus: 336
+  id_wordpress: '6774'
+  slug: aggiornamento-sezione-traduzioni
+  title: Aggiornamento sezione traduzioni
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-sezione-traduzioni/
 '6780':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1602,6 +2135,60 @@
   slug: da-quanto-non-proviamo-lelt-notiziario-aprile-2023
   title: "Da quanto non proviamo l\u2019ELT?  \u2013 NOTIZIARIO APRILE 2023"
   wp_link: https://www.clubaviazionepopolare.org/da-quanto-non-proviamo-lelt-notiziario-aprile-2023/
+'6788':
+  category: news
+  cover: 92567149-0ae3-43f3-b110-98f96bfc9045
+  date: '2023-04-04T10:00:49+02:00'
+  id_directus: 337
+  id_wordpress: '6788'
+  slug: efficiency-race-2023
+  title: Efficiency Race 2023
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-2023/
+'6806':
+  category: news
+  cover: 2d3a750a-5dcc-4555-9f85-15b320adfe75
+  date: '2023-04-12T07:55:37+02:00'
+  id_directus: 338
+  id_wordpress: '6806'
+  slug: cieli-blu-per-marco
+  title: Cieli blu per Marco
+  wp_link: https://www.clubaviazionepopolare.org/cieli-blu-per-marco/
+'6813':
+  category: news
+  cover: e944aed3-6323-441d-a435-9fde0e2a0cbe
+  date: '2023-04-17T07:55:48+02:00'
+  id_directus: 339
+  id_wordpress: '6813'
+  slug: efficiency-race-2023-programma
+  title: "Efficiency Race 2023 \u2013 PROGRAMMA"
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-2023-programma/
+'6823':
+  category: news
+  cover: 79a21288-642b-4b98-9fde-7fbada6563a8
+  date: '2023-05-05T14:52:57+02:00'
+  id_directus: 340
+  id_wordpress: '6823'
+  slug: efficiency-race-2023-aggiornamento-regolamento
+  title: "Efficiency Race 2023  \u2013 Aggiornamento regolamento"
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-2023-aggiornamento-regolamento/
+'6833':
+  category: news
+  cover: dce410e7-4dc5-4525-88ee-b43995e1a4b6
+  date: '2023-05-12T07:22:22+02:00'
+  id_directus: 341
+  id_wordpress: '6833'
+  slug: 32-raduno-cap-toscana
+  title: "32\xB0 Raduno CAP Toscana"
+  wp_link: https://www.clubaviazionepopolare.org/32-raduno-cap-toscana/
+'6838':
+  category: news
+  cover: 31684be7-abde-4ec0-a03a-96b6a7a1b681
+  date: '2023-05-12T14:42:56+02:00'
+  id_directus: 342
+  id_wordpress: '6838'
+  slug: efficiency-race-2023-2
+  title: Efficiency Race 2023
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-2023-2/
 '6843':
   cover: e6ee8eff-0f22-444e-918e-eb1e605cc78e
   date: '2023-05-16T09:15:24+02:00'
@@ -1610,6 +2197,15 @@
   slug: efficiency-race-rinviata-al-27-maggio
   title: EFFICIENCY RACE  RINVIATA AL 27 MAGGIO
   wp_link: https://www.clubaviazionepopolare.org/efficiency-race-rinviata-al-27-maggio/
+'6848':
+  category: news
+  cover: a588d8f0-d6d6-4199-9d78-1508f4a98b51
+  date: '2023-05-23T14:20:46+02:00'
+  id_directus: 343
+  id_wordpress: '6848'
+  slug: efficiency-race-annullata
+  title: "Efficiency Race \u2013 ANNULLATA"
+  wp_link: https://www.clubaviazionepopolare.org/efficiency-race-annullata/
 '6853':
   cover: 84b481fc-b3c0-41da-9058-f0ac963ed7d5
   date: '2023-06-14T13:37:40+02:00'
@@ -1661,6 +2257,15 @@
   slug: 51-raduno-club-aviazione-popolare
   title: "51\xB0 Raduno Club Aviazione Popolare"
   wp_link: https://www.clubaviazionepopolare.org/51-raduno-club-aviazione-popolare/
+'6909':
+  category: news
+  cover: bb7e1833-364c-40ad-a56a-9cde7f58c4a8
+  date: '2023-09-11T16:37:35+02:00'
+  id_directus: 344
+  id_wordpress: '6909'
+  slug: 51-raduno-info-last-minute
+  title: "51\xB0 Raduno Info last minute"
+  wp_link: https://www.clubaviazionepopolare.org/51-raduno-info-last-minute/
 '6929':
   cover: ccfbb718-514f-4fc9-bfca-ad1e515efe39
   date: '2024-01-02T11:10:17+01:00'
@@ -1715,6 +2320,15 @@
   slug: la-corte-dei-miracoli-notiziario-marzo-2024
   title: "La Corte dei Miracoli \u2013 NOTIZIARIO MARZO 2024"
   wp_link: https://www.clubaviazionepopolare.org/la-corte-dei-miracoli-notiziario-marzo-2024/
+'6964':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-02-21T11:16:07+01:00'
+  id_directus: 345
+  id_wordpress: '6964'
+  slug: comunicato-stampa-2
+  title: COMUNICATO STAMPA
+  wp_link: https://www.clubaviazionepopolare.org/comunicato-stampa-2/
 '6987':
   category: notiziari
   cover: faff4ec1-ced6-4a5d-85d8-ad5188eae8f9
@@ -1724,6 +2338,16 @@
   slug: pezze-su-pezze-ma-comunque-andiamo-avanti-notiziario-aprile-2024
   title: "Pezze su pezze, ma comunque andiamo avanti \u2013 NOTIZIARIO APRILE 2024"
   wp_link: https://www.clubaviazionepopolare.org/pezze-su-pezze-ma-comunque-andiamo-avanti-notiziario-aprile-2024/
+'7080':
+  category: news
+  cover: 2200184f-f2ed-4cca-9495-6c1da0f4b19e
+  date: '2024-04-18T08:23:58+02:00'
+  id_directus: 346
+  id_wordpress: '7080'
+  slug: incontro-la-manutenzione-annuale-su-vans-rv-a-cura-di-luca-perazzoli
+  title: "Incontro \u201CLa manutenzione annuale su Van\u2019s RV (a cura di Luca\
+    \ Perazzoli)"
+  wp_link: https://www.clubaviazionepopolare.org/incontro-la-manutenzione-annuale-su-vans-rv-a-cura-di-luca-perazzoli/
 '7129':
   cover: 8a5ea121-67ea-4798-bd3b-25a5c2f1c334
   date: '2024-05-13T10:15:18+02:00'
@@ -1776,6 +2400,15 @@
   slug: 52-raduno-club-aviazione-popolare
   title: "52\xB0 Raduno Club Aviazione Popolare"
   wp_link: https://www.clubaviazionepopolare.org/52-raduno-club-aviazione-popolare/
+'7336':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-07-31T09:54:45+02:00'
+  id_directus: 347
+  id_wordpress: '7336'
+  slug: aggiornamento-modulistica-trofei
+  title: Aggiornamento Modulistica Trofei
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-modulistica-trofei/
 '7339':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1794,6 +2427,15 @@
   slug: notiziario-agosto-2024
   title: "Scuola di costruzione presso le aziende \u2013 Notiziario Agosto 2024"
   wp_link: https://www.clubaviazionepopolare.org/notiziario-agosto-2024/
+'7439':
+  category: news
+  cover: 8516d0d4-db21-47c4-b4b3-4f07d4424407
+  date: '2024-08-20T11:50:22+02:00'
+  id_directus: 348
+  id_wordpress: '7439'
+  slug: raduno-2024-istruzioni-per-luso
+  title: "Raduno 2024 \u2013 Istruzioni per l\u2019uso"
+  wp_link: https://www.clubaviazionepopolare.org/raduno-2024-istruzioni-per-luso/
 '7467':
   category: notiziari
   cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
@@ -1803,6 +2445,33 @@
   slug: il-tempo-giusto-notiziario-ottobre-2024
   title: "Il tempo giusto \u2013 Notiziario Ottobre 2024"
   wp_link: https://www.clubaviazionepopolare.org/il-tempo-giusto-notiziario-ottobre-2024/
+'7623':
+  category: news
+  cover: cde4d0bf-69ff-4e5c-a2cd-5c5824aeb6c2
+  date: '2024-09-15T16:58:07+02:00'
+  id_directus: 349
+  id_wordpress: '7623'
+  slug: in-memoria-di-giovanni
+  title: "In memoria di Giovanni\u2026"
+  wp_link: https://www.clubaviazionepopolare.org/in-memoria-di-giovanni/
+'7699':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2024-09-17T10:11:34+02:00'
+  id_directus: 350
+  id_wordpress: '7699'
+  slug: elenco-articoli-tecnici-tradotti-da-sport-aviation-nuova-libreria
+  title: "ELENCO ARTICOLI TECNICI TRADOTTI DA SPORT AVIATION \u2013 Nuova Libreria"
+  wp_link: https://www.clubaviazionepopolare.org/elenco-articoli-tecnici-tradotti-da-sport-aviation-nuova-libreria/
+'7858':
+  category: news
+  cover: 2925b0cc-e6a0-4a30-8fa5-5b22bc21fdd9
+  date: '2024-09-18T14:10:53+02:00'
+  id_directus: 351
+  id_wordpress: '7858'
+  slug: gallery-52-raduno
+  title: "Gallery 52\xB0 Raduno"
+  wp_link: https://www.clubaviazionepopolare.org/gallery-52-raduno/
 '7868':
   category: notiziari
   cover: bcfa0aea-3b54-4875-9c47-4b9c98e3ef48
@@ -1830,6 +2499,60 @@
   slug: il-rebus-delle-rivalidazioni-notiziario-dicembre-2024
   title: "Il rebus delle rivalidazioni \u2013 Notiziario Dicembre 2024"
   wp_link: https://www.clubaviazionepopolare.org/il-rebus-delle-rivalidazioni-notiziario-dicembre-2024/
+'7882':
+  category: news
+  cover: a3f50630-b37c-4c09-8e65-ef3911f99269
+  date: '2024-12-17T10:53:02+01:00'
+  id_directus: 352
+  id_wordpress: '7882'
+  slug: buon-compleanno-aviazione
+  title: Buon compleanno Aviazione !!
+  wp_link: https://www.clubaviazionepopolare.org/buon-compleanno-aviazione/
+'7889':
+  category: news
+  cover: 32125413-940f-43df-ae6b-6b63bf808499
+  date: '2024-12-20T12:45:33+01:00'
+  id_directus: 353
+  id_wordpress: '7889'
+  slug: ritorna-il-trofeo-damiani
+  title: "RITORNA IL \u201CTROFEO DAMIANI\u201D"
+  wp_link: https://www.clubaviazionepopolare.org/ritorna-il-trofeo-damiani/
+'7916':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2025-01-09T08:56:00+01:00'
+  id_directus: 354
+  id_wordpress: '7916'
+  slug: nuovi-articoli-sezione-traduzioni
+  title: Nuovi articoli sezione traduzioni
+  wp_link: https://www.clubaviazionepopolare.org/nuovi-articoli-sezione-traduzioni/
+'7918':
+  category: news
+  cover: c156ed43-0655-4adf-a6e8-87cae55c348f
+  date: '2025-01-10T11:00:05+01:00'
+  id_directus: 355
+  id_wordpress: '7918'
+  slug: monnett-sonerai-ii-ls-i-lory-in-vendita
+  title: Monnett Sonerai II LS I-LORY in vendita
+  wp_link: https://www.clubaviazionepopolare.org/monnett-sonerai-ii-ls-i-lory-in-vendita/
+'7935':
+  category: news
+  cover: 0633e07a-ca14-4012-84af-d1c5b0b36027
+  date: '2025-01-16T11:00:40+01:00'
+  id_directus: 356
+  id_wordpress: '7935'
+  slug: buon-compleanno-cap-sq
+  title: Buon compleanno CAP-SQ !
+  wp_link: https://www.clubaviazionepopolare.org/buon-compleanno-cap-sq/
+'7953':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2025-01-25T08:11:33+01:00'
+  id_directus: 357
+  id_wordpress: '7953'
+  slug: il-mercatino-si-apre-a-tutti
+  title: Il mercatino si apre a tutti
+  wp_link: https://www.clubaviazionepopolare.org/il-mercatino-si-apre-a-tutti/
 '7976':
   category: notiziari
   cover: ff8c1b11-23be-4339-bcfa-00c3d6f61e68
@@ -1849,6 +2572,42 @@
   title: "Ancora sul rinnovo SEP (Sopportazione e Pazienza) \u2013 Notiziario Marzo\
     \ 2025"
   wp_link: https://www.clubaviazionepopolare.org/ancora-sul-rinnovo-sep-sopportazione-e-pazienza-notiziario-marzo-2025/
+'7993':
+  category: news
+  cover: 9f98bbad-e963-433b-8442-e1d57a9303d4
+  date: '2025-02-05T19:48:12+01:00'
+  id_directus: 358
+  id_wordpress: '7993'
+  slug: corso-costruzione-aeronautica-metallica
+  title: Corso costruzione aeronautica metallica
+  wp_link: https://www.clubaviazionepopolare.org/corso-costruzione-aeronautica-metallica/
+'7998':
+  category: news
+  cover: 870c014c-fd94-4ddb-ad0b-fa1d7bf64b5f
+  date: '2025-02-06T09:08:08+01:00'
+  id_directus: 359
+  id_wordpress: '7998'
+  slug: attivita-formative-2025
+  title: "Attivit\xE0 Formative 2025"
+  wp_link: https://www.clubaviazionepopolare.org/attivita-formative-2025/
+'8010':
+  category: news
+  cover: d9face42-32aa-47c6-a86c-d6edc72eb69c
+  date: '2025-03-03T17:57:38+01:00'
+  id_directus: 360
+  id_wordpress: '8010'
+  slug: un-socio-cap-a-expo-2025-osaka
+  title: Un socio CAP a EXPO 2025 Osaka
+  wp_link: https://www.clubaviazionepopolare.org/un-socio-cap-a-expo-2025-osaka/
+'8025':
+  category: news
+  cover: 0e81c063-cc88-44e7-8101-04f9d65a4450
+  date: '2025-03-27T13:01:11+01:00'
+  id_directus: 361
+  id_wordpress: '8025'
+  slug: gemellaggio-hag-cap-5-aprile-2025
+  title: GEMELLAGGIO HAG/CAP 5 Aprile 2025
+  wp_link: https://www.clubaviazionepopolare.org/gemellaggio-hag-cap-5-aprile-2025/
 '8033':
   category: notiziari
   cover: b73d55f1-e007-4602-b88c-959e8e938130
@@ -1858,6 +2617,24 @@
   slug: che-cosa-bolle-e-cosa-sobbolle-in-pentola-notiziario-aprile-2025
   title: "Che cosa bolle (e cosa sobbolle) in pentola \u2013 Notiziario Aprile 2025"
   wp_link: https://www.clubaviazionepopolare.org/che-cosa-bolle-e-cosa-sobbolle-in-pentola-notiziario-aprile-2025/
+'8054':
+  category: news
+  cover: a4482bfc-4ede-4ccb-a7b5-afbf4b4bb02f
+  date: '2025-04-28T09:30:10+02:00'
+  id_directus: 362
+  id_wordpress: '8054'
+  slug: aggiornamento-biblioteca-articoli-tradotti
+  title: Aggiornamento Biblioteca articoli tradotti
+  wp_link: https://www.clubaviazionepopolare.org/aggiornamento-biblioteca-articoli-tradotti/
+'8058':
+  category: news
+  cover: 3e10db15-92f2-4a98-b8ac-6477e3f1c68a
+  date: '2025-04-28T11:37:17+02:00'
+  id_directus: 363
+  id_wordpress: '8058'
+  slug: festival-del-volo-castiglione-del-lago
+  title: "Festival del Volo \u2013 Castiglione del Lago"
+  wp_link: https://www.clubaviazionepopolare.org/festival-del-volo-castiglione-del-lago/
 '8071':
   cover: d1e085f8-452f-41ad-b163-4ff2cc841890
   date: '2025-05-08T13:03:44+02:00'
@@ -1866,6 +2643,33 @@
   slug: 33-raduno-cap-toscana-5-luglio-2025
   title: "33\xB0 RADUNO CAP TOSCANA \u2013 5 LUGLIO 2025"
   wp_link: https://www.clubaviazionepopolare.org/33-raduno-cap-toscana-5-luglio-2025/
+'8074':
+  category: news
+  cover: fb2cb57b-c316-47d3-b4ec-72c353fe8aa5
+  date: '2025-05-09T13:00:33+02:00'
+  id_directus: 364
+  id_wordpress: '8074'
+  slug: corso-teorico-pratico-il-legno-nella-costruzione-amatoriale
+  title: "CORSO TEORICO/PRATICO \u2013 IL LEGNO NELLA COSTRUZIONE AMATORIALE"
+  wp_link: https://www.clubaviazionepopolare.org/corso-teorico-pratico-il-legno-nella-costruzione-amatoriale/
+'8080':
+  category: news
+  cover: 9ac36b0c-3b0e-452d-9657-35e1651e99ec
+  date: '2025-06-08T14:40:05+02:00'
+  id_directus: 365
+  id_wordpress: '8080'
+  slug: raduno-cap-experimental-trento
+  title: "Raduno CAP EXperimental \u2013 Trento"
+  wp_link: https://www.clubaviazionepopolare.org/raduno-cap-experimental-trento/
+'8083':
+  category: news
+  cover: b48915e4-a2f5-4204-bf02-3144adf9cc59
+  date: '2025-06-09T10:00:46+02:00'
+  id_directus: 366
+  id_wordpress: '8083'
+  slug: raduno-cap-toscana
+  title: Raduno CAP Toscana
+  wp_link: https://www.clubaviazionepopolare.org/raduno-cap-toscana/
 '8090':
   category: notiziari
   cover: 19ad8e32-2b03-4d38-bb51-3f5006d23b78
@@ -1893,6 +2697,42 @@
   slug: lestate-experimental-notiziario-luglio-2025
   title: "L\u2019estate Experimental \u2013 Notiziario Luglio 2025"
   wp_link: https://www.clubaviazionepopolare.org/lestate-experimental-notiziario-luglio-2025/
+'8117':
+  category: news
+  cover: 930d32c1-d0ca-48bb-a79e-842609d4d7d9
+  date: '2025-06-25T08:45:28+02:00'
+  id_directus: 367
+  id_wordpress: '8117'
+  slug: nuovi-articoli-tecnici
+  title: Nuovi articoli tecnici
+  wp_link: https://www.clubaviazionepopolare.org/nuovi-articoli-tecnici/
+'8121':
+  category: news
+  cover: 868ca08e-178b-4b54-b397-f70c85e8f706
+  date: '2025-08-04T08:09:38+02:00'
+  id_directus: 368
+  id_wordpress: '8121'
+  slug: raduno-cap-2025-last-minute-news
+  title: "RADUNO CAP 2025 \u2013 LAST MINUTE NEWS"
+  wp_link: https://www.clubaviazionepopolare.org/raduno-cap-2025-last-minute-news/
+'8142':
+  category: news
+  cover: 386db484-0b48-4b2b-96cd-35fab4899e2f
+  date: '2025-08-27T11:21:36+02:00'
+  id_directus: 369
+  id_wordpress: '8142'
+  slug: 53-raduno-cap-istruzioni-per-luso
+  title: "53\xB0 RADUNO CAP \u2013 Istruzioni per l\u2019uso"
+  wp_link: https://www.clubaviazionepopolare.org/53-raduno-cap-istruzioni-per-luso/
+'8199':
+  category: news
+  cover: b924a6ae-5e95-49ba-982a-6101a1d24e8b
+  date: '2025-09-26T11:19:49+02:00'
+  id_directus: 370
+  id_wordpress: '8199'
+  slug: 53-raduno-cap-bacheca-immagini
+  title: "53\xB0 Raduno Cap \u2013 Bacheca immagini"
+  wp_link: https://www.clubaviazionepopolare.org/53-raduno-cap-bacheca-immagini/
 '8207':
   category: notiziari
   cover: 78e5994d-d668-4f26-9b0a-af4f76285828
@@ -1938,3 +2778,30 @@
   slug: trofeo-damiani-2025-il-volo-di-lucio-castrogiovanni
   title: "TROFEO DAMIANI  2025 \u2013 il volo di  Lucio Castrogiovanni"
   wp_link: https://www.clubaviazionepopolare.org/trofeo-damiani-2025-il-volo-di-lucio-castrogiovanni/
+'8289':
+  category: news
+  cover: e9eeffb6-64f0-4a50-b08f-2a90e99e0915
+  date: '2025-10-20T17:07:57+02:00'
+  id_directus: 371
+  id_wordpress: '8289'
+  slug: lultimo-decollo-di-amedeo
+  title: "L\u2019ultimo decollo di Amedeo"
+  wp_link: https://www.clubaviazionepopolare.org/lultimo-decollo-di-amedeo/
+'8300':
+  category: news
+  cover: 028f7361-5d13-4538-9af4-f3b8e02c809b
+  date: '2025-11-15T08:18:15+01:00'
+  id_directus: 372
+  id_wordpress: '8300'
+  slug: 8300-2
+  title: ''
+  wp_link: https://www.clubaviazionepopolare.org/8300-2/
+'8311':
+  category: news
+  cover: ae8c6f02-5139-4027-af1e-977926152837
+  date: '2025-12-23T14:24:42+01:00'
+  id_directus: 373
+  id_wordpress: '8311'
+  slug: buone-feste-e-felice-anno-nuovo-dal-cap
+  title: Buone Feste e Felice anno nuovo dal CAP
+  wp_link: https://www.clubaviazionepopolare.org/buone-feste-e-felice-anno-nuovo-dal-cap/

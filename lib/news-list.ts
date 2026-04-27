@@ -27,14 +27,18 @@ const sanitizePreview = (html: string = "") => {
 
 export const toNewsListItem = (feed: Feed): NewsListItem => {
   const cover = feed.cover || DEFAULT_COVER
-  const { width, height, focal_point_x, focal_point_y, title: coverTitle } = cover
+  const width = cover.width ?? DEFAULT_COVER.width
+  const height = cover.height ?? DEFAULT_COVER.height
+  const focalPointX = cover.focal_point_x
+  const focalPointY = cover.focal_point_y
+  const coverTitle = cover.title ?? DEFAULT_COVER.title
   const focalPointXPercentage =
-    focal_point_x && focal_point_x >= 0 && focal_point_x <= width
-      ? (focal_point_x / width) * 100
+    focalPointX != null && focalPointX >= 0 && focalPointX <= width
+      ? (focalPointX / width) * 100
       : 50
   const focalPointYPercentage =
-    focal_point_y && focal_point_y >= 0 && focal_point_y <= height
-      ? (focal_point_y / height) * 100
+    focalPointY != null && focalPointY >= 0 && focalPointY <= height
+      ? (focalPointY / height) * 100
       : 50
 
   return {

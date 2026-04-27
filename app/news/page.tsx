@@ -31,7 +31,7 @@ export default async function NewsPage() {
           {/* Featured Articles */}
           <section>
             <h3 className="text-3xl font-bold mb-2">In evidenza...</h3>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-2 sm:h-86 sm:overflow-hidden">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-2 sm:h-84 sm:overflow-hidden">
               {featured.map((feed) => (
                 <FeaturedCard key={feed.id} feed={feed} />
               ))}

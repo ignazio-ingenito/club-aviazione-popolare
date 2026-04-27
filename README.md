@@ -112,3 +112,13 @@ pnpm update
 ```
 pnpm install
 ```
+
+
+# Node version 
+```
+source ~/.bashrc
+volta install node@20
+volta install pnpm@10
+node -v
+pnpm run dev
+```
