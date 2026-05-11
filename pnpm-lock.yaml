@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@directus/sdk':
-        specifier: ^21.2.2
-        version: 21.2.2
+        specifier: ^21.3.0
+        version: 21.3.0
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.75.0(react@19.2.5))
@@ -721,8 +721,8 @@ packages:
   '@directus/schema@13.0.8':
     resolution: {integrity: sha512-L6SXT83GlLyoxZF16EIXy0TPW/l/YvGvUuuJHHvpwo3CaL+NXLfXXG9lrnYQD4m7IvZquUbXi3orrrTFon/eJg==}
 
-  '@directus/sdk@21.2.2':
-    resolution: {integrity: sha512-T8UhDG+GY534AqvLpRmycLYZmIYIaUYzu25X3WeUjWuxCvqAiKqXbYUrTRb0A5Mw93vUeVuyqabzvLbBY9AXxQ==}
+  '@directus/sdk@21.3.0':
+    resolution: {integrity: sha512-ozK2OmlaBiCuP5RuL046CaGGqEnlOdl4Rg690qaOgbC0C45XnDZVeBlb+NDLTUqEj88iSX8Cv74G3qh0L2i7Yw==}
     engines: {node: '>=22'}
 
   '@directus/specs@13.0.0':
@@ -11054,7 +11054,7 @@ snapshots:
       - supports-color
       - tedious
 
-  '@directus/sdk@21.2.2': {}
+  '@directus/sdk@21.3.0': {}
 
   '@directus/specs@13.0.0':
     dependencies:
