@@ -83,7 +83,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/postcss": "^4.2.4",
+    "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^25.6.0",
