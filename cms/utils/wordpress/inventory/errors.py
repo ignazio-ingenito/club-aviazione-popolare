@@ -11,3 +11,11 @@ class CanonicalizationError(InventoryContractError):
 
 class PaginationContractError(InventoryContractError):
     """Raised when an API page set is incomplete or internally inconsistent."""
+
+
+class ReadOnlyMethodError(InventoryContractError):
+    """Raised before a non-read HTTP method can be transmitted."""
+
+
+class ResponseContractError(InventoryContractError):
+    """Raised when a remote read response has an unexpected shape."""
