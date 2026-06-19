@@ -8,13 +8,24 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B — fresh read-only source and target inventory contracts, clients, manifests, and synthetic-data tests.
+- [ ] Implement Task B slice 2 — fresh WordPress read-only client with complete pagination, source errors, and synthetic HTTP tests.
 
 ## Next up
 
-1. Read-only inventory implementation.
-2. Baseline verifier and canonical fingerprints.
-3. Reconciliation engine.
+1. WordPress read-only inventory client.
+2. Gallery REST discovery and public-HTML fallback.
+3. Directus read-only inventory client.
+
+## Task B — Read-only inventory implementation
+
+- [x] Slice 1: common manifest models, canonical JSON, SHA-256, JSONL, pagination contracts, and synthetic tests.
+- [ ] Slice 2: WordPress read-only client for types, categories, posts, and media.
+- [ ] Slice 3: gallery REST discovery and ordered public-HTML fallback.
+- [ ] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
+- [ ] Slice 5: repository route inventory and collision input contract.
+- [ ] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
+
+Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
 
 ## Phase 0 — Governance and scope
 
@@ -55,6 +66,7 @@ Exit gate: source and target contracts are known well enough to design determini
 - [ ] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
 - [ ] Add a test proving broad permissions or missing permission evidence stop execution.
+- [x] Establish immutable manifest, hashing, JSONL, issue, and pagination contracts without network or write behavior.
 - [ ] Remove stale-cache dependence from new migration commands.
 - [ ] Keep legacy delete and overwrite commands outside the approved execution path.
 
@@ -62,7 +74,7 @@ Exit gate: automated tests enforce the production invariant before a write path 
 
 ## Phase 3 — Target baseline
 
-- [ ] Define the baseline manifest schema and canonical hashing rules.
+- [ ] Define the target baseline entity schemas and canonical hashing rules using the common manifest contracts.
 - [ ] Inventory all feeds, files, folders, and relevant relations in scope.
 - [ ] Record file checksums where accessible and metadata fingerprints otherwise.
 - [ ] Include all statuses, not only published content.
@@ -75,7 +87,7 @@ Exit gate: every existing in-scope target object is represented as a protected a
 
 ## Phase 4 — Source inventory
 
-- [ ] Define the source manifest schema and canonical hashing rules.
+- [ ] Define the WordPress post, media, category, and gallery payload schemas using the common manifest contracts.
 - [ ] Fetch all approved posts with complete pagination and no stale cache.
 - [ ] Capture categories, featured media, inline media, links, dates, and source hashes.
 - [ ] Discover all public gallery albums and ordered images.
