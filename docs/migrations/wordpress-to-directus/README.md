@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: design ready for review. This documentation does not authorize a production run.
+Status: governance accepted; read-only discovery completed; Task B inventory implementation is next. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
@@ -18,6 +18,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 
 ## Document map
 
+- [Read-only discovery](discovery.md): verified repository/public-source contracts, limitations, risks, and Task B scope.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -69,15 +70,24 @@ The utility under `cms/utils/wordpress/` is useful for discovery but is not appr
 
 Useful parsing and download logic may be reused only after unsafe paths are isolated behind new create-only interfaces and covered by tests.
 
-## Recommended first Agent Loop prompt
+## Recommended next Agent Loop prompt
 
 ```text
-usa agent-loop per il Task A della migrazione WordPress-to-Directus.
-Prima usa solo explorer read-only.
-Leggi AGENTS.md, CONTEXT.md, ADR 0001 e tutti i documenti della migrazione.
-Non modificare dati, schema, permessi, articoli, media o manifest homelab.
-Produci inventario dei contratti correnti, rischi, allowed_files,
-forbidden_files, test_command e stop conditions per la discovery read-only.
+usa agent-loop per il Task B della migrazione WordPress-to-Directus.
+Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md e tutti i documenti della migrazione.
+
+Prima usa explorer read-only per dividere Task B in slice seriali:
+1. manifest models, canonical JSON, hashing e pagination contracts;
+2. client WordPress read-only;
+3. discovery gallery REST/HTML fallback;
+4. client Directus read-only;
+5. route inventory;
+6. CLI read-only e test.
+
+Non modificare dati, schema, permessi, parser.yaml, importer legacy,
+frontend o repository homelab. Nessun metodo HTTP diverso da GET/HEAD.
+Per ogni slice restituisci allowed_files, forbidden_files, test_command,
+stop_conditions e production_artifact_impact.
 ```
 
 ## Authority
