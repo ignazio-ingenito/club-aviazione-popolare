@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B slice 1 implemented; WordPress read-only client is next. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B slices 1-3 implemented; Directus anonymous/read-only client is next. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
@@ -20,6 +20,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 
 - [Read-only discovery](discovery.md): verified repository/public-source contracts, limitations, risks, and Task B scope.
 - [Task B slice 1 handoff](task-b-inventory-contracts.md): manifest, canonical hashing, JSONL, pagination, tests, and reviewer checklist.
+- [Task B slice 3 handoff](task-b-gallery-discovery.md): REST-first gallery discovery, ordered public-HTML fallback, tests, and reviewer checklist.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -74,23 +75,24 @@ Useful parsing and download logic may be reused only after unsafe paths are isol
 ## Recommended next Agent Loop prompt
 
 ```text
-usa agent-loop per Task B slice 2 della migrazione WordPress-to-Directus.
+usa agent-loop per Task B slice 4 della migrazione WordPress-to-Directus.
 Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md,
 task-b-inventory-contracts.md e tutti i documenti della migrazione.
 
-Obiettivo: implementare soltanto un client WordPress fresh-by-default e read-only
-per `/wp-json/wp/v2/types`, categorie, post e media, usando i contratti in
-`cms/utils/wordpress/inventory/`.
+Obiettivo: implementare soltanto un client Directus anonimo/read-only
+per runtime metadata, schema metadata, feeds, categories, files, folders
+e relations, usando i contratti in `cms/utils/wordpress/inventory/`.
 
 Prima usa explorer read-only. Poi un solo worker seriale.
-Allowed files: nuovi moduli inventory WordPress, fixture sintetiche, test e docs.
-Forbidden: parser.yaml, importer legacy, AI, Directus, frontend, schema,
+Allowed files: nuovi moduli inventory Directus, fixture sintetiche, test e docs.
+Forbidden: parser.yaml, importer legacy, AI, frontend, schema apply,
 permessi, homelab e dati di produzione.
 Nessun metodo HTTP diverso da GET/HEAD.
 
-Test richiesti: paginazione completa, totali incoerenti, risposta vuota,
-errori HTTP/JSON, source issue esplicite, assenza di cache implicita e
-verifica che il transport non riceva metodi di scrittura.
+Test richiesti: paginazione completa, conteggi incoerenti, risposta vuota,
+errori HTTP/JSON, target issue esplicite, assenza di cache implicita,
+schema/permissions nascosti come stop evidence e verifica che il transport
+non riceva metodi di scrittura.
 Restituisci production_artifact_impact, stop_conditions e handoff.
 ```
 
