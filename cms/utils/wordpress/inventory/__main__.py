@@ -13,6 +13,7 @@ from .gallery import WordPressGalleryDiscoveryClient
 from .routes import RouteInventoryClient, RouteInventoryConfig
 from .wordpress import WordPressInventoryClient, WordPressInventoryConfig
 from .writer import ManifestWriteResult, write_manifest_jsonl
+from .wxr import WordPressWXRMediaInventoryClient
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -66,6 +67,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     wordpress.add_argument("--per-page", type=int, default=100)
     wordpress.set_defaults(handler=_run_wordpress_core)
+
+    wxr_media = subparsers.add_parser(
+        "wordpress-wxr-media",
+        help="Inventory WordPress attachment records from a local WXR admin export.",
+    )
+    _add_common_output_args(wxr_media, default_filename="wordpress-wxr-media.jsonl")
+    wxr_media.add_argument(
+        "--input",
+        required=True,
+        help="Path to the local WordPress WXR XML export.",
+    )
+    wxr_media.set_defaults(handler=_run_wordpress_wxr_media)
 
     gallery = subparsers.add_parser(
         "gallery",
@@ -136,6 +149,15 @@ def _run_wordpress_core(args: argparse.Namespace) -> ManifestWriteResult:
         )
     ) as client:
         snapshot = client.inventory_core()
+    manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+    )
+    return _write(args, manifest)
+
+
+def _run_wordpress_wxr_media(args: argparse.Namespace) -> ManifestWriteResult:
+    snapshot = WordPressWXRMediaInventoryClient(export_path=args.input).inventory()
     manifest = snapshot.to_manifest(
         environment=args.environment,
         observed_at=_now_utc(),

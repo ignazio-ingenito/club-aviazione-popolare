@@ -24,6 +24,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B slice 4 handoff](task-b-directus-inventory.md): anonymous/read-only Directus inventory client, inaccessible endpoint issues, tests, and reviewer checklist.
 - [Task B slice 5 handoff](task-b-route-inventory.md): repository route inventory, collision input contract, tests, and reviewer checklist.
 - [Task B slice 6 handoff](task-b-cli-integration.md): read-only CLI integration, atomic manifest writer, checksum sidecars, tests, and reviewer checklist.
+- [Task B slice 7 handoff](task-b-wxr-media-inventory.md): local WordPress WXR media export inventory for REST-private attachments.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.

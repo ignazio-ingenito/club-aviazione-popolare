@@ -8,12 +8,13 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Execute live read-only inventories with the Task B CLI and controlled run artifacts outside Git.
+- [ ] Reconcile WordPress REST source inventory with WXR media export evidence and controlled run artifacts outside Git.
 
 ## Next up
 
 1. Execute live read-only source, gallery, route, and public-view Directus inventories.
-2. Review Directus public-view gaps and decide whether to create a strict read-only identity for approved baseline capture.
+2. Use the admin WXR media export to account for REST-private attachments before source reconciliation.
+3. Review Directus public-view gaps and decide whether to create a strict read-only identity for approved baseline capture.
 
 ## Task B — Read-only inventory implementation
 
@@ -23,6 +24,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
 - [x] Slice 5: repository route inventory and collision input contract.
 - [x] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
+- [x] Slice 7: local WXR media export inventory for WordPress attachments hidden from public REST.
 
 Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
 
@@ -46,6 +48,7 @@ Exit gate: documentation is reviewed and no unresolved decision changes the safe
 - [ ] Record the exact production Directus version and immutable image digest.
 - [x] Inventory public WordPress archives, known historical category IDs, and overlapping category behavior.
 - [ ] Inventory WordPress REST types, categories, post/media totals, and complete pagination through the Task B client.
+- [x] Capture complete WordPress media evidence from an admin WXR export when public REST pagination omits private attachments.
 - [x] Verify that public gallery albums are available through `/gallery/` and `/dt-gallery/<slug>/` HTML routes.
 - [ ] Determine whether the gallery custom post type is exposed through WordPress REST or requires export/public-HTML fallback.
 - [x] Inventory frontend routes and identify global slug and route collision rules.

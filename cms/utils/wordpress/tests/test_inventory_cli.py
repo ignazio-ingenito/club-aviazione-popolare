@@ -28,6 +28,7 @@ class InventoryCliTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0)
         self.assertIn("wordpress-core", result.stdout)
+        self.assertIn("wordpress-wxr-media", result.stdout)
         self.assertIn("directus-core", result.stdout)
         self.assertIn("routes", result.stdout)
 

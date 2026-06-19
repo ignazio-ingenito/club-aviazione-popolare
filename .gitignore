@@ -49,3 +49,9 @@ __pycache__/
 
 # directus
 cms/uploads/
+
+# migration source exports
+*WordPress*.xml
+*wordpress*.xml
+*.wxr
+*.wxr.xml
