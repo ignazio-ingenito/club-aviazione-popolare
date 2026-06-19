@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B slice 1 implemented; WordPress read-only client is next. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B slices 1-2 implemented; gallery discovery is next. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
@@ -20,6 +20,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 
 - [Read-only discovery](discovery.md): verified repository/public-source contracts, limitations, risks, and Task B scope.
 - [Task B slice 1 handoff](task-b-inventory-contracts.md): manifest, canonical hashing, JSONL, pagination, tests, and reviewer checklist.
+- [Task B slice 2 handoff](task-b-wordpress-client.md): GET/HEAD-only transport, WordPress REST inventory, source issues, and synthetic HTTP tests.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -74,23 +75,26 @@ Useful parsing and download logic may be reused only after unsafe paths are isol
 ## Recommended next Agent Loop prompt
 
 ```text
-usa agent-loop per Task B slice 2 della migrazione WordPress-to-Directus.
+usa agent-loop per Task B slice 3 della migrazione WordPress-to-Directus.
 Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md,
-task-b-inventory-contracts.md e tutti i documenti della migrazione.
+task-b-inventory-contracts.md, task-b-wordpress-client.md e tutti i documenti della migrazione.
 
-Obiettivo: implementare soltanto un client WordPress fresh-by-default e read-only
-per `/wp-json/wp/v2/types`, categorie, post e media, usando i contratti in
-`cms/utils/wordpress/inventory/`.
+Obiettivo: implementare soltanto la discovery gallery read-only.
+Prima verificare i tipi restituiti da WordPress e individuare un eventuale
+custom post type con route `/dt-gallery/`. Quando non è esposto via REST,
+usare un parser HTML deterministico per archivio e album pubblici.
 
-Prima usa explorer read-only. Poi un solo worker seriale.
-Allowed files: nuovi moduli inventory WordPress, fixture sintetiche, test e docs.
-Forbidden: parser.yaml, importer legacy, AI, Directus, frontend, schema,
-permessi, homelab e dati di produzione.
-Nessun metodo HTTP diverso da GET/HEAD.
+Requisiti:
+- riusare il transport GET/HEAD-only;
+- conservare l'ordine DOM delle immagini;
+- estrarre URL originali senza scaricare binari;
+- produrre record e source issue usando i manifest contracts;
+- usare solo fixture sintetiche nei test;
+- non modificare importer legacy, frontend, Directus, schema, permessi o homelab.
 
-Test richiesti: paginazione completa, totali incoerenti, risposta vuota,
-errori HTTP/JSON, source issue esplicite, assenza di cache implicita e
-verifica che il transport non riceva metodi di scrittura.
+Test richiesti: tipo REST esposto/non esposto, archivio vuoto o malformato,
+ordine immagini non alfabetico, URL relativo/assoluto, duplicati espliciti,
+errori HTTP/HTML e nessun metodo di scrittura.
 Restituisci production_artifact_impact, stop_conditions e handoff.
 ```
 
