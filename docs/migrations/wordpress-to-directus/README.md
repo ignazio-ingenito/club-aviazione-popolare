@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance accepted; read-only discovery completed; Task B inventory implementation is next. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B slice 1 implemented; WordPress read-only client is next. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
@@ -19,6 +19,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 ## Document map
 
 - [Read-only discovery](discovery.md): verified repository/public-source contracts, limitations, risks, and Task B scope.
+- [Task B slice 1 handoff](task-b-inventory-contracts.md): manifest, canonical hashing, JSONL, pagination, tests, and reviewer checklist.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -73,21 +74,24 @@ Useful parsing and download logic may be reused only after unsafe paths are isol
 ## Recommended next Agent Loop prompt
 
 ```text
-usa agent-loop per il Task B della migrazione WordPress-to-Directus.
-Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md e tutti i documenti della migrazione.
+usa agent-loop per Task B slice 2 della migrazione WordPress-to-Directus.
+Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md,
+task-b-inventory-contracts.md e tutti i documenti della migrazione.
 
-Prima usa explorer read-only per dividere Task B in slice seriali:
-1. manifest models, canonical JSON, hashing e pagination contracts;
-2. client WordPress read-only;
-3. discovery gallery REST/HTML fallback;
-4. client Directus read-only;
-5. route inventory;
-6. CLI read-only e test.
+Obiettivo: implementare soltanto un client WordPress fresh-by-default e read-only
+per `/wp-json/wp/v2/types`, categorie, post e media, usando i contratti in
+`cms/utils/wordpress/inventory/`.
 
-Non modificare dati, schema, permessi, parser.yaml, importer legacy,
-frontend o repository homelab. Nessun metodo HTTP diverso da GET/HEAD.
-Per ogni slice restituisci allowed_files, forbidden_files, test_command,
-stop_conditions e production_artifact_impact.
+Prima usa explorer read-only. Poi un solo worker seriale.
+Allowed files: nuovi moduli inventory WordPress, fixture sintetiche, test e docs.
+Forbidden: parser.yaml, importer legacy, AI, Directus, frontend, schema,
+permessi, homelab e dati di produzione.
+Nessun metodo HTTP diverso da GET/HEAD.
+
+Test richiesti: paginazione completa, totali incoerenti, risposta vuota,
+errori HTTP/JSON, source issue esplicite, assenza di cache implicita e
+verifica che il transport non riceva metodi di scrittura.
+Restituisci production_artifact_impact, stop_conditions e handoff.
 ```
 
 ## Authority
