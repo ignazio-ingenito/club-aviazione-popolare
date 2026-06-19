@@ -8,13 +8,11 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B slice 5 — repository route inventory and collision input contract.
+- [ ] Implement Task B slice 6 — read-only CLI integration and end-to-end synthetic fixtures.
 
 ## Next up
 
-1. Directus read-only inventory client.
-2. Repository route inventory.
-3. Read-only CLI integration and end-to-end synthetic fixtures.
+1. Read-only CLI integration and end-to-end synthetic fixtures.
 
 ## Task B — Read-only inventory implementation
 
@@ -22,7 +20,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Slice 2: WordPress read-only client for types, categories, posts, and media.
 - [x] Slice 3: gallery REST discovery and ordered public-HTML fallback.
 - [x] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
-- [ ] Slice 5: repository route inventory and collision input contract.
+- [x] Slice 5: repository route inventory and collision input contract.
 - [ ] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
 
 Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
