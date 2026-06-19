@@ -29,10 +29,25 @@ from .pagination import (
     PaginationError,
     merge_complete_pages,
 )
+from .transport import (
+    READ_ONLY_METHODS,
+    InventoryHttpError,
+    ReadOnlyEndpointError,
+    ReadOnlyHttpClient,
+    ReadOnlyMethodError,
+)
+from .wordpress import (
+    WordPressCollectionInventory,
+    WordPressProtocolError,
+    WordPressReadOnlyClient,
+)
+from .wordpress_records import extract_html_references
 
 __all__ = [
     "MANIFEST_SCHEMA_VERSION",
+    "READ_ONLY_METHODS",
     "CanonicalizationError",
+    "InventoryHttpError",
     "InventoryIssue",
     "InventoryManifest",
     "InventoryPage",
@@ -41,9 +56,16 @@ __all__ = [
     "ManifestRecord",
     "PageMetadata",
     "PaginationError",
+    "ReadOnlyEndpointError",
+    "ReadOnlyHttpClient",
+    "ReadOnlyMethodError",
+    "WordPressCollectionInventory",
+    "WordPressProtocolError",
+    "WordPressReadOnlyClient",
     "canonical_json",
     "canonical_json_bytes",
     "canonical_sha256",
+    "extract_html_references",
     "freeze_json",
     "iter_manifest_jsonl_lines",
     "manifest_jsonl_sha256",
