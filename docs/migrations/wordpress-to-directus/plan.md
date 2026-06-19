@@ -8,13 +8,22 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B — fresh read-only source and target inventory contracts, clients, manifests, and synthetic-data tests.
+- [ ] Task B2 — implement the fresh WordPress read-only client for types, categories, posts, media, and complete pagination.
+
+## Task B slice status
+
+- [x] Task B1 — common manifest records, canonical JSON, SHA-256 hashing, explicit inventory issues, and strict pagination contracts with synthetic-data tests.
+- [ ] Task B2 — WordPress read-only client and source record mapping.
+- [ ] Task B3 — gallery REST discovery and ordered public-HTML fallback parser.
+- [ ] Task B4 — Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relevant relations.
+- [ ] Task B5 — generated frontend route inventory and collision metadata.
+- [ ] Task B6 — read-only CLI commands, controlled artifact output, and integrated synthetic-data tests.
 
 ## Next up
 
-1. Read-only inventory implementation.
-2. Baseline verifier and canonical fingerprints.
-3. Reconciliation engine.
+1. WordPress read-only client.
+2. Gallery source discovery.
+3. Directus read-only client.
 
 ## Phase 0 — Governance and scope
 
