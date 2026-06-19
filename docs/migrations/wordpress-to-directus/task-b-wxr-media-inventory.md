@@ -40,6 +40,13 @@ items. The eight WXR attachment IDs missing from public REST pagination are:
 Individual public REST reads for those IDs returned `401`. Therefore the WXR
 export is required as source evidence for REST-private media attachments.
 
+During live inventory, the media REST endpoint only stayed page-size consistent
+when the inventory avoided forcing `orderby=id`. With `orderby=id`, page 1
+returned 92 items and page 15 returned 36 items while the headers still
+reported 1444 total items and 15 pages. Treat that ordering as a known
+landmine; the WXR export remains the completeness source for the missing media
+records.
+
 ## Safety properties
 
 - The WXR parser reads only a local XML export.

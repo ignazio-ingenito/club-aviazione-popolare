@@ -237,20 +237,19 @@ class WordPressInventoryClient:
             },
         )
 
-    def get_media(self, *, status: str = "inherit") -> WordPressCollectionResult:
-        normalized_status = status.strip()
-        if not normalized_status:
+    def get_media(self, *, status: str | None = None) -> WordPressCollectionResult:
+        normalized_status = status.strip() if status is not None else None
+        if status is not None and not normalized_status:
             raise ValueError("status cannot be empty.")
+        params: dict[str, Any] = {}
+        if normalized_status is not None:
+            params["status"] = normalized_status
         return self._get_paginated(
             endpoint="media",
             entity_type="wordpress_media",
             identity_prefix="wordpress:media",
             source_url_fields=("link", "source_url"),
-            params={
-                "status": normalized_status,
-                "orderby": "id",
-                "order": "asc",
-            },
+            params=params,
         )
 
     def inventory_core(self) -> WordPressInventorySnapshot:

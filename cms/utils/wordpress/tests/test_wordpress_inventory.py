@@ -307,6 +307,9 @@ class WordPressInventoryClientTests(unittest.TestCase):
                 "posts": [{"id": 10, "link": "https://wordpress.example.test/post/"}],
                 "media": [{"id": 20, "source_url": "https://wordpress.example.test/media.jpg"}],
             }
+            if endpoint == "media":
+                self.assertNotIn("status", request.url.params)
+                self.assertNotIn("orderby", request.url.params)
             return self.paginated_response(
                 request,
                 payloads[endpoint],
