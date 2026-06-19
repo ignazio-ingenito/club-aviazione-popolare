@@ -7,10 +7,16 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 from typing import Callable
+import yaml
 
 from .directus import DirectusInventoryClient, DirectusInventoryConfig
 from .gallery import WordPressGalleryDiscoveryClient
 from .routes import RouteInventoryClient, RouteInventoryConfig
+from .reconciliation import (
+    historical_mappings_from_parser_yaml,
+    reconcile_manifest_files,
+)
+from .reconciliation_writer import ReconciliationWriteResult, write_reconciliation_report_json
 from .wordpress import WordPressInventoryClient, WordPressInventoryConfig
 from .writer import ManifestWriteResult, write_manifest_jsonl
 from .wxr import WordPressWXRMediaInventoryClient
@@ -19,12 +25,15 @@ from .wxr import WordPressWXRMediaInventoryClient
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    handler: Callable[[argparse.Namespace], ManifestWriteResult] = args.handler
+    handler: Callable[[argparse.Namespace], object] = args.handler
     result = handler(args)
+    artifact_path = getattr(result, "manifest_path", None) or getattr(
+        result, "report_path", None
+    )
     print(
         json.dumps(
             {
-                "manifest": str(result.manifest_path),
+                "manifest": str(artifact_path) if artifact_path is not None else None,
                 "checksum": str(result.checksum_path),
                 "sha256": result.sha256,
                 "bytes": result.byte_count,
@@ -105,6 +114,31 @@ def build_parser() -> argparse.ArgumentParser:
     )
     directus.add_argument("--limit", type=int, default=100)
     directus.set_defaults(handler=_run_directus_core)
+
+    reconcile = subparsers.add_parser(
+        "reconcile",
+        help="Classify source inventory against target inventory without writing to WordPress or Directus.",
+    )
+    _add_common_output_args(reconcile, default_filename="reconciliation.json")
+    reconcile.add_argument(
+        "--source-manifest",
+        "--source",
+        dest="source_manifest",
+        required=True,
+        help="Path to the source inventory JSONL file.",
+    )
+    reconcile.add_argument(
+        "--target-manifest",
+        "--target",
+        dest="target_manifest",
+        required=True,
+        help="Path to the target inventory JSONL file.",
+    )
+    reconcile.add_argument(
+        "--legacy-map",
+        help="Optional parser.yaml evidence file for historical corroboration.",
+    )
+    reconcile.set_defaults(handler=_run_reconcile)
 
     return parser
 
@@ -196,9 +230,37 @@ def _run_directus_core(args: argparse.Namespace) -> ManifestWriteResult:
     return _write(args, manifest)
 
 
+def _run_reconcile(args: argparse.Namespace) -> ReconciliationWriteResult:
+    historical_mappings = None
+    if args.legacy_map:
+        with open(args.legacy_map, "r", encoding="utf-8") as handle:
+            legacy_map = yaml.safe_load(handle) or {}
+        if not isinstance(legacy_map, dict):
+            raise ValueError("--legacy-map must contain a mapping at the top level.")
+        historical_mappings = historical_mappings_from_parser_yaml(legacy_map)
+
+    report = reconcile_manifest_files(
+        args.source_manifest,
+        args.target_manifest,
+        historical_mappings=historical_mappings,
+    )
+    return _write_reconciliation(args, report)
+
+
 def _write(args: argparse.Namespace, manifest) -> ManifestWriteResult:
     return write_manifest_jsonl(
         manifest,
+        output_dir=Path(args.output_dir),
+        filename=args.filename,
+        repository_root=_repository_root(),
+    )
+
+
+def _write_reconciliation(
+    args: argparse.Namespace, report
+) -> ReconciliationWriteResult:
+    return write_reconciliation_report_json(
+        report,
         output_dir=Path(args.output_dir),
         filename=args.filename,
         repository_root=_repository_root(),

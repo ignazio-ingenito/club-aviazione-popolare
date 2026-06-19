@@ -31,6 +31,140 @@ class InventoryCliTests(unittest.TestCase):
         self.assertIn("wordpress-wxr-media", result.stdout)
         self.assertIn("directus-core", result.stdout)
         self.assertIn("routes", result.stdout)
+        self.assertIn("reconcile", result.stdout)
+
+    def test_reconcile_command_writes_report_and_classifies_states(self) -> None:
+        with TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            source_manifest = InventoryManifest(
+                scope=InventoryScope.SOURCE,
+                environment="synthetic",
+                base_url="https://source.example.test",
+                observed_at=datetime(2026, 6, 19, 17, 0, tzinfo=timezone.utc),
+                records=[
+                    ManifestRecord(
+                        scope=InventoryScope.SOURCE,
+                        entity_type="wordpress_post",
+                        identity="wordpress:post:1",
+                        source_url="https://example.test/article/",
+                        data={"title": "Article"},
+                    ),
+                    ManifestRecord(
+                        scope=InventoryScope.SOURCE,
+                        entity_type="wordpress_post",
+                        identity="wordpress:post:2",
+                        source_url="https://example.test/new-article/",
+                        data={"title": "New article"},
+                    ),
+                    ManifestRecord(
+                        scope=InventoryScope.SOURCE,
+                        entity_type="wordpress_post",
+                        identity="wordpress:post:2582",
+                        data={"title": "Historical"},
+                    ),
+                    ManifestRecord(
+                        scope=InventoryScope.SOURCE,
+                        entity_type="wordpress_post",
+                        identity="wordpress:post:3",
+                        source_url="https://example.test/dup/",
+                        data={"title": "Duplicate"},
+                    ),
+                ],
+            )
+            target_manifest = InventoryManifest(
+                scope=InventoryScope.TARGET,
+                environment="synthetic",
+                base_url="https://target.example.test",
+                observed_at=datetime(2026, 6, 19, 17, 0, tzinfo=timezone.utc),
+                records=[
+                    ManifestRecord(
+                        scope=InventoryScope.TARGET,
+                        entity_type="directus_feed",
+                        identity="directus:feed:10",
+                        data={"original_uri": "https://example.test/article"},
+                    ),
+                    ManifestRecord(
+                        scope=InventoryScope.TARGET,
+                        entity_type="directus_feed",
+                        identity="directus:feed:11",
+                        data={"original_uri": "https://example.test/dup"},
+                    ),
+                    ManifestRecord(
+                        scope=InventoryScope.TARGET,
+                        entity_type="directus_feed",
+                        identity="directus:feed:12",
+                        data={"original_uri": "https://example.test/dup/"},
+                    ),
+                ],
+            )
+            source_path = tmp_path / "source.jsonl"
+            target_path = tmp_path / "target.jsonl"
+            write_manifest_jsonl(source_manifest, output_dir=tmp_path, filename="source.jsonl")
+            write_manifest_jsonl(target_manifest, output_dir=tmp_path, filename="target.jsonl")
+            legacy_map = tmp_path / "parser.yaml"
+            legacy_map.write_text(
+                "\n".join(
+                    [
+                        "2582:",
+                        "  id_wordpress: \"2582\"",
+                        "  id_directus: 175",
+                        "  slug: welcome",
+                        "  title: Benvenuti sul sito del CAP",
+                        "  wp_link: https://example.test/legacy/",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            output_dir = tmp_path / "reconciliation"
+
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "inventory",
+                    "reconcile",
+                    "--source",
+                    str(source_path),
+                    "--target",
+                    str(target_path),
+                    "--legacy-map",
+                    str(legacy_map),
+                    "--output-dir",
+                    str(output_dir),
+                    "--filename",
+                    "reconciliation.json",
+                    "--environment",
+                    "synthetic",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            summary = json.loads(result.stdout)
+            report_path = output_dir / "reconciliation.json"
+            checksum_path = output_dir / "reconciliation.json.sha256"
+            self.assertEqual(Path(summary["manifest"]), report_path)
+            self.assertEqual(Path(summary["checksum"]), checksum_path)
+            self.assertTrue(report_path.exists())
+            self.assertTrue(checksum_path.exists())
+            self.assertIn(summary["sha256"], checksum_path.read_text(encoding="utf-8"))
+
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            states = [item["state"] for item in report["results"]]
+            self.assertIn("already_imported", states)
+            self.assertIn("create_candidate", states)
+            self.assertIn("manual_review", states)
+            self.assertIn("conflict", states)
+            self.assertEqual(report["metadata"]["historical_mapping_count"], 1)
+            self.assertEqual(report["metadata"]["source_record_count"], 4)
+            self.assertEqual(report["metadata"]["target_record_count"], 3)
+            self.assertEqual(report["summary"]["already_imported"], 1)
+            self.assertEqual(report["summary"]["create_candidate"], 1)
+            self.assertEqual(report["summary"]["manual_review"], 1)
+            self.assertEqual(report["summary"]["conflict"], 1)
 
     def test_routes_command_writes_jsonl_and_checksum(self) -> None:
         with TemporaryDirectory() as tmp:
