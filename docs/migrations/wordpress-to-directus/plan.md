@@ -8,12 +8,12 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Task B2 — implement the fresh WordPress read-only client for types, categories, posts, media, and complete pagination.
+- [ ] Task B3 — implement gallery REST-type discovery and the ordered public-HTML fallback parser.
 
 ## Task B slice status
 
 - [x] Task B1 — common manifest records, canonical JSON, SHA-256 hashing, explicit inventory issues, and strict pagination contracts with synthetic-data tests.
-- [ ] Task B2 — WordPress read-only client and source record mapping.
+- [x] Task B2 — fresh WordPress read-only client for post types, categories, published posts, media, content-media URL discovery, and complete pagination.
 - [ ] Task B3 — gallery REST discovery and ordered public-HTML fallback parser.
 - [ ] Task B4 — Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relevant relations.
 - [ ] Task B5 — generated frontend route inventory and collision metadata.
@@ -21,9 +21,9 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Next up
 
-1. WordPress read-only client.
-2. Gallery source discovery.
-3. Directus read-only client.
+1. Gallery source discovery.
+2. Directus read-only client.
+3. Generated route inventory.
 
 ## Phase 0 — Governance and scope
 
@@ -57,9 +57,9 @@ Exit gate: source and target contracts are known well enough to design determini
 
 ## Phase 2 — Safety controls and tests
 
-- [ ] Introduce a read-only HTTP client for source and target inventory.
+- [x] Introduce a guarded read-only HTTP client reusable by source and target inventory clients.
 - [ ] Add a create-only Directus client separated from the legacy mutable client.
-- [ ] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
+- [x] Add a method allowlist that rejects every method except `GET` and `HEAD` before network transmission.
 - [ ] Add a test proving dry-run sends no non-read request.
 - [ ] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
@@ -84,12 +84,12 @@ Exit gate: every existing in-scope target object is represented as a protected a
 
 ## Phase 4 — Source inventory
 
-- [ ] Define the source manifest schema and canonical hashing rules.
+- [x] Define the generic source manifest schema and canonical hashing rules.
 - [ ] Fetch all approved posts with complete pagination and no stale cache.
-- [ ] Capture categories, featured media, inline media, links, dates, and source hashes.
+- [x] Implement capture of categories, featured media, inline media, linked files, dates, and source hashes.
 - [ ] Discover all public gallery albums and ordered images.
 - [ ] Resolve original media URLs without mutating source or target.
-- [ ] Record source errors rather than silently omitting records.
+- [x] Record malformed source records as explicit inventory issues rather than silently omitting them.
 - [ ] Validate source counts against WordPress totals and archive pages.
 - [ ] Store the source inventory as a controlled run artifact.
 
