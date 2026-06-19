@@ -8,18 +8,18 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B slice 2 — fresh WordPress read-only client with complete pagination, source errors, and synthetic HTTP tests.
+- [ ] Implement Task B slice 3 — gallery REST discovery and ordered public-HTML fallback with synthetic tests.
 
 ## Next up
 
-1. WordPress read-only inventory client.
-2. Gallery REST discovery and public-HTML fallback.
-3. Directus read-only inventory client.
+1. Gallery REST discovery and public-HTML fallback.
+2. Directus read-only inventory client.
+3. Repository route inventory and collision input contract.
 
 ## Task B — Read-only inventory implementation
 
 - [x] Slice 1: common manifest models, canonical JSON, SHA-256, JSONL, pagination contracts, and synthetic tests.
-- [ ] Slice 2: WordPress read-only client for types, categories, posts, and media.
+- [x] Slice 2: WordPress read-only client for types, categories, posts, and media.
 - [ ] Slice 3: gallery REST discovery and ordered public-HTML fallback.
 - [ ] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
 - [ ] Slice 5: repository route inventory and collision input contract.
@@ -59,16 +59,18 @@ Exit gate: source and target contracts are known well enough to design determini
 
 ## Phase 2 — Safety controls and tests
 
-- [ ] Introduce a read-only HTTP client for source and target inventory.
+- [x] Introduce a shared GET/HEAD-only transport and a fresh WordPress source inventory client.
+- [ ] Introduce a strict read-only Directus target inventory client.
 - [ ] Add a create-only Directus client separated from the legacy mutable client.
-- [ ] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
-- [ ] Add a test proving dry-run sends no non-read request.
+- [x] Add a pre-network method guard that rejects every non-read HTTP method.
+- [x] Add same-origin redirect and relative-endpoint guards for inventory requests.
+- [ ] Add a test proving CLI dry-run sends no non-read request.
 - [ ] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
 - [ ] Add a test proving broad permissions or missing permission evidence stop execution.
-- [x] Establish immutable manifest, hashing, JSONL, issue, and pagination contracts without network or write behavior.
-- [ ] Remove stale-cache dependence from new migration commands.
-- [ ] Keep legacy delete and overwrite commands outside the approved execution path.
+- [x] Establish immutable manifest, hashing, JSONL, issue, and pagination contracts without write behavior.
+- [x] Keep the new WordPress inventory path fresh by default and independent from joblib and `parser.yaml`.
+- [ ] Keep legacy delete and overwrite commands outside the approved CLI execution path.
 
 Exit gate: automated tests enforce the production invariant before a write path exists.
 
@@ -87,13 +89,14 @@ Exit gate: every existing in-scope target object is represented as a protected a
 
 ## Phase 4 — Source inventory
 
-- [ ] Define the WordPress post, media, category, and gallery payload schemas using the common manifest contracts.
+- [x] Define WordPress type, category, post, and media payload schemas using the common manifest contracts.
+- [ ] Define the ordered WordPress gallery payload schema.
 - [ ] Fetch all approved posts with complete pagination and no stale cache.
-- [ ] Capture categories, featured media, inline media, links, dates, and source hashes.
+- [x] Implement capture of complete categories, featured-media metadata, inline references, links, dates, and source hashes.
 - [ ] Discover all public gallery albums and ordered images.
 - [ ] Resolve original media URLs without mutating source or target.
-- [ ] Record source errors rather than silently omitting records.
-- [ ] Validate source counts against WordPress totals and archive pages.
+- [x] Emit explicit structured issues for malformed source records and metadata.
+- [ ] Validate live source counts against WordPress totals and archive pages.
 - [ ] Store the source inventory as a controlled run artifact.
 
 Exit gate: every source record in scope is inventoried or explicitly classified as an error.
