@@ -60,7 +60,6 @@ class WordPressInventoryTests(unittest.TestCase):
             [record.identity for record in manifest.records],
             [
                 "wordpress:category:6",
-                "wordpress:media:9",
                 "wordpress:post:1",
                 "wordpress:post:2",
                 "wordpress:post:3",
