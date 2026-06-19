@@ -1,6 +1,6 @@
 # WordPress to Directus migration plan
 
-Status: active planning
+Status: active planning and implementation
 
 Last updated: 2026-06-19
 
@@ -8,13 +8,13 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Review this documentation PR and confirm ADR 0001 as the governing production invariant.
+- [ ] Implement Task B — fresh read-only source and target inventory contracts, clients, manifests, and synthetic-data tests.
 
 ## Next up
 
-1. Read-only discovery and inventory contracts.
-2. Baseline and reconciliation implementation.
-3. Create-only staging rehearsal.
+1. Read-only inventory implementation.
+2. Baseline verifier and canonical fingerprints.
+3. Reconciliation engine.
 
 ## Phase 0 — Governance and scope
 
@@ -22,24 +22,29 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Add repository instructions for agent-assisted migration work.
 - [x] Add compact repository and migration context.
 - [x] Define normative specification, plan, runbook, and agent-loop task cards.
-- [ ] Confirm the WordPress category and status scope for articles.
-- [ ] Confirm that newly imported feeds remain draft until editorial review.
+- [x] Review and merge the documentation PR, accepting ADR 0001 as the governing production invariant.
+- [ ] Confirm the final WordPress category-to-target-category precedence for articles.
+- [x] Confirm that newly imported feeds remain draft until editorial review.
 - [ ] Confirm the operator and reviewer roles for baseline, reconciliation, and production approval.
 
 Exit gate: documentation is reviewed and no unresolved decision changes the safety model.
 
 ## Phase 1 — Read-only discovery
 
-- [ ] Inventory the current Directus schema, fields, relations, constraints, and permissions without changing them.
-- [ ] Record the exact production Directus version and align local tooling assumptions.
-- [ ] Inventory WordPress REST types, categories, posts, media, and gallery exposure.
-- [ ] Determine whether `dt-gallery` is available through REST, export, or public HTML only.
-- [ ] Inventory frontend routes and identify possible slug/URL collisions.
-- [ ] Document the current production gallery behavior and legacy fallback contract.
-- [ ] Review `parser.yaml` as historical evidence and classify stale or unverifiable mappings.
-- [ ] Produce a discovery report with open questions and no write operations.
+- [x] Infer the Directus collections, fields, and relations currently consumed by the application without treating inference as an authoritative schema snapshot.
+- [ ] Inventory the current Directus schema, field types, constraints, relations, states, and readable permissions with a strict read-only identity.
+- [ ] Record the exact production Directus version and immutable image digest.
+- [x] Inventory public WordPress archives, known historical category IDs, and overlapping category behavior.
+- [ ] Inventory WordPress REST types, categories, post/media totals, and complete pagination through the Task B client.
+- [x] Verify that public gallery albums are available through `/gallery/` and `/dt-gallery/<slug>/` HTML routes.
+- [ ] Determine whether the gallery custom post type is exposed through WordPress REST or requires export/public-HTML fallback.
+- [x] Inventory frontend routes and identify global slug and route collision rules.
+- [x] Document the current production gallery behavior and legacy exact-folder-name fallback contract.
+- [x] Review `parser.yaml` as historical evidence and document why it cannot be target authority.
+- [ ] Validate historical mappings against the current Directus target during reconciliation inventory.
+- [x] Produce the read-only discovery report with open questions and no production writes.
 
-Exit gate: source and target contracts are known well enough to design deterministic inventories.
+Exit gate: source and target contracts are known well enough to design deterministic inventories. Authenticated runtime facts are completed by the read-only inventory client before baseline approval.
 
 ## Phase 2 — Safety controls and tests
 
