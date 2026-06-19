@@ -25,6 +25,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B slice 5 handoff](task-b-route-inventory.md): repository route inventory, collision input contract, tests, and reviewer checklist.
 - [Task B slice 6 handoff](task-b-cli-integration.md): read-only CLI integration, atomic manifest writer, checksum sidecars, tests, and reviewer checklist.
 - [Task B slice 7 handoff](task-b-wxr-media-inventory.md): local WordPress WXR media export inventory for REST-private attachments.
+- [Task B reconciliation handoff](task-b-reconciliation.md): reconciliation states, parser.yaml corroboration only, review gates, and write-manifest boundary.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -42,6 +43,7 @@ Included:
 - read-only source and target inventories;
 - conservative reconciliation against existing Directus artifacts;
 - an append-only migration ledger;
+- reconciliation before write-manifest construction;
 - additive creation of approved missing content;
 - proof that protected target artifacts did not change.
 

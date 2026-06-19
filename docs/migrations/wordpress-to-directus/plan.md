@@ -25,6 +25,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Slice 5: repository route inventory and collision input contract.
 - [x] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
 - [x] Slice 7: local WXR media export inventory for WordPress attachments hidden from public REST.
+- [x] Slice 8: reconciliation workflow, historical mapping corroboration only, and write-manifest gating.
 
 Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
 
@@ -105,7 +106,7 @@ Exit gate: every source record in scope is inventoried or explicitly classified 
 - [ ] Implement the reconciliation states defined in the specification.
 - [ ] Match accepted ledger entries first.
 - [ ] Validate exact `original_uri` matches.
-- [ ] Revalidate historical YAML mappings against the current target.
+- [ ] Revalidate historical YAML mappings against the current target as corroboration only, never as authority.
 - [ ] Treat slug/title/date/category similarity as manual-review evidence only.
 - [ ] Detect route, slug, source identity, and target identity collisions.
 - [ ] Classify source-target drift as protected, never as an update candidate.
