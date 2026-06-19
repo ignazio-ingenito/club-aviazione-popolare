@@ -8,7 +8,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B slice 4 — Directus anonymous/read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
+- [ ] Implement Task B slice 5 — repository route inventory and collision input contract.
 
 ## Next up
 
@@ -21,7 +21,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Slice 1: common manifest models, canonical JSON, SHA-256, JSONL, pagination contracts, and synthetic tests.
 - [x] Slice 2: WordPress read-only client for types, categories, posts, and media.
 - [x] Slice 3: gallery REST discovery and ordered public-HTML fallback.
-- [ ] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
+- [x] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
 - [ ] Slice 5: repository route inventory and collision input contract.
 - [ ] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
 
