@@ -51,8 +51,20 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 - Alternativa: HTML/CSS/JS vanilla.
 - Componenti modulari e riutilizzabili.
 
-# TODO
+# Migrazione WordPress → Directus
 
+La migrazione degli articoli e delle gallery mancanti è regolata da una documentazione non distruttiva: tutti gli articoli, media, cartelle e relazioni già presenti in Directus sono artefatti di produzione protetti e non possono essere modificati o cancellati dal processo di migrazione.
+
+Punti di ingresso:
+
+- [`AGENTS.md`](AGENTS.md): regole obbligatorie per agenti e `agent-loop`.
+- [`CONTEXT.md`](CONTEXT.md): contesto tecnico e rischi correnti.
+- [Documentazione migrazione](docs/migrations/wordpress-to-directus/README.md): indice di specifica, piano, runbook e task card.
+- [ADR 0001](docs/adr/0001-preserve-existing-directus-artifacts-during-wordpress-migration.md): decisione additive-only e target-authoritative.
+
+La presenza di questa documentazione non autorizza modifiche allo schema o esecuzioni in produzione: backup, baseline, permessi create-only, rehearsal e manifest di scrittura richiedono gate e approvazioni separati.
+
+# TODO
 
 ## Chi siamo
 
@@ -83,7 +95,6 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 - [x] Le storire dei soci
 - [x] Riviste -> Migrato in `La nostra storia`
 
-
 ## Gallery
 
 - [ ] Gallery
@@ -92,10 +103,7 @@ Rigenera il sito https://www.clubaviazionepopolare.org/ mantenendo i contenuti p
 
 - [ ] Contatti
 
-
 ## Area Soci
-
-
 
 # Package updates
 
@@ -113,8 +121,8 @@ pnpm update
 pnpm install
 ```
 
+# Node version
 
-# Node version 
 ```
 source ~/.bashrc
 volta install node@20
