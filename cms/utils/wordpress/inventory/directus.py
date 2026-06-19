@@ -45,17 +45,12 @@ FEED_FIELDS = (
     "date_updated",
 )
 CATEGORY_FIELDS = (
-    "id",
     "key",
-    "slug",
     "title",
-    "name",
     "description",
     "status",
     "sort",
-    "user_created",
     "date_created",
-    "user_updated",
     "date_updated",
 )
 
@@ -242,6 +237,8 @@ class DirectusInventoryClient:
             entity_type="directus_category",
             identity_prefix="directus:category",
             fields=CATEGORY_FIELDS,
+            identity_field="key",
+            sort_field="key",
         )
 
     def get_files(self) -> DirectusCollectionResult:
@@ -295,12 +292,16 @@ class DirectusInventoryClient:
         entity_type: str,
         identity_prefix: str,
         fields: tuple[str, ...],
+        identity_field: str = "id",
+        sort_field: str = "id",
     ) -> DirectusCollectionResult:
         return self._get_paginated(
             endpoint=f"items/{collection}",
             entity_type=entity_type,
             identity_prefix=identity_prefix,
             fields=fields,
+            identity_field=identity_field,
+            sort_field=sort_field,
         )
 
     def _get_singleton(
@@ -390,11 +391,13 @@ class DirectusInventoryClient:
         entity_type: str,
         identity_prefix: str,
         fields: tuple[str, ...],
+        identity_field: str = "id",
+        sort_field: str = "id",
     ) -> DirectusCollectionResult:
         first_params = {
             "limit": self.config.limit,
             "offset": 0,
-            "sort": "id",
+            "sort": sort_field,
             "fields": ",".join(fields),
             "meta": "filter_count,total_count",
         }
@@ -476,7 +479,7 @@ class DirectusInventoryClient:
             raw_items=raw_items,
             entity_type=entity_type,
             identity_prefix=identity_prefix,
-            identity_field="id",
+            identity_field=identity_field,
         )
         return DirectusCollectionResult(
             endpoint=endpoint,

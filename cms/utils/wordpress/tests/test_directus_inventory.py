@@ -107,21 +107,31 @@ class DirectusInventoryClientTests(unittest.TestCase):
         def handler(request: httpx.Request) -> httpx.Response:
             self.assertEqual(request.method, "GET")
             self.assertEqual(request.url.path, "/items/categories")
+            self.assertEqual(request.url.params["sort"], "key")
             requested_fields = set(request.url.params["fields"].split(","))
-            self.assertTrue(set(CATEGORY_FIELDS).issubset(requested_fields))
-            self.assertIn("key", requested_fields)
-            self.assertIn("description", requested_fields)
-            self.assertNotIn("modified_on", requested_fields)
+            self.assertEqual(
+                requested_fields,
+                {
+                    "key",
+                    "title",
+                    "description",
+                    "status",
+                    "sort",
+                    "date_created",
+                    "date_updated",
+                },
+            )
+            self.assertEqual(set(CATEGORY_FIELDS), requested_fields)
             return self.paginated_response(
                 request,
-                [{"id": 3, "key": "news", "title": "News"}],
+                [{"key": "news", "title": "News"}],
                 total=1,
             )
 
         client, _, _ = self.make_client(handler)
         result = client.get_categories()
 
-        self.assertEqual(result.records[0].identity, "directus:category:3")
+        self.assertEqual(result.records[0].identity, "directus:category:news")
         self.assertEqual(result.issues, ())
 
     def test_inaccessible_endpoint_becomes_fatal_target_issue(self) -> None:
@@ -203,7 +213,7 @@ class DirectusInventoryClientTests(unittest.TestCase):
                 return httpx.Response(403, request=request, json={"errors": []})
             payloads = {
                 "/items/feeds": [{"id": 1, "slug": "one"}],
-                "/items/categories": [{"id": 2, "slug": "news"}],
+                "/items/categories": [{"key": "news", "title": "News"}],
                 "/files": [{"id": "file-1", "filename_disk": "a.jpg"}],
                 "/folders": [{"id": "folder-1", "name": "gallery"}],
             }
