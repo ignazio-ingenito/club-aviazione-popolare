@@ -8,11 +8,12 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Implement Task B slice 6 — read-only CLI integration and end-to-end synthetic fixtures.
+- [ ] Execute live read-only inventories with the Task B CLI and controlled run artifacts outside Git.
 
 ## Next up
 
-1. Read-only CLI integration and end-to-end synthetic fixtures.
+1. Execute live read-only source, gallery, route, and public-view Directus inventories.
+2. Review Directus public-view gaps and decide whether to create a strict read-only identity for approved baseline capture.
 
 ## Task B — Read-only inventory implementation
 
@@ -21,7 +22,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 - [x] Slice 3: gallery REST discovery and ordered public-HTML fallback.
 - [x] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
 - [x] Slice 5: repository route inventory and collision input contract.
-- [ ] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
+- [x] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
 
 Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
 

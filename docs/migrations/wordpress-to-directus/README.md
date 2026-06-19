@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B slices 1-5 implemented; read-only CLI integration is next. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; live read-only inventories are next. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
@@ -23,6 +23,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B slice 3 handoff](task-b-gallery-discovery.md): REST-first gallery discovery, ordered public-HTML fallback, tests, and reviewer checklist.
 - [Task B slice 4 handoff](task-b-directus-inventory.md): anonymous/read-only Directus inventory client, inaccessible endpoint issues, tests, and reviewer checklist.
 - [Task B slice 5 handoff](task-b-route-inventory.md): repository route inventory, collision input contract, tests, and reviewer checklist.
+- [Task B slice 6 handoff](task-b-cli-integration.md): read-only CLI integration, atomic manifest writer, checksum sidecars, tests, and reviewer checklist.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
@@ -77,24 +78,24 @@ Useful parsing and download logic may be reused only after unsafe paths are isol
 ## Recommended next Agent Loop prompt
 
 ```text
-usa agent-loop per Task B slice 6 della migrazione WordPress-to-Directus.
+usa agent-loop per inventari live read-only della migrazione WordPress-to-Directus.
 Leggi AGENTS.md, CONTEXT.md, ADR 0001, discovery.md,
 task-b-inventory-contracts.md e tutti i documenti della migrazione.
 
-Obiettivo: implementare soltanto la CLI read-only e il writer atomico dei
-manifest per source, target e route inventory, usando i contratti in
-`cms/utils/wordpress/inventory/`.
+Obiettivo: eseguire inventari WordPress, gallery, route e public-view Directus
+con la CLI read-only, salvando gli artifact fuori Git in una run directory
+controllata.
 
-Prima usa explorer read-only. Poi un solo worker seriale.
-Allowed files: nuovi moduli CLI/writer, fixture sintetiche, test e docs.
+Prima usa explorer read-only. Poi esegui solo comandi CLI GET/HEAD.
+Allowed files: nessuna modifica repo richiesta salvo handoff/report sintetici.
 Forbidden: parser.yaml, importer legacy, AI, Directus writes, frontend
 behavior changes, schema apply, permessi, homelab, dati di produzione e
 inventari live in Git.
 Nessun metodo HTTP diverso da GET/HEAD.
 
-Test richiesti: help CLI, output JSONL deterministico, checksum SHA-256,
-scrittura atomica, directory fuori Git parametrizzabile, dry-run/read-only,
-errori espliciti e nessun metodo di scrittura.
+Verifica richiesta: checksum `.sha256`, conteggi per manifest, issue fatali
+esplicite per endpoint Directus anonimi non leggibili, e dichiarazione che
+il public-view Directus non è una baseline approvabile.
 Restituisci production_artifact_impact, stop_conditions e handoff.
 ```
 
