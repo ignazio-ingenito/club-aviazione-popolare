@@ -23,71 +23,72 @@ export const NewsListCard = ({
   imagePosition?: "left" | "top"
   item: NewsListItem
 }) => (
-  <Card
-    className={`overflow-hidden group hover:shadow-lg transition-shadow flex hover:cursor-pointer ${imagePosition === "left" ? "flex-col sm:flex-row" : "flex-col max-h-[400px]"
-      }`}
+  <Link
+    href={`/news/${item.id}`}
+    className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
   >
-    <div
-      className={`relative shrink-0 overflow-hidden ${imagePosition === "left" ? "h-48 sm:h-auto sm:w-2/5" : "h-[9.6rem] sm:h-[12rem]"
+    <Card
+      className={`h-full overflow-hidden group hover:shadow-lg transition-shadow flex hover:cursor-pointer ${imagePosition === "left" ? "flex-col sm:flex-row" : "flex-col max-h-[400px]"
         }`}
     >
-      <Image
-        src={item.coverUrl}
-        width={item.width}
-        height={item.height}
-        alt={item.coverTitle}
-        loading="lazy"
-        quality={90}
-        sizes={
-          imagePosition === "left"
-            ? "(max-width: 640px) 100vw, 40vw"
-            : "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-        }
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        style={{
-          objectPosition: `${item.focalPointXPercentage}% ${item.focalPointYPercentage}%`,
-        }}
-      />
-      <Badge className="absolute top-4 right-4 bg-background/90 text-[#0056a4] hover:bg-background/90">
-        {item.categoryTitle}
-      </Badge>
-    </div>
-    <CardContent className="px-6 pt-4 pb-6 flex flex-col flex-1 min-w-0">
-      <span className="text-xl font-bold mb-2 text-accent group-hover:text-primary transition-colors line-clamp-2">
-        {item.title}
-      </span>
-      <div className="flex">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-          <Calendar className="h-4 w-4" />
-          <span>
-            {new Date(item.date)
-              .toLocaleDateString("it", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })
-              .replaceAll(/\s+/g, "-")
-              .toLowerCase()}
-          </span>
-        </div>
-        <div className="flex-1 flex items-center justify-end gap-2 text-sm text-muted-foreground mb-3">
-          <User className="h-4 w-4" />
-          <span>{item.author}</span>
-        </div>
-      </div>
       <div
-        className="overflow-hidden text-sm text-muted-foreground leading-relaxed line-clamp-5 block whitespace-normal break-words"
-        dangerouslySetInnerHTML={{ __html: item.content }}
-      />
-      <Link
-        href={`/news/${item.id}`}
-        className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+        className={`relative shrink-0 overflow-hidden ${imagePosition === "left" ? "h-48 sm:h-auto sm:w-2/5" : "h-[9.6rem] sm:h-[12rem]"
+          }`}
       >
-        Leggi di più
-        <ArrowRight className="ml-1 h-3 w-3" />
-      </Link>
-    </CardContent>
-  </Card>
+        <Image
+          src={item.coverUrl}
+          width={item.width}
+          height={item.height}
+          alt={item.coverTitle}
+          loading="lazy"
+          quality={90}
+          sizes={
+            imagePosition === "left"
+              ? "(max-width: 640px) 100vw, 40vw"
+              : "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          }
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          style={{
+            objectPosition: `${item.focalPointXPercentage}% ${item.focalPointYPercentage}%`,
+          }}
+        />
+        <Badge className="absolute top-4 right-4 bg-background/90 text-[#0056a4] hover:bg-background/90">
+          {item.categoryTitle}
+        </Badge>
+      </div>
+      <CardContent className="px-6 pt-4 pb-6 flex flex-col flex-1 min-w-0 min-h-0">
+        <span className="text-xl font-bold mb-2 text-accent group-hover:text-primary transition-colors line-clamp-2">
+          {item.title}
+        </span>
+        <div className="flex shrink-0">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+            <Calendar className="h-4 w-4" />
+            <span>
+              {new Date(item.date)
+                .toLocaleDateString("it", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })
+                .replaceAll(/\s+/g, "-")
+                .toLowerCase()}
+            </span>
+          </div>
+          <div className="flex-1 flex items-center justify-end gap-2 text-sm text-muted-foreground mb-3">
+            <User className="h-4 w-4" />
+            <span className="truncate">{item.author}</span>
+          </div>
+        </div>
+        <p className="mb-4 text-sm text-muted-foreground leading-6 line-clamp-4 whitespace-normal break-words">
+          {item.content}
+        </p>
+        <span className="inline-flex items-center mt-auto shrink-0 text-sm font-medium text-primary group-hover:underline">
+          Leggi di più
+          <ArrowRight className="ml-1 h-3 w-3" />
+        </span>
+      </CardContent>
+    </Card>
+  </Link>
 )
 
 export default function InfiniteNewsList({
