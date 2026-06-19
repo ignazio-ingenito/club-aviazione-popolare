@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; live read-only inventories are next. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; live read-only inventories and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
 Last updated: 2026-06-19
 
