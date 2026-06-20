@@ -93,6 +93,7 @@ class DirectusProtocolError(DirectusInventoryError):
 class DirectusInventoryConfig:
     base_url: str = "https://cap-cms.skunklabs.uk"
     limit: int = DIRECTUS_MAX_LIMIT
+    auth_token: str | None = None
 
     def __post_init__(self) -> None:
         normalized = self.base_url.strip().rstrip("/")
@@ -102,6 +103,11 @@ class DirectusInventoryConfig:
         if not 1 <= self.limit <= DIRECTUS_MAX_LIMIT:
             raise ValueError(f"limit must be between 1 and {DIRECTUS_MAX_LIMIT}.")
         object.__setattr__(self, "base_url", normalized)
+        if self.auth_token is not None:
+            token = self.auth_token.strip()
+            if not token:
+                raise ValueError("auth_token cannot be empty when provided.")
+            object.__setattr__(self, "auth_token", token)
 
 
 @dataclass(frozen=True, slots=True)
@@ -504,7 +510,12 @@ class DirectusInventoryClient:
     ) -> tuple[httpx.Response, Any]:
         url = self._endpoint_url(endpoint)
         try:
-            response = self.http.get(url, params=params)
+            headers = (
+                {"Authorization": f"Bearer {self.config.auth_token}"}
+                if self.config.auth_token is not None
+                else None
+            )
+            response = self.http.get(url, params=params, headers=headers)
         except httpx.HTTPError as exc:
             request = getattr(exc, "request", None)
             raise DirectusHttpError(

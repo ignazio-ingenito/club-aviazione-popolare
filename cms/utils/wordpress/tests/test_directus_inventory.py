@@ -70,6 +70,25 @@ class DirectusInventoryClientTests(unittest.TestCase):
             readonly.request("PATCH", "https://directus.example.test/items/feeds/1")
         self.assertEqual(requests, [])
 
+    def test_auth_token_is_sent_as_bearer_header(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            self.assertEqual(request.headers["Authorization"], "Bearer secret-token")
+            return httpx.Response(
+                200,
+                request=request,
+                json={"data": {"version": "x"}},
+            )
+
+        client, _, _ = self.make_client(handler)
+        client.config = DirectusInventoryConfig(
+            base_url="https://directus.example.test",
+            limit=2,
+            auth_token="secret-token",
+        )
+
+        result = client.get_server_info()
+        self.assertEqual(result.records[0].identity, "directus:server:info")
+
     def test_feeds_fetch_all_pages_with_stable_query(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
             self.assertEqual(request.method, "GET")
@@ -335,6 +354,11 @@ class DirectusInventoryClientTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             DirectusInventoryConfig(
                 base_url="https://directus.example.test", limit=101
+            )
+        with self.assertRaises(ValueError):
+            DirectusInventoryConfig(
+                base_url="https://directus.example.test",
+                auth_token="   ",
             )
 
 

@@ -8,13 +8,13 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [x] Reconcile WordPress REST source inventory with WXR media export evidence and controlled run artifacts outside Git.
+- [x] Reconcile WordPress REST source inventory with WXR media export evidence and authenticated Directus target artifacts outside Git.
 
 ## Next up
 
-1. Review Directus public-view gaps and decide whether to create a strict read-only identity for approved baseline capture.
-2. Inventory the current Directus schema, field types, constraints, relations, states, and readable permissions with the strict read-only identity once approved.
-3. Record the exact production Directus version and immutable image digest.
+1. Review authenticated Directus target baseline and decide whether it is approved for reuse.
+2. If approval is granted, freeze the baseline hash and move to write-manifest review.
+3. If more evidence is needed, collect it with the same strict read-only identity before any write work.
 
 ## Task B — Read-only inventory implementation
 

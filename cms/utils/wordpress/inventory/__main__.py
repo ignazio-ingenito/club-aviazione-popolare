@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 from typing import Callable
 import yaml
@@ -220,6 +221,7 @@ def _run_directus_core(args: argparse.Namespace) -> ManifestWriteResult:
         config=DirectusInventoryConfig(
             base_url=args.base_url,
             limit=args.limit,
+            auth_token=_directus_auth_token(),
         )
     ) as client:
         snapshot = client.inventory_core()
@@ -273,6 +275,10 @@ def _now_utc() -> datetime:
 
 def _repository_root() -> Path:
     return Path(__file__).resolve().parents[4]
+
+
+def _directus_auth_token() -> str | None:
+    return os.environ.get("DIRECTUS_TOKEN") or os.environ.get("TOKEN")
 
 
 if __name__ == "__main__":
