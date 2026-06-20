@@ -2,7 +2,7 @@
 
 Status: active planning and implementation
 
-Last updated: 2026-06-19
+Last updated: 2026-06-20
 
 This is the canonical binary plan. Every checkbox is either completed (`[x]`) or still required (`[ ]`). Do not use partial states. Split partially completed work into one closed task and one or more open tasks.
 
@@ -12,7 +12,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Next up
 
-1. Review authenticated Directus target baseline and decide whether it is approved for reuse.
+1. Obtain explicit human approval for the authenticated Directus baseline review.
 2. If approval is granted, freeze the baseline hash and move to write-manifest review.
 3. If more evidence is needed, collect it with the same strict read-only identity before any write work.
 

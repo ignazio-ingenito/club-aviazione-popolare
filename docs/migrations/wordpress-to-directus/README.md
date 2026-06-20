@@ -1,8 +1,8 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
-Last updated: 2026-06-19
+Last updated: 2026-06-20
 
 ## Goal
 
@@ -26,6 +26,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B slice 6 handoff](task-b-cli-integration.md): read-only CLI integration, atomic manifest writer, checksum sidecars, tests, and reviewer checklist.
 - [Task B slice 7 handoff](task-b-wxr-media-inventory.md): local WordPress WXR media export inventory for REST-private attachments.
 - [Task B reconciliation handoff](task-b-reconciliation.md): reconciliation states, parser.yaml corroboration only, review gates, and write-manifest boundary.
+- [Task B target baseline review](task-b-target-baseline.md): authenticated baseline review, duplicate-file evidence, and approval gate.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
