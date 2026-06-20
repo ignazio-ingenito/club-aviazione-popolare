@@ -62,9 +62,9 @@ Exit gate: source and target contracts are known well enough to design determini
 
 ## Phase 2 — Safety controls and tests
 
-- [ ] Introduce a read-only HTTP client for source and target inventory.
-- [ ] Add a create-only Directus client separated from the legacy mutable client.
-- [ ] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
+- [x] Introduce a read-only HTTP client for source and target inventory.
+- [x] Add a create-only Directus client separated from the legacy mutable client.
+- [x] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
 - [ ] Add a test proving dry-run sends no non-read request.
 - [ ] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
