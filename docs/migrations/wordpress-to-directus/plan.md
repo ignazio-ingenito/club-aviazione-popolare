@@ -66,9 +66,9 @@ Exit gate: source and target contracts are known well enough to design determini
 - [x] Add a create-only Directus client separated from the legacy mutable client.
 - [x] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
 - [ ] Add a test proving dry-run sends no non-read request.
-- [ ] Add a test proving protected target records cannot enter a write manifest.
+- [x] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
-- [ ] Add a test proving broad permissions or missing permission evidence stop execution.
+- [x] Add a test proving broad permissions or missing permission evidence stop execution.
 - [x] Establish immutable manifest, hashing, JSONL, issue, and pagination contracts without network or write behavior.
 - [ ] Remove stale-cache dependence from new migration commands.
 - [ ] Keep legacy delete and overwrite commands outside the approved execution path.

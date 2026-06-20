@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
 Last updated: 2026-06-20
 
@@ -28,6 +28,8 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B reconciliation handoff](task-b-reconciliation.md): reconciliation states, parser.yaml corroboration only, review gates, and write-manifest boundary.
 - [Task B target baseline review](task-b-target-baseline.md): authenticated baseline review, duplicate-file evidence, and approval gate.
 - [Task B create-only Directus client](task-b-create-only-directus-client.md): method/endpoint allowlist and future write-safety wrapper.
+- [Task B approved write-manifest selection](task-b-write-manifest.md): candidate-only manifest selection and record gate.
+- [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.

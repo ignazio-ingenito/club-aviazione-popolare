@@ -28,6 +28,17 @@ from .reconciliation import (
     reconcile_manifests,
     reconcile_record,
 )
+from .write_manifest import (
+    ApprovedWriteManifest,
+    WriteManifestError,
+    build_approved_write_manifest,
+)
+from .permission_gate import (
+    PERMISSION_OPERATIONS,
+    PermissionExpectation,
+    PermissionGateError,
+    validate_permission_evidence,
+)
 from .models import (
     MANIFEST_SCHEMA_VERSION,
     InventoryIssue,
@@ -60,9 +71,16 @@ __all__ = [
     "ReconciliationReport",
     "ReconciliationResult",
     "ReconciliationState",
+    "ApprovedWriteManifest",
+    "PERMISSION_OPERATIONS",
     "canonical_json",
     "canonical_json_bytes",
     "canonical_sha256",
+    "WriteManifestError",
+    "build_approved_write_manifest",
+    "PermissionExpectation",
+    "PermissionGateError",
+    "validate_permission_evidence",
     "historical_mappings_from_parser_yaml",
     "freeze_json",
     "iter_manifest_jsonl_lines",
