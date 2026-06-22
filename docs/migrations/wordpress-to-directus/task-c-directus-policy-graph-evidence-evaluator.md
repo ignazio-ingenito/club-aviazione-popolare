@@ -1,27 +1,33 @@
 # Task C - Directus policy graph evidence evaluator
 
-Status: implemented; local evaluator only
+Status: implemented; local evaluator plus synthetic raw normalizer only
 
 Date: 2026-06-22
 
 ## Scope
 
 This slice implements a pure local evaluator for sanitized Directus policy graph
-evidence.
+evidence and a strict local normalizer for conservative raw policy graph
+payloads.
 
 Implemented:
 
 - `cms/utils/wordpress/directus_policy_evidence.py`;
 - `evaluate_policy_graph_evidence(payload)`;
+- `normalize_directus_policy_graph_payload(raw)`;
 - a no-network CLI for evaluating an existing JSON file;
+- a no-network CLI mode for normalizing a raw JSON file and immediately
+  evaluating the normalized output;
 - synthetic unit tests for approved and rejected policy graphs;
+- synthetic unit tests for strict normalizer failures and unsafe-but-valid
+  normalized evidence;
 - static-example compatibility for
   `docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json`.
 
 Not implemented:
 
 - live Directus collection;
-- raw Directus API response normalization;
+- actual live Directus API response collection;
 - Directus role, policy, user, token, schema, content, or media changes;
 - production `POST`;
 - migration execution with `--execute`.
@@ -50,12 +56,26 @@ of raising for normal unsafe input.
 
 ## CLI
 
+Evaluator mode:
+
 ```bash
 cd cms/utils/wordpress
 
 uv run python directus_policy_evidence.py \
   --input ../../../docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json \
   --output /tmp/directus-policy-graph-evidence-evaluation.json \
+  --force
+```
+
+Raw normalization plus evaluation mode:
+
+```bash
+cd cms/utils/wordpress
+
+uv run python directus_policy_evidence.py \
+  --raw-input /path/to/raw-directus-policy-graph.json \
+  --normalized-output /tmp/directus-policy-graph-evidence.normalized.json \
+  --evaluation-output /tmp/directus-policy-graph-evidence-evaluation.json \
   --force
 ```
 
@@ -67,6 +87,36 @@ Exit codes:
 
 The CLI refuses to overwrite an existing output file unless `--force` is
 provided.
+
+## Normalizer contract
+
+The public function is:
+
+```python
+normalize_directus_policy_graph_payload(raw: Mapping[str, Any]) -> dict[str, Any]
+```
+
+The normalizer supports only the conservative synthetic raw shape with:
+
+- `target_url`;
+- `observed_at`;
+- optional `directus_version`;
+- `identity.label` and `identity.role`;
+- `roles[]` with `id` and/or `name`;
+- `policies[]` with `id`, optional `name`, and `roles[]`;
+- `permissions[]` with `policy`, `collection`, `action`, `permissions`,
+  `validation`, `presets`, and `fields`.
+
+It raises `DirectusPolicyEvidenceError` for malformed or ambiguous raw input,
+including missing target URL, missing observation timestamp, missing identity,
+missing or unknown role, policy not attached to the selected identity role,
+permission references to unknown or unattached policies, malformed fields,
+malformed validation, malformed presets, and multiple identity roles without an
+explicit selected `identity.role`.
+
+Wildcard collection/action and forbidden update/delete permissions are
+structurally valid raw input. They survive normalization and are rejected by the
+evaluator.
 
 ## Approval criteria
 
@@ -123,6 +173,11 @@ uv run python -m compileall .
 uv run python directus_policy_evidence.py \
   --input ../../../docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json \
   --output /tmp/directus-policy-graph-evidence-evaluation.json \
+  --force
+uv run python directus_policy_evidence.py \
+  --raw-input /path/to/raw-directus-policy-graph.json \
+  --normalized-output /tmp/directus-policy-graph-evidence.normalized.json \
+  --evaluation-output /tmp/directus-policy-graph-evidence-evaluation.json \
   --force
 ```
 

@@ -60,6 +60,81 @@ SYSTEM_COLLECTIONS = frozenset(
 FILE_OR_FOLDER_COLLECTIONS = frozenset({"directus_files", "directus_folders", "files", "folders"})
 
 
+class DirectusPolicyEvidenceError(ValueError):
+    """Raised when raw Directus policy graph payloads cannot be normalized safely."""
+
+
+def normalize_directus_policy_graph_payload(raw: Mapping[str, Any]) -> dict[str, Any]:
+    """Normalize a conservative raw Directus policy graph export.
+
+    This function intentionally supports only the synthetic, documented raw
+    shape used by the migration runbook. It performs no network access and
+    fails closed when identity, role, policy, or permission linkage is unclear.
+    """
+
+    raw = _require_mapping(raw, "raw payload")
+    target_url = _require_text(raw, "target_url")
+    observed_at = _require_text(raw, "observed_at")
+    directus_version = _optional_text(raw, "directus_version")
+
+    identity = _require_mapping(raw.get("identity"), "identity")
+    identity_label = _optional_text(identity, "label")
+    identity_role = _optional_text(identity, "role")
+    identity_roles = identity.get("roles")
+    if not identity_role:
+        if isinstance(identity_roles, list) and len(identity_roles) > 1:
+            raise DirectusPolicyEvidenceError("identity has multiple roles without explicit role selection")
+        raise DirectusPolicyEvidenceError("identity.role is required")
+    if identity_roles is not None and not _is_text_list(identity_roles):
+        raise DirectusPolicyEvidenceError("identity.roles must be a list of strings when present")
+
+    roles = [_normalize_role(role, index) for index, role in enumerate(_require_list(raw.get("roles"), "roles"))]
+    role_keys = {
+        key
+        for role in roles
+        for key in (_optional_text(role, "id"), _optional_text(role, "name"))
+        if key
+    }
+    if identity_role not in role_keys:
+        raise DirectusPolicyEvidenceError("identity role does not match any role")
+
+    raw_policies = _require_list(raw.get("policies"), "policies")
+    if not raw_policies:
+        raise DirectusPolicyEvidenceError("policies must not be empty")
+
+    policies = [_normalize_policy(policy, index) for index, policy in enumerate(raw_policies)]
+    attached_policy_ids: set[str] = set()
+    for policy in policies:
+        policy_roles = policy["roles"]
+        if identity_role not in policy_roles:
+            raise DirectusPolicyEvidenceError(f"policy is not attached to identity role: {policy['id']}")
+        attached_policy_ids.add(policy["id"])
+    if not attached_policy_ids:
+        raise DirectusPolicyEvidenceError("no policies attached to identity role")
+
+    permissions = [
+        _normalize_permission(permission, index, attached_policy_ids)
+        for index, permission in enumerate(_require_list(raw.get("permissions"), "permissions"))
+    ]
+    if not permissions:
+        raise DirectusPolicyEvidenceError("permissions must not be empty")
+
+    normalized: dict[str, Any] = {
+        "kind": "directus_policy_graph_evidence",
+        "target_url": target_url,
+        "observed_at": observed_at,
+        "identity": {
+            "label": identity_label,
+            "role": identity_role,
+        },
+        "policies": policies,
+        "permissions": permissions,
+    }
+    if directus_version:
+        normalized["directus_version"] = directus_version
+    return normalized
+
+
 def evaluate_policy_graph_evidence(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Evaluate sanitized Directus policy graph evidence.
 
@@ -286,6 +361,108 @@ def _has_items(value: Any) -> bool:
     return bool(value)
 
 
+def _normalize_role(role: Any, index: int) -> dict[str, Any]:
+    role = _require_mapping(role, f"roles[{index}]")
+    role_id = _optional_text(role, "id")
+    role_name = _optional_text(role, "name")
+    if not role_id and not role_name:
+        raise DirectusPolicyEvidenceError(f"roles[{index}] must have id or name")
+
+    normalized: dict[str, Any] = {}
+    if role_id:
+        normalized["id"] = role_id
+    if role_name:
+        normalized["name"] = role_name
+    return normalized
+
+
+def _normalize_policy(policy: Any, index: int) -> dict[str, Any]:
+    policy = _require_mapping(policy, f"policies[{index}]")
+    policy_id = _require_text_value(policy.get("id"), f"policies[{index}].id")
+    policy_roles = _require_text_list(policy.get("roles"), f"policies[{index}].roles")
+    if not policy_roles:
+        raise DirectusPolicyEvidenceError(f"policies[{index}].roles must not be empty")
+
+    normalized: dict[str, Any] = {
+        "id": policy_id,
+        "roles": policy_roles,
+    }
+    policy_name = _optional_text(policy, "name")
+    if policy_name:
+        normalized["name"] = policy_name
+    return normalized
+
+
+def _normalize_permission(permission: Any, index: int, attached_policy_ids: set[str]) -> dict[str, Any]:
+    permission = _require_mapping(permission, f"permissions[{index}]")
+    policy_id = _require_text_value(permission.get("policy"), f"permissions[{index}].policy")
+    if policy_id not in attached_policy_ids:
+        raise DirectusPolicyEvidenceError(f"permissions[{index}].policy is not attached to identity role")
+
+    normalized: dict[str, Any] = {
+        "policy": policy_id,
+        "collection": _require_text_value(permission.get("collection"), f"permissions[{index}].collection"),
+        "action": _require_text_value(permission.get("action"), f"permissions[{index}].action"),
+        "permissions": _optional_mapping(permission.get("permissions"), f"permissions[{index}].permissions", default={}),
+        "validation": _require_mapping(permission.get("validation"), f"permissions[{index}].validation"),
+        "presets": _optional_mapping(permission.get("presets"), f"permissions[{index}].presets", default=None),
+        "fields": _require_text_list(permission.get("fields"), f"permissions[{index}].fields"),
+    }
+    permission_id = _optional_text(permission, "id")
+    if permission_id:
+        normalized["id"] = permission_id
+    return normalized
+
+
+def _require_mapping(value: Any, label: str) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        raise DirectusPolicyEvidenceError(f"{label} must be an object")
+    return value
+
+
+def _optional_mapping(value: Any, label: str, *, default: Mapping[str, Any] | None) -> Mapping[str, Any] | None:
+    if value is None:
+        return default
+    if not isinstance(value, Mapping):
+        raise DirectusPolicyEvidenceError(f"{label} must be an object or null")
+    return value
+
+
+def _require_list(value: Any, label: str) -> list[Any]:
+    if not isinstance(value, list):
+        raise DirectusPolicyEvidenceError(f"{label} must be a list")
+    return value
+
+
+def _require_text(raw: Mapping[str, Any], key: str) -> str:
+    return _require_text_value(raw.get(key), key)
+
+
+def _require_text_value(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise DirectusPolicyEvidenceError(f"{label} is required")
+    return value.strip()
+
+
+def _optional_text(raw: Mapping[str, Any], key: str) -> str:
+    value = raw.get(key)
+    if value is None:
+        return ""
+    if not isinstance(value, str):
+        raise DirectusPolicyEvidenceError(f"{key} must be a string")
+    return value.strip()
+
+
+def _require_text_list(value: Any, label: str) -> list[str]:
+    if not _is_text_list(value):
+        raise DirectusPolicyEvidenceError(f"{label} must be a list of strings")
+    return [item.strip() for item in value]
+
+
+def _is_text_list(value: Any) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) and item.strip() for item in value)
+
+
 def _normalized_permission_text(value: Any) -> str:
     if not isinstance(value, str):
         return ""
@@ -317,29 +494,72 @@ def _read_json_object(path: Path) -> Mapping[str, Any]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Evaluate sanitized Directus policy graph evidence without network access.",
+        description="Normalize and evaluate Directus policy graph evidence without network access.",
     )
-    parser.add_argument("--input", required=True, help="Sanitized Directus policy graph evidence JSON path.")
-    parser.add_argument("--output", required=True, help="Evaluation JSON output path.")
+    parser.add_argument("--input", help="Sanitized Directus policy graph evidence JSON path.")
+    parser.add_argument("--output", help="Evaluation JSON output path.")
+    parser.add_argument("--raw-input", help="Raw synthetic Directus policy graph JSON path.")
+    parser.add_argument("--normalized-output", help="Normalized evidence JSON output path.")
+    parser.add_argument("--evaluation-output", help="Evaluation JSON output path for raw mode.")
     parser.add_argument("--force", action="store_true", help="Allow overwriting the output file.")
     args = parser.parse_args(argv)
 
-    input_path = Path(args.input)
-    output_path = Path(args.output)
+    raw_mode_args = [args.raw_input, args.normalized_output, args.evaluation_output]
+    raw_mode = any(raw_mode_args)
+
     try:
-        if output_path.exists() and not args.force:
-            raise FileExistsError(f"Refusing to overwrite existing output: {output_path}")
-        payload = _read_json_object(input_path)
-        evaluation = evaluate_policy_graph_evidence(payload)
-        output_path.write_text(json.dumps(evaluation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        if raw_mode:
+            if not all(raw_mode_args) or args.input or args.output:
+                raise ValueError(
+                    "raw mode requires --raw-input, --normalized-output, and --evaluation-output only",
+                )
+            normalized_output_path = Path(args.normalized_output)
+            evaluation_output_path = Path(args.evaluation_output)
+            _ensure_writable_output(normalized_output_path, force=args.force)
+            _ensure_writable_output(evaluation_output_path, force=args.force)
+
+            raw_payload = _read_json_object(Path(args.raw_input))
+            normalized = normalize_directus_policy_graph_payload(raw_payload)
+            evaluation = evaluate_policy_graph_evidence(normalized)
+            normalized_output_path.write_text(
+                json.dumps(normalized, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            evaluation_output_path.write_text(
+                json.dumps(evaluation, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            print(
+                json.dumps(
+                    {
+                        "status": evaluation["status"],
+                        "normalized_output": str(normalized_output_path),
+                        "evaluation_output": str(evaluation_output_path),
+                    },
+                    sort_keys=True,
+                ),
+            )
+        else:
+            if not args.input or not args.output:
+                raise ValueError("evaluator mode requires --input and --output")
+            output_path = Path(args.output)
+            _ensure_writable_output(output_path, force=args.force)
+            payload = _read_json_object(Path(args.input))
+            evaluation = evaluate_policy_graph_evidence(payload)
+            output_path.write_text(json.dumps(evaluation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            print(json.dumps({"status": evaluation["status"], "output": str(output_path)}, sort_keys=True))
+    except (OSError, json.JSONDecodeError, ValueError, DirectusPolicyEvidenceError) as exc:
         print(json.dumps({"status": "error", "error": str(exc)}, sort_keys=True))
         return 1
 
-    print(json.dumps({"status": evaluation["status"], "output": str(output_path)}, sort_keys=True))
     if "malformed_payload" in evaluation["reasons"]:
         return 1
     return 0 if evaluation["status"] == "approved" else 2
+
+
+def _ensure_writable_output(path: Path, *, force: bool) -> None:
+    if path.exists() and not force:
+        raise FileExistsError(f"Refusing to overwrite existing output: {path}")
 
 
 if __name__ == "__main__":

@@ -126,6 +126,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Create a non-applied Directus content-migration permission implementation plan with draft-only create validation, presets, and additive-policy verification warnings.
 - [x] Create a non-applied Directus policy-graph evidence plan and sanitized JSON example for future create-only permission validation.
 - [x] Implement a pure local evaluator for sanitized Directus policy-graph evidence without live Directus collection.
+- [x] Implement a strict local normalizer for synthetic raw Directus policy graph payloads without live Directus collection.
 - [ ] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.

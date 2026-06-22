@@ -1,6 +1,6 @@
 # Task C - Directus policy graph evidence plan
 
-Status: credential-free evidence plan plus local evaluator implemented; live collection not implemented
+Status: credential-free evidence plan plus local evaluator and synthetic raw normalizer implemented; live collection not implemented
 
 Date: 2026-06-22
 
@@ -33,7 +33,7 @@ docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.jso
 That JSON is synthetic. It is not a production Directus export and must not be
 treated as live permission evidence.
 
-## Implemented local evaluator
+## Implemented local evaluator and normalizer
 
 The local pure evaluator is implemented in:
 
@@ -45,17 +45,27 @@ It exposes:
 
 ```python
 evaluate_policy_graph_evidence(payload: Mapping[str, Any]) -> dict[str, Any]
+normalize_directus_policy_graph_payload(raw: Mapping[str, Any]) -> dict[str, Any]
 ```
 
 The evaluator:
 
 - performs no network requests;
 - reads no credentials;
-- does not normalize raw live Directus API responses;
 - accepts a sanitized, normalized evidence payload;
 - returns `status = approved` or `status = rejected`;
 - returns stable machine-readable rejection reasons;
 - is a local safety check only and does not authorize production execution.
+
+The normalizer:
+
+- performs no network requests;
+- reads no credentials;
+- supports only the conservative synthetic raw shape documented in
+  [Task C Directus policy graph normalizer](task-c-directus-policy-graph-normalizer.md);
+- raises `DirectusPolicyEvidenceError` for malformed or ambiguous raw input;
+- allows valid but unsafe permissions through to the evaluator, which then
+  returns `status = rejected`.
 
 CLI usage:
 
@@ -65,6 +75,18 @@ cd cms/utils/wordpress
 uv run python directus_policy_evidence.py \
   --input ../../../docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json \
   --output /tmp/directus-policy-graph-evidence-evaluation.json \
+  --force
+```
+
+Normalizer plus evaluator CLI usage:
+
+```bash
+cd cms/utils/wordpress
+
+uv run python directus_policy_evidence.py \
+  --raw-input /path/to/raw-directus-policy-graph.json \
+  --normalized-output /tmp/directus-policy-graph-evidence.normalized.json \
+  --evaluation-output /tmp/directus-policy-graph-evidence-evaluation.json \
   --force
 ```
 
