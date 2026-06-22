@@ -160,8 +160,12 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 ## Phase 8A — Members-only content
 
 - [x] Capture the initial members-only migration decisions in a dedicated operating specification.
+- [x] Obtain a phpMyAdmin SQL export that includes users, password hashes, roles, capabilities, user metadata, plugin membership data, private content, taxonomy data, and relevant options.
+- [x] Record that `member_feeds.content` stores sanitized HTML and is not converted to Markdown during initial migration.
+- [x] Produce an aggregate WordPress media retrieval report for the members-only migration.
+- [x] Create an agent-loop execution plan for `/soci` and `articoli-tecnici`.
 - [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
-- [ ] Obtain a phpMyAdmin SQL export that includes users, password hashes, roles, capabilities, user metadata, plugin membership data, private content, taxonomy data, and relevant options.
+- [ ] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
 - [ ] Generate a required-media list from members-only content before downloading or archiving WordPress uploads.
 - [ ] Retrieve only referenced private media through FTP or a targeted uploads archive when possible.
 - [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
