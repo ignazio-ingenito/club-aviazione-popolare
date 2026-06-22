@@ -48,6 +48,52 @@ class MemberSchemaPlanTests(unittest.TestCase):
         ]
         self.assertEqual(tuple(collections), MEMBER_COLLECTIONS)
 
+    def test_schema_plan_does_not_create_directus_auto_primary_keys(self) -> None:
+        with TemporaryDirectory() as tmp:
+            baseline_path = self.write_target_baseline(Path(tmp), collections=("feeds",))
+            manifest = build_member_schema_plan_manifest(
+                target_manifest_path=baseline_path,
+                environment="synthetic",
+                observed_at=datetime(2026, 6, 22, 12, 0, tzinfo=timezone.utc),
+            )
+
+        explicit_id_fields = [
+            record
+            for record in manifest.records
+            if str(record.data["endpoint"]).startswith("/fields/")
+            and record.data["body"]["field"] == "id"
+        ]
+        self.assertEqual(explicit_id_fields, [])
+
+    def test_schema_plan_uses_fk_field_types_matching_related_primary_keys(self) -> None:
+        with TemporaryDirectory() as tmp:
+            baseline_path = self.write_target_baseline(Path(tmp), collections=("feeds",))
+            manifest = build_member_schema_plan_manifest(
+                target_manifest_path=baseline_path,
+                environment="synthetic",
+                observed_at=datetime(2026, 6, 22, 12, 0, tzinfo=timezone.utc),
+            )
+
+        field_types = {
+            (
+                record.data["endpoint"].removeprefix("/fields/"),
+                record.data["body"]["field"],
+            ): record.data["body"]["schema"]["data_type"]
+            for record in manifest.records
+            if str(record.data["endpoint"]).startswith("/fields/")
+        }
+
+        self.assertEqual(field_types[("member_feeds", "category")], "integer")
+        self.assertEqual(field_types[("member_feeds_files", "member_feed")], "integer")
+        self.assertEqual(field_types[("member_feeds_topics", "member_feed")], "integer")
+        self.assertEqual(field_types[("member_feeds_topics", "member_topic")], "integer")
+        self.assertEqual(field_types[("member_feeds", "cover")], "uuid")
+        self.assertEqual(field_types[("member_feeds_files", "file")], "uuid")
+        self.assertEqual(
+            field_types[("legacy_wordpress_credentials", "directus_user")],
+            "uuid",
+        )
+
     def test_existing_member_collection_fails_closed_without_requests(self) -> None:
         with TemporaryDirectory() as tmp:
             baseline_path = self.write_target_baseline(

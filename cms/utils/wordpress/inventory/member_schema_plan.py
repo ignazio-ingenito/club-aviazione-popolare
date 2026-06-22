@@ -163,7 +163,6 @@ def _schema_requests() -> tuple[SchemaRequest, ...]:
 def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
     return {
         "member_categories": (
-            _field("id", "uuid", primary_key=True),
             _field("status", "string", required=True, interface="select-dropdown"),
             _field("slug", "string", required=True, unique=True),
             _field("title", "string", required=True),
@@ -174,7 +173,6 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("source_slug", "string"),
         ),
         "member_topics": (
-            _field("id", "uuid", primary_key=True),
             _field("slug", "string", required=True, unique=True),
             _field("title", "string", required=True),
             _field("source_taxonomy", "string", required=True),
@@ -182,7 +180,6 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("sort", "integer"),
         ),
         "member_feeds": (
-            _field("id", "uuid", primary_key=True),
             _field("status", "string", required=True, interface="select-dropdown"),
             _field(
                 "visibility",
@@ -198,8 +195,8 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("date", "dateTime"),
             _field("modified_source_at", "dateTime"),
             _field("author", "string"),
-            _alias("category", "m2o"),
-            _alias("cover", "m2o"),
+            _alias("category", "m2o", "integer"),
+            _alias("cover", "m2o", "uuid"),
             _field("source_system", "string", required=True),
             _field("source_identity", "string", required=True, unique=True),
             _field("source_post_type", "string", required=True),
@@ -208,20 +205,17 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("migration_run_id", "string", required=True),
         ),
         "member_feeds_files": (
-            _field("id", "uuid", primary_key=True),
-            _alias("member_feed", "m2o"),
-            _alias("file", "m2o"),
+            _alias("member_feed", "m2o", "integer"),
+            _alias("file", "m2o", "uuid"),
             _field("sort", "integer", required=True),
             _field("source_identity", "string", required=True),
         ),
         "member_feeds_topics": (
-            _field("id", "uuid", primary_key=True),
-            _alias("member_feed", "m2o"),
-            _alias("member_topic", "m2o"),
+            _alias("member_feed", "m2o", "integer"),
+            _alias("member_topic", "m2o", "integer"),
         ),
         "legacy_wordpress_credentials": (
-            _field("id", "uuid", primary_key=True),
-            _alias("directus_user", "m2o"),
+            _alias("directus_user", "m2o", "uuid"),
             _field("wordpress_user_id", "integer", required=True, unique=True),
             _field("legacy_hash", "string", required=True),
             _field("hash_format", "string", required=True),
@@ -262,10 +256,10 @@ def _field(
     }
 
 
-def _alias(field: str, special: str) -> dict[str, Any]:
+def _alias(field: str, special: str, field_type: str) -> dict[str, Any]:
     return {
         "field": field,
-        "type": "uuid",
+        "type": field_type,
         "meta": {
             "field": field,
             "interface": "select-dropdown-m2o",
@@ -274,7 +268,7 @@ def _alias(field: str, special: str) -> dict[str, Any]:
             "readonly": False,
             "hidden": False,
         },
-        "schema": {"name": field, "data_type": "uuid"},
+        "schema": {"name": field, "data_type": field_type},
     }
 
 

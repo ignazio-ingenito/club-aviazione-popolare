@@ -64,7 +64,8 @@ Create base collections first, then relation fields and junction collections.
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -87,7 +88,8 @@ Initial record to create later during content bootstrap:
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -101,7 +103,8 @@ Fields:
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -137,7 +140,8 @@ keys.
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -150,7 +154,8 @@ Fields:
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -161,7 +166,8 @@ Fields:
 
 Primary key:
 
-- `id`: uuid primary key
+- `id`: Directus-managed integer primary key. Do not create this field
+  explicitly after `POST /collections`; Directus creates it automatically.
 
 Fields:
 
@@ -226,6 +232,9 @@ The dry-run must not send any non-read request.
 Production apply must:
 
 - create only missing `member_*` schema objects;
+- rely on Directus-managed integer primary keys for migration-owned collections
+  unless a fresh dry-run proves a custom primary-key payload creates UUID
+  primary keys atomically with the collection;
 - never update existing public/application schema;
 - stop if any target `member_*` collection already exists with incompatible
   fields or relations;
@@ -234,6 +243,23 @@ Production apply must:
 - stop if applying schema would require modifying existing `feeds`,
   `categories`, `directus_files`, `directus_folders`, `pages`, or menu
   collections.
+
+## Partial apply recovery checkpoint
+
+The 2026-06-22 production apply attempt created the 6 approved migration-owned
+collections and their scalar fields, then stopped at relation sequence 59.
+Read-only verification showed:
+
+- 6 migration-owned collections exist;
+- 0 records exist in those collections;
+- 0 member relations exist;
+- member-owned primary keys are integer;
+- relation fields targeting `member_*` primary keys were created as UUID and
+  therefore cannot satisfy PostgreSQL foreign-key constraints.
+
+Do not continue the production schema apply with the original manifest. Recovery
+requires a separately approved schema action because correcting the partial
+state is no longer create-only.
 
 ## Post-apply verification
 
