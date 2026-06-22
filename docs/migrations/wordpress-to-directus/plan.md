@@ -2,7 +2,7 @@
 
 Status: active planning and implementation
 
-Last updated: 2026-06-20
+Last updated: 2026-06-22
 
 This is the canonical binary plan. Every checkbox is either completed (`[x]`) or still required (`[ ]`). Do not use partial states. Split partially completed work into one closed task and one or more open tasks.
 
@@ -122,6 +122,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 
 ## Phase 6 — Append-only ledger and Directus permissions
 
+- [x] Design the Directus read-only and create-only content-migration identities and SOPS secret plan without creating roles, users, tokens, or permissions.
 - [ ] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.
