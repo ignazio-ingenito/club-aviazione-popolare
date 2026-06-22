@@ -1,6 +1,6 @@
 # Task C - Directus policy graph evidence plan
 
-Status: credential-free evidence plan only; not applied
+Status: credential-free evidence plan plus local evaluator implemented; live collection not implemented
 
 Date: 2026-06-22
 
@@ -32,6 +32,49 @@ docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.jso
 
 That JSON is synthetic. It is not a production Directus export and must not be
 treated as live permission evidence.
+
+## Implemented local evaluator
+
+The local pure evaluator is implemented in:
+
+```text
+cms/utils/wordpress/directus_policy_evidence.py
+```
+
+It exposes:
+
+```python
+evaluate_policy_graph_evidence(payload: Mapping[str, Any]) -> dict[str, Any]
+```
+
+The evaluator:
+
+- performs no network requests;
+- reads no credentials;
+- does not normalize raw live Directus API responses;
+- accepts a sanitized, normalized evidence payload;
+- returns `status = approved` or `status = rejected`;
+- returns stable machine-readable rejection reasons;
+- is a local safety check only and does not authorize production execution.
+
+CLI usage:
+
+```bash
+cd cms/utils/wordpress
+
+uv run python directus_policy_evidence.py \
+  --input ../../../docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json \
+  --output /tmp/directus-policy-graph-evidence-evaluation.json \
+  --force
+```
+
+CLI exit codes:
+
+- `0`: approved evidence;
+- `2`: rejected evidence;
+- `1`: malformed input, I/O failure, or unsafe overwrite attempt.
+
+The live collector described below remains unimplemented and approval-gated.
 
 ## Required evidence
 
@@ -276,21 +319,27 @@ files_inspected:
   - docs/migrations/wordpress-to-directus/task-b-directus-permission-implementation-plan.md
   - docs/migrations/wordpress-to-directus/directus-content-migration-permission-plan.example.json
 files_changed:
+  - cms/utils/wordpress/directus_policy_evidence.py
+  - cms/utils/wordpress/tests/test_directus_policy_evidence.py
   - docs/migrations/wordpress-to-directus/task-c-directus-policy-graph-evidence-plan.md
   - docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json
   - docs/migrations/wordpress-to-directus/README.md
   - docs/migrations/wordpress-to-directus/plan.md
 findings:
+  - The pure evaluator can approve or reject normalized sanitized policy graph evidence without network access.
   - Future evidence must inspect the complete additive policy graph for the create-only migration identity.
   - A GET-only policy-graph collector may need an operator export plus create-only probe artifact if Directus hides policy internals from the migration identity.
   - Static examples are not acceptable live evidence.
 verification:
-  - Run json.tool on the static JSON example.
-  - Run git diff --check before staging.
-  - Run git diff --cached --check after staging.
+  - uv run python -m unittest discover -s tests -p 'test_*.py' -v
+  - uv run python -m compileall .
+  - uv run python directus_policy_evidence.py --input ../../../docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json --output /tmp/directus-policy-graph-evidence-evaluation.json --force
+  - git diff --check
+  - git diff --cached --check
 production_artifact_impact: none
 risks:
   - The exact Directus 11.13.2 policy API/UI export shape still requires live operator evidence.
+  - Raw Directus policy export normalization remains unimplemented.
   - A future collector must fail closed if Directus policy graph data is incomplete.
 open_questions:
   - None for this documentation slice.

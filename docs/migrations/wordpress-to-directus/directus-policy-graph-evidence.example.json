@@ -5,6 +5,7 @@
   "collected_at": "2026-06-22T00:00:00Z",
   "target": {
     "directus_version": "11.13.2",
+    "target_url": "https://cap-cms.skunklabs.uk",
     "base_url_fingerprint": "sha256:example-directus-url-fingerprint",
     "environment": "production",
     "evidence_source": "synthetic_documentation_example"
