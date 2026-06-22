@@ -51,9 +51,50 @@ class DirectusPolicyNormalizationTests(unittest.TestCase):
 
         self.assert_normalization_error(payload)
 
+    def test_missing_roles_list_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload.pop("roles")
+
+        self.assert_normalization_error(payload)
+
+    def test_multiple_matching_roles_fail_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload["roles"].append(
+            {
+                "id": "role-other",
+                "name": "role-create-only",
+            },
+        )
+
+        self.assert_normalization_error(payload)
+
+    def test_missing_policies_list_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload.pop("policies")
+
+        self.assert_normalization_error(payload)
+
     def test_policy_not_attached_to_identity_fails_normalization(self) -> None:
         payload = self.raw_payload()
         payload["policies"][0]["roles"] = ["role-other"]
+
+        self.assert_normalization_error(payload)
+
+    def test_no_policy_attached_to_identity_role_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload["policies"] = []
+
+        self.assert_normalization_error(payload)
+
+    def test_malformed_policy_role_linkage_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload["policies"][0]["roles"] = "role-create-only"
+
+        self.assert_normalization_error(payload)
+
+    def test_missing_permissions_list_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload.pop("permissions")
 
         self.assert_normalization_error(payload)
 
@@ -87,6 +128,18 @@ class DirectusPolicyNormalizationTests(unittest.TestCase):
 
         self.assert_normalization_error(payload)
 
+    def test_missing_collection_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload["permissions"][0].pop("collection")
+
+        self.assert_normalization_error(payload)
+
+    def test_missing_action_fails_normalization(self) -> None:
+        payload = self.raw_payload()
+        payload["permissions"][0].pop("action")
+
+        self.assert_normalization_error(payload)
+
     def test_multiple_identity_roles_without_explicit_selection_fails_normalization(self) -> None:
         payload = self.raw_payload()
         payload["identity"].pop("role")
@@ -100,6 +153,12 @@ class DirectusPolicyNormalizationTests(unittest.TestCase):
 
         self.assert_normalizes_then_rejects(payload, "wildcard_collection")
 
+    def test_wildcard_action_survives_normalization_and_evaluator_rejects(self) -> None:
+        payload = self.raw_payload()
+        payload["permissions"][0]["action"] = "*"
+
+        self.assert_normalizes_then_rejects(payload, "wildcard_action")
+
     def test_feeds_update_survives_normalization_and_evaluator_rejects(self) -> None:
         payload = self.raw_payload()
         payload["permissions"].append(self.permission(action="update", fields=["title"]))
@@ -111,6 +170,23 @@ class DirectusPolicyNormalizationTests(unittest.TestCase):
         payload["permissions"].append(self.permission(action="delete", fields=["id"]))
 
         self.assert_normalizes_then_rejects(payload, "forbidden_delete_permission")
+
+    def test_system_access_survives_normalization_and_evaluator_rejects(self) -> None:
+        payload = self.raw_payload()
+        payload["permissions"].append(
+            {
+                "id": "perm-schema-read",
+                "policy": "policy-create-only",
+                "collection": "schema",
+                "action": "read",
+                "permissions": {},
+                "validation": {},
+                "presets": None,
+                "fields": ["*"],
+            },
+        )
+
+        self.assert_normalizes_then_rejects(payload, "forbidden_system_access")
 
     def test_malformed_fields_fails_normalization(self) -> None:
         payload = self.raw_payload()
@@ -185,6 +261,55 @@ class DirectusPolicyNormalizationTests(unittest.TestCase):
             )
 
             self.assertEqual(exit_code, 1)
+
+    def test_cli_raw_mode_exits_two_for_structurally_valid_unsafe_graph(self) -> None:
+        with TemporaryDirectory() as tmp:
+            raw_path = Path(tmp) / "raw.json"
+            normalized_path = Path(tmp) / "normalized.json"
+            evaluation_path = Path(tmp) / "evaluation.json"
+            payload = self.raw_payload()
+            payload["permissions"][0]["action"] = "delete"
+            raw_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            exit_code = main(
+                [
+                    "--raw-input",
+                    str(raw_path),
+                    "--normalized-output",
+                    str(normalized_path),
+                    "--evaluation-output",
+                    str(evaluation_path),
+                ],
+            )
+
+            self.assertEqual(exit_code, 2)
+            evaluation = json.loads(evaluation_path.read_text(encoding="utf-8"))
+            self.assertEqual(evaluation["status"], "rejected")
+            self.assertIn("forbidden_delete_permission", evaluation["reasons"])
+
+    def test_cli_raw_mode_exits_one_for_malformed_raw_graph(self) -> None:
+        with TemporaryDirectory() as tmp:
+            raw_path = Path(tmp) / "raw.json"
+            normalized_path = Path(tmp) / "normalized.json"
+            evaluation_path = Path(tmp) / "evaluation.json"
+            payload = self.raw_payload()
+            payload.pop("target_url")
+            raw_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            exit_code = main(
+                [
+                    "--raw-input",
+                    str(raw_path),
+                    "--normalized-output",
+                    str(normalized_path),
+                    "--evaluation-output",
+                    str(evaluation_path),
+                ],
+            )
+
+            self.assertEqual(exit_code, 1)
+            self.assertFalse(normalized_path.exists())
+            self.assertFalse(evaluation_path.exists())
 
     def assert_normalization_error(self, payload: dict) -> None:
         with self.assertRaises(DirectusPolicyEvidenceError):

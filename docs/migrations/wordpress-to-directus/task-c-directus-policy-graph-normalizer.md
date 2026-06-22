@@ -69,9 +69,13 @@ or ambiguous:
 - missing `identity`;
 - missing `identity.role`;
 - selected identity role not found in `roles`;
+- missing `roles`, `policies`, or `permissions` list;
+- multiple raw roles matching the selected identity role;
 - no policy attached to the selected identity role;
 - any policy in the raw payload not attached to the selected identity role;
+- malformed policy role linkage;
 - permission referencing an unknown or unattached policy;
+- missing permission collection or action;
 - malformed `fields`;
 - malformed `validation`;
 - malformed `presets`;
@@ -79,8 +83,9 @@ or ambiguous:
 - multiple identity roles without an explicit selected `identity.role`.
 
 The normalizer does not decide whether a structurally valid policy is safe.
-Wildcard collection/action, `feeds.update`, and `feeds.delete` are preserved in
-the normalized artifact so the evaluator can reject them with stable reasons.
+Wildcard collection/action, `feeds.update`, `feeds.delete`, and system-resource
+access are preserved in the normalized artifact when graph linkage is otherwise
+clear, so the evaluator can reject them with stable reasons.
 
 ## CLI
 

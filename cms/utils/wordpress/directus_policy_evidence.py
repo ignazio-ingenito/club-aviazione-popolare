@@ -89,6 +89,13 @@ def normalize_directus_policy_graph_payload(raw: Mapping[str, Any]) -> dict[str,
         raise DirectusPolicyEvidenceError("identity.roles must be a list of strings when present")
 
     roles = [_normalize_role(role, index) for index, role in enumerate(_require_list(raw.get("roles"), "roles"))]
+    role_match_count = sum(
+        1
+        for role in roles
+        if identity_role in {_optional_text(role, "id"), _optional_text(role, "name")}
+    )
+    if role_match_count > 1:
+        raise DirectusPolicyEvidenceError("identity role matches multiple roles")
     role_keys = {
         key
         for role in roles

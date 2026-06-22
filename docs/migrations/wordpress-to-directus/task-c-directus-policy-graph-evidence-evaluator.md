@@ -110,9 +110,11 @@ The normalizer supports only the conservative synthetic raw shape with:
 It raises `DirectusPolicyEvidenceError` for malformed or ambiguous raw input,
 including missing target URL, missing observation timestamp, missing identity,
 missing or unknown role, policy not attached to the selected identity role,
-permission references to unknown or unattached policies, malformed fields,
-malformed validation, malformed presets, and multiple identity roles without an
-explicit selected `identity.role`.
+missing role/policy/permission lists, multiple raw roles matching the selected
+identity role, permission references to unknown or unattached policies,
+malformed fields, malformed validation, malformed presets, missing permission
+collection/action, and multiple identity roles without an explicit selected
+`identity.role`.
 
 Wildcard collection/action and forbidden update/delete permissions are
 structurally valid raw input. They survive normalization and are rejected by the
