@@ -55,21 +55,39 @@ Current local source export:
 
 Plaintext SQL is sensitive and must not be committed.
 
-## Model and parallelization strategy
+## Model routing and parallelization strategy
 
 Use parallel agents only for read-only exploration or disjoint file writes.
+Route each task by risk:
+
+- Use `5.5` for the main agent, reviewer decisions, production schema apply,
+  auth/session/password work, permission design, recovery planning, and any task
+  that can affect production state.
+- Use `5.4` for bounded local code, tests, and documentation workers when the
+  task does not touch production writes, auth, schema recovery, token handling,
+  or permission boundaries.
+- Use `5.4-mini` only for read-only explorers: log parsing, JSONL summaries,
+  aggregate SQL counts, grep-style inventory, report/table generation, and
+  artifact checks.
+- Escalate immediately from `5.4-mini` to `5.5` when an explorer finds
+  ambiguity, Directus drift, partial schema state, unexpected API responses,
+  permission mismatch, source/target collision, or private-data handling risk.
+- Keep the current schema-apply recovery after the `POST /relations` `500`
+  under `5.5`. Cheaper agents may only summarize audit files and live state in
+  read-only mode.
 
 | Work type | Agent role | Model profile | Parallel? | Reason |
 | --- | --- | --- | --- | --- |
-| Docs/source inspection | explorer | economical/fast | yes | Low-risk grep/read tasks. |
-| SQL export structure inventory | explorer | economical/fast | yes | Deterministic table/column/count analysis. |
-| Membership and role inference | explorer | higher reasoning | yes | Requires cautious interpretation of plugin/capability evidence. |
-| Directus current-state inventory | explorer | standard | yes, read-only | Independent GET-only target evidence. |
-| Parser implementation | worker | standard | no | Shared code/tests; keep serial. |
-| Auth bridge prototype | worker | higher reasoning | no | Sensitive auth/security path. |
-| Schema proposal | explorer/reviewer | higher reasoning | no | Domain and permission consequences. |
-| Media retrieval via rclone | operator | standard | no | External credentials and transfer side effects. |
-| Production import | operator/reviewer | higher reasoning | no | Explicit approval and invariant verification required. |
+| Docs/source inspection | explorer | `5.4-mini` | yes | Low-risk grep/read tasks. |
+| SQL export structure inventory | explorer | `5.4-mini` | yes | Deterministic table/column/count analysis. |
+| Membership and role inference | explorer | `5.5` | yes | Requires cautious interpretation of plugin/capability evidence. |
+| Directus current-state inventory | explorer | `5.4-mini` for GET-only summaries; `5.5` on drift | yes, read-only | Independent GET-only target evidence, escalated on mismatch. |
+| Parser implementation | worker | `5.4` | no | Shared code/tests; keep serial. |
+| Auth bridge prototype | worker | `5.5` | no | Sensitive auth/security path. |
+| Schema proposal | explorer/reviewer | `5.5` | no | Domain and permission consequences. |
+| Schema apply or recovery | operator/reviewer | `5.5` | no | Production schema state and failure recovery. |
+| Media retrieval via FTP/rclone | operator | `5.5` for credentials and execution; `5.4-mini` for post-transfer summaries | no | External credentials and transfer side effects. |
+| Production import | operator/reviewer | `5.5` | no | Explicit approval and invariant verification required. |
 
 When a tool exposes requested/effective model, every handoff must record it.
 When it does not, record `model_effective: unknown`.

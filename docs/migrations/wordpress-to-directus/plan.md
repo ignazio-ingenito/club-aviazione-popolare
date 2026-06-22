@@ -164,6 +164,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [x] Record that `member_feeds.content` stores sanitized HTML and is not converted to Markdown during initial migration.
 - [x] Produce an aggregate WordPress media retrieval report for the members-only migration.
 - [x] Create an agent-loop execution plan for `/soci` and `articoli-tecnici`.
+- [x] Record model-routing policy for members-only agent-loop execution.
 - [x] Capture read-only SQL evidence that `sport-aviation` is the source-backed route slug for the `articoli-tecnici` content family.
 - [x] Capture read-only SQL evidence that member bootstrap should use `soci_cap` plus approved `pw_user_status`.
 - [x] Add a read-only SQL export inventory command for `sport-aviation` articles, required media, taxonomy terms, and membership aggregates.
