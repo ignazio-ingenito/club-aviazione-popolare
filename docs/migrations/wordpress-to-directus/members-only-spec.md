@@ -30,6 +30,9 @@ The authentication decision is recorded in
   to members after migration verification.
 - Uncertain, new, or editorially unresolved members-only content is not made
   member-visible until reviewed.
+- Members-only article content is stored as sanitized HTML, not Markdown, to
+  preserve the WordPress source and match the existing public article rendering
+  contract.
 
 ## Target model
 
@@ -38,6 +41,11 @@ The members-only area uses dedicated content collections:
 - `member_feeds` for members-only articles;
 - `member_categories` for members-only categories;
 - `member_galleries` only if private galleries are discovered during inventory.
+
+`member_feeds.content` stores HTML. The initial migration does not convert
+WordPress HTML to Markdown and does not use AI to rewrite or normalize the
+content. The frontend `/soci` article renderer should sanitize and render this
+HTML with the same safety posture used for public article content.
 
 Public `feeds` and public `categories` remain separate from members-only
 content. Public Directus content remains protected and target-authoritative.
