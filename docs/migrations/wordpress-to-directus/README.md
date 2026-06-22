@@ -40,6 +40,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task C Directus policy graph evidence evaluator](task-c-directus-policy-graph-evidence-evaluator.md): pure local evaluator and CLI for sanitized policy graph evidence.
 - [Task C Directus policy graph normalizer](task-c-directus-policy-graph-normalizer.md): pure local normalizer for conservative raw policy graph exports before evaluator execution.
 - [Task C Directus policy graph evidence JSON example](directus-policy-graph-evidence.example.json): static synthetic example of the expected sanitized policy evidence artifact.
+- [Task E append-only ledger design](task-e-append-only-ledger-design.md): proposed `migration_runs` and `migration_ledger` provenance model with append-only supersession semantics.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.
