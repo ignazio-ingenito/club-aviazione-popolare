@@ -261,6 +261,30 @@ Do not continue the production schema apply with the original manifest. Recovery
 requires a separately approved schema action because correcting the partial
 state is no longer create-only.
 
+## Recovery execution record
+
+The approved 2026-06-22 recovery used the run directory:
+
+- `/tmp/cap-migration-runs/20260622-directus-member-schema-recovery`
+
+Recorded artifacts:
+
+- cleanup summary: `member-schema-recovery-summary.json`;
+- cleanup audit: `member-schema-recovery-audit.jsonl`;
+- fresh target baseline after cleanup:
+  `fresh-baseline/directus-core-after-member-cleanup.jsonl`, SHA-256
+  `565bca8838bb94a0b092369678112100a33bbf66631f4b3d2edcd5f45951b77d`;
+- corrected schema plan:
+  `corrected-schema-plan/directus-member-schema-plan.jsonl`, SHA-256
+  `f3bc86bbfe352dd43abecb04a55be3b79e1c90d99997c591073fcb23087cbd38`;
+- corrected apply summary: `corrected-schema-apply-summary.json`;
+- corrected apply audit: `corrected-schema-apply-audit.jsonl`.
+
+Local audit verification showed the corrected apply emitted 59 `POST` requests,
+with 59 successful, 0 skipped, 0 failed, and no non-`POST` method. Final live
+post-apply schema verification remains pending because the network approval
+system hit its usage limit before the verification script could run.
+
 ## Post-apply verification
 
 After schema apply:
