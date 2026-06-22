@@ -1,6 +1,6 @@
 # Task C - Directus policy graph evidence evaluator
 
-Status: implemented; local evaluator plus synthetic raw normalizer only
+Status: implemented; local evaluator, synthetic raw normalizer, and mocked collector scaffold
 
 Date: 2026-06-22
 
@@ -22,11 +22,13 @@ Implemented:
 - synthetic unit tests for strict normalizer failures and unsafe-but-valid
   normalized evidence;
 - static-example compatibility for
-  `docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json`.
+  `docs/migrations/wordpress-to-directus/directus-policy-graph-evidence.example.json`;
+- separate mocked GET-only collector scaffold documented in
+  [Task C Directus policy graph live collector scaffold](task-c-directus-policy-graph-live-collector.md).
 
 Not implemented:
 
-- live Directus collection;
+- production live Directus collection;
 - actual live Directus API response collection;
 - Directus role, policy, user, token, schema, content, or media changes;
 - production `POST`;

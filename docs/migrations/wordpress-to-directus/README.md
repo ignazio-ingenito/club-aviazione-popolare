@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, Directus migration identity design, Directus permission implementation planning, Directus policy-graph evidence planning/evaluation/normalization, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, Directus migration identity design, Directus permission implementation planning, Directus policy-graph evidence planning/evaluation/normalization/collector scaffold, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
 Last updated: 2026-06-22
 
@@ -39,6 +39,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task C Directus policy graph evidence plan](task-c-directus-policy-graph-evidence-plan.md): credential-free plan for future sanitized effective-policy evidence collection.
 - [Task C Directus policy graph evidence evaluator](task-c-directus-policy-graph-evidence-evaluator.md): pure local evaluator and CLI for sanitized policy graph evidence.
 - [Task C Directus policy graph normalizer](task-c-directus-policy-graph-normalizer.md): pure local normalizer for conservative raw policy graph exports before evaluator execution.
+- [Task C Directus policy graph live collector scaffold](task-c-directus-policy-graph-live-collector.md): mocked GET-only collector and explicit CLI mode; no production collection performed.
 - [Task C Directus policy graph evidence JSON example](directus-policy-graph-evidence.example.json): static synthetic example of the expected sanitized policy evidence artifact.
 - [Task E append-only ledger design](task-e-append-only-ledger-design.md): proposed `migration_runs` and `migration_ledger` provenance model with append-only supersession semantics.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.

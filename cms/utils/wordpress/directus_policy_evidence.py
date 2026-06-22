@@ -10,8 +10,13 @@ from __future__ import annotations
 import argparse
 from collections.abc import Iterable, Mapping
 import json
+import os
 from pathlib import Path
 from typing import Any
+
+import httpx
+
+from directus_policy_collector import DirectusPolicyCollectorError, collect_directus_policy_graph_raw
 
 
 EVALUATION_KIND = "directus_policy_graph_evidence_evaluation"
@@ -499,10 +504,14 @@ def _read_json_object(path: Path) -> Mapping[str, Any]:
     return payload
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Normalize and evaluate Directus policy graph evidence without network access.",
     )
+    parser.add_argument("--collect-live", action="store_true", help="Collect raw policy graph evidence with GET-only Directus calls.")
+    parser.add_argument("--directus-url", help="Directus base URL for --collect-live.")
+    parser.add_argument("--role-id", help="Directus role id to inspect for --collect-live.")
+    parser.add_argument("--raw-output", help="Raw collected evidence JSON output path for --collect-live.")
     parser.add_argument("--input", help="Sanitized Directus policy graph evidence JSON path.")
     parser.add_argument("--output", help="Evaluation JSON output path.")
     parser.add_argument("--raw-input", help="Raw synthetic Directus policy graph JSON path.")
@@ -513,9 +522,69 @@ def main(argv: list[str] | None = None) -> int:
 
     raw_mode_args = [args.raw_input, args.normalized_output, args.evaluation_output]
     raw_mode = any(raw_mode_args)
+    collect_mode_args = [args.directus_url, args.role_id, args.raw_output]
+    collect_mode = args.collect_live
 
     try:
-        if raw_mode:
+        if collect_mode:
+            if (
+                not all(collect_mode_args)
+                or not args.normalized_output
+                or not args.evaluation_output
+                or args.input
+                or args.output
+                or args.raw_input
+            ):
+                raise ValueError(
+                    "collect-live mode requires --directus-url, --role-id, --raw-output, "
+                    "--normalized-output, and --evaluation-output only",
+                )
+
+            raw_output_path = Path(args.raw_output)
+            normalized_output_path = Path(args.normalized_output)
+            evaluation_output_path = Path(args.evaluation_output)
+            for path in (raw_output_path, normalized_output_path, evaluation_output_path):
+                _ensure_writable_output(path, force=args.force)
+                _ensure_output_outside_repository(path)
+
+            token = os.environ.get("DIRECTUS_TOKEN", "")
+            if not token.strip():
+                raise ValueError("DIRECTUS_TOKEN is required for collect-live mode")
+
+            raw_payload = collect_directus_policy_graph_raw(
+                directus_url=args.directus_url,
+                role_id=args.role_id,
+                auth_token=token,
+                http=http,
+            )
+            normalized = normalize_directus_policy_graph_payload(raw_payload)
+            evaluation = evaluate_policy_graph_evidence(normalized)
+            raw_output_path.write_text(
+                json.dumps(raw_payload, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            normalized_output_path.write_text(
+                json.dumps(normalized, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            evaluation_output_path.write_text(
+                json.dumps(evaluation, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            print(
+                json.dumps(
+                    {
+                        "status": evaluation["status"],
+                        "raw_output": str(raw_output_path),
+                        "normalized_output": str(normalized_output_path),
+                        "evaluation_output": str(evaluation_output_path),
+                    },
+                    sort_keys=True,
+                ),
+            )
+        elif raw_mode:
+            if any(collect_mode_args):
+                raise ValueError("collect-live options require --collect-live")
             if not all(raw_mode_args) or args.input or args.output:
                 raise ValueError(
                     "raw mode requires --raw-input, --normalized-output, and --evaluation-output only",
@@ -547,6 +616,8 @@ def main(argv: list[str] | None = None) -> int:
                 ),
             )
         else:
+            if any(collect_mode_args):
+                raise ValueError("collect-live options require --collect-live")
             if not args.input or not args.output:
                 raise ValueError("evaluator mode requires --input and --output")
             output_path = Path(args.output)
@@ -555,7 +626,14 @@ def main(argv: list[str] | None = None) -> int:
             evaluation = evaluate_policy_graph_evidence(payload)
             output_path.write_text(json.dumps(evaluation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
             print(json.dumps({"status": evaluation["status"], "output": str(output_path)}, sort_keys=True))
-    except (OSError, json.JSONDecodeError, ValueError, DirectusPolicyEvidenceError) as exc:
+    except (
+        OSError,
+        json.JSONDecodeError,
+        ValueError,
+        DirectusPolicyEvidenceError,
+        DirectusPolicyCollectorError,
+        httpx.HTTPError,
+    ) as exc:
         print(json.dumps({"status": "error", "error": str(exc)}, sort_keys=True))
         return 1
 
@@ -567,6 +645,13 @@ def main(argv: list[str] | None = None) -> int:
 def _ensure_writable_output(path: Path, *, force: bool) -> None:
     if path.exists() and not force:
         raise FileExistsError(f"Refusing to overwrite existing output: {path}")
+
+
+def _ensure_output_outside_repository(path: Path) -> None:
+    repository_root = Path(__file__).resolve().parents[3]
+    resolved = path.resolve()
+    if resolved == repository_root or repository_root in resolved.parents:
+        raise ValueError(f"collect-live output must be outside the repository: {path}")
 
 
 if __name__ == "__main__":

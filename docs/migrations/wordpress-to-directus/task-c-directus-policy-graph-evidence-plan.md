@@ -1,6 +1,6 @@
 # Task C - Directus policy graph evidence plan
 
-Status: credential-free evidence plan plus local evaluator and synthetic raw normalizer implemented; live collection not implemented
+Status: credential-free evidence plan plus local evaluator, synthetic raw normalizer, and mocked GET-only collector scaffold implemented; live production collection not performed
 
 Date: 2026-06-22
 
@@ -96,7 +96,9 @@ CLI exit codes:
 - `2`: rejected evidence;
 - `1`: malformed input, I/O failure, or unsafe overwrite attempt.
 
-The live collector described below remains unimplemented and approval-gated.
+The live collector scaffold described below is implemented and approval-gated.
+It has only been tested with mocked HTTP and has not been run against
+production.
 
 ## Required evidence
 
@@ -187,6 +189,12 @@ cms/utils/wordpress/directus_policy_graph_evidence.py collect-live
 - write a sanitized report only after redaction checks pass;
 - use GET-only Directus inspection calls for the policy graph;
 - perform no `POST`, `PATCH`, `PUT`, or `DELETE`.
+
+The current scaffold uses explicit CLI arguments for URL, role id, and output
+paths, reads the token from `DIRECTUS_TOKEN`, refuses output paths inside the
+Git repository, and writes raw, normalized, and evaluation artifacts only after
+local validation. Future operator procedures may wrap those arguments with
+environment variables, but must preserve the same safety properties.
 
 If Directus 11.13.2 cannot expose the complete policy graph to the create-only
 identity without granting broader management access, the safe collection model

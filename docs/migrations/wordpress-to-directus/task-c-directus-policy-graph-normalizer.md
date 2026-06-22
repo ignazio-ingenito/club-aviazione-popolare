@@ -1,6 +1,6 @@
 # Task C - Directus policy graph normalizer
 
-Status: implemented; local synthetic raw normalizer only
+Status: implemented; local synthetic raw normalizer plus mocked collector scaffold
 
 Date: 2026-06-22
 
@@ -19,14 +19,20 @@ Implemented:
 - synthetic unit tests for strict malformed-input failures;
 - synthetic unit tests proving unsafe update/delete/wildcard permissions survive
   normalization and are rejected by the evaluator.
+- a separate mocked GET-only collector scaffold that returns this raw shape.
 
 Not implemented:
 
-- live Directus collection;
+- production live Directus collection;
 - Directus role, policy, user, token, schema, content, or media changes;
 - production `POST`;
 - migration execution with `--execute`;
 - support for undocumented Directus API response shapes.
+
+The collector scaffold is documented separately in
+[Task C Directus policy graph live collector scaffold](task-c-directus-policy-graph-live-collector.md).
+It does not change the normalizer contract and does not prove any production
+identity until live artifacts are collected outside Git and evaluated.
 
 ## Contract
 
