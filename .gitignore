@@ -55,3 +55,4 @@ cms/uploads/
 *wordpress*.xml
 *.wxr
 *.wxr.xml
+*.sql
