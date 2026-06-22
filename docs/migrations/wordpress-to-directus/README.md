@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, Directus migration identity design, Directus permission implementation planning, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, Directus migration identity design, Directus permission implementation planning, Directus policy-graph evidence planning, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
 Last updated: 2026-06-22
 
@@ -36,6 +36,8 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B Directus migration identities](task-b-directus-migration-identities.md): read-only/create-only identity design, exact permission boundaries, SOPS naming, operator procedure, and gate regeneration plan.
 - [Task B Directus permission implementation plan](task-b-directus-permission-implementation-plan.md): non-applied Directus 11.13.2 permission plan with `feeds.create` draft validation/preset and additive-policy warnings.
 - [Task B Directus permission plan JSON example](directus-content-migration-permission-plan.example.json): static non-secret, non-applied permission plan artifact for review.
+- [Task C Directus policy graph evidence plan](task-c-directus-policy-graph-evidence-plan.md): credential-free plan for future sanitized effective-policy evidence collection.
+- [Task C Directus policy graph evidence JSON example](directus-policy-graph-evidence.example.json): static synthetic example of the expected sanitized policy evidence artifact.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.

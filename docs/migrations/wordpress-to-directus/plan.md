@@ -124,6 +124,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 
 - [x] Design the Directus read-only and create-only content-migration identities and SOPS secret plan without creating roles, users, tokens, or permissions.
 - [x] Create a non-applied Directus content-migration permission implementation plan with draft-only create validation, presets, and additive-policy verification warnings.
+- [x] Create a non-applied Directus policy-graph evidence plan and sanitized JSON example for future create-only permission validation.
 - [ ] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.
