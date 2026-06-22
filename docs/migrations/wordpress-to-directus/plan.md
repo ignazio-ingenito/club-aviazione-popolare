@@ -168,6 +168,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [x] Capture read-only SQL evidence that member bootstrap should use `soci_cap` plus approved `pw_user_status`.
 - [x] Add a read-only SQL export inventory command for `sport-aviation` articles, required media, taxonomy terms, and membership aggregates.
 - [x] Propose Directus members-only schema and permission boundaries without applying them.
+- [x] Inventory authenticated Directus application collections with the read-only migration token.
 - [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
 - [x] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
 - [ ] Generate a required-media list from members-only content before downloading or archiving WordPress uploads.

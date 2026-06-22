@@ -134,6 +134,25 @@ def build_parser() -> argparse.ArgumentParser:
     directus.add_argument("--limit", type=int, default=100)
     directus.set_defaults(handler=_run_directus_core)
 
+    directus_app = subparsers.add_parser(
+        "directus-app-collections",
+        help="Inventory readable non-system Directus application collections.",
+    )
+    _add_common_output_args(directus_app, default_filename="directus-app-collections.jsonl")
+    directus_app.add_argument(
+        "--base-url",
+        default="https://cap-cms.skunklabs.uk",
+        help="Directus base URL.",
+    )
+    directus_app.add_argument("--limit", type=int, default=100)
+    directus_app.add_argument(
+        "--collection",
+        action="append",
+        dest="collections",
+        help="Application collection to inventory. Repeatable; defaults to all readable non-system collections.",
+    )
+    directus_app.set_defaults(handler=_run_directus_app_collections)
+
     reconcile = subparsers.add_parser(
         "reconcile",
         help="Classify source inventory against target inventory without writing to WordPress or Directus.",
@@ -258,6 +277,29 @@ def _run_directus_core(args: argparse.Namespace) -> ManifestWriteResult:
     manifest = snapshot.to_manifest(
         environment=args.environment,
         observed_at=_now_utc(),
+    )
+    return _write(args, manifest)
+
+
+def _run_directus_app_collections(args: argparse.Namespace) -> ManifestWriteResult:
+    collections = tuple(args.collections) if args.collections else None
+    with DirectusInventoryClient(
+        config=DirectusInventoryConfig(
+            base_url=args.base_url,
+            limit=args.limit,
+            auth_token=_directus_auth_token(),
+        )
+    ) as client:
+        snapshot = client.inventory_application_collections(
+            collection_names=collections,
+        )
+    manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+        metadata={
+            "inventory_type": "directus_application_collections",
+            "requested_collections": collections,
+        },
     )
     return _write(args, manifest)
 

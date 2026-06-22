@@ -223,6 +223,117 @@ class DirectusInventoryClientTests(unittest.TestCase):
             ["directus:relation:feeds.category->categories.id"],
         )
 
+    def test_identical_duplicate_relations_are_collapsed_with_warning(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(
+                200,
+                request=request,
+                json={
+                    "data": [
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                        },
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                        },
+                    ]
+                },
+            )
+
+        client, _, _ = self.make_client(handler)
+        result = client.get_relations()
+
+        self.assertEqual(len(result.records), 1)
+        self.assertEqual(result.raw_item_count, 2)
+        self.assertEqual(result.issues[0].severity, IssueSeverity.WARNING)
+        self.assertEqual(
+            result.issues[0].code,
+            "duplicate_directus_relation_ignored",
+        )
+
+    def test_relation_identity_includes_junction_side_when_available(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(
+                200,
+                request=request,
+                json={
+                    "data": [
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                            "meta": {
+                                "junction_field": "role",
+                                "one_field": "roles",
+                            },
+                        },
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                            "meta": {
+                                "junction_field": "user",
+                                "one_field": "users",
+                            },
+                        },
+                    ]
+                },
+            )
+
+        client, _, _ = self.make_client(handler)
+        result = client.get_relations()
+
+        self.assertEqual(
+            [record.identity for record in result.records],
+            [
+                "directus:relation:directus_access.policy->directus_policies#junction:role,one:roles",
+                "directus:relation:directus_access.policy->directus_policies#junction:user,one:users",
+            ],
+        )
+        self.assertEqual(result.issues, ())
+
+    def test_different_duplicate_relations_fail_closed(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            return httpx.Response(
+                200,
+                request=request,
+                json={
+                    "data": [
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                            "meta": {"system": True},
+                        },
+                        {
+                            "collection": "directus_access",
+                            "field": "policy",
+                            "related_collection": "directus_policies",
+                            "related_field": None,
+                            "meta": {"system": False},
+                        },
+                    ]
+                },
+            )
+
+        client, _, _ = self.make_client(handler)
+        with self.assertRaises(DirectusProtocolError) as captured:
+            client.get_relations()
+
+        self.assertEqual(
+            captured.exception.code,
+            "duplicate_directus_relation_identity",
+        )
+
     def test_core_snapshot_builds_target_manifest_and_uses_get_only(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
             self.assertEqual(request.method, "GET")
@@ -273,6 +384,92 @@ class DirectusInventoryClientTests(unittest.TestCase):
             },
         )
         json.dumps(manifest.to_dict())
+
+    def test_application_collection_inventory_reads_non_system_collections(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            self.assertEqual(request.method, "GET")
+            if request.url.path == "/collections":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={
+                        "data": [
+                            {"collection": "directus_users"},
+                            {"collection": "pages"},
+                            {"collection": "metadata", "meta": {"singleton": True}},
+                            {"collection": "categories"},
+                        ]
+                    },
+                )
+            if request.url.path == "/fields":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={
+                        "data": [
+                            {"collection": "pages", "field": "key"},
+                            {"collection": "pages", "field": "title"},
+                            {"collection": "categories", "field": "key"},
+                            {"collection": "categories", "field": "title"},
+                            {"collection": "metadata", "field": "key"},
+                            {"collection": "metadata", "field": "title"},
+                            {"collection": "directus_users", "field": "id"},
+                        ]
+                    },
+                )
+            if request.url.path == "/items/metadata":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={"data": {"key": "main", "title": "CAP"}},
+                )
+            self.assertIn(request.url.path, {"/items/categories", "/items/pages"})
+            self.assertEqual(request.url.params["sort"], "key")
+            self.assertEqual(request.url.params["fields"], "key,title")
+            payload = {
+                "/items/categories": [{"key": "news", "title": "News"}],
+                "/items/pages": [{"key": "about", "title": "About"}],
+            }[request.url.path]
+            return self.paginated_response(request, payload, total=1)
+
+        client, _, requests = self.make_client(handler)
+        snapshot = client.inventory_application_collections()
+
+        self.assertEqual([request.url.path for request in requests], [
+            "/collections",
+            "/fields",
+            "/items/categories",
+            "/items/metadata",
+            "/items/pages",
+        ])
+        self.assertEqual(
+            [record.identity for record in snapshot.records],
+            [
+                "directus:item:categories:news",
+                "directus:item:metadata:singleton",
+                "directus:item:pages:about",
+            ],
+        )
+
+    def test_application_collection_inventory_rejects_system_collection(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            if request.url.path == "/collections":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={"data": [{"collection": "directus_users"}]},
+                )
+            if request.url.path == "/fields":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={"data": [{"collection": "directus_users", "field": "id"}]},
+                )
+            raise AssertionError(f"Unexpected request: {request.url}")
+
+        client, _, _ = self.make_client(handler)
+        with self.assertRaises(ValueError):
+            client.inventory_application_collections(collection_names=("directus_users",))
 
     def test_inventory_is_fresh_without_implicit_cache(self) -> None:
         call_count = 0
