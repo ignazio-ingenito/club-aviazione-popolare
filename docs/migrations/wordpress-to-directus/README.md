@@ -1,6 +1,6 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
 Last updated: 2026-06-20
 
@@ -31,6 +31,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B approved write-manifest selection](task-b-write-manifest.md): candidate-only manifest selection and record gate.
 - [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
 - [Task B draft-only create-manifest executor](task-b-create-manifest-executor.md): approved artifact validation, dry-run reports, request plan, and execution gate.
+- [Task B pre-create safety gates](task-b-pre-create-safety-gates.md): execute-mode permission and fresh target absence gates before any real writer.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.

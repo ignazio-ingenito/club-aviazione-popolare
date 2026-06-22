@@ -1,6 +1,6 @@
 # Task B slice 9.5 - Draft-only create-manifest executor
 
-Status: implemented and ready for review
+Status: implemented; pre-create gate boundary wired in a follow-up slice
 
 Date: 2026-06-22
 
@@ -19,8 +19,10 @@ Implemented:
   source records, source hash mismatch, and update/delete intent;
 - local validation, request-plan, dry-run, and stop-condition reports;
 - dry-run as the default mode;
-- `--execute` fail-closed until a later gate supplies create-only permission
-  evidence and fresh target absence validation.
+- `--execute` requires `--permission-evidence`, `--fresh-target-absence`,
+  and `DIRECTUS_TOKEN`;
+- execute-mode gate validation is wired before any transport client can be
+  created or any POST can be emitted.
 
 ## Safety properties
 
@@ -31,6 +33,8 @@ Implemented:
   importer.
 - The code does not upload media and does not execute a real Directus write in
   this slice.
+- Execute mode validates the permission and fresh-target-absence gate reports,
+  then stops with `real writer is not implemented in this slice`.
 
 ## Future dry-run command
 
@@ -44,9 +48,9 @@ uv run python create_manifest_executor.py \
 
 ## Next gate
 
-Real execution remains blocked in code until a Directus identity is proven
-create-only, fresh target absence validation is bound to the run, and the
-operator gives explicit approval for execution in the current session.
+Real execution remains blocked in code after the pre-create safety gates pass.
+The next approved slice must implement the serial writer, media handling, and
+ledger-backed idempotency before any production POST is allowed.
 
 ## Handoff
 
@@ -61,12 +65,15 @@ files_inspected:
 files_changed:
   - cms/utils/wordpress/create_manifest_executor.py
   - cms/utils/wordpress/tests/test_create_manifest_executor.py
+  - cms/utils/wordpress/pre_create_gates.py
+  - cms/utils/wordpress/tests/test_pre_create_gates.py
   - docs/migrations/wordpress-to-directus/task-b-create-manifest-executor.md
+  - docs/migrations/wordpress-to-directus/task-b-pre-create-safety-gates.md
 findings:
   - The approved manifest contains embedded source records but no media upload payloads.
   - The first safe executor slice can validate and plan draft feed creates without performing writes.
 verification:
-  - Pending full test run from cms/utils/wordpress.
+  - Focused executor and pre-create gate tests passed in the follow-up slice.
 production_artifact_impact: none
 risks:
   - The execution path is intentionally blocked until create-only token evidence and fresh target absence validation are wired.

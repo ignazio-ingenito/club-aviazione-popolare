@@ -16,8 +16,13 @@ import os
 from pathlib import Path
 from typing import Any, Mapping
 
-from directus_create_only import DirectusCreateOnlyClient
+from directus_create_only import DirectusCreateOnlyClient, DirectusCreateOnlyConfig
 from inventory.canonical import canonical_sha256, sha256_bytes
+from pre_create_gates import (
+    PreCreateGateError,
+    validate_fresh_target_absence_report,
+    validate_permission_evidence_report,
+)
 
 
 APPROVED_APPROVAL_SHA256 = "566ca0d3026ca9035853f623fc1d83d6b8fd31dc54bced9bbdc077c82ea266ee"
@@ -204,6 +209,8 @@ def run_executor(
     directus_url: str = "https://cap-cms.skunklabs.uk",
     auth_token: str | None = None,
     client: DirectusCreateOnlyClient | None = None,
+    permission_evidence_path: Path | str | None = None,
+    fresh_target_absence_path: Path | str | None = None,
     expected_manifest_sha256: str = APPROVED_MANIFEST_SHA256,
     expected_approval_sha256: str = APPROVED_APPROVAL_SHA256,
 ) -> dict[str, Any]:
@@ -214,16 +221,35 @@ def run_executor(
         expected_manifest_sha256=expected_manifest_sha256,
         expected_approval_sha256=expected_approval_sha256,
     )
-    paths = write_reports(reports, output_dir=output_dir)
-
     executed = 0
     if execute:
+        _validate_execute_gates(
+            manifest_path=manifest_path,
+            approval_path=approval_path,
+            directus_url=directus_url,
+            auth_token=auth_token,
+            permission_evidence_path=permission_evidence_path,
+            fresh_target_absence_path=fresh_target_absence_path,
+            expected_manifest_sha256=expected_manifest_sha256,
+            expected_approval_sha256=expected_approval_sha256,
+        )
+        execution_client = client or DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url=directus_url,
+                allowed_item_collections=("feeds",),
+                allow_files=False,
+                allow_folders=False,
+                auth_token=auth_token,
+            )
+        )
+        if execution_client is not client:
+            execution_client.close()
+        paths = write_reports(reports, output_dir=output_dir)
         raise CreateManifestExecutorError(
-            "Execution is intentionally blocked until create-only permission "
-            "evidence and fresh target absence validation are provided and "
-            "verified in a later approved gate."
+            "Execution boundary passed, but real writer is not implemented in this slice."
         )
 
+    paths = write_reports(reports, output_dir=output_dir)
     return {
         "execute": execute,
         "executed_operations": executed,
@@ -267,6 +293,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--approval", required=True, help="Approved migration-approval.json path.")
     parser.add_argument("--output-dir", required=True, help="Run directory outside Git for generated reports.")
     parser.add_argument("--directus-url", default="https://cap-cms.skunklabs.uk")
+    parser.add_argument("--permission-evidence", help="permission-evidence-create-only.json path for execute mode.")
+    parser.add_argument("--fresh-target-absence", help="fresh-target-absence-before-create.json path for execute mode.")
     parser.add_argument("--execute", action="store_true", help="Actually emit POST requests. Omit for dry-run.")
     args = parser.parse_args(argv)
     token = os.environ.get("DIRECTUS_TOKEN") if args.execute else None
@@ -277,9 +305,55 @@ def main(argv: list[str] | None = None) -> int:
         execute=args.execute,
         directus_url=args.directus_url,
         auth_token=token,
+        permission_evidence_path=args.permission_evidence,
+        fresh_target_absence_path=args.fresh_target_absence,
     )
     print(json.dumps(result, sort_keys=True))
     return 0
+
+
+def _validate_execute_gates(
+    *,
+    manifest_path: Path | str,
+    approval_path: Path | str,
+    directus_url: str,
+    auth_token: str | None,
+    permission_evidence_path: Path | str | None,
+    fresh_target_absence_path: Path | str | None,
+    expected_manifest_sha256: str,
+    expected_approval_sha256: str,
+) -> None:
+    if permission_evidence_path is None:
+        raise CreateManifestExecutorError("--permission-evidence is required when --execute is used.")
+    if fresh_target_absence_path is None:
+        raise CreateManifestExecutorError("--fresh-target-absence is required when --execute is used.")
+    if auth_token is None or not auth_token.strip():
+        raise CreateManifestExecutorError("DIRECTUS_TOKEN is required when --execute is used.")
+
+    manifest = load_and_validate_manifest(
+        manifest_path,
+        approval_path=approval_path,
+        expected_manifest_sha256=expected_manifest_sha256,
+        expected_approval_sha256=expected_approval_sha256,
+    )
+    permission_evidence = _read_json_object(Path(permission_evidence_path))
+    fresh_target_absence = _read_json_object(Path(fresh_target_absence_path))
+
+    try:
+        validate_permission_evidence_report(
+            permission_evidence,
+            expected_target_url=directus_url,
+        )
+        validate_fresh_target_absence_report(
+            fresh_target_absence,
+            manifest,
+            expected_target_url=directus_url,
+            expected_manifest_sha256=expected_manifest_sha256,
+            expected_approval_sha256=expected_approval_sha256,
+            expected_operation_count=EXPECTED_COUNTS["total_operations"],
+        )
+    except PreCreateGateError as exc:
+        raise CreateManifestExecutorError(str(exc)) from exc
 
 
 def _validate_counts(manifest: Mapping[str, Any]) -> None:

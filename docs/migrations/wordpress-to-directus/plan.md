@@ -73,6 +73,7 @@ Exit gate: source and target contracts are known well enough to design determini
 - [ ] Remove stale-cache dependence from new migration commands.
 - [ ] Keep legacy delete and overwrite commands outside the approved execution path.
 - [x] Add a draft-only executor scaffold for the approved 28 article and 7 gallery create manifest.
+- [x] Add mandatory pre-create safety gate validation for execute mode without enabling real POST emission.
 
 Exit gate: automated tests enforce the production invariant before a write path exists.
 

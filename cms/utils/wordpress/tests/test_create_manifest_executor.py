@@ -102,7 +102,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             client.request("PATCH", "/items/feeds/1")
         self.assertEqual(requests, [])
 
-    def test_execute_flag_is_blocked_until_permission_and_target_gates_exist(self) -> None:
+    def test_execute_without_permission_gate_fails_before_transport(self) -> None:
         requests: list[httpx.Request] = []
 
         def handler(request: httpx.Request) -> httpx.Response:
@@ -120,17 +120,186 @@ class CreateManifestExecutorTests(unittest.TestCase):
             http=raw,
         )
         with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha), TemporaryDirectory() as tmp:
-            with self.assertRaisesRegex(CreateManifestExecutorError, "Execution is intentionally blocked"):
+            with self.assertRaisesRegex(CreateManifestExecutorError, "--permission-evidence"):
                 run_executor(
                     manifest_path=manifest_path,
                     approval_path=approval_path,
                     output_dir=Path(tmp),
                     execute=True,
                     client=client,
+                    auth_token="token",
                     expected_manifest_sha256=manifest_sha,
                     expected_approval_sha256=approval_sha,
                 )
         self.assertEqual(requests, [])
+
+    def test_execute_without_target_absence_gate_fails_before_transport(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+        ), TemporaryDirectory() as tmp:
+            permission_path = Path(tmp) / "permission-evidence-create-only.json"
+            permission_path.write_text(
+                json.dumps(self.permission_report(target_url="https://directus.example.test")),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(CreateManifestExecutorError, "--fresh-target-absence"):
+                run_executor(
+                    manifest_path=manifest_path,
+                    approval_path=approval_path,
+                    output_dir=Path(tmp) / "reports",
+                    execute=True,
+                    client=client,
+                    auth_token="token",
+                    permission_evidence_path=permission_path,
+                    directus_url="https://directus.example.test",
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                )
+        self.assertEqual(requests, [])
+
+    def test_execute_with_missing_token_fails_before_transport(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+        ), TemporaryDirectory() as tmp:
+            permission_path, absence_path = self.write_gate_reports(
+                Path(tmp),
+                manifest_path=manifest_path,
+                manifest_sha=manifest_sha,
+                approval_sha=approval_sha,
+                target_url="https://directus.example.test",
+            )
+            with self.assertRaisesRegex(CreateManifestExecutorError, "DIRECTUS_TOKEN"):
+                run_executor(
+                    manifest_path=manifest_path,
+                    approval_path=approval_path,
+                    output_dir=Path(tmp) / "reports",
+                    execute=True,
+                    client=client,
+                    permission_evidence_path=permission_path,
+                    fresh_target_absence_path=absence_path,
+                    directus_url="https://directus.example.test",
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                )
+        self.assertEqual(requests, [])
+
+    def test_execute_with_rejected_permission_gate_fails_before_transport(self) -> None:
+        self.assert_rejected_gate_fails_before_transport(reject_permission=True)
+
+    def test_execute_with_rejected_target_gate_fails_before_transport(self) -> None:
+        self.assert_rejected_gate_fails_before_transport(reject_permission=False)
+
+    def test_execute_with_approved_gates_reaches_boundary_without_post(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+        ), TemporaryDirectory() as tmp:
+            permission_path, absence_path = self.write_gate_reports(
+                Path(tmp),
+                manifest_path=manifest_path,
+                manifest_sha=manifest_sha,
+                approval_sha=approval_sha,
+                target_url="https://directus.example.test",
+            )
+            with self.assertRaisesRegex(CreateManifestExecutorError, "real writer is not implemented"):
+                run_executor(
+                    manifest_path=manifest_path,
+                    approval_path=approval_path,
+                    output_dir=Path(tmp) / "reports",
+                    execute=True,
+                    client=client,
+                    auth_token="token",
+                    permission_evidence_path=permission_path,
+                    fresh_target_absence_path=absence_path,
+                    directus_url="https://directus.example.test",
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                )
+        self.assertEqual(requests, [])
+
+    def test_execute_with_approved_gates_builds_safe_client_when_missing(self) -> None:
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+        ), TemporaryDirectory() as tmp:
+            permission_path, absence_path = self.write_gate_reports(
+                Path(tmp),
+                manifest_path=manifest_path,
+                manifest_sha=manifest_sha,
+                approval_sha=approval_sha,
+                target_url="https://directus.example.test",
+            )
+            with self.assertRaisesRegex(CreateManifestExecutorError, "real writer is not implemented"):
+                run_executor(
+                    manifest_path=manifest_path,
+                    approval_path=approval_path,
+                    output_dir=Path(tmp) / "reports",
+                    execute=True,
+                    auth_token="token",
+                    permission_evidence_path=permission_path,
+                    fresh_target_absence_path=absence_path,
+                    directus_url="https://directus.example.test",
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                )
 
     def test_non_draft_operation_fails(self) -> None:
         manifest = self.synthetic_manifest()
@@ -245,6 +414,148 @@ class CreateManifestExecutorTests(unittest.TestCase):
                 "excluded_non_article_candidates": 13,
                 "excluded_wordpress_type_manual_review": 6,
             },
+        }
+
+    def assert_rejected_gate_fails_before_transport(self, *, reject_permission: bool) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+        ), TemporaryDirectory() as tmp:
+            permission_path, absence_path = self.write_gate_reports(
+                Path(tmp),
+                manifest_path=manifest_path,
+                manifest_sha=manifest_sha,
+                approval_sha=approval_sha,
+                target_url="https://directus.example.test",
+                permission_status="rejected" if reject_permission else "approved",
+                absence_status="approved" if reject_permission else "rejected",
+            )
+            with self.assertRaises(CreateManifestExecutorError):
+                run_executor(
+                    manifest_path=manifest_path,
+                    approval_path=approval_path,
+                    output_dir=Path(tmp) / "reports",
+                    execute=True,
+                    client=client,
+                    auth_token="token",
+                    permission_evidence_path=permission_path,
+                    fresh_target_absence_path=absence_path,
+                    directus_url="https://directus.example.test",
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                )
+        self.assertEqual(requests, [])
+
+    def write_gate_reports(
+        self,
+        directory: Path,
+        *,
+        manifest_path: Path,
+        manifest_sha: str,
+        approval_sha: str,
+        target_url: str,
+        permission_status: str = "approved",
+        absence_status: str = "approved",
+    ) -> tuple[Path, Path]:
+        permission_path = directory / "permission-evidence-create-only.json"
+        absence_path = directory / "fresh-target-absence-before-create.json"
+        permission_path.write_text(
+            json.dumps(self.permission_report(status=permission_status, target_url=target_url), sort_keys=True),
+            encoding="utf-8",
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        absence_path.write_text(
+            json.dumps(
+                self.fresh_target_absence_report(
+                    manifest,
+                    status=absence_status,
+                    manifest_sha=manifest_sha,
+                    approval_sha=approval_sha,
+                    target_url=target_url,
+                ),
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        return permission_path, absence_path
+
+    def permission_report(self, *, status: str = "approved", target_url: str = "https://cap-cms.skunklabs.uk"):
+        return {
+            "kind": "permission_evidence_create_only",
+            "status": status,
+            "target_url": target_url,
+            "observed_at": "2026-06-22T12:00:00Z",
+            "execution_identity": {
+                "id": "directus-user:migration-create-only",
+                "role": "migration-create-only",
+            },
+            "capabilities": {
+                "admin": False,
+                "system_wildcard": False,
+                "broad_token": False,
+            },
+            "probes": {
+                "create": {"method": "POST", "resource": "/items/feeds", "result": "allowed", "success": True},
+                "patch": {"method": "PATCH", "resource": "/items/feeds", "result": "denied", "success": False},
+                "put": {"method": "PUT", "resource": "/items/feeds", "result": "denied", "success": False},
+                "delete": {"method": "DELETE", "resource": "/items/feeds", "result": "denied", "success": False},
+                "schema": {"method": "GET", "resource": "/schema", "result": "denied", "success": False},
+                "settings": {"method": "GET", "resource": "/settings", "result": "denied", "success": False},
+                "users": {"method": "GET", "resource": "/users", "result": "denied", "success": False},
+                "roles": {"method": "GET", "resource": "/roles", "result": "denied", "success": False},
+                "permissions": {"method": "GET", "resource": "/permissions", "result": "denied", "success": False},
+            },
+        }
+
+    def fresh_target_absence_report(
+        self,
+        manifest,
+        *,
+        status: str = "approved",
+        manifest_sha: str,
+        approval_sha: str,
+        target_url: str,
+    ):
+        original_uris = [operation["original_uri"] for operation in manifest["operations"]]
+        return {
+            "kind": "fresh_target_absence_before_create",
+            "status": status,
+            "target_url": target_url,
+            "observed_at": "2026-06-22T12:05:00Z",
+            "approval_sha256": approval_sha,
+            "manifest_sha256": manifest_sha,
+            "target_baseline_sha256": "7" * 64,
+            "checked_operation_count": 35,
+            "checked_original_uris": original_uris,
+            "absence_evidence": {
+                original_uri: {"status": "absent", "checked": True, "matches": []}
+                for original_uri in original_uris
+            },
+            "route_collisions": [],
+            "slug_collisions": [],
+            "protected_collisions": [],
+            "drift_protected_collisions": [],
+            "ambiguous_matches": [],
+            "skipped_checks": [],
+            "stale_baseline": False,
         }
 
     def artifact_paths(self):
