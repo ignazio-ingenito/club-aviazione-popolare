@@ -31,6 +31,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B approved write-manifest selection](task-b-write-manifest.md): candidate-only manifest selection and record gate.
 - [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
+- [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
