@@ -32,6 +32,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
 - [Task B draft-only create-manifest executor](task-b-create-manifest-executor.md): approved artifact validation, dry-run reports, request plan, and execution gate.
 - [Task B pre-create safety gates](task-b-pre-create-safety-gates.md): execute-mode permission and fresh target absence gates before any real writer.
+- [Task B live pre-create gate artifacts](task-b-live-pre-create-gate-artifacts.md): rejected live gate artifacts when no create-only content-migration identity was available.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.
