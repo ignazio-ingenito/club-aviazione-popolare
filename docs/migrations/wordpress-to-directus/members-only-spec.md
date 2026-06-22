@@ -146,6 +146,23 @@ The WordPress membership mechanism is currently uncertain and may come from a
 plugin. The migration must discover it through read-only inspection of the
 WordPress export.
 
+Current SQL-export evidence indicates that frontend member bootstrap should use
+the WordPress `soci_cap` role together with the `pw_user_status=approved`
+approval state. `soci_cap` alone is not sufficient because denied and pending
+users also exist in the export.
+
+MailPoet and UsersWP data appear to mirror WordPress users or newsletter/profile
+state; they are supporting evidence, not the primary membership discriminator.
+
+The export does not safely prove how to split the two editorial target profiles
+(`redazione` and `pubblicazione`). Users with WordPress editorial-capable roles
+must remain a manual-review bucket until a separate mapping decision is made.
+
+The `articoli-tecnici` WordPress custom post type is a source implementation
+name, not the preferred public URL label. Source routes and page metadata
+support `sport-aviation` as the initial `/soci/<categoria>` slug for that
+content family. The display label remains an editorial choice.
+
 Required export evidence:
 
 - users;

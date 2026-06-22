@@ -164,8 +164,11 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [x] Record that `member_feeds.content` stores sanitized HTML and is not converted to Markdown during initial migration.
 - [x] Produce an aggregate WordPress media retrieval report for the members-only migration.
 - [x] Create an agent-loop execution plan for `/soci` and `articoli-tecnici`.
+- [x] Capture read-only SQL evidence that `sport-aviation` is the source-backed route slug for the `articoli-tecnici` content family.
+- [x] Capture read-only SQL evidence that member bootstrap should use `soci_cap` plus approved `pw_user_status`.
+- [x] Add a read-only SQL export inventory command for `sport-aviation` articles, required media, taxonomy terms, and membership aggregates.
 - [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
-- [ ] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
+- [x] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
 - [ ] Generate a required-media list from members-only content before downloading or archiving WordPress uploads.
 - [ ] Retrieve only referenced private media through FTP or a targeted uploads archive when possible.
 - [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.

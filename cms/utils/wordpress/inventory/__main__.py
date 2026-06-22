@@ -18,6 +18,7 @@ from .reconciliation import (
     reconcile_manifest_files,
 )
 from .reconciliation_writer import ReconciliationWriteResult, write_reconciliation_report_json
+from .sql_export import WordPressSQLExportInventoryClient
 from .wordpress import WordPressInventoryClient, WordPressInventoryConfig
 from .writer import ManifestWriteResult, write_manifest_jsonl
 from .wxr import WordPressWXRMediaInventoryClient
@@ -89,6 +90,23 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to the local WordPress WXR XML export.",
     )
     wxr_media.set_defaults(handler=_run_wordpress_wxr_media)
+
+    sql_export = subparsers.add_parser(
+        "wordpress-sql-export",
+        help="Inventory migration-relevant records from a local phpMyAdmin SQL export.",
+    )
+    _add_common_output_args(sql_export, default_filename="wordpress-sql-export.jsonl")
+    sql_export.add_argument(
+        "--input",
+        required=True,
+        help="Path to the local phpMyAdmin SQL export.",
+    )
+    sql_export.add_argument(
+        "--table-prefix",
+        default="cap_",
+        help="WordPress database table prefix.",
+    )
+    sql_export.set_defaults(handler=_run_wordpress_sql_export)
 
     gallery = subparsers.add_parser(
         "gallery",
@@ -193,6 +211,18 @@ def _run_wordpress_core(args: argparse.Namespace) -> ManifestWriteResult:
 
 def _run_wordpress_wxr_media(args: argparse.Namespace) -> ManifestWriteResult:
     snapshot = WordPressWXRMediaInventoryClient(export_path=args.input).inventory()
+    manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+    )
+    return _write(args, manifest)
+
+
+def _run_wordpress_sql_export(args: argparse.Namespace) -> ManifestWriteResult:
+    snapshot = WordPressSQLExportInventoryClient(
+        export_path=args.input,
+        table_prefix=args.table_prefix,
+    ).inventory()
     manifest = snapshot.to_manifest(
         environment=args.environment,
         observed_at=_now_utc(),

@@ -39,6 +39,11 @@ from .permission_gate import (
     PermissionGateError,
     validate_permission_evidence,
 )
+from .sql_export import (
+    WordPressSQLExportInventoryClient,
+    WordPressSQLExportInventoryError,
+    WordPressSQLExportSnapshot,
+)
 from .models import (
     MANIFEST_SCHEMA_VERSION,
     InventoryIssue,
@@ -81,6 +86,9 @@ __all__ = [
     "PermissionExpectation",
     "PermissionGateError",
     "validate_permission_evidence",
+    "WordPressSQLExportInventoryClient",
+    "WordPressSQLExportInventoryError",
+    "WordPressSQLExportSnapshot",
     "historical_mappings_from_parser_yaml",
     "freeze_json",
     "iter_manifest_jsonl_lines",
