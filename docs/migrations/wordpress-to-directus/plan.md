@@ -180,6 +180,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [ ] Model members-only categories in a dedicated `member_categories` collection.
 - [x] Implement and run the `member_*` schema dry-run artifact generator. Artifact: `/tmp/cap-migration-runs/20260622-directus-member-schema-plan/directus-member-schema-plan.jsonl`, SHA-256 `2697c1199ccef9108c05f884138c04b9b818a5461ab39ff8e26489678ecf9ef8`.
 - [ ] Apply the approved `member_*` schema with a schema-capable token after preflight gates pass.
+- [ ] Resolve Directus schema-token permissions. Attempted `POST /collections` on 2026-06-22 with the encrypted schema token; Directus returned `403 FORBIDDEN`, and post-check confirmed 0 `member_*` collections were created.
 - [x] Review and approve the proposed `member_topics` secondary taxonomy model.
 - [ ] Treat members-only galleries as absent by default; if discovered, model them in a dedicated `member_galleries` collection.
 - [ ] Keep editorial status separate from audience visibility when modeling members-only content.
