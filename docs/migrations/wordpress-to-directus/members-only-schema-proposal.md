@@ -37,7 +37,7 @@ Purpose: top-level members-only route categories.
 Initial record expected:
 
 - `slug`: `sport-aviation`
-- `title`: editorial decision; source-backed short label is `Sport Aviation`
+- `title`: `Sport Aviation`
 - `description`: optional editorial text
 
 Fields:
@@ -220,8 +220,6 @@ against the running instance before asking for a production export.
 
 ## Open questions
 
-- Final display label: `Sport Aviation` or `Articoli tradotti da Sport
-  Aviation`.
 - Whether editorial-capable WordPress users without `soci_cap` should receive
   frontend member access or remain backend-only.
 - How to split `redazione` and `pubblicazione`; the SQL export does not prove a

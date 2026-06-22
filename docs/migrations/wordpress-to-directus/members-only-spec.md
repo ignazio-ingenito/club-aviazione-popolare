@@ -161,7 +161,7 @@ must remain a manual-review bucket until a separate mapping decision is made.
 The `articoli-tecnici` WordPress custom post type is a source implementation
 name, not the preferred public URL label. Source routes and page metadata
 support `sport-aviation` as the initial `/soci/<categoria>` slug for that
-content family. The display label remains an editorial choice.
+content family. The approved display label is `Sport Aviation`.
 
 Required export evidence:
 
