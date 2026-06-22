@@ -32,6 +32,7 @@ class InventoryCliTests(unittest.TestCase):
         self.assertIn("wordpress-sql-export", result.stdout)
         self.assertIn("directus-core", result.stdout)
         self.assertIn("directus-app-collections", result.stdout)
+        self.assertIn("directus-member-schema-plan", result.stdout)
         self.assertIn("routes", result.stdout)
         self.assertIn("reconcile", result.stdout)
 

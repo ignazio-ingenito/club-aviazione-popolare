@@ -12,6 +12,7 @@ import yaml
 
 from .directus import DirectusInventoryClient, DirectusInventoryConfig
 from .gallery import WordPressGalleryDiscoveryClient
+from .member_schema_plan import build_member_schema_plan_manifest
 from .routes import RouteInventoryClient, RouteInventoryConfig
 from .reconciliation import (
     historical_mappings_from_parser_yaml,
@@ -152,6 +153,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Application collection to inventory. Repeatable; defaults to all readable non-system collections.",
     )
     directus_app.set_defaults(handler=_run_directus_app_collections)
+
+    member_schema = subparsers.add_parser(
+        "directus-member-schema-plan",
+        help="Generate the dry-run request manifest for the approved members-only Directus schema.",
+    )
+    _add_common_output_args(
+        member_schema,
+        default_filename="directus-member-schema-plan.jsonl",
+    )
+    member_schema.add_argument(
+        "--target-manifest",
+        required=True,
+        help="Fresh Directus schema/core inventory JSONL used to detect existing member collections.",
+    )
+    member_schema.set_defaults(handler=_run_directus_member_schema_plan)
 
     reconcile = subparsers.add_parser(
         "reconcile",
@@ -300,6 +316,15 @@ def _run_directus_app_collections(args: argparse.Namespace) -> ManifestWriteResu
             "inventory_type": "directus_application_collections",
             "requested_collections": collections,
         },
+    )
+    return _write(args, manifest)
+
+
+def _run_directus_member_schema_plan(args: argparse.Namespace) -> ManifestWriteResult:
+    manifest = build_member_schema_plan_manifest(
+        target_manifest_path=args.target_manifest,
+        environment=args.environment,
+        observed_at=_now_utc(),
     )
     return _write(args, manifest)
 

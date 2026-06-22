@@ -178,7 +178,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
 - [ ] Model members-only articles in a dedicated `member_feeds` collection.
 - [ ] Model members-only categories in a dedicated `member_categories` collection.
-- [ ] Implement and run the `member_*` schema dry-run artifact generator.
+- [x] Implement and run the `member_*` schema dry-run artifact generator. Artifact: `/tmp/cap-migration-runs/20260622-directus-member-schema-plan/directus-member-schema-plan.jsonl`, SHA-256 `2697c1199ccef9108c05f884138c04b9b818a5461ab39ff8e26489678ecf9ef8`.
 - [ ] Apply the approved `member_*` schema with a schema-capable token after preflight gates pass.
 - [x] Review and approve the proposed `member_topics` secondary taxonomy model.
 - [ ] Treat members-only galleries as absent by default; if discovered, model them in a dedicated `member_galleries` collection.
