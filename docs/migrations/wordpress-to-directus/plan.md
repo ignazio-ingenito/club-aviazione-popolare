@@ -173,9 +173,9 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [x] Inventory authenticated Directus application collections with the read-only migration token.
 - [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
 - [x] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
-- [ ] Generate a required-media list from members-only content before downloading or archiving WordPress uploads.
-- [ ] Retrieve only referenced private media through FTP or a targeted uploads archive when possible.
-- [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
+- [x] Generate a required-media list from the `Sport Aviation` source inventory before downloading WordPress uploads.
+- [x] Retrieve only referenced `Sport Aviation` media through FTP. Artifact directory: `/tmp/cap-migration-runs/20260622-wordpress-ftp-download/downloads`, 431 files, 134M, checksum manifest SHA-256 `541229a23d43bdb58fb301035aa96130b9540b86e99ecd27cecb6de8c387a435`.
+- [x] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
 - [ ] Model members-only articles in a dedicated `member_feeds` collection.
 - [ ] Model members-only categories in a dedicated `member_categories` collection.
 - [x] Implement and run the `member_*` schema dry-run artifact generator. Artifact: `/tmp/cap-migration-runs/20260622-directus-member-schema-plan/directus-member-schema-plan.jsonl`, SHA-256 `2697c1199ccef9108c05f884138c04b9b818a5461ab39ff8e26489678ecf9ef8`.
