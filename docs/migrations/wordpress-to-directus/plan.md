@@ -123,6 +123,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 ## Phase 6 — Append-only ledger and Directus permissions
 
 - [x] Design the Directus read-only and create-only content-migration identities and SOPS secret plan without creating roles, users, tokens, or permissions.
+- [x] Create a non-applied Directus content-migration permission implementation plan with draft-only create validation, presets, and additive-policy verification warnings.
 - [ ] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.
