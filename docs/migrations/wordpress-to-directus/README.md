@@ -30,6 +30,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B create-only Directus client](task-b-create-only-directus-client.md): method/endpoint allowlist and future write-safety wrapper.
 - [Task B approved write-manifest selection](task-b-write-manifest.md): candidate-only manifest selection and record gate.
 - [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
+- [Task B draft-only create-manifest executor](task-b-create-manifest-executor.md): approved artifact validation, dry-run reports, request plan, and execution gate.
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.
