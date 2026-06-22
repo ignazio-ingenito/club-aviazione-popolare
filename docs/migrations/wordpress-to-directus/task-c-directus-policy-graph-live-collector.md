@@ -1,7 +1,7 @@
 # Task C - Directus policy graph live collector scaffold
 
-Status: implemented as mocked GET-only scaffold; live GET adapter investigation
-performed; live policy evidence still not collected
+Status: implemented as mocked GET-only scaffold; live GET adapter
+investigations performed; live policy evidence still not collected
 
 Date: 2026-06-22
 
@@ -115,6 +115,44 @@ permissions response is empty
 No raw, normalized, or evaluation evidence artifact was created by that live
 collection attempt. The production identity is therefore still not proven safe
 for create execution.
+
+## Live permissions lookup finding
+
+On 2026-06-22, a GET-only investigation of the subsequent
+`permissions response is empty` failure checked the live Directus 11.13.2
+permission lookup shape without printing tokens, headers, role IDs, policy IDs,
+or full permission payloads.
+
+The collector query at the time was:
+
+```text
+GET /permissions?filter[policy][_in]=<policy_id>
+```
+
+The investigation found:
+
+- `/permissions` is readable by the token and returns permission rows;
+- the selected role has one attached policy;
+- the selected policy relation reports zero `permissions` rows;
+- `GET /permissions?filter[policy][_eq]=<policy_id>` also returns zero rows;
+- `GET /permissions?filter[policy][id][_eq]=<policy_id>` returns zero rows;
+- indexed and bracket-array `_in` variants return zero rows;
+- a JSON-string `_in` variant is not accepted safely by Directus and was not
+  used further.
+
+Therefore the live failure is not currently proven to be a collector adapter
+mismatch. The selected role's attached policy has no readable permission rows to
+collect. The collector correctly fails closed rather than accepting missing
+permission evidence.
+
+No Directus roles, policies, permissions, users, tokens, schema, content, media,
+feeds, or galleries were changed during this investigation.
+
+No raw, normalized, or evaluation policy graph evidence artifact was created.
+The production identity is still not proven safe for create execution. The next
+safe path is to provide a Directus migration identity or an operator-generated,
+redacted policy export with complete permission rows, then rerun evidence
+collection without enabling production `POST`.
 
 ## Token Handling
 

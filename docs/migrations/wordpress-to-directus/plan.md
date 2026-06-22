@@ -129,7 +129,8 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Implement a strict local normalizer for synthetic raw Directus policy graph payloads without live Directus collection.
 - [x] Implement a mocked GET-only Directus policy graph live collector scaffold without running it against production.
 - [x] Adapt the live collector `/policies` query to the Directus 11.13.2 relation filter shape after GET-only live probing.
-- [ ] Resolve the live collector `/permissions` lookup. The 2026-06-22 rerun progressed past `/policies` and stopped fail-closed with `permissions response is empty`; no approved policy graph evidence artifact exists yet.
+- [x] Resolve the live collector `/permissions` empty response with GET-only live probing. The selected role's attached policy has no readable permission rows, while `/permissions` itself is readable; this is not a collector query mismatch.
+- [ ] Provide a Directus migration identity or operator-generated redacted policy export with complete permission rows. No approved policy graph evidence artifact exists yet for create execution.
 - [x] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.
