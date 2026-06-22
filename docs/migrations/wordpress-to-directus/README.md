@@ -33,6 +33,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
 - [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
 - [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.
+- [Members-only schema proposal](members-only-schema-proposal.md): proposed Directus collections, fields, and access boundaries for `/soci`.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
