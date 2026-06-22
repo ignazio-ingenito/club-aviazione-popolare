@@ -35,6 +35,7 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
 - [Agent Loop](agent-loop.md): task cards for explorer, worker, and reviewer loops.
+- [ADR 0002](../../adr/0002-use-directus-auth-with-temporary-wordpress-password-bridge.md): Directus auth with a temporary WordPress password bridge for `/soci`.
 - [`AGENTS.md`](../../../AGENTS.md): repository-wide agent constraints.
 - [`CONTEXT.md`](../../../CONTEXT.md): compact product, architecture, and migration context.
 

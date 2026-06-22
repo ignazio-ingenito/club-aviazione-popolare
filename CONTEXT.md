@@ -150,6 +150,18 @@ cost/free-tier fit, and clean integration with `/soci` and Directus.
 WordPress password-hash reuse is preferred but not a blocking requirement; an
 approved password-reset flow is acceptable if compatible auth options are too
 complex or operationally risky.
+The preferred auth direction is Directus as the final authoritative auth system
+plus a temporary legacy-password bridge that verifies WordPress hashes on first
+successful login, then upgrades the user to a normal Directus password.
+The first bridge prototype belongs in the Next.js/API layer, close to the
+existing login route. A Directus extension remains a later option after the flow
+is proven with synthetic hashes.
+Legacy WordPress hashes are stored temporarily in a private,
+migration-owned Directus collection named `legacy_wordpress_credentials`,
+accessible only to backend/service-role code.
+The legacy-password transition window is 90 days from go-live; after that,
+unconsumed legacy hashes are removed or quarantined and remaining users must
+reset their password.
 
 Members-only articles that are already visible to members in WordPress should
 be migrated as visible to members after verification. Draft status is reserved

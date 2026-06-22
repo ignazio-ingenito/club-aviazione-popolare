@@ -12,6 +12,9 @@ The members-only area is a separate authenticated content scope. It is not an
 update path for public articles that were already migrated, curated, or
 modernized in Directus.
 
+The authentication decision is recorded in
+[ADR 0002](../../adr/0002-use-directus-auth-with-temporary-wordpress-password-bridge.md).
+
 ## Decisions
 
 - The initial migration is faithful to WordPress members-only content.
@@ -75,6 +78,60 @@ Authentication provider selection prioritizes:
 
 Password-hash reuse is preferred but not a blocking requirement.
 
+### Recommended auth direction
+
+Use Directus as the final authoritative authentication system for members,
+redazione, and pubblicazione users.
+
+The repository already contains a frontend login page and a Next.js login API
+route that call Directus `/auth/login`. Directus also provides password reset
+endpoints and user APIs, so this direction preserves the current system shape
+and avoids introducing a second long-lived auth provider.
+
+To preserve WordPress passwords where possible, add a temporary legacy-password
+bridge:
+
+1. import all WordPress users into Directus with target roles/policies and a
+   generated unusable password or reset-required state;
+2. store WordPress password hashes in a migration-owned, private legacy
+   credential store, not in public content collections;
+3. on login, first attempt normal Directus authentication;
+4. if Directus authentication fails and a legacy hash exists, verify the
+   submitted password against the WordPress hash format server-side;
+5. on successful legacy verification, set the user's Directus password to the
+   submitted password, mark the legacy credential as consumed, and continue with
+   normal Directus login/session handling;
+6. after the 90-day transition window from go-live, remove or quarantine
+   unconsumed legacy hashes and require password reset for remaining users.
+
+This keeps Directus authoritative after first successful login while allowing
+WordPress hash compatibility without keeping WordPress online as an auth
+provider.
+
+Current source checks:
+
+- WordPress password verification must support modern `$wp` bcrypt hashes,
+  legacy `$P$` phpass hashes, older md5 hashes, and any plugin override
+  discovered in the export.
+- Directus supports login, refresh, and password reset through its auth API.
+- Directus API extensions can register custom endpoints or hooks if the bridge
+  belongs inside Directus rather than the Next.js API layer.
+- Auth.js remains a fallback if Directus cannot support the bridge cleanly; its
+  Credentials provider supports custom server-side authorization logic.
+
+The first prototype implements the legacy-password bridge in the Next.js/API
+layer. This keeps iteration close to the existing login route and lets the
+bridge be tested with synthetic WordPress hashes before adding Directus
+extensions. Moving the bridge into Directus remains a later option if the
+prototype proves the flow and centralizing auth logic becomes preferable.
+
+The temporary legacy credential store is a dedicated Directus collection named
+`legacy_wordpress_credentials`. It is migration-owned, private, and accessible
+only through backend/service-role code. It must not be exposed to the frontend
+or normal Directus users. It records legacy hashes, verification state, consumed
+timestamp, and provenance needed to remove or quarantine unconsumed credentials
+after the 90-day transition window.
+
 ## Source evidence
 
 The WordPress membership mechanism is currently uncertain and may come from a
@@ -132,8 +189,12 @@ Stop before import when:
   content evidence;
 - the membership plugin mechanism cannot be identified;
 - password hash handling cannot be assessed safely;
+- the legacy-password bridge cannot be implemented without exposing hashes or
+  plaintext credentials;
 - media references cannot be resolved into a required-media list;
 - Directus permissions for members-only collections are not explicitly approved;
+- Directus permissions for `legacy_wordpress_credentials` are not restricted to
+  backend/service-role access;
 - the auth provider decision is not approved;
 - the `/soci` route access rules are not implemented and tested.
 
@@ -158,6 +219,8 @@ Before production:
 3. Generate the required-media list.
 4. Evaluate authentication options against WordPress password-hash compatibility
    and operational simplicity.
-5. Design Directus schema and permission changes for `member_feeds`,
+5. Prototype the Directus-auth legacy-password bridge in the Next.js/API layer
+   against synthetic WordPress hashes.
+6. Design Directus schema and permission changes for `member_feeds`,
    `member_categories`, and optional `member_galleries`.
-6. Implement `/soci` routes after schema and auth decisions are approved.
+7. Implement `/soci` routes after schema and auth decisions are approved.

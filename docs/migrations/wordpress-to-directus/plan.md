@@ -172,6 +172,9 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [ ] Preserve source categories and sections during the initial migration.
 - [ ] Defer any members-only content reorganization to a separate post-migration editorial task.
 - [ ] Choose the members-only authentication mechanism, prioritizing WordPress password-hash compatibility, then implementation and operational simplicity, current cost/free-tier fit, and clean integration with `/soci` and Directus.
+- [ ] Prefer Directus as the final authoritative authentication system if a temporary WordPress legacy-password bridge can be implemented safely.
+- [ ] Store temporary WordPress password hashes in a private `legacy_wordpress_credentials` collection restricted to backend/service-role access.
+- [ ] Enforce a 90-day post-go-live transition window for legacy WordPress password hashes.
 - [ ] Inventory all WordPress users, roles, and password-hash format for account migration.
 - [ ] Treat WordPress users as a one-time bootstrap source, then make the new authentication system authoritative.
 - [ ] Migrate all WordPress users during the initial account bootstrap.
@@ -181,6 +184,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [ ] Map WordPress users into the target roles: member access, redazione, and pubblicazione.
 - [ ] Use the Directus backend for redazione and pubblicazione workflows.
 - [ ] Prefer password-hash migration only if the chosen authentication mechanism can verify WordPress hashes safely.
+- [ ] Prototype first-login WordPress hash verification and Directus password upgrade in the Next.js/API layer with synthetic legacy hashes.
 - [ ] Fall back to an approved invitation or password-reset flow when WordPress password hashes cannot be reused safely or simply.
 - [ ] Implement a frontend login page and authenticated session experience.
 - [ ] Support password reset in the first members-only frontend release.
