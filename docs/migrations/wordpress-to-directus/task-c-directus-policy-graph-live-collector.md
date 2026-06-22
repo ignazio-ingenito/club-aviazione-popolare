@@ -1,6 +1,7 @@
 # Task C - Directus policy graph live collector scaffold
 
-Status: implemented as mocked GET-only scaffold; live production collection not run
+Status: implemented as mocked GET-only scaffold; live GET adapter investigation
+performed; live policy evidence still not collected
 
 Date: 2026-06-22
 
@@ -14,11 +15,13 @@ Implemented:
 - `cms/utils/wordpress/directus_policy_collector.py`;
 - `collect_directus_policy_graph_raw(...)`;
 - `directus_policy_evidence.py --collect-live`;
-- mocked HTTP unit tests for the collector and CLI mode.
+- mocked HTTP unit tests for the collector and CLI mode;
+- Directus 11.13 policy-role filter adapter for the live `/policies` shape.
 
 Not implemented or not performed:
 
-- production collection against `https://cap-cms.skunklabs.uk`;
+- approved live policy graph evidence collection against
+  `https://cap-cms.skunklabs.uk`;
 - Directus role, policy, user, token, schema, content, or media changes;
 - production `POST`, `PATCH`, `PUT`, or `DELETE`;
 - migration execution with `--execute`;
@@ -42,7 +45,7 @@ It performs only these GET requests:
 
 - `GET /server/info`;
 - `GET /roles/<role_id>`;
-- `GET /policies?...`;
+- `GET /policies?filter[roles][role][_eq]=<role_id>`;
 - `GET /permissions?...`.
 
 The function returns raw JSON with:
@@ -72,6 +75,46 @@ The collector fails closed when:
 - permissions are missing;
 - policy or permission linkage is malformed;
 - required fields are absent or ambiguous.
+
+## Live Directus 11.13 adapter finding
+
+On 2026-06-22, a GET-only investigation of the previous
+`policies GET failed with status 400` failure confirmed that the original
+collector query:
+
+```text
+GET /policies?filter[roles][_contains]=<role_id>
+```
+
+is incompatible with the live Directus 11.13.2 API. Directus returned
+`INVALID_QUERY` because `_contains` is not valid for the UUID field reached by
+that relation filter.
+
+The accepted GET-only query shape is:
+
+```text
+GET /policies?filter[roles][role][_eq]=<role_id>
+```
+
+The collector now uses that relation traversal and includes mocked tests for:
+
+- the exact Directus 11.13 filter shape;
+- Directus access-link rows where policy `roles` contain objects with a
+  `role` field.
+
+No Directus roles, policies, permissions, users, tokens, schema, content, media,
+feeds, or galleries were changed during the investigation.
+
+After this adapter change, the live collector progressed past `/policies` and
+then stopped fail-closed with:
+
+```text
+permissions response is empty
+```
+
+No raw, normalized, or evaluation evidence artifact was created by that live
+collection attempt. The production identity is therefore still not proven safe
+for create execution.
 
 ## Token Handling
 

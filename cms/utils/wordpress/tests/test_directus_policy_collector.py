@@ -32,6 +32,42 @@ class DirectusPolicyCollectorTests(unittest.TestCase):
             ["/server/info", "/roles/role-create-only", "/policies", "/permissions"],
         )
 
+    def test_collector_uses_directus_11_policy_role_filter(self) -> None:
+        requests, client = self.client()
+
+        collect_directus_policy_graph_raw(
+            directus_url="https://cap-cms.skunklabs.uk",
+            role_id="role-create-only",
+            auth_token="secret-token",
+            http=client,
+        )
+
+        policies_request = next(request for request in requests if request.url.path == "/policies")
+        self.assertEqual(policies_request.url.params.get("filter[roles][role][_eq]"), "role-create-only")
+        self.assertNotIn("filter[roles][_contains]", policies_request.url.params)
+
+    def test_collector_accepts_directus_access_role_linkage(self) -> None:
+        policies = self.default_payloads()["/policies"]["data"]
+        policies[0]["roles"] = [
+            {
+                "id": "access-link",
+                "policy": "policy-create-only",
+                "role": "role-create-only",
+                "sort": None,
+                "user": None,
+            }
+        ]
+        _, client = self.client(overrides={"/policies": {"data": policies}})
+
+        raw = collect_directus_policy_graph_raw(
+            directus_url="https://cap-cms.skunklabs.uk",
+            role_id="role-create-only",
+            auth_token="secret-token",
+            http=client,
+        )
+
+        self.assertEqual(raw["policies"][0]["roles"], ["role-create-only"])
+
     def test_collector_never_uses_write_methods(self) -> None:
         requests, client = self.client()
 
