@@ -110,6 +110,7 @@ Exit gate: every source record in scope is inventoried or explicitly classified 
 - [ ] Treat slug/title/date/category similarity as manual-review evidence only.
 - [ ] Detect route, slug, source identity, and target identity collisions.
 - [ ] Classify source-target drift as protected, never as an update candidate.
+- [ ] Report strongly divergent source-target matches with article identities and field-level differences for later editorial reconciliation.
 - [ ] Produce a human-readable and machine-readable reconciliation report.
 - [ ] Review every `manual_review_candidate` and `conflict`.
 - [ ] Generate an immutable write manifest containing only approved `create_candidate` items.
@@ -155,6 +156,46 @@ Exit gate: a second run over the same accepted manifest creates zero objects.
 - [ ] Add tests for album order, missing images, duplicate filenames, and legacy galleries.
 
 Exit gate: new albums preserve source order and existing gallery rendering remains unchanged.
+
+## Phase 8A — Members-only content
+
+- [x] Capture the initial members-only migration decisions in a dedicated operating specification.
+- [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
+- [ ] Obtain a phpMyAdmin SQL export that includes users, password hashes, roles, capabilities, user metadata, plugin membership data, private content, taxonomy data, and relevant options.
+- [ ] Generate a required-media list from members-only content before downloading or archiving WordPress uploads.
+- [ ] Retrieve only referenced private media through FTP or a targeted uploads archive when possible.
+- [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
+- [ ] Model members-only articles in a dedicated `member_feeds` collection.
+- [ ] Model members-only categories in a dedicated `member_categories` collection.
+- [ ] Treat members-only galleries as absent by default; if discovered, model them in a dedicated `member_galleries` collection.
+- [ ] Keep editorial status separate from audience visibility when modeling members-only content.
+- [ ] Preserve source categories and sections during the initial migration.
+- [ ] Defer any members-only content reorganization to a separate post-migration editorial task.
+- [ ] Choose the members-only authentication mechanism, prioritizing WordPress password-hash compatibility, then implementation and operational simplicity, current cost/free-tier fit, and clean integration with `/soci` and Directus.
+- [ ] Inventory all WordPress users, roles, and password-hash format for account migration.
+- [ ] Treat WordPress users as a one-time bootstrap source, then make the new authentication system authoritative.
+- [ ] Migrate all WordPress users during the initial account bootstrap.
+- [ ] Use WordPress membership evidence to map users into the member role.
+- [ ] Discover the WordPress membership mechanism through read-only plugin, role, capability, and usermeta inventory.
+- [ ] Give no private-content access by default to users without clear membership or editorial-role evidence.
+- [ ] Map WordPress users into the target roles: member access, redazione, and pubblicazione.
+- [ ] Use the Directus backend for redazione and pubblicazione workflows.
+- [ ] Prefer password-hash migration only if the chosen authentication mechanism can verify WordPress hashes safely.
+- [ ] Fall back to an approved invitation or password-reset flow when WordPress password hashes cannot be reused safely or simply.
+- [ ] Implement a frontend login page and authenticated session experience.
+- [ ] Support password reset in the first members-only frontend release.
+- [ ] Defer editable member profiles until after the initial authenticated content release.
+- [ ] Use `/soci` as the canonical frontend root for members-only routes.
+- [ ] Use `/soci/<categoria>/<slug>` for members-only article routes.
+- [ ] Redirect anonymous `/soci` requests to login and return users to the originally requested URL after authentication.
+- [ ] Return a simple 403 for authenticated users without the member role.
+- [ ] Configure authenticated frontend access for members-only routes.
+- [ ] Configure Directus roles or policies for members-only content management.
+- [ ] Reconcile members-only source content against members-only target content without mutating public protected articles.
+- [ ] Import verified members-only content as visible to members when it is already visible to members in WordPress.
+- [ ] Keep uncertain, new, or editorially unresolved members-only content out of member-visible publication until reviewed.
+
+Exit gate: members-only content is migrated faithfully under authentication, and any reorganization remains a separate reviewed task.
 
 ## Phase 9 — Staging rehearsal
 
