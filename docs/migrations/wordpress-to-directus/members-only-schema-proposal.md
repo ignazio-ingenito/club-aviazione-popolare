@@ -1,13 +1,16 @@
 # Members-only Directus schema proposal
 
-Status: proposal, not applied
+Status: approved for implementation planning, not applied
 
 Date: 2026-06-22
 
+Approval: user approved the proposed `member_*` schema direction on
+2026-06-22.
+
 ## Purpose
 
-This document proposes the Directus collections and permission model needed for
-the first `/soci` release.
+This document defines the approved Directus collection and permission model
+direction for the first `/soci` release.
 
 It does not authorize schema apply, permission changes, user migration, content
 import, media upload, or production execution.

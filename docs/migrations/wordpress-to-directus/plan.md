@@ -168,6 +168,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [x] Capture read-only SQL evidence that member bootstrap should use `soci_cap` plus approved `pw_user_status`.
 - [x] Add a read-only SQL export inventory command for `sport-aviation` articles, required media, taxonomy terms, and membership aggregates.
 - [x] Propose Directus members-only schema and permission boundaries without applying them.
+- [x] Approve the proposed `member_*` schema direction for implementation planning.
 - [x] Inventory authenticated Directus application collections with the read-only migration token.
 - [ ] Inventory authenticated WordPress members-only categories, sections, articles, media, and galleries.
 - [x] Determine the source-backed public label and URL slug for `articoli-tecnici`; prefer the proven magazine/publication name over the technical source post type.
@@ -176,7 +177,7 @@ Exit gate: new albums preserve source order and existing gallery rendering remai
 - [ ] Use temporary FTP access for referenced media retrieval without committing credentials, transfer logs, or downloaded files.
 - [ ] Model members-only articles in a dedicated `member_feeds` collection.
 - [ ] Model members-only categories in a dedicated `member_categories` collection.
-- [ ] Review and approve the proposed `member_topics` secondary taxonomy model.
+- [x] Review and approve the proposed `member_topics` secondary taxonomy model.
 - [ ] Treat members-only galleries as absent by default; if discovered, model them in a dedicated `member_galleries` collection.
 - [ ] Keep editorial status separate from audience visibility when modeling members-only content.
 - [ ] Preserve source categories and sections during the initial migration.
