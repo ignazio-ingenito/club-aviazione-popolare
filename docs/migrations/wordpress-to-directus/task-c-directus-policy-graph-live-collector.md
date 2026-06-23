@@ -1,7 +1,7 @@
 # Task C - Directus policy graph live collector scaffold
 
 Status: implemented as mocked GET-only scaffold; live GET adapter
-investigations performed; create-only collector attempt blocked by 403
+investigations performed; redacted admin evidence approved
 
 Date: 2026-06-22
 
@@ -294,6 +294,56 @@ Production readiness remains blocked. The next safe evidence path is a
 separately approved operator/admin redacted policy graph export or equivalent
 permission proof for the dedicated create-only identity. Do not broaden the
 execution identity just to make the collector pass.
+
+## Redacted admin/operator evidence approval
+
+On 2026-06-23, a GET-only admin/operator export collected redacted policy graph
+evidence for `directus-createonly-content-migration`. This was intentionally
+separate from the create-only token, which remains unable to read `/roles`,
+`/policies`, and `/permissions`.
+
+The export used only these live GET request families:
+
+- `/server/info`;
+- `/roles`;
+- `/policies`;
+- `/users`;
+- `/permissions`.
+
+No `POST`, `PATCH`, `PUT`, or `DELETE` was performed. No Directus role, policy,
+permission, user, token, schema, content, media, feed, gallery, folder, or
+relation was changed.
+
+The redacted raw artifact was adapted to the existing conservative raw shape
+accepted by `normalize_directus_policy_graph_payload`. The existing local
+normalizer/evaluator produced:
+
+```json
+{"status": "approved"}
+```
+
+Evidence artifacts are outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.redacted.raw.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.normalized.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.evaluation.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.export-status.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json
+```
+
+Hashes:
+
+```text
+directus-createonly-policy-graph.redacted.raw.json: ded458fff8e011a7e94098ab8d432c0e273d10b053cd5c95d168f54ef6249035
+directus-createonly-policy-graph.normalized.json: 38c29d010d7f139f5cf751d7c78d219143af3b99fb0991053bd96b80d269c935
+directus-createonly-policy-graph.evaluation.json: 794246ab503bc950327c83b4b0336dbc3a474909c66db309309cee2996dcf43c
+directus-createonly-policy-graph.export-status.json: 1fce3d58d39268c57636d3438c35357da4f1c6dadff50a1b2374a9f1b431feb6
+permission-evidence-create-only.json: 7b7cbcc3878729b85430dea508c6e1c57744e56b0c251426ad917c1fae0ae9d6
+```
+
+This satisfies the permission evidence gate only. The next gate is fresh target
+absence validation before any production content creation.
 
 ## Token Handling
 

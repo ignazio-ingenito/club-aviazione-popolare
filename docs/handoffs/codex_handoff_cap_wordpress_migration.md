@@ -98,6 +98,16 @@ serve una evidenza policy graph redatta con export operator/admin redatto e
 sanitizzato, oppure prova equivalente approvata separatamente. Non ampliare il
 token di esecuzione per far passare il collector.
 
+Aggiornamento 2026-06-23: è stata generata una evidenza policy graph redatta
+con token admin/schema usato solo per richieste GET. L'export ha trovato solo
+`feeds.read` e `feeds.create` draft-constrained per
+`directus-createonly-content-migration`; nessun update/delete/share/wildcard o
+accesso system/admin è stato rilevato. Il normalizer/evaluator locale ha
+restituito `approved` ed è stato creato fuori Git:
+`/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json`.
+Questo è Gate 1 pronto. Non autorizza ancora content `POST`: il prossimo passo
+è generare e approvare `fresh-target-absence-before-create.json` come Gate 2.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:

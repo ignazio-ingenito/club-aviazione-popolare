@@ -8,13 +8,13 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Produce approved permission evidence for the dedicated create-only content-migration identity. The service user, static token, and encrypted SOPS secret now exist, but the live collector cannot collect policy graph evidence with the create-only token because `GET /roles` returns 403.
+- [ ] Generate fresh target absence evidence for the approved create candidates before any create execution. Gate 1 permission evidence is ready; production content `POST` is still not enabled.
 
 ## Next up
 
-1. Do not broaden the create-only execution identity to read roles, policies, or permissions.
-2. Produce a separately approved operator/admin redacted policy graph export or equivalent permission proof for `directus-createonly-content-migration`.
-3. Evaluate that evidence before any content execution or production `POST /items/feeds`.
+1. Use `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json` as Gate 1 input.
+2. Generate `fresh-target-absence-before-create.json` as Gate 2 with read-only target checks.
+3. Do not enable production content `POST /items/feeds` until Gate 2 is approved.
 
 ## Task B — Read-only inventory implementation
 
@@ -136,7 +136,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Run the approved recovery task with fresh GET-only comparison. Final comparison classified the partial state as `partial_state_matches_expected`: exactly one migration-owned role, one migration-owned policy, expected `feeds.read`, draft-constrained `feeds.create`, zero service users for the two planned emails, and no detected update/delete/wildcard permission.
 - [x] Recover the create-only service user and static token with a Directus-accepted valid service email. The recovery used `cap-migration@skunklabs.uk` and only `POST /users` after fresh GET-only comparison.
 - [x] Create `secrets/migration/directus-createonly-content-migration.20260622.sops.yaml` after the create-only token exists. The secret is SOPS-encrypted and contains `target_url`, `identity_name`, `role_id`, `token`, `service_email`, `created_at`, and `purpose`.
-- [ ] Provide a Directus migration identity policy graph export or equivalent operator-generated redacted permission evidence with complete permission rows. The live collector was run with the create-only token and failed closed at `GET /roles` with HTTP 403, so no approved policy graph evidence artifact exists yet for create execution.
+- [x] Provide a Directus migration identity policy graph export or equivalent operator-generated redacted permission evidence with complete permission rows. The approved redacted admin/operator export evaluated successfully and produced `permission-evidence-create-only.json` outside Git; the create-only token remains narrow and still cannot read `/roles`.
 - [x] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.

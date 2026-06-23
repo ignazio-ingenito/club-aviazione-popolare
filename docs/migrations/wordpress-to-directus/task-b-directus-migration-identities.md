@@ -1,6 +1,6 @@
 # Task B slice 9.8 - Directus migration identities and SOPS plan
 
-Status: create-only execution identity created; permission evidence blocked
+Status: create-only execution identity created; permission evidence ready
 
 Date: 2026-06-22
 
@@ -446,6 +446,75 @@ means production readiness remains blocked until an approved operator/admin
 redacted policy graph export or equivalent permission evidence is evaluated.
 Do not broaden the execution identity just to make policy evidence collection
 pass.
+
+## Redacted admin/operator policy evidence
+
+On 2026-06-23, the evidence task used the admin/schema token only for GET-only
+policy graph export of the dedicated create-only identity. The create-only
+token remained narrow and was not broadened.
+
+Live requests performed:
+
+- `GET /server/info`;
+- `GET /roles?filter[name][_eq]=directus-createonly-content-migration`;
+- `GET /roles/<role_id>`;
+- `GET /policies?filter[roles][role][_eq]=<role_id>`;
+- `GET /users?filter[email][_eq]=cap-migration@skunklabs.uk`;
+- `GET /permissions?filter[policy][_eq]=<policy_id>`;
+- `GET /permissions?filter[policy][id][_eq]=<policy_id>`.
+
+No Directus mutation was performed.
+
+The redacted export found exactly:
+
+- one role named `directus-createonly-content-migration`;
+- one policy named `directus-createonly-content-migration`;
+- policy `admin_access = false`;
+- policy `app_access = false`;
+- one `feeds.read` permission;
+- one draft-constrained `feeds.create` permission;
+- no update, delete, share, wildcard, system, or permission-management
+  permission in the policy graph.
+
+The local normalizer and evaluator approved the redacted evidence:
+
+```text
+status: approved
+```
+
+Artifacts are outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.redacted.raw.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.normalized.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.evaluation.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/directus-createonly-policy-graph.export-status.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json
+```
+
+Artifact SHA-256:
+
+```text
+directus-createonly-policy-graph.redacted.raw.json:
+ded458fff8e011a7e94098ab8d432c0e273d10b053cd5c95d168f54ef6249035
+
+directus-createonly-policy-graph.normalized.json:
+38c29d010d7f139f5cf751d7c78d219143af3b99fb0991053bd96b80d269c935
+
+directus-createonly-policy-graph.evaluation.json:
+794246ab503bc950327c83b4b0336dbc3a474909c66db309309cee2996dcf43c
+
+directus-createonly-policy-graph.export-status.json:
+1fce3d58d39268c57636d3438c35357da4f1c6dadff50a1b2374a9f1b431feb6
+
+permission-evidence-create-only.json:
+7b7cbcc3878729b85430dea508c6e1c57744e56b0c251426ad917c1fae0ae9d6
+```
+
+`permission-evidence-create-only.json` is Gate 1 input only. Negative
+permission results in that artifact are evidence-source marked as
+`policy_graph`; no mutating negative probes were run. The next gate is fresh
+target absence evidence before any production content `POST`.
 
 ### Redacted YAML structure
 

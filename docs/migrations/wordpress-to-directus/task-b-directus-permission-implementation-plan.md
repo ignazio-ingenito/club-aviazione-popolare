@@ -1,6 +1,6 @@
 # Task B slice 9.9 - Directus permission implementation plan
 
-Status: implementation plan applied for create-only identity; evidence blocked
+Status: implementation plan applied for create-only identity; evidence ready
 
 Date: 2026-06-22
 
@@ -380,6 +380,43 @@ graph artifacts were created. Production create execution remains blocked until
 a separately approved operator/admin redacted policy graph export or equivalent
 permission evidence proves the effective policy graph without broadening the
 execution identity.
+
+## Redacted policy evidence status
+
+On 2026-06-23, a GET-only admin/operator redacted policy graph export was
+generated for `directus-createonly-content-migration`. The create-only token was
+not broadened and was not used for permission-management reads.
+
+The redacted graph included the expected current-stage permissions only:
+
+- `feeds.read`;
+- `feeds.create` with `validation.status._eq = draft`;
+- `feeds.create` with `presets.status = draft`;
+- `feeds.create.fields` limited to the approved allowlist.
+
+The graph did not include update, delete, share, wildcard, file/folder, schema,
+settings, users, roles, permissions, policies, admin, or app access.
+
+The local normalizer/evaluator returned:
+
+```text
+status: approved
+```
+
+Gate 1 evidence was written outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json
+```
+
+Artifact SHA-256:
+
+```text
+7b7cbcc3878729b85430dea508c6e1c57744e56b0c251426ad917c1fae0ae9d6
+```
+
+This permits moving to Gate 2 fresh target absence evidence. It does not enable
+production content `POST` by itself.
 
 ## Future live verification gate
 
