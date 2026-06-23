@@ -18,7 +18,7 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 1. Use `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json` as Gate 1 input.
 2. Use the narrowed manifest artifacts in `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z`.
 3. Review the narrowed executor dry-run reports generated in
-   `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z`.
+   `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z`.
 4. Prepare a separate final execution-readiness prompt if the dry-run reports
    are accepted; do not enable production content `POST /items/feeds` in this
    slice.
@@ -289,7 +289,7 @@ Exit gate: the complete process passes twice without changing protected artifact
   profile, while `narrowed_after_gate2_20260623T162618Z` validates the narrowed
   approval, manifest, Gate 2 hash, and 28-operation count.
 - [x] Run narrowed executor dry-run only. Artifact directory:
-  `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z`.
+  `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z`.
   The request plan contains 28 theoretical `POST /items/feeds` draft creates,
   `execute_requested=false`, `non_read_requests_sent=0`, and
   `post_requests_sent=0`.

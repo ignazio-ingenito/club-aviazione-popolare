@@ -494,7 +494,7 @@ predefinito resta il manifest originale da 35 operazioni; il profilo
 Dry-run generato fuori Git:
 
 ```text
-/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z
 ```
 
 Risultato:
@@ -511,10 +511,10 @@ post_requests_sent: 0
 Hash report:
 
 ```text
-validation_report.json: 35b370cc68453df4c92f3574d496f999eb73500277640e0e2fd0ad8fb2af8e27
-request_plan.json: 0e9688d820a31c46d335d806097a03e06d2f7a4443a2fd549e17accc2133c9cc
-dry_run_report.json: 8656d9fd423afa3e5aa22c1847a0e8c900f745225818db4e84ad3f25f6eaa8da
-stop_condition_report.json: 0e2b94349e112d64a53d295e796e9400b68089a583dac6f7f17b533351fa93ad
+validation_report.json: 8a4da7728548d04674f562dcd1f3a7eac40036239d2409085890336e03ad570e
+request_plan.json: 3c2deb0be7855514c0aa80d1c22efaaeb3706c2809f60569798efb9a85307f50
+dry_run_report.json: 31bc535a8fa405ae3e1f288e749dca5837e82825345a4f1563b35a353d308d07
+stop_condition_report.json: 8d2d799fdfd21f0c92e5facdfbf985f78496973517193b1e270add593975f282
 ```
 
 Non è stato eseguito `create_manifest_executor.py --execute`. Non è stato

@@ -153,7 +153,7 @@ approved narrowed artifact profile and produced a dry-run request plan only.
 Narrowed executor dry-run report directory:
 
 ```text
-/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z
 ```
 
 Dry-run validation:
