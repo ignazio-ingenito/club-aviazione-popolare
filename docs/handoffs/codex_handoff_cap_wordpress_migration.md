@@ -480,9 +480,47 @@ fresh-target-absence-before-create-narrowed.json: bbf399f35c138396dc3240c5198c05
 Il Gate 2 ristretto è `approved`: 57 richieste live, tutte `GET`, tutte HTTP
 200, nessuna collisione residua e nessun check saltato.
 
-Non è stato eseguito `create_manifest_executor.py --execute`. Il prossimo task
-deve cablare l'executor sui nuovi hash e sul nuovo conteggio `28`, poi
-eseguire solo dry-run. Non abilitare ancora `POST /items/feeds`.
+## Stato executor dry-run ristretto - 2026-06-23
+
+L'executor è stato cablato con profili artefatto approvati. Il profilo
+predefinito resta il manifest originale da 35 operazioni; il profilo
+`narrowed_after_gate2_20260623T162618Z` vincola:
+
+- `migration-approval-narrowed.json`;
+- `create-manifest-draft-only-narrowed.json`;
+- `fresh-target-absence-before-create-narrowed.json`;
+- conteggi `21` articoli, `7` gallerie, `28` operazioni totali.
+
+Dry-run generato fuori Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+```
+
+Risultato:
+
+```text
+execute_requested: false
+operation_count: 28
+planned_methods: POST
+planned_endpoints: /items/feeds
+non_read_requests_sent: 0
+post_requests_sent: 0
+```
+
+Hash report:
+
+```text
+validation_report.json: 35b370cc68453df4c92f3574d496f999eb73500277640e0e2fd0ad8fb2af8e27
+request_plan.json: 0e9688d820a31c46d335d806097a03e06d2f7a4443a2fd549e17accc2133c9cc
+dry_run_report.json: 8656d9fd423afa3e5aa22c1847a0e8c900f745225818db4e84ad3f25f6eaa8da
+stop_condition_report.json: 0e2b94349e112d64a53d295e796e9400b68089a583dac6f7f17b533351fa93ad
+```
+
+Non è stato eseguito `create_manifest_executor.py --execute`. Non è stato
+emesso alcun `POST /items/feeds`. Il prossimo task è una review indipendente
+dei report narrowed dry-run e, se accettati, un prompt separato di final
+execution-readiness.
 
 Produrre anche un report umano contenente soltanto:
 

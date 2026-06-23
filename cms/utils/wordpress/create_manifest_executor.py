@@ -25,13 +25,6 @@ from pre_create_gates import (
 )
 
 
-APPROVED_APPROVAL_SHA256 = "566ca0d3026ca9035853f623fc1d83d6b8fd31dc54bced9bbdc077c82ea266ee"
-APPROVED_MANIFEST_SHA256 = "902e118a73acad4aacd504f6076ef867c7693f2d16144a45cdd78014269c6e4d"
-EXPECTED_COUNTS = {
-    "create_feed_draft": 28,
-    "create_gallery_draft": 7,
-    "total_operations": 35,
-}
 ALLOWED_OPERATIONS = frozenset({"create_feed_draft", "create_gallery_draft"})
 FORBIDDEN_METHODS = frozenset({"PATCH", "PUT", "DELETE"})
 ALLOWED_POST_ENDPOINTS = frozenset({"/items/feeds"})
@@ -39,6 +32,46 @@ ALLOWED_POST_ENDPOINTS = frozenset({"/items/feeds"})
 
 class CreateManifestExecutorError(ValueError):
     """Raised when the approved manifest cannot be planned safely."""
+
+
+@dataclass(frozen=True, slots=True)
+class ArtifactProfile:
+    name: str
+    approval_sha256: str
+    manifest_sha256: str
+    counts: Mapping[str, int]
+    fresh_target_absence_sha256: str | None = None
+
+
+ORIGINAL_ARTIFACT_PROFILE = "original_20260622T110402Z"
+NARROWED_ARTIFACT_PROFILE = "narrowed_after_gate2_20260623T162618Z"
+APPROVED_ARTIFACT_PROFILES: Mapping[str, ArtifactProfile] = {
+    ORIGINAL_ARTIFACT_PROFILE: ArtifactProfile(
+        name=ORIGINAL_ARTIFACT_PROFILE,
+        approval_sha256="566ca0d3026ca9035853f623fc1d83d6b8fd31dc54bced9bbdc077c82ea266ee",
+        manifest_sha256="902e118a73acad4aacd504f6076ef867c7693f2d16144a45cdd78014269c6e4d",
+        counts={
+            "create_feed_draft": 28,
+            "create_gallery_draft": 7,
+            "total_operations": 35,
+        },
+    ),
+    NARROWED_ARTIFACT_PROFILE: ArtifactProfile(
+        name=NARROWED_ARTIFACT_PROFILE,
+        approval_sha256="6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994",
+        manifest_sha256="9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9",
+        fresh_target_absence_sha256="bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55",
+        counts={
+            "create_feed_draft": 21,
+            "create_gallery_draft": 7,
+            "total_operations": 28,
+        },
+    ),
+}
+DEFAULT_ARTIFACT_PROFILE = ORIGINAL_ARTIFACT_PROFILE
+APPROVED_APPROVAL_SHA256 = APPROVED_ARTIFACT_PROFILES[DEFAULT_ARTIFACT_PROFILE].approval_sha256
+APPROVED_MANIFEST_SHA256 = APPROVED_ARTIFACT_PROFILES[DEFAULT_ARTIFACT_PROFILE].manifest_sha256
+EXPECTED_COUNTS = dict(APPROVED_ARTIFACT_PROFILES[DEFAULT_ARTIFACT_PROFILE].counts)
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,9 +106,15 @@ def load_and_validate_manifest(
     manifest_path: Path | str,
     *,
     approval_path: Path | str,
-    expected_manifest_sha256: str = APPROVED_MANIFEST_SHA256,
-    expected_approval_sha256: str = APPROVED_APPROVAL_SHA256,
+    artifact_profile: str = DEFAULT_ARTIFACT_PROFILE,
+    expected_manifest_sha256: str | None = None,
+    expected_approval_sha256: str | None = None,
+    expected_counts: Mapping[str, int] | None = None,
 ) -> Mapping[str, Any]:
+    profile = _artifact_profile(artifact_profile)
+    expected_manifest_sha256 = expected_manifest_sha256 or profile.manifest_sha256
+    expected_approval_sha256 = expected_approval_sha256 or profile.approval_sha256
+    expected_counts = expected_counts or profile.counts
     manifest_path = Path(manifest_path)
     approval_path = Path(approval_path)
     manifest_sha256 = _file_sha256(manifest_path)
@@ -93,10 +132,10 @@ def load_and_validate_manifest(
     approval = _read_json_object(approval_path)
     if manifest.get("approval", {}).get("sha256") != expected_approval_sha256:
         raise CreateManifestExecutorError("Manifest approval hash does not reference the approved approval artifact.")
-    _validate_approval_artifact(approval)
+    _validate_approval_artifact(approval, expected_counts=expected_counts)
 
-    _validate_counts(manifest)
-    _validate_operations(manifest)
+    _validate_counts(manifest, expected_counts=expected_counts)
+    _validate_operations(manifest, expected_counts=expected_counts)
     return manifest
 
 
@@ -129,15 +168,23 @@ def prepare_reports(
     approval_path: Path | str,
     execute: bool = False,
     observed_at: datetime | None = None,
-    expected_manifest_sha256: str = APPROVED_MANIFEST_SHA256,
-    expected_approval_sha256: str = APPROVED_APPROVAL_SHA256,
+    artifact_profile: str = DEFAULT_ARTIFACT_PROFILE,
+    expected_manifest_sha256: str | None = None,
+    expected_approval_sha256: str | None = None,
+    expected_counts: Mapping[str, int] | None = None,
 ) -> ExecutorReports:
+    profile = _artifact_profile(artifact_profile)
+    expected_manifest_sha256 = expected_manifest_sha256 or profile.manifest_sha256
+    expected_approval_sha256 = expected_approval_sha256 or profile.approval_sha256
+    expected_counts = expected_counts or profile.counts
     observed = observed_at or datetime.now(timezone.utc)
     manifest = load_and_validate_manifest(
         manifest_path,
         approval_path=approval_path,
+        artifact_profile=artifact_profile,
         expected_manifest_sha256=expected_manifest_sha256,
         expected_approval_sha256=expected_approval_sha256,
+        expected_counts=expected_counts,
     )
     plan = build_request_plan(manifest)
     counts = Counter(item.operation for item in plan)
@@ -148,6 +195,7 @@ def prepare_reports(
     validation_report = {
         "kind": "validation_report",
         "observed_at": observed.isoformat(),
+        "artifact_profile": artifact_profile,
         "approval_sha256": expected_approval_sha256,
         "manifest_sha256": expected_manifest_sha256,
         "counts": {
@@ -211,15 +259,23 @@ def run_executor(
     client: DirectusCreateOnlyClient | None = None,
     permission_evidence_path: Path | str | None = None,
     fresh_target_absence_path: Path | str | None = None,
-    expected_manifest_sha256: str = APPROVED_MANIFEST_SHA256,
-    expected_approval_sha256: str = APPROVED_APPROVAL_SHA256,
+    artifact_profile: str = DEFAULT_ARTIFACT_PROFILE,
+    expected_manifest_sha256: str | None = None,
+    expected_approval_sha256: str | None = None,
+    expected_counts: Mapping[str, int] | None = None,
 ) -> dict[str, Any]:
+    profile = _artifact_profile(artifact_profile)
+    expected_manifest_sha256 = expected_manifest_sha256 or profile.manifest_sha256
+    expected_approval_sha256 = expected_approval_sha256 or profile.approval_sha256
+    expected_counts = expected_counts or profile.counts
     reports = prepare_reports(
         manifest_path=manifest_path,
         approval_path=approval_path,
         execute=execute,
+        artifact_profile=artifact_profile,
         expected_manifest_sha256=expected_manifest_sha256,
         expected_approval_sha256=expected_approval_sha256,
+        expected_counts=expected_counts,
     )
     executed = 0
     if execute:
@@ -230,8 +286,10 @@ def run_executor(
             auth_token=auth_token,
             permission_evidence_path=permission_evidence_path,
             fresh_target_absence_path=fresh_target_absence_path,
+            artifact_profile=artifact_profile,
             expected_manifest_sha256=expected_manifest_sha256,
             expected_approval_sha256=expected_approval_sha256,
+            expected_counts=expected_counts,
         )
         execution_client = client or DirectusCreateOnlyClient(
             config=DirectusCreateOnlyConfig(
@@ -295,6 +353,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--directus-url", default="https://cap-cms.skunklabs.uk")
     parser.add_argument("--permission-evidence", help="permission-evidence-create-only.json path for execute mode.")
     parser.add_argument("--fresh-target-absence", help="fresh-target-absence-before-create.json path for execute mode.")
+    parser.add_argument(
+        "--artifact-profile",
+        choices=sorted(APPROVED_ARTIFACT_PROFILES),
+        default=DEFAULT_ARTIFACT_PROFILE,
+        help="Approved artifact profile to validate. Defaults to the original 35-operation manifest.",
+    )
     parser.add_argument("--execute", action="store_true", help="Actually emit POST requests. Omit for dry-run.")
     args = parser.parse_args(argv)
     token = os.environ.get("DIRECTUS_TOKEN") if args.execute else None
@@ -304,6 +368,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=args.output_dir,
         execute=args.execute,
         directus_url=args.directus_url,
+        artifact_profile=args.artifact_profile,
         auth_token=token,
         permission_evidence_path=args.permission_evidence,
         fresh_target_absence_path=args.fresh_target_absence,
@@ -320,9 +385,12 @@ def _validate_execute_gates(
     auth_token: str | None,
     permission_evidence_path: Path | str | None,
     fresh_target_absence_path: Path | str | None,
+    artifact_profile: str,
     expected_manifest_sha256: str,
     expected_approval_sha256: str,
+    expected_counts: Mapping[str, int],
 ) -> None:
+    profile = _artifact_profile(artifact_profile)
     if permission_evidence_path is None:
         raise CreateManifestExecutorError("--permission-evidence is required when --execute is used.")
     if fresh_target_absence_path is None:
@@ -333,9 +401,18 @@ def _validate_execute_gates(
     manifest = load_and_validate_manifest(
         manifest_path,
         approval_path=approval_path,
+        artifact_profile=artifact_profile,
         expected_manifest_sha256=expected_manifest_sha256,
         expected_approval_sha256=expected_approval_sha256,
+        expected_counts=expected_counts,
     )
+    if profile.fresh_target_absence_sha256 is not None:
+        fresh_target_absence_sha256 = _file_sha256(Path(fresh_target_absence_path))
+        if fresh_target_absence_sha256 != profile.fresh_target_absence_sha256:
+            raise CreateManifestExecutorError(
+                "Fresh target absence sha256 mismatch: "
+                f"expected {profile.fresh_target_absence_sha256}, got {fresh_target_absence_sha256}."
+            )
     permission_evidence = _read_json_object(Path(permission_evidence_path))
     fresh_target_absence = _read_json_object(Path(fresh_target_absence_path))
 
@@ -350,24 +427,35 @@ def _validate_execute_gates(
             expected_target_url=directus_url,
             expected_manifest_sha256=expected_manifest_sha256,
             expected_approval_sha256=expected_approval_sha256,
-            expected_operation_count=EXPECTED_COUNTS["total_operations"],
+            expected_operation_count=expected_counts["total_operations"],
         )
     except PreCreateGateError as exc:
         raise CreateManifestExecutorError(str(exc)) from exc
 
 
-def _validate_counts(manifest: Mapping[str, Any]) -> None:
+def _artifact_profile(name: str) -> ArtifactProfile:
+    try:
+        return APPROVED_ARTIFACT_PROFILES[name]
+    except KeyError as exc:
+        raise CreateManifestExecutorError(f"Unknown artifact profile: {name}") from exc
+
+
+def _validate_counts(manifest: Mapping[str, Any], *, expected_counts: Mapping[str, int] = EXPECTED_COUNTS) -> None:
     counts = manifest.get("counts")
     if not isinstance(counts, Mapping):
         raise CreateManifestExecutorError("Manifest counts are missing.")
-    for key, expected in EXPECTED_COUNTS.items():
+    for key, expected in expected_counts.items():
         if counts.get(key) != expected:
             raise CreateManifestExecutorError(
                 f"Manifest count mismatch for {key}: expected {expected}, got {counts.get(key)}."
             )
 
 
-def _validate_approval_artifact(approval: Mapping[str, Any]) -> None:
+def _validate_approval_artifact(
+    approval: Mapping[str, Any],
+    *,
+    expected_counts: Mapping[str, int] = EXPECTED_COUNTS,
+) -> None:
     if approval.get("kind") != "cap_wordpress_migration_approval":
         raise CreateManifestExecutorError("Approval artifact kind is not recognized.")
     approved = approval.get("approved")
@@ -378,19 +466,19 @@ def _validate_approval_artifact(approval: Mapping[str, Any]) -> None:
     gallery_candidates = approved.get("gallery_create_candidates")
     if not isinstance(article_candidates, list) or not isinstance(gallery_candidates, list):
         raise CreateManifestExecutorError("Approval artifact candidate lists are malformed.")
-    if len(article_candidates) != EXPECTED_COUNTS["create_feed_draft"]:
+    if len(article_candidates) != expected_counts["create_feed_draft"]:
         raise CreateManifestExecutorError("Approval artifact article candidate count mismatch.")
-    if len(gallery_candidates) != EXPECTED_COUNTS["create_gallery_draft"]:
+    if len(gallery_candidates) != expected_counts["create_gallery_draft"]:
         raise CreateManifestExecutorError("Approval artifact gallery candidate count mismatch.")
-    if counts.get("approved_article_create_candidates") != EXPECTED_COUNTS["create_feed_draft"]:
+    if counts.get("approved_article_create_candidates") != expected_counts["create_feed_draft"]:
         raise CreateManifestExecutorError("Approval artifact approved article count mismatch.")
-    if counts.get("approved_gallery_create_candidates") != EXPECTED_COUNTS["create_gallery_draft"]:
+    if counts.get("approved_gallery_create_candidates") != expected_counts["create_gallery_draft"]:
         raise CreateManifestExecutorError("Approval artifact approved gallery count mismatch.")
 
 
-def _validate_operations(manifest: Mapping[str, Any]) -> None:
+def _validate_operations(manifest: Mapping[str, Any], *, expected_counts: Mapping[str, int] = EXPECTED_COUNTS) -> None:
     operations = _operation_list(manifest)
-    if len(operations) != EXPECTED_COUNTS["total_operations"]:
+    if len(operations) != expected_counts["total_operations"]:
         raise CreateManifestExecutorError("Manifest operation list length does not match approved count.")
     for operation in operations:
         operation_type = _require_text(operation.get("operation"), "operation")

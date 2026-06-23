@@ -147,9 +147,27 @@ Verification:
 - local `validate_fresh_target_absence_report` accepted the narrowed report
   with `expected_operation_count=28`.
 
-No executor `--execute` run was performed. The executor currently binds to the
-original 35-operation hash and count, so narrowed Gate 2 is evidence only until
-a separate executor wiring slice updates that contract.
+No executor `--execute` run was performed. A follow-up wiring slice added the
+approved narrowed artifact profile and produced a dry-run request plan only.
+
+Narrowed executor dry-run report directory:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+```
+
+Dry-run validation:
+
+- selected profile: `narrowed_after_gate2_20260623T162618Z`;
+- operation count: `28`;
+- planned method: `POST`;
+- planned endpoint: `/items/feeds`;
+- `execute_requested=false`;
+- `non_read_requests_sent=0`;
+- `post_requests_sent=0`.
+
+This dry-run does not satisfy production execution approval by itself. It is an
+input for the separate final execution-readiness review.
 
 ## Handoff
 

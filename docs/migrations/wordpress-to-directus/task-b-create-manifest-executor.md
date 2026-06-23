@@ -130,10 +130,52 @@ live check used only `GET /server/info` and `GET /items/feeds`, with 57 GET
 requests returning HTTP 200 and zero route, slug, original URI, protected,
 ambiguous, or skipped collisions.
 
-The executor was not run. The current executor still hardcodes the original
-manifest hash and expected count of 35 operations; it must be explicitly wired
-or parameterized for the narrowed manifest in a separate reviewed slice before
-any dry-run or execution gate validation uses these artifacts.
+## Narrowed executor dry-run - 2026-06-23
+
+The executor now supports approved artifact profiles. The default profile keeps
+the original 35-operation contract, and the narrowed profile
+`narrowed_after_gate2_20260623T162618Z` binds the narrowed approval, manifest,
+Gate 2 hash, and 28-operation count.
+
+Dry-run command:
+
+```bash
+cd cms/utils/wordpress
+uv run python create_manifest_executor.py \
+  --artifact-profile narrowed_after_gate2_20260623T162618Z \
+  --manifest /tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/create-manifest-draft-only-narrowed.json \
+  --approval /tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/migration-approval-narrowed.json \
+  --output-dir /tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+```
+
+Dry-run report directory:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z
+```
+
+Dry-run result:
+
+- `execute_requested=false`;
+- `operation_count=28`;
+- planned method: `POST`;
+- planned endpoint: `/items/feeds`;
+- `non_read_requests_sent=0`;
+- `post_requests_sent=0`;
+- no Directus request was emitted by the dry-run.
+
+Dry-run artifact hashes:
+
+```text
+validation_report.json: 35b370cc68453df4c92f3574d496f999eb73500277640e0e2fd0ad8fb2af8e27
+request_plan.json: 0e9688d820a31c46d335d806097a03e06d2f7a4443a2fd549e17accc2133c9cc
+dry_run_report.json: 8656d9fd423afa3e5aa22c1847a0e8c900f745225818db4e84ad3f25f6eaa8da
+stop_condition_report.json: 0e2b94349e112d64a53d295e796e9400b68089a583dac6f7f17b533351fa93ad
+```
+
+No `--execute` run was performed. Production content `POST /items/feeds`
+remains blocked until a separate final execution-readiness prompt reviews the
+dry-run reports and obtains explicit approval.
 
 ## Handoff
 

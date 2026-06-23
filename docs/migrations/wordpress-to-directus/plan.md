@@ -8,14 +8,20 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Wire the executor to accept the narrowed approved create manifest before any dry-run or create execution. Gate 1 permission evidence is ready and narrowed Gate 2 is approved, but production content `POST` is still not enabled.
+- [ ] Review the narrowed executor dry-run reports independently. Gate 1
+  permission evidence is ready, narrowed Gate 2 is approved, and the narrowed
+  executor dry-run is generated, but production content `POST` is still not
+  enabled.
 
 ## Next up
 
 1. Use `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json` as Gate 1 input.
 2. Use the narrowed manifest artifacts in `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z`.
-3. Patch or parameterize the executor in a separate reviewed slice so it accepts the narrowed hashes and count `28`.
-4. Run dry-run only after that wiring; do not enable production content `POST /items/feeds`.
+3. Review the narrowed executor dry-run reports generated in
+   `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z`.
+4. Prepare a separate final execution-readiness prompt if the dry-run reports
+   are accepted; do not enable production content `POST /items/feeds` in this
+   slice.
 
 ## Task B — Read-only inventory implementation
 
@@ -278,12 +284,17 @@ Exit gate: the complete process passes twice without changing protected artifact
   `6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994`.
   Narrowed Gate 2 SHA-256:
   `bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55`.
-- [ ] Wire the executor to the narrowed artifact hashes and counts. The current
-  executor still hardcodes the original 35-operation manifest and must not be
-  run against the narrowed artifacts until a separate reviewed slice changes
-  that contract.
+- [x] Wire the executor to the narrowed artifact hashes and counts through
+  approved artifact profiles. The default remains the original 35-operation
+  profile, while `narrowed_after_gate2_20260623T162618Z` validates the narrowed
+  approval, manifest, Gate 2 hash, and 28-operation count.
+- [x] Run narrowed executor dry-run only. Artifact directory:
+  `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T183932Z`.
+  The request plan contains 28 theoretical `POST /items/feeds` draft creates,
+  `execute_requested=false`, `non_read_requests_sent=0`, and
+  `post_requests_sent=0`.
 - [ ] Obtain explicit production approval for the exact manifest hash.
-- [ ] Run production dry-run.
+- [ ] Prepare final execution-readiness review for the narrowed manifest.
 - [ ] Execute writes serially with a unique run ID.
 - [ ] Stop immediately on any invariant failure or unexpected request.
 - [ ] Preserve logs, ledger entries, counts, and hashes.

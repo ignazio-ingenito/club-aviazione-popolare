@@ -8,7 +8,9 @@ import unittest
 import httpx
 
 from create_manifest_executor import (
+    APPROVED_ARTIFACT_PROFILES,
     CreateManifestExecutorError,
+    NARROWED_ARTIFACT_PROFILE,
     build_request_plan,
     load_and_validate_manifest,
     prepare_reports,
@@ -20,7 +22,7 @@ from inventory.canonical import canonical_sha256, sha256_bytes
 
 class CreateManifestExecutorTests(unittest.TestCase):
     def test_real_approved_manifest_builds_draft_only_allowlisted_plan(self) -> None:
-        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha):
+        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha, _counts):
             manifest = load_and_validate_manifest(
                 manifest_path,
                 approval_path=approval_path,
@@ -35,6 +37,31 @@ class CreateManifestExecutorTests(unittest.TestCase):
         self.assertEqual(sum(1 for item in plan if item.operation == "create_feed_draft"), 28)
         self.assertEqual(sum(1 for item in plan if item.operation == "create_gallery_draft"), 7)
         self.assertEqual({item.payload["status"] for item in plan}, {"draft"})
+
+    def test_narrowed_manifest_builds_draft_only_allowlisted_plan(self) -> None:
+        with self.artifact_paths(feed_count=21, gallery_count=7) as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            counts,
+        ):
+            manifest = load_and_validate_manifest(
+                manifest_path,
+                approval_path=approval_path,
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+                expected_counts=counts,
+            )
+        plan = build_request_plan(manifest)
+
+        self.assertEqual(len(plan), 28)
+        self.assertEqual({item.method for item in plan}, {"POST"})
+        self.assertEqual({item.endpoint for item in plan}, {"/items/feeds"})
+        self.assertEqual(sum(1 for item in plan if item.operation == "create_feed_draft"), 21)
+        self.assertEqual(sum(1 for item in plan if item.operation == "create_gallery_draft"), 7)
+        self.assertEqual({item.payload["status"] for item in plan}, {"draft"})
+        self.assertEqual(set(APPROVED_ARTIFACT_PROFILES[NARROWED_ARTIFACT_PROFILE].counts), set(counts))
 
     def test_dry_run_does_not_emit_post(self) -> None:
         requests: list[httpx.Request] = []
@@ -53,7 +80,13 @@ class CreateManifestExecutorTests(unittest.TestCase):
             ),
             http=raw,
         )
-        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha), TemporaryDirectory() as tmp:
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            _counts,
+        ), TemporaryDirectory() as tmp:
             result = run_executor(
                 manifest_path=manifest_path,
                 approval_path=approval_path,
@@ -67,8 +100,80 @@ class CreateManifestExecutorTests(unittest.TestCase):
         self.assertEqual(result["executed_operations"], 0)
         self.assertEqual(requests, [])
 
+    def test_narrowed_dry_run_does_not_emit_post(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths(feed_count=21, gallery_count=7) as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            counts,
+        ), TemporaryDirectory() as tmp:
+            result = run_executor(
+                manifest_path=manifest_path,
+                approval_path=approval_path,
+                output_dir=Path(tmp),
+                execute=False,
+                client=client,
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+                expected_counts=counts,
+            )
+            request_plan = json.loads(Path(result["reports"]["request_plan"]).read_text(encoding="utf-8"))
+            dry_run = json.loads(Path(result["reports"]["dry_run_report"]).read_text(encoding="utf-8"))
+
+        self.assertEqual(result["executed_operations"], 0)
+        self.assertEqual(requests, [])
+        self.assertEqual(request_plan["operation_count"], 28)
+        self.assertEqual(request_plan["planned_methods"], ["POST"])
+        self.assertEqual(request_plan["planned_endpoints"], ["/items/feeds"])
+        self.assertEqual(dry_run["dry_run"], True)
+        self.assertEqual(dry_run["non_read_requests_sent"], 0)
+        self.assertEqual(dry_run["post_requests_sent"], 0)
+        self.assertEqual(
+            {operation["method"] for operation in request_plan["operations"]},
+            {"POST"},
+        )
+        self.assertEqual(
+            {operation["endpoint"] for operation in request_plan["operations"]},
+            {"/items/feeds"},
+        )
+
+    def test_narrowed_profile_supplies_expected_counts(self) -> None:
+        with self.artifact_paths(feed_count=21, gallery_count=7) as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            _counts,
+        ):
+            manifest = load_and_validate_manifest(
+                manifest_path,
+                approval_path=approval_path,
+                artifact_profile=NARROWED_ARTIFACT_PROFILE,
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+            )
+
+        self.assertEqual(manifest["counts"]["total_operations"], 28)
+
     def test_execute_without_flag_does_not_write(self) -> None:
-        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha):
+        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha, _counts):
             reports = prepare_reports(
                 manifest_path=manifest_path,
                 approval_path=approval_path,
@@ -119,7 +224,13 @@ class CreateManifestExecutorTests(unittest.TestCase):
             ),
             http=raw,
         )
-        with self.artifact_paths() as (manifest_path, approval_path, manifest_sha, approval_sha), TemporaryDirectory() as tmp:
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            _counts,
+        ), TemporaryDirectory() as tmp:
             with self.assertRaisesRegex(CreateManifestExecutorError, "--permission-evidence"):
                 run_executor(
                     manifest_path=manifest_path,
@@ -155,6 +266,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             approval_path,
             manifest_sha,
             approval_sha,
+            _counts,
         ), TemporaryDirectory() as tmp:
             permission_path = Path(tmp) / "permission-evidence-create-only.json"
             permission_path.write_text(
@@ -198,6 +310,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             approval_path,
             manifest_sha,
             approval_sha,
+            _counts,
         ), TemporaryDirectory() as tmp:
             permission_path, absence_path = self.write_gate_reports(
                 Path(tmp),
@@ -249,6 +362,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             approval_path,
             manifest_sha,
             approval_sha,
+            _counts,
         ), TemporaryDirectory() as tmp:
             permission_path, absence_path = self.write_gate_reports(
                 Path(tmp),
@@ -279,6 +393,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             approval_path,
             manifest_sha,
             approval_sha,
+            _counts,
         ), TemporaryDirectory() as tmp:
             permission_path, absence_path = self.write_gate_reports(
                 Path(tmp),
@@ -319,8 +434,62 @@ class CreateManifestExecutorTests(unittest.TestCase):
         with self.assertRaisesRegex(CreateManifestExecutorError, "count mismatch"):
             self.validated_synthetic_manifest(manifest)
 
+    def test_narrowed_wrong_count_fails(self) -> None:
+        with self.artifact_paths(feed_count=21, gallery_count=7) as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            counts,
+        ):
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["counts"]["create_feed_draft"] = 22
+            manifest_path.write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8")
+            manifest_sha = sha256_bytes(manifest_path.read_bytes())
+            with self.assertRaisesRegex(CreateManifestExecutorError, "count mismatch"):
+                load_and_validate_manifest(
+                    manifest_path,
+                    approval_path=approval_path,
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=approval_sha,
+                    expected_counts=counts,
+                )
+
+    def test_mismatched_narrowed_approval_manifest_pair_fails(self) -> None:
+        with self.artifact_paths(feed_count=21, gallery_count=7) as (
+            manifest_path,
+            _approval_path,
+            manifest_sha,
+            _approval_sha,
+            counts,
+        ), self.artifact_paths() as (
+            _original_manifest_path,
+            original_approval_path,
+            _original_manifest_sha,
+            original_approval_sha,
+            _original_counts,
+        ):
+            with self.assertRaisesRegex(CreateManifestExecutorError, "does not reference"):
+                load_and_validate_manifest(
+                    manifest_path,
+                    approval_path=original_approval_path,
+                    expected_manifest_sha256=manifest_sha,
+                    expected_approval_sha256=original_approval_sha,
+                    expected_counts=counts,
+                )
+
+    def test_narrowed_profile_records_gate2_hash(self) -> None:
+        profile = APPROVED_ARTIFACT_PROFILES[NARROWED_ARTIFACT_PROFILE]
+        self.assertEqual(profile.counts["create_feed_draft"], 21)
+        self.assertEqual(profile.counts["create_gallery_draft"], 7)
+        self.assertEqual(profile.counts["total_operations"], 28)
+        self.assertEqual(
+            profile.fresh_target_absence_sha256,
+            "bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55",
+        )
+
     def test_manifest_sha_mismatch_fails(self) -> None:
-        with self.artifact_paths() as (manifest_path, approval_path, _manifest_sha, approval_sha):
+        with self.artifact_paths() as (manifest_path, approval_path, _manifest_sha, approval_sha, _counts):
             with self.assertRaisesRegex(CreateManifestExecutorError, "Manifest sha256 mismatch"):
                 load_and_validate_manifest(
                     manifest_path,
@@ -342,10 +511,10 @@ class CreateManifestExecutorTests(unittest.TestCase):
         _validate_operations(manifest)
         return manifest
 
-    def synthetic_manifest(self):
+    def synthetic_manifest(self, *, feed_count: int = 28, gallery_count: int = 7):
         operations = []
-        for index in range(35):
-            is_gallery = index >= 28
+        for index in range(feed_count + gallery_count):
+            is_gallery = index >= feed_count
             source_record = {
                 "kind": "record",
                 "scope": "source",
@@ -389,28 +558,28 @@ class CreateManifestExecutorTests(unittest.TestCase):
             "schema_version": 1,
             "approval": {"sha256": "approval-sha-placeholder"},
             "counts": {
-                "create_feed_draft": 28,
-                "create_gallery_draft": 7,
-                "total_operations": 35,
+                "create_feed_draft": feed_count,
+                "create_gallery_draft": gallery_count,
+                "total_operations": feed_count + gallery_count,
             },
             "operations": operations,
         }
 
-    def synthetic_approval(self):
+    def synthetic_approval(self, *, feed_count: int = 28, gallery_count: int = 7):
         return {
             "kind": "cap_wordpress_migration_approval",
             "run_dir": "/tmp/synthetic",
             "approved": {
                 "article_create_candidates": [
-                    f"https://source.example.test/article-{index}" for index in range(28)
+                    f"https://source.example.test/article-{index}" for index in range(feed_count)
                 ],
                 "gallery_create_candidates": [
-                    f"https://source.example.test/gallery-{index}" for index in range(7)
+                    f"https://source.example.test/gallery-{index}" for index in range(gallery_count)
                 ],
             },
             "counts": {
-                "approved_article_create_candidates": 28,
-                "approved_gallery_create_candidates": 7,
+                "approved_article_create_candidates": feed_count,
+                "approved_gallery_create_candidates": gallery_count,
                 "excluded_non_article_candidates": 13,
                 "excluded_wordpress_type_manual_review": 6,
             },
@@ -438,6 +607,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             approval_path,
             manifest_sha,
             approval_sha,
+            _counts,
         ), TemporaryDirectory() as tmp:
             permission_path, absence_path = self.write_gate_reports(
                 Path(tmp),
@@ -543,7 +713,7 @@ class CreateManifestExecutorTests(unittest.TestCase):
             "approval_sha256": approval_sha,
             "manifest_sha256": manifest_sha,
             "target_baseline_sha256": "7" * 64,
-            "checked_operation_count": 35,
+            "checked_operation_count": len(original_uris),
             "checked_original_uris": original_uris,
             "absence_evidence": {
                 original_uri: {"status": "absent", "checked": True, "matches": []}
@@ -558,28 +728,42 @@ class CreateManifestExecutorTests(unittest.TestCase):
             "stale_baseline": False,
         }
 
-    def artifact_paths(self):
+    def artifact_paths(self, *, feed_count: int = 28, gallery_count: int = 7):
         case = self
 
         class ArtifactContext:
+            def __init__(self, *, feed_count: int, gallery_count: int) -> None:
+                self.feed_count = feed_count
+                self.gallery_count = gallery_count
+                self.temp: TemporaryDirectory | None = None
+
             def __enter__(self):
                 self.temp = TemporaryDirectory()
                 directory = Path(self.temp.name)
-                approval = case.synthetic_approval()
+                feed_count = self.feed_count
+                gallery_count = self.gallery_count
+                approval = case.synthetic_approval(feed_count=feed_count, gallery_count=gallery_count)
                 approval_path = directory / "migration-approval.json"
                 approval_path.write_text(json.dumps(approval, sort_keys=True), encoding="utf-8")
                 approval_sha = sha256_bytes(approval_path.read_bytes())
-                manifest = case.synthetic_manifest()
+                manifest = case.synthetic_manifest(feed_count=feed_count, gallery_count=gallery_count)
                 manifest["approval"]["sha256"] = approval_sha
                 manifest_path = directory / "create-manifest-draft-only.json"
                 manifest_path.write_text(json.dumps(manifest, sort_keys=True), encoding="utf-8")
                 manifest_sha = sha256_bytes(manifest_path.read_bytes())
-                return manifest_path, approval_path, manifest_sha, approval_sha
+                counts = {
+                    "create_feed_draft": feed_count,
+                    "create_gallery_draft": gallery_count,
+                    "total_operations": feed_count + gallery_count,
+                }
+                return manifest_path, approval_path, manifest_sha, approval_sha, counts
 
             def __exit__(self, exc_type, exc, traceback):
-                self.temp.cleanup()
+                if self.temp is not None:
+                    self.temp.cleanup()
 
-        return ArtifactContext()
+        context = ArtifactContext(feed_count=feed_count, gallery_count=gallery_count)
+        return context
 
 
 if __name__ == "__main__":
