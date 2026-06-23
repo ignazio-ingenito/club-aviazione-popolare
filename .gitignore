@@ -55,3 +55,8 @@ cms/uploads/
 *wordpress*.xml
 *.wxr
 *.wxr.xml
+*.sql
+
+# local agent/operator work files
+prompt.md
+summary.md

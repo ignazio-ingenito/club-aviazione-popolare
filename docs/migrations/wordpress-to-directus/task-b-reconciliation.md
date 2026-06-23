@@ -31,7 +31,10 @@ Implemented:
 - The workflow remains additive-only and target-authoritative.
 - `parser.yaml` is historical corroboration only and cannot authorize a write.
 - Existing Directus feeds, files, folders, and relations remain protected.
+- Equal or strongly similar Directus articles are treated as definitive.
 - A source-target drift is never reconciled by mutating the target.
+- Strongly divergent source-target matches are reported with differences for
+  later editorial reconciliation.
 - A write manifest may contain only approved `create_candidate` items.
 - No production data is written by this documentation task.
 

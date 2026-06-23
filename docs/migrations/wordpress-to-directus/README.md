@@ -1,8 +1,8 @@
 # WordPress to Directus migration
 
-Status: governance and discovery accepted; Task B inventory implementation complete; live read-only inventories and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
+Status: governance and discovery accepted; Task B inventory implementation complete; authenticated live read-only inventories, baseline review notes, create-only client notes, approved write-manifest notes, permission-gate notes, pre-create gate notes, Directus migration identity design, Directus permission implementation planning, Directus policy-graph evidence planning/evaluation/normalization/collector scaffold, and reconciliation artifacts are captured outside Git. This documentation does not authorize a production run.
 
-Last updated: 2026-06-19
+Last updated: 2026-06-22
 
 ## Goal
 
@@ -26,10 +26,32 @@ The durable decision is recorded in [ADR 0001](../../adr/0001-preserve-existing-
 - [Task B slice 6 handoff](task-b-cli-integration.md): read-only CLI integration, atomic manifest writer, checksum sidecars, tests, and reviewer checklist.
 - [Task B slice 7 handoff](task-b-wxr-media-inventory.md): local WordPress WXR media export inventory for REST-private attachments.
 - [Task B reconciliation handoff](task-b-reconciliation.md): reconciliation states, parser.yaml corroboration only, review gates, and write-manifest boundary.
+- [Task B target baseline review](task-b-target-baseline.md): authenticated baseline review, duplicate-file evidence, and approval gate.
+- [Task B create-only Directus client](task-b-create-only-directus-client.md): method/endpoint allowlist and future write-safety wrapper.
+- [Task B approved write-manifest selection](task-b-write-manifest.md): candidate-only manifest selection and record gate.
+- [Task B permission gate](task-b-permission-gate.md): fail-closed permission evidence validation for future execution identities.
+- [Task B draft-only create-manifest executor](task-b-create-manifest-executor.md): approved artifact validation, dry-run reports, request plan, and execution gate.
+- [Task B pre-create safety gates](task-b-pre-create-safety-gates.md): execute-mode permission and fresh target absence gates before any real writer.
+- [Task B live pre-create gate artifacts](task-b-live-pre-create-gate-artifacts.md): rejected live gate artifacts when no create-only content-migration identity was available.
+- [Task B Directus migration identities](task-b-directus-migration-identities.md): read-only/create-only identity design, exact permission boundaries, SOPS naming, operator procedure, and gate regeneration plan.
+- [Task B Directus permission implementation plan](task-b-directus-permission-implementation-plan.md): non-applied Directus 11.13.2 permission plan with `feeds.create` draft validation/preset and additive-policy warnings.
+- [Task B Directus permission plan JSON example](directus-content-migration-permission-plan.example.json): static non-secret, non-applied permission plan artifact for review.
+- [Task C Directus policy graph evidence plan](task-c-directus-policy-graph-evidence-plan.md): credential-free plan for future sanitized effective-policy evidence collection.
+- [Task C Directus policy graph evidence evaluator](task-c-directus-policy-graph-evidence-evaluator.md): pure local evaluator and CLI for sanitized policy graph evidence.
+- [Task C Directus policy graph normalizer](task-c-directus-policy-graph-normalizer.md): pure local normalizer for conservative raw policy graph exports before evaluator execution.
+- [Task C Directus policy graph live collector scaffold](task-c-directus-policy-graph-live-collector.md): mocked GET-only collector and explicit CLI mode; no production collection performed.
+- [Task C Directus policy graph evidence JSON example](directus-policy-graph-evidence.example.json): static synthetic example of the expected sanitized policy evidence artifact.
+- [Task E append-only ledger design](task-e-append-only-ledger-design.md): proposed `migration_runs` and `migration_ledger` provenance model with append-only supersession semantics.
+- [Members-only migration specification](members-only-spec.md): `/soci` scope, account migration, auth, private content model, and media retrieval.
+- [WordPress media retrieval report](media-retrieval-report.md): aggregate media counts, retrieval strategy, and rclone-oriented next steps.
+- [Members-only agent-loop plan](members-only-agent-loop-plan.md): bounded `/soci` and `articoli-tecnici` task plan with parallel explorer guidance.
+- [Members-only schema proposal](members-only-schema-proposal.md): proposed Directus collections, fields, and access boundaries for `/soci`.
+- [Members-only schema apply plan](members-only-schema-apply-plan.md): operational sequence, gates, and stop conditions for applying the approved `member_*` schema.
 - [Specification](specification.md): normative behavior, identity rules, write policy, and acceptance criteria.
 - [Execution plan](plan.md): canonical binary task plan and phase gates.
 - [Operational runbook](runbook.md): operator procedure from backup through post-run verification.
 - [Agent Loop](agent-loop.md): task cards for explorer, worker, and reviewer loops.
+- [ADR 0002](../../adr/0002-use-directus-auth-with-temporary-wordpress-password-bridge.md): Directus auth with a temporary WordPress password bridge for `/soci`.
 - [`AGENTS.md`](../../../AGENTS.md): repository-wide agent constraints.
 - [`CONTEXT.md`](../../../CONTEXT.md): compact product, architecture, and migration context.
 

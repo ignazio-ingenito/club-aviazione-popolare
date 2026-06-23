@@ -1,38 +1,32 @@
-"""Deterministic JSON normalization and SHA-256 helpers for inventory artifacts."""
+"""Canonical JSON and SHA-256 helpers for immutable inventory artifacts."""
 
 from __future__ import annotations
 
-from dataclasses import fields, is_dataclass
-from datetime import date, datetime, timezone
-from enum import Enum
+import dataclasses
 import hashlib
 import json
 import math
+from collections.abc import Mapping, Sequence
+from datetime import date, datetime, timezone
+from decimal import Decimal
+from enum import Enum
+from pathlib import Path
 from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any
 from uuid import UUID
 
-
-class CanonicalizationError(ValueError):
-    """Raised when a value cannot be represented safely as canonical JSON."""
+from .errors import CanonicalizationError
 
 
 def _canonical_datetime(value: datetime) -> str:
     if value.tzinfo is None or value.utcoffset() is None:
         raise CanonicalizationError("Naive datetimes are not allowed in inventory artifacts.")
-
     normalized = value.astimezone(timezone.utc)
-    timespec = "microseconds" if normalized.microsecond else "seconds"
-    return normalized.isoformat(timespec=timespec).replace("+00:00", "Z")
+    return normalized.isoformat(timespec="microseconds").replace("+00:00", "Z")
 
 
-def normalize_json(value: Any) -> Any:
-    """Return a JSON-compatible value with deterministic date and enum handling.
-
-    Mapping keys must be strings. Lists and tuples preserve order because order can be
-    semantically relevant, especially for galleries. Sets are rejected rather than
-    sorted implicitly because doing so could hide an upstream ordering bug.
-    """
+def canonicalize(value: Any) -> Any:
+    """Convert supported values into a deterministic JSON-compatible structure."""
 
     if value is None or isinstance(value, (str, bool, int)):
         return value
@@ -42,56 +36,58 @@ def normalize_json(value: Any) -> Any:
             raise CanonicalizationError("NaN and infinite floats are not allowed.")
         return value
 
+    if isinstance(value, Decimal):
+        if not value.is_finite():
+            raise CanonicalizationError("Non-finite decimals are not allowed.")
+        return format(value, "f")
+
     if isinstance(value, datetime):
         return _canonical_datetime(value)
 
     if isinstance(value, date):
         return value.isoformat()
 
-    if isinstance(value, UUID):
+    if isinstance(value, (UUID, Path)):
         return str(value)
 
     if isinstance(value, Enum):
-        return normalize_json(value.value)
+        return canonicalize(value.value)
 
-    if is_dataclass(value) and not isinstance(value, type):
-        return {
-            field.name: normalize_json(getattr(value, field.name))
-            for field in fields(value)
-        }
+    if dataclasses.is_dataclass(value) and not isinstance(value, type):
+        return canonicalize(dataclasses.asdict(value))
 
     if isinstance(value, Mapping):
         normalized: dict[str, Any] = {}
         for key, item in value.items():
             if not isinstance(key, str):
                 raise CanonicalizationError(
-                    f"Canonical JSON mapping keys must be strings, got {type(key).__name__}."
+                    f"Inventory mapping keys must be strings, got {type(key).__name__}."
                 )
-            normalized[key] = normalize_json(item)
+            normalized[key] = canonicalize(item)
         return normalized
 
-    if isinstance(value, (list, tuple)):
-        return [normalize_json(item) for item in value]
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray, memoryview)):
+        return [canonicalize(item) for item in value]
 
     if isinstance(value, (set, frozenset)):
-        raise CanonicalizationError(
-            "Sets are not allowed because their ordering is not explicit."
-        )
+        raise CanonicalizationError("Sets are not allowed because their ordering is not explicit.")
 
     if isinstance(value, (bytes, bytearray, memoryview)):
-        raise CanonicalizationError(
-            "Binary values must be stored externally and referenced by checksum."
-        )
+        raise CanonicalizationError("Binary values must be stored externally and referenced by checksum.")
 
-    raise CanonicalizationError(
-        f"Unsupported canonical JSON value: {type(value).__name__}."
-    )
+    raise CanonicalizationError(f"Unsupported canonical JSON value: {type(value).__name__}.")
+
+
+def normalize_json(value: Any) -> Any:
+    """Backward-compatible alias for canonicalize."""
+
+    return canonicalize(value)
 
 
 def freeze_json(value: Any) -> Any:
     """Normalize a value and recursively freeze mappings/sequences."""
 
-    normalized = normalize_json(value)
+    normalized = canonicalize(value)
 
     def freeze(item: Any) -> Any:
         if isinstance(item, dict):
@@ -110,7 +106,7 @@ def thaw_json(value: Any) -> Any:
         return {key: thaw_json(item) for key, item in value.items()}
     if isinstance(value, tuple):
         return [thaw_json(item) for item in value]
-    return normalize_json(value)
+    return canonicalize(value)
 
 
 def canonical_json(value: Any) -> str:
@@ -126,6 +122,8 @@ def canonical_json(value: Any) -> str:
 
 
 def canonical_json_bytes(value: Any) -> bytes:
+    """Serialize a value as UTF-8 canonical JSON without insignificant spaces."""
+
     return canonical_json(value).encode("utf-8")
 
 
@@ -135,3 +133,9 @@ def sha256_bytes(value: bytes) -> str:
 
 def canonical_sha256(value: Any) -> str:
     return sha256_bytes(canonical_json_bytes(value))
+
+
+def sha256_hex(value: Any) -> str:
+    """Backward-compatible alias for canonical_sha256."""
+
+    return canonical_sha256(value)
