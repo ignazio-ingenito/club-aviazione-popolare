@@ -451,6 +451,39 @@ Conseguenza operativa:
 - poi rigenerare un Gate 2 `approved` prima di qualsiasi prova della barriera
   `--execute`.
 
+## Stato manifest ristretto - 2026-06-23
+
+Il manifest è stato ristretto fuori Git rimuovendo le 7 operazioni articolo con
+slug già presenti nel target:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z
+```
+
+Conteggi:
+
+```text
+operazioni rimosse: 7
+create_feed_draft rimanenti: 21
+create_gallery_draft rimanenti: 7
+operazioni totali rimanenti: 28
+```
+
+Hash principali:
+
+```text
+migration-approval-narrowed.json: 6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994
+create-manifest-draft-only-narrowed.json: 9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9
+fresh-target-absence-before-create-narrowed.json: bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55
+```
+
+Il Gate 2 ristretto è `approved`: 57 richieste live, tutte `GET`, tutte HTTP
+200, nessuna collisione residua e nessun check saltato.
+
+Non è stato eseguito `create_manifest_executor.py --execute`. Il prossimo task
+deve cablare l'executor sui nuovi hash e sul nuovo conteggio `28`, poi
+eseguire solo dry-run. Non abilitare ancora `POST /items/feeds`.
+
 Produrre anche un report umano contenente soltanto:
 
 - conteggi per stato;

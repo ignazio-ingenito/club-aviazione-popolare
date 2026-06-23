@@ -105,6 +105,52 @@ fresh target absence status mismatch: expected 'approved', got 'rejected'
 No `--execute` run was performed because a rejected absence gate is a stop
 condition.
 
+## Narrowed Gate 2 result - 2026-06-23
+
+The rejected manifest was narrowed outside Git to remove the 7 colliding article
+operations. Artifact directory:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z
+```
+
+Narrowed counts:
+
+```text
+create_feed_draft: 21
+create_gallery_draft: 7
+total_operations: 28
+```
+
+The narrowed Gate 2 report is approved:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/fresh-target-absence-before-create-narrowed.json
+```
+
+SHA-256:
+
+```text
+bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55
+```
+
+Verification:
+
+- `57` live Directus requests;
+- methods: `GET` only;
+- status codes: `200`;
+- route collisions: `0`;
+- slug collisions: `0`;
+- protected/original URI collisions: `0`;
+- ambiguous matches: `0`;
+- skipped checks: `0`;
+- local `validate_fresh_target_absence_report` accepted the narrowed report
+  with `expected_operation_count=28`.
+
+No executor `--execute` run was performed. The executor currently binds to the
+original 35-operation hash and count, so narrowed Gate 2 is evidence only until
+a separate executor wiring slice updates that contract.
+
 ## Handoff
 
 ```yaml

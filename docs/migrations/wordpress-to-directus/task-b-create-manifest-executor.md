@@ -86,6 +86,55 @@ Because Gate 2 is rejected, `create_manifest_executor.py --execute` was not
 run. The approved manifest must be regenerated or narrowed to exclude existing
 target slugs before the execute boundary can be tested again.
 
+## Narrowed manifest after Gate 2 - 2026-06-23
+
+A narrowed artifact set was generated outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z
+```
+
+The narrowing removed 7 manifest operations whose slugs already exist in both
+the target baseline and current live Directus view:
+
+- `2015-revisione-l2000`;
+- `2016-04-corso-compositi-toscana`;
+- `2017-03-ist-serristori`;
+- `2017-corso-intelggio`;
+- `diario-di-un-volo-bellissimo`;
+- `mai-perdere-la-speranza`;
+- `trofeo-damiani-2025-il-volo-di-lucio-castrogiovanni`.
+
+Counts after narrowing:
+
+```text
+create_feed_draft: 21
+create_gallery_draft: 7
+total_operations: 28
+```
+
+Artifact hashes:
+
+```text
+gate2-slug-collisions.json: 92228cd8642c994baca96b49c6337f970c7cb16c1b65b3e10414824e1efda631
+migration-approval-narrowed.json: 6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994
+create-manifest-draft-only-narrowed.json: 9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9
+narrowing-report.json: cd4466278621a56652158deb9b94a658acba9fc8868631b10b0ff744d44a4c38
+narrowed-manifest-validation.json: 4659fb75dd23074a39da69eb3e47626f923ace60970610ff7aca2ea954ac49cc
+fresh-target-absence-live-requests-narrowed.json: 642b4bbf225fa9b6935ea5e1f2b82369e5b7f2430abb4afebeb97af747da6f32
+fresh-target-absence-before-create-narrowed.json: bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55
+```
+
+The narrowed fresh target absence report is `approved` for 28 operations. The
+live check used only `GET /server/info` and `GET /items/feeds`, with 57 GET
+requests returning HTTP 200 and zero route, slug, original URI, protected,
+ambiguous, or skipped collisions.
+
+The executor was not run. The current executor still hardcodes the original
+manifest hash and expected count of 35 operations; it must be explicitly wired
+or parameterized for the narrowed manifest in a separate reviewed slice before
+any dry-run or execution gate validation uses these artifacts.
+
 ## Handoff
 
 ```yaml

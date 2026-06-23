@@ -8,13 +8,14 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Generate fresh target absence evidence for the approved create candidates before any create execution. Gate 1 permission evidence is ready; production content `POST` is still not enabled.
+- [ ] Wire the executor to accept the narrowed approved create manifest before any dry-run or create execution. Gate 1 permission evidence is ready and narrowed Gate 2 is approved, but production content `POST` is still not enabled.
 
 ## Next up
 
 1. Use `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json` as Gate 1 input.
-2. Generate `fresh-target-absence-before-create.json` as Gate 2 with read-only target checks.
-3. Do not enable production content `POST /items/feeds` until Gate 2 is approved.
+2. Use the narrowed manifest artifacts in `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z`.
+3. Patch or parameterize the executor in a separate reviewed slice so it accepts the narrowed hashes and count `28`.
+4. Run dry-run only after that wiring; do not enable production content `POST /items/feeds`.
 
 ## Task B — Read-only inventory implementation
 
@@ -267,6 +268,20 @@ Exit gate: the complete process passes twice without changing protected artifact
   (`14` slug collision entries: live plus baseline evidence). Artifact:
   `/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json`,
   SHA-256 `addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9`.
+- [x] Narrow the approved create manifest after Gate 2 slug collisions. The
+  narrowed artifacts remove 7 colliding article operations and keep 28
+  operations: 21 article drafts and 7 gallery drafts. Artifact directory:
+  `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z`.
+  Narrowed manifest SHA-256:
+  `9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9`.
+  Narrowed approval SHA-256:
+  `6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994`.
+  Narrowed Gate 2 SHA-256:
+  `bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55`.
+- [ ] Wire the executor to the narrowed artifact hashes and counts. The current
+  executor still hardcodes the original 35-operation manifest and must not be
+  run against the narrowed artifacts until a separate reviewed slice changes
+  that contract.
 - [ ] Obtain explicit production approval for the exact manifest hash.
 - [ ] Run production dry-run.
 - [ ] Execute writes serially with a unique run ID.
