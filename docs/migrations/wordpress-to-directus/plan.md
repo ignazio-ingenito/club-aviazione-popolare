@@ -8,12 +8,12 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Complete or recover the dedicated Directus create-only content-migration identity after the 2026-06-23 partial permission-management apply. The role, policy, and two `feeds` permission rows were created, but service user/token creation failed and no create-only SOPS secret or approved policy graph evidence exists.
+- [ ] Provide a Directus-accepted service email for the dedicated create-only content-migration identity recovery. The live partial state now matches the approved role/policy/permission plan, but Directus rejected both service emails allowed by the recovery prompt.
 
 ## Next up
 
-1. Decide the recovery path for the partially created `directus-createonly-content-migration` permission-management resources.
-2. Create the dedicated service user/token only after explicit recovery approval, using a valid Directus email and without broadening the execution identity.
+1. Provide a valid, non-personal service email accepted by Directus for `POST /users`.
+2. Rerun only the service-user/token recovery after fresh GET-only comparison again proves the partial state still matches the approved plan.
 3. Store the create-only credential in SOPS and collect approved GET-only policy graph evidence before any content execution.
 
 ## Task B — Read-only inventory implementation
@@ -133,7 +133,8 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Verify the currently stored `DIRECTUS_ROLE_ID` in `secrets/migration/directus-schema-token.20260622.sops.yaml` with GET-only live evidence. It resolves to the `Administrator` role and `Administrator` policy with admin/app access, so it is the wrong role id for the intended create-only content-migration identity.
 - [x] Prepare a dry-run Directus create-only identity plan for `directus-createonly-content-migration` and perform GET-only discovery. No matching role, policy, or planned service user currently exists; no Directus mutation was performed because the apply approval environment flag was absent.
 - [x] Attempt the approved Directus create-only identity apply with `APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. The task created only permission-management resources: the dedicated role, dedicated policy, `feeds.read`, and draft-constrained `feeds.create`; it stopped before creating a usable execution identity because `POST /users` rejected the placeholder service email.
-- [ ] Recover the partial Directus create-only identity setup without deleting or blindly updating existing resources. The next recovery task must read and compare the existing migration-owned role, policy, and permissions, then create a valid service user/static token only if the required API shape remains within the approved permission-management scope.
+- [x] Run the approved recovery task with fresh GET-only comparison. Final comparison classified the partial state as `partial_state_matches_expected`: exactly one migration-owned role, one migration-owned policy, expected `feeds.read`, draft-constrained `feeds.create`, zero service users for the two planned emails, and no detected update/delete/wildcard permission.
+- [ ] Provide a Directus-accepted valid service email. Recovery `POST /users` was attempted with `directus-createonly-content-migration@cap-migration.local` and `directus-createonly-content-migration@example.invalid`; Directus rejected both with `FAILED_VALIDATION` for the `email` field, so no service user or token was created.
 - [ ] Create `secrets/migration/directus-createonly-content-migration.20260622.sops.yaml` only after a create-only token exists. No create-only SOPS secret exists yet.
 - [ ] Provide a Directus migration identity or operator-generated redacted policy export with complete permission rows. No approved policy graph evidence artifact exists yet for create execution.
 - [x] Design the append-only ledger schema and supersession model.

@@ -238,6 +238,24 @@ the policy graph evidence must be produced by a separately approved
 operator/admin read of the effective graph and then evaluated without
 broadening the execution identity.
 
+## Create-only identity recovery attempt
+
+On 2026-06-23, the recovery task proved with GET-only comparison that the
+partial migration-owned role, policy, and permission rows match the approved
+narrow plan. It then attempted only `POST /users` to create the missing
+service user/static token.
+
+Directus rejected both planned service emails as invalid:
+
+```text
+directus-createonly-content-migration@cap-migration.local
+directus-createonly-content-migration@example.invalid
+```
+
+No create-only token exists yet, so the live policy graph collector was not run
+with the final execution identity. No raw, normalized, or evaluation artifacts
+exist for the create-only identity. Production readiness remains blocked.
+
 ## Token Handling
 
 The token is accepted only as a function argument or through `DIRECTUS_TOKEN` in

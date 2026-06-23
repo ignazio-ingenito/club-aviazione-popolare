@@ -292,6 +292,74 @@ existing migration-owned role, then encrypt the resulting credential with SOPS
 and run policy graph evidence collection. If that requires `PATCH`, `PUT`, or
 broader permissions, stop for a separate approval.
 
+## Recovery attempt status
+
+On 2026-06-23, the recovery task was rerun with:
+
+```text
+APPLY_DIRECTUS_CREATEONLY_IDENTITY=true
+```
+
+The fresh GET-only comparison first hit an edge/WAF 403 with `error code: 1010`
+when using the default Python urllib client. A GET-only retry with an explicit
+User-Agent reached Directus successfully. A role query that requested
+`directus_roles.admin_access` and `directus_roles.app_access` returned 403
+because those fields were not readable or exposed on `directus_roles`; the
+final comparison therefore used readable role fields and verified admin/app
+flags on the attached policy.
+
+Final live comparison classification:
+
+```text
+partial_state_matches_expected
+```
+
+Sanitized comparison result:
+
+- one role named `directus-createonly-content-migration`;
+- one policy named `directus-createonly-content-migration`;
+- the policy is attached to the role;
+- policy `admin_access = false`;
+- policy `app_access = false`;
+- exactly one `feeds.read` permission;
+- exactly one draft-constrained `feeds.create` permission;
+- no detected `feeds.update`, `feeds.delete`, `share`, wildcard, or Directus
+  system-resource permission in the migration-owned policy;
+- zero users for `directus-createonly-content-migration@cap-migration.local`;
+- zero users for `directus-createonly-content-migration@example.invalid`.
+
+Because the partial state matched, the recovery attempted only the approved
+`POST /users` path. Directus rejected both allowed service emails:
+
+| Email | Result |
+| --- | --- |
+| `directus-createonly-content-migration@cap-migration.local` | HTTP 400 `FAILED_VALIDATION` for `email` |
+| `directus-createonly-content-migration@example.invalid` | HTTP 400 `FAILED_VALIDATION` for `email` |
+
+No service user was created. No token was created. No create-only SOPS secret
+was written. No policy graph evidence was collected.
+
+Recovery artifacts are outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-recovery-20260623T122732Z/directus-createonly-identity-recovery-comparison-final.probe.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-recovery-20260623T122732Z/directus-createonly-identity-recovery-apply.json
+```
+
+Artifact SHA-256:
+
+```text
+directus-createonly-identity-recovery-comparison-final.probe.json:
+fb13d88d6bea681b58829ad0d33ba3b727b52a9270a14052599f4da0c0128548
+
+directus-createonly-identity-recovery-apply.json:
+4a6cf757ac822e91991e1a6204782477c560736daf8f562336fce3f06dc56ffa
+```
+
+The next recovery attempt needs a Directus-accepted, non-personal service email.
+It must not duplicate role, policy, or permission rows. It must repeat fresh
+GET-only comparison before any new `POST /users`.
+
 ### Redacted YAML structure
 
 Read-only token:

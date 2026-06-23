@@ -74,6 +74,19 @@ create, poi creare solo un service user/token valido se il recovery resta nel
 perimetro permission-management approvato. Non cancellare e non aggiornare alla
 cieca ruolo, policy o permission esistenti.
 
+Aggiornamento 2026-06-23: il recovery è stato rilanciato con
+`APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. Il confronto live GET-only finale ha
+classificato lo stato come `partial_state_matches_expected`: ruolo, policy e
+permission rows migration-owned corrispondono al piano approvato e non è stato
+trovato uno user esistente per le due email pianificate. Il recovery ha quindi
+tentato solo `POST /users`, ma Directus ha rifiutato sia
+`directus-createonly-content-migration@cap-migration.local` sia
+`directus-createonly-content-migration@example.invalid` con HTTP 400
+`FAILED_VALIDATION` sul campo `email`. Nessuno user, token o secret SOPS
+create-only è stato creato. Serve una email service non personale accettata da
+Directus; poi bisogna ripetere il confronto GET-only prima di un nuovo
+`POST /users`.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:

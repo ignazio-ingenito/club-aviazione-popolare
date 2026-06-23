@@ -293,6 +293,45 @@ rows before creating a valid dedicated service user/static token. If Directus
 requires changing existing role/policy/user state with `PATCH`, `PUT`, or
 broader permission scope, stop and request a separate approval.
 
+## Recovery attempt status
+
+On 2026-06-23, the recovery task reran with explicit apply approval and
+performed fresh GET-only comparison before any mutation.
+
+The final comparison classified the live state as:
+
+```text
+partial_state_matches_expected
+```
+
+The verified partial state matched the current narrow stage:
+
+- one migration-owned role;
+- one migration-owned policy;
+- policy `admin_access = false`;
+- policy `app_access = false`;
+- exactly one `feeds.read`;
+- exactly one draft-constrained `feeds.create`;
+- no detected update/delete/share/wildcard/system permission in the
+  migration-owned policy;
+- no existing service user for either planned email.
+
+The only recovery mutation attempted was the approved `POST /users` endpoint.
+Both planned emails were rejected by Directus validation:
+
+```text
+directus-createonly-content-migration@cap-migration.local
+directus-createonly-content-migration@example.invalid
+```
+
+Both responses were HTTP 400 `FAILED_VALIDATION` for the `email` field.
+
+No service user was created, no static token was created, no encrypted
+create-only secret was written, and no policy graph evidence was collected.
+Production create execution remains blocked until a Directus-accepted
+non-personal service email is provided and the recovery task is rerun after
+fresh GET-only comparison.
+
 ## Future live verification gate
 
 Before any approved staging or production execution, generate fresh permission
