@@ -5,18 +5,21 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 from typing import Callable
 import yaml
 
 from .directus import DirectusInventoryClient, DirectusInventoryConfig
 from .gallery import WordPressGalleryDiscoveryClient
+from .member_schema_plan import build_member_schema_plan_manifest
 from .routes import RouteInventoryClient, RouteInventoryConfig
 from .reconciliation import (
     historical_mappings_from_parser_yaml,
     reconcile_manifest_files,
 )
 from .reconciliation_writer import ReconciliationWriteResult, write_reconciliation_report_json
+from .sql_export import WordPressSQLExportInventoryClient
 from .wordpress import WordPressInventoryClient, WordPressInventoryConfig
 from .writer import ManifestWriteResult, write_manifest_jsonl
 from .wxr import WordPressWXRMediaInventoryClient
@@ -89,6 +92,23 @@ def build_parser() -> argparse.ArgumentParser:
     )
     wxr_media.set_defaults(handler=_run_wordpress_wxr_media)
 
+    sql_export = subparsers.add_parser(
+        "wordpress-sql-export",
+        help="Inventory migration-relevant records from a local phpMyAdmin SQL export.",
+    )
+    _add_common_output_args(sql_export, default_filename="wordpress-sql-export.jsonl")
+    sql_export.add_argument(
+        "--input",
+        required=True,
+        help="Path to the local phpMyAdmin SQL export.",
+    )
+    sql_export.add_argument(
+        "--table-prefix",
+        default="cap_",
+        help="WordPress database table prefix.",
+    )
+    sql_export.set_defaults(handler=_run_wordpress_sql_export)
+
     gallery = subparsers.add_parser(
         "gallery",
         help="Inventory WordPress galleries through REST discovery or public HTML fallback.",
@@ -114,6 +134,40 @@ def build_parser() -> argparse.ArgumentParser:
     )
     directus.add_argument("--limit", type=int, default=100)
     directus.set_defaults(handler=_run_directus_core)
+
+    directus_app = subparsers.add_parser(
+        "directus-app-collections",
+        help="Inventory readable non-system Directus application collections.",
+    )
+    _add_common_output_args(directus_app, default_filename="directus-app-collections.jsonl")
+    directus_app.add_argument(
+        "--base-url",
+        default="https://cap-cms.skunklabs.uk",
+        help="Directus base URL.",
+    )
+    directus_app.add_argument("--limit", type=int, default=100)
+    directus_app.add_argument(
+        "--collection",
+        action="append",
+        dest="collections",
+        help="Application collection to inventory. Repeatable; defaults to all readable non-system collections.",
+    )
+    directus_app.set_defaults(handler=_run_directus_app_collections)
+
+    member_schema = subparsers.add_parser(
+        "directus-member-schema-plan",
+        help="Generate the dry-run request manifest for the approved members-only Directus schema.",
+    )
+    _add_common_output_args(
+        member_schema,
+        default_filename="directus-member-schema-plan.jsonl",
+    )
+    member_schema.add_argument(
+        "--target-manifest",
+        required=True,
+        help="Fresh Directus schema/core inventory JSONL used to detect existing member collections.",
+    )
+    member_schema.set_defaults(handler=_run_directus_member_schema_plan)
 
     reconcile = subparsers.add_parser(
         "reconcile",
@@ -199,6 +253,18 @@ def _run_wordpress_wxr_media(args: argparse.Namespace) -> ManifestWriteResult:
     return _write(args, manifest)
 
 
+def _run_wordpress_sql_export(args: argparse.Namespace) -> ManifestWriteResult:
+    snapshot = WordPressSQLExportInventoryClient(
+        export_path=args.input,
+        table_prefix=args.table_prefix,
+    ).inventory()
+    manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+    )
+    return _write(args, manifest)
+
+
 def _run_gallery(args: argparse.Namespace) -> ManifestWriteResult:
     with WordPressGalleryDiscoveryClient(
         config=WordPressInventoryConfig(
@@ -220,10 +286,43 @@ def _run_directus_core(args: argparse.Namespace) -> ManifestWriteResult:
         config=DirectusInventoryConfig(
             base_url=args.base_url,
             limit=args.limit,
+            auth_token=_directus_auth_token(),
         )
     ) as client:
         snapshot = client.inventory_core()
     manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+    )
+    return _write(args, manifest)
+
+
+def _run_directus_app_collections(args: argparse.Namespace) -> ManifestWriteResult:
+    collections = tuple(args.collections) if args.collections else None
+    with DirectusInventoryClient(
+        config=DirectusInventoryConfig(
+            base_url=args.base_url,
+            limit=args.limit,
+            auth_token=_directus_auth_token(),
+        )
+    ) as client:
+        snapshot = client.inventory_application_collections(
+            collection_names=collections,
+        )
+    manifest = snapshot.to_manifest(
+        environment=args.environment,
+        observed_at=_now_utc(),
+        metadata={
+            "inventory_type": "directus_application_collections",
+            "requested_collections": collections,
+        },
+    )
+    return _write(args, manifest)
+
+
+def _run_directus_member_schema_plan(args: argparse.Namespace) -> ManifestWriteResult:
+    manifest = build_member_schema_plan_manifest(
+        target_manifest_path=args.target_manifest,
         environment=args.environment,
         observed_at=_now_utc(),
     )
@@ -273,6 +372,10 @@ def _now_utc() -> datetime:
 
 def _repository_root() -> Path:
     return Path(__file__).resolve().parents[4]
+
+
+def _directus_auth_token() -> str | None:
+    return os.environ.get("DIRECTUS_TOKEN") or os.environ.get("TOKEN")
 
 
 if __name__ == "__main__":

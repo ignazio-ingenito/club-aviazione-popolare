@@ -5,11 +5,13 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from datetime import datetime
+import re
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
 import httpx
 
+from .canonical import canonical_sha256
 from .http import ReadOnlyHttpClient
 from .models import (
     InventoryIssue,
@@ -53,6 +55,9 @@ CATEGORY_FIELDS = (
     "date_created",
     "date_updated",
 )
+APPLICATION_IDENTITY_FIELDS = ("id", "key", "slug", "collection")
+SYSTEM_COLLECTION_PREFIX = "directus_"
+VALID_COLLECTION_NAME = re.compile(r"^[A-Za-z0-9_-]+$")
 
 
 class DirectusInventoryError(RuntimeError):
@@ -93,6 +98,7 @@ class DirectusProtocolError(DirectusInventoryError):
 class DirectusInventoryConfig:
     base_url: str = "https://cap-cms.skunklabs.uk"
     limit: int = DIRECTUS_MAX_LIMIT
+    auth_token: str | None = None
 
     def __post_init__(self) -> None:
         normalized = self.base_url.strip().rstrip("/")
@@ -102,6 +108,11 @@ class DirectusInventoryConfig:
         if not 1 <= self.limit <= DIRECTUS_MAX_LIMIT:
             raise ValueError(f"limit must be between 1 and {DIRECTUS_MAX_LIMIT}.")
         object.__setattr__(self, "base_url", normalized)
+        if self.auth_token is not None:
+            token = self.auth_token.strip()
+            if not token:
+                raise ValueError("auth_token cannot be empty when provided.")
+            object.__setattr__(self, "auth_token", token)
 
 
 @dataclass(frozen=True, slots=True)
@@ -217,11 +228,12 @@ class DirectusInventoryClient:
         )
 
     def get_relations(self) -> DirectusCollectionResult:
-        return self._get_system_array(
+        result = self._get_system_array(
             endpoint="relations",
             entity_type="directus_relation",
             identity_builder=_relation_identity,
         )
+        return _dedupe_identical_relation_records(result)
 
     def get_feeds(self) -> DirectusCollectionResult:
         return self._get_items(
@@ -283,6 +295,59 @@ class DirectusInventoryClient:
                 self.get_files(),
                 self.get_folders(),
             ),
+        )
+
+    def inventory_application_collections(
+        self,
+        *,
+        collection_names: tuple[str, ...] | None = None,
+    ) -> DirectusInventorySnapshot:
+        """Fetch all readable non-system Directus application collections."""
+
+        collections_result = self.get_collections()
+        fields_result = self.get_fields()
+        fields_by_collection = _fields_by_collection(fields_result.records)
+        singleton_collections = _singleton_collection_names(collections_result.records)
+        resolved_collections = _application_collection_names(
+            collections_result.records,
+            requested=collection_names,
+        )
+
+        results: list[DirectusCollectionResult] = []
+        for collection in resolved_collections:
+            fields = fields_by_collection.get(collection)
+            if not fields:
+                raise DirectusProtocolError(
+                    "missing_directus_collection_fields",
+                    "Directus collection has no readable field metadata.",
+                    endpoint="fields",
+                    details={"collection": collection},
+                )
+            if collection in singleton_collections:
+                results.append(
+                    self._get_singleton(
+                        endpoint=f"items/{collection}",
+                        entity_type="directus_app_item",
+                        identity=f"directus:item:{collection}:singleton",
+                        payload_key="data",
+                    )
+                )
+            else:
+                identity_field = _application_identity_field(collection, fields)
+                results.append(
+                    self._get_paginated(
+                        endpoint=f"items/{collection}",
+                        entity_type="directus_app_item",
+                        identity_prefix=f"directus:item:{collection}",
+                        fields=tuple(fields),
+                        identity_field=identity_field,
+                        sort_field=identity_field,
+                    )
+                )
+
+        return DirectusInventorySnapshot(
+            base_url=self.config.base_url,
+            results=tuple(results),
         )
 
     def _get_items(
@@ -504,7 +569,12 @@ class DirectusInventoryClient:
     ) -> tuple[httpx.Response, Any]:
         url = self._endpoint_url(endpoint)
         try:
-            response = self.http.get(url, params=params)
+            headers = (
+                {"Authorization": f"Bearer {self.config.auth_token}"}
+                if self.config.auth_token is not None
+                else None
+            )
+            response = self.http.get(url, params=params, headers=headers)
         except httpx.HTTPError as exc:
             request = getattr(exc, "request", None)
             raise DirectusHttpError(
@@ -759,17 +829,157 @@ def _relation_identity(item: Mapping[str, Any]) -> str | None:
     field = item.get("field")
     related_collection = item.get("related_collection")
     related_field = item.get("related_field")
+    meta = item.get("meta")
+    meta_junction_field = None
+    meta_one_field = None
+    if isinstance(meta, Mapping):
+        meta_junction_field = meta.get("junction_field")
+        meta_one_field = meta.get("one_field")
     if collection and field:
         suffix = f"{collection}.{field}"
         if related_collection:
             suffix = f"{suffix}->{related_collection}"
             if related_field:
                 suffix = f"{suffix}.{related_field}"
+            else:
+                qualifiers = []
+                if meta_junction_field:
+                    qualifiers.append(f"junction:{meta_junction_field}")
+                if meta_one_field:
+                    qualifiers.append(f"one:{meta_one_field}")
+                if qualifiers:
+                    suffix = f"{suffix}#{','.join(qualifiers)}"
         return f"directus:relation:{suffix}"
     raw_id = item.get("id")
     if raw_id is not None and raw_id != "":
         return f"directus:relation:{raw_id}"
     return None
+
+
+def _dedupe_identical_relation_records(
+    result: DirectusCollectionResult,
+) -> DirectusCollectionResult:
+    """Collapse exact duplicate Directus system relation rows."""
+
+    seen: dict[str, tuple[ManifestRecord, str]] = {}
+    records: list[ManifestRecord] = []
+    issues = list(result.issues)
+
+    for record in result.records:
+        payload_hash = canonical_sha256(record.data)
+        previous = seen.get(record.identity)
+        if previous is None:
+            seen[record.identity] = (record, payload_hash)
+            records.append(record)
+            continue
+
+        _, previous_hash = previous
+        if previous_hash != payload_hash:
+            raise DirectusProtocolError(
+                "duplicate_directus_relation_identity",
+                "Directus relations endpoint returned different records with the same inventory identity.",
+                endpoint=result.endpoint,
+                details={"identity": record.identity},
+            )
+
+        issues.append(
+            InventoryIssue(
+                scope=InventoryScope.TARGET,
+                severity=IssueSeverity.WARNING,
+                code="duplicate_directus_relation_ignored",
+                message="Directus relations endpoint returned an exact duplicate relation; inventory kept one copy.",
+                details={"endpoint": result.endpoint, "identity": record.identity},
+            )
+        )
+
+    return DirectusCollectionResult(
+        endpoint=result.endpoint,
+        records=tuple(records),
+        issues=tuple(issues),
+        total_items=result.total_items,
+        total_pages=result.total_pages,
+        raw_item_count=result.raw_item_count,
+    )
+
+
+def _fields_by_collection(
+    records: Iterable[ManifestRecord],
+) -> dict[str, tuple[str, ...]]:
+    fields: dict[str, list[str]] = {}
+    for record in records:
+        collection = record.data.get("collection")
+        field = record.data.get("field")
+        if isinstance(collection, str) and isinstance(field, str):
+            fields.setdefault(collection, []).append(field)
+    return {
+        collection: tuple(sorted(set(collection_fields)))
+        for collection, collection_fields in fields.items()
+    }
+
+
+def _application_collection_names(
+    records: Iterable[ManifestRecord],
+    *,
+    requested: tuple[str, ...] | None,
+) -> tuple[str, ...]:
+    available = {
+        record.data.get("collection")
+        for record in records
+        if isinstance(record.data.get("collection"), str)
+    }
+    if requested:
+        names = requested
+        reject_system = True
+    else:
+        names = tuple(
+            sorted(
+                name
+                for name in available
+                if not name.startswith(SYSTEM_COLLECTION_PREFIX)
+            )
+        )
+        reject_system = False
+
+    normalized: list[str] = []
+    for name in names:
+        if not VALID_COLLECTION_NAME.fullmatch(name):
+            raise ValueError(f"Invalid Directus collection name {name!r}.")
+        if reject_system and name.startswith(SYSTEM_COLLECTION_PREFIX):
+            raise ValueError(f"System Directus collection is not application data: {name}.")
+        if name not in available:
+            raise ValueError(f"Directus collection is not readable or does not exist: {name}.")
+        normalized.append(name)
+    return tuple(dict.fromkeys(normalized))
+
+
+def _singleton_collection_names(records: Iterable[ManifestRecord]) -> set[str]:
+    singleton_names: set[str] = set()
+    for record in records:
+        collection = record.data.get("collection")
+        meta = record.data.get("meta")
+        if (
+            isinstance(collection, str)
+            and isinstance(meta, Mapping)
+            and meta.get("singleton") is True
+        ):
+            singleton_names.add(collection)
+    return singleton_names
+
+
+def _application_identity_field(collection: str, fields: tuple[str, ...]) -> str:
+    field_set = set(fields)
+    for candidate in APPLICATION_IDENTITY_FIELDS:
+        if candidate in field_set:
+            return candidate
+    raise DirectusProtocolError(
+        "missing_directus_application_identity",
+        "Directus application collection has no supported stable identity field.",
+        endpoint=f"items/{collection}",
+        details={
+            "collection": collection,
+            "supported_identity_fields": APPLICATION_IDENTITY_FIELDS,
+        },
+    )
 
 
 def _merge_blocked_result(

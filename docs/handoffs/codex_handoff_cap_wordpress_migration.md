@@ -41,6 +41,73 @@ Ogni articolo, file, cartella, cover, categoria e relazione già presente in Dir
 
 Directus è autorevole per tutto ciò che esiste già. Le differenze con WordPress sono drift protetto, non update candidate.
 
+## Stato permessi Directus content migration
+
+Aggiornamento 2026-06-23: il `DIRECTUS_ROLE_ID` presente in
+`secrets/migration/directus-schema-token.20260622.sops.yaml` è stato verificato
+con sole richieste GET e risulta legato al ruolo `Administrator` e alla policy
+`Administrator`, con `admin_access` e `app_access` attivi. Questo classifica il
+ruolo come `wrong_role_id` per la migrazione WordPress-to-Directus.
+
+Non usare il secret `directus-schema-token` per gate o import content migration.
+Serve ancora una identità dedicata `directus-createonly-content-migration`
+oppure un export policy redatto dall'operatore con permission rows complete.
+Finché questa evidenza manca, la readiness di produzione resta bloccata.
+
+Aggiornamento 2026-06-23: è stato eseguito un dry-run del setup
+`directus-createonly-content-migration`. Il flag di apply non era presente,
+quindi non sono state fatte mutazioni Directus. La discovery GET-only ha trovato
+zero ruoli, zero policy e zero utenti corrispondenti al nome/email pianificati.
+Il prossimo passaggio richiede approvazione esplicita al task di
+permission-management, poi creazione della identity dedicata, SOPS del nuovo
+secret e raccolta GET-only del policy graph con il nuovo token create-only.
+
+Aggiornamento 2026-06-23: il task di permission-management è stato rilanciato
+con `APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. L'apply è parziale: sono stati
+creati ruolo, policy e due permission rows per
+`directus-createonly-content-migration`, ma la creazione dello user/token è
+fallita con HTTP 400 perché Directus ha rifiutato la placeholder email
+pianificata. Non esiste ancora il secret SOPS create-only, non esiste policy
+graph approved per la identity finale e la readiness produzione resta bloccata.
+Il prossimo task deve prima leggere e confrontare le risorse migration-owned già
+create, poi creare solo un service user/token valido se il recovery resta nel
+perimetro permission-management approvato. Non cancellare e non aggiornare alla
+cieca ruolo, policy o permission esistenti.
+
+Aggiornamento 2026-06-23: il recovery è stato rilanciato con
+`APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. Il confronto live GET-only finale ha
+classificato lo stato come `partial_state_matches_expected`: ruolo, policy e
+permission rows migration-owned corrispondono al piano approvato e non è stato
+trovato uno user esistente per le due email pianificate. Il recovery ha quindi
+tentato solo `POST /users`, ma Directus ha rifiutato sia
+`directus-createonly-content-migration@cap-migration.local` sia
+`directus-createonly-content-migration@example.invalid` con HTTP 400
+`FAILED_VALIDATION` sul campo `email`. Nessuno user, token o secret SOPS
+create-only è stato creato. Questo tentativo è superato dal recovery con email
+valida registrato sotto.
+
+Aggiornamento 2026-06-23: il recovery è stato rilanciato con la email valida
+`cap-migration@skunklabs.uk`. Dopo un nuovo confronto live GET-only classificato
+`partial_state_matches_expected`, è stato eseguito solo `POST /users`, creando
+lo user dedicato e il token statico create-only. Il secret cifrato ora esiste in
+`secrets/migration/directus-createonly-content-migration.20260622.sops.yaml`.
+La raccolta live del policy graph con il token create-only è stata tentata, ma
+si è fermata correttamente su `GET /roles` con HTTP 403. Non sono stati creati
+artifact raw/normalized/evaluation. La readiness produzione resta bloccata:
+serve una evidenza policy graph redatta con export operator/admin redatto e
+sanitizzato, oppure prova equivalente approvata separatamente. Non ampliare il
+token di esecuzione per far passare il collector.
+
+Aggiornamento 2026-06-23: è stata generata una evidenza policy graph redatta
+con token admin/schema usato solo per richieste GET. L'export ha trovato solo
+`feeds.read` e `feeds.create` draft-constrained per
+`directus-createonly-content-migration`; nessun update/delete/share/wildcard o
+accesso system/admin è stato rilevato. Il normalizer/evaluator locale ha
+restituito `approved` ed è stato creato fuori Git:
+`/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json`.
+Questo è Gate 1 pronto. Non autorizza ancora content `POST`: il prossimo passo
+è generare e approvare `fresh-target-absence-before-create.json` come Gate 2.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:
@@ -347,6 +414,147 @@ Regole:
 - collisioni route o slug bloccano `create_candidate`;
 - solo `create_candidate` potrà entrare in un futuro write manifest;
 - non generare ancora write manifest approvato né eseguire import.
+
+## Stato Gate 2 fresh target absence - 2026-06-23
+
+Il Gate 1 `permission-evidence-create-only.json` è approvato, ma il Gate 2
+fresh target absence generato il 2026-06-23 è respinto.
+
+Artifact:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json
+```
+
+SHA-256:
+
+```text
+addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9
+```
+
+Sintesi:
+
+- 35 operazioni controllate;
+- 71 richieste live, tutte `GET`;
+- nessun `POST`, `PATCH`, `PUT` o `DELETE`;
+- nessun token scritto negli artifact;
+- 0 route collision;
+- 0 collisioni su `original_uri`;
+- 0 check saltati;
+- 14 collisioni slug, cioè 7 slug unici già presenti sia nel baseline target
+  sia nella vista live Directus.
+
+Conseguenza operativa:
+
+- non eseguire `create_manifest_executor.py --execute` con questo manifest;
+- rigenerare o restringere il create manifest escludendo gli slug già presenti;
+- poi rigenerare un Gate 2 `approved` prima di qualsiasi prova della barriera
+  `--execute`.
+
+## Stato manifest ristretto - 2026-06-23
+
+Il manifest è stato ristretto fuori Git rimuovendo le 7 operazioni articolo con
+slug già presenti nel target:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z
+```
+
+Conteggi:
+
+```text
+operazioni rimosse: 7
+create_feed_draft rimanenti: 21
+create_gallery_draft rimanenti: 7
+operazioni totali rimanenti: 28
+```
+
+Hash principali:
+
+```text
+migration-approval-narrowed.json: 6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994
+create-manifest-draft-only-narrowed.json: 9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9
+fresh-target-absence-before-create-narrowed.json: bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55
+```
+
+Il Gate 2 ristretto è `approved`: 57 richieste live, tutte `GET`, tutte HTTP
+200, nessuna collisione residua e nessun check saltato.
+
+## Stato executor dry-run ristretto - 2026-06-23
+
+L'executor è stato cablato con profili artefatto approvati. Il profilo
+predefinito resta il manifest originale da 35 operazioni; il profilo
+`narrowed_after_gate2_20260623T162618Z` vincola:
+
+- `migration-approval-narrowed.json`;
+- `create-manifest-draft-only-narrowed.json`;
+- `fresh-target-absence-before-create-narrowed.json`;
+- conteggi `21` articoli, `7` gallerie, `28` operazioni totali.
+
+Dry-run generato fuori Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z
+```
+
+Risultato:
+
+```text
+execute_requested: false
+operation_count: 28
+planned_methods: POST
+planned_endpoints: /items/feeds
+non_read_requests_sent: 0
+post_requests_sent: 0
+```
+
+Hash report:
+
+```text
+validation_report.json: 8a4da7728548d04674f562dcd1f3a7eac40036239d2409085890336e03ad570e
+request_plan.json: 3c2deb0be7855514c0aa80d1c22efaaeb3706c2809f60569798efb9a85307f50
+dry_run_report.json: 31bc535a8fa405ae3e1f288e749dca5837e82825345a4f1563b35a353d308d07
+stop_condition_report.json: 8d2d799fdfd21f0c92e5facdfbf985f78496973517193b1e270add593975f282
+```
+
+Non è stato eseguito `create_manifest_executor.py --execute`. Non è stato
+emesso alcun `POST /items/feeds`. Il prossimo task è una review indipendente
+dei report narrowed dry-run e, se accettati, un prompt separato di final
+execution-readiness.
+
+## Stato final execution-readiness - 2026-06-23
+
+La review finale locale ha validato:
+
+- Gate 1 permission evidence: `approved`;
+- Gate 2 ristretto: `approved`;
+- dry-run ristretto: `approved`;
+- chiavi richieste del secret SOPS create-only: presenti;
+- piano teorico: 28 `POST /items/feeds` draft;
+- richieste Directus inviate dal dry-run: 0;
+- `--execute`: non eseguito;
+- mutazioni Directus: nessuna.
+
+Directory readiness fuori Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z
+```
+
+Hash principali:
+
+```text
+artifact-contract-validation.json: c949b2ad813347ea3a65e58959ce1b03bea39cf0a866bd2538afec1b99e50a83
+createonly-secret-key-names.txt: fddb84f8d48b8d52bf059912d538af54b75a3f2c90018ed0e7200c4b4fef3ff7
+createonly-secret-key-validation.json: 4a98e27a4365a8a736bb0b4b4c1c23a05045f4e3e2c62fb7fc05f805fb10a492
+final-execution-readiness-report.json: 1b17bfac4f3703fdabb9086593cd16042044c228058aee054c734025f38f3b76
+```
+
+Status: `ready_for_explicit_execution_approval`.
+
+Questo non autorizza ancora l'esecuzione. Il prossimo passo è preparare un
+prompt separato di produzione che autorizzi esplicitamente `--execute` e
+`POST /items/feeds`, se l'operatore decide di procedere.
 
 Produrre anche un report umano contenente soltanto:
 

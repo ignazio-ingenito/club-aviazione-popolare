@@ -29,7 +29,10 @@ class InventoryCliTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0)
         self.assertIn("wordpress-core", result.stdout)
         self.assertIn("wordpress-wxr-media", result.stdout)
+        self.assertIn("wordpress-sql-export", result.stdout)
         self.assertIn("directus-core", result.stdout)
+        self.assertIn("directus-app-collections", result.stdout)
+        self.assertIn("directus-member-schema-plan", result.stdout)
         self.assertIn("routes", result.stdout)
         self.assertIn("reconcile", result.stdout)
 
@@ -232,6 +235,11 @@ class InventoryCliTests(unittest.TestCase):
                 "directus-public-view.jsonl",
                 InventoryScope.TARGET,
             ),
+            "directus-app-collections": (
+                "DirectusInventoryClient",
+                "directus-app-collections.jsonl",
+                InventoryScope.TARGET,
+            ),
         }
 
         for command, (client_name, filename, scope) in commands.items():
@@ -370,6 +378,9 @@ class InventoryCliTests(unittest.TestCase):
                 self.exit_count += 1
 
             def inventory_core(self):
+                return FakeSnapshot()
+
+            def inventory_application_collections(self, *, collection_names=None):
                 return FakeSnapshot()
 
             def discover(self):

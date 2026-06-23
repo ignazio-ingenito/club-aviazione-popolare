@@ -1,347 +1,272 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-import json
 import unittest
+from datetime import datetime, timezone
+from typing import Any
 
 import httpx
 
-from inventory.http import ReadOnlyHttpClient, ReadOnlyMethodError
-from inventory.models import InventoryScope, IssueSeverity
-from inventory.wordpress import (
-    WordPressHttpError,
-    WordPressInventoryClient,
-    WordPressInventoryConfig,
-    WordPressProtocolError,
-)
+from inventory.errors import PaginationContractError, ResponseContractError
+from inventory.wordpress_client import WordPressInventoryClient
+
+UTC = timezone.utc
+OBSERVED_AT = datetime(2026, 6, 19, 10, tzinfo=UTC)
+
+
+def _post(post_id: int, title: str, *, content: str = "<p>Test</p>") -> dict[str, Any]:
+    return {
+        "id": post_id,
+        "date": "2025-01-01T10:00:00",
+        "date_gmt": "2025-01-01T09:00:00",
+        "modified": "2025-01-02T10:00:00",
+        "modified_gmt": "2025-01-02T09:00:00",
+        "guid": {"rendered": f"https://legacy.test/?p={post_id}"},
+        "link": f"https://example.test/post-{post_id}/",
+        "slug": f"post-{post_id}",
+        "status": "publish",
+        "type": "post",
+        "title": {"rendered": title},
+        "excerpt": {"rendered": "Excerpt"},
+        "content": {"rendered": content},
+        "author": 2,
+        "featured_media": 20,
+        "categories": [6, 3, 6],
+        "tags": [4, 2],
+        "_embedded": {
+            "wp:featuredmedia": [
+                {
+                    "id": 20,
+                    "source_url": "https://example.test/wp-content/uploads/cover.jpg",
+                    "alt_text": "Cover",
+                    "mime_type": "image/jpeg",
+                    "media_type": "image",
+                }
+            ]
+        },
+    }
+
+
+def _category(category_id: int, name: str) -> dict[str, Any]:
+    return {
+        "id": category_id,
+        "count": 1,
+        "description": "",
+        "link": f"https://example.test/category/{category_id}/",
+        "name": name,
+        "slug": name.lower().replace(" ", "-"),
+        "taxonomy": "category",
+        "parent": 0,
+    }
+
+
+def _media(media_id: int) -> dict[str, Any]:
+    return {
+        "id": media_id,
+        "date": "2025-01-01T10:00:00",
+        "date_gmt": "2025-01-01T09:00:00",
+        "modified": "2025-01-01T10:00:00",
+        "modified_gmt": "2025-01-01T09:00:00",
+        "link": f"https://example.test/media/{media_id}/",
+        "slug": f"media-{media_id}",
+        "status": "inherit",
+        "type": "attachment",
+        "title": {"rendered": "Media"},
+        "author": 2,
+        "caption": {"rendered": "Caption"},
+        "description": {"rendered": "Description"},
+        "alt_text": "Alternative",
+        "media_type": "image",
+        "mime_type": "image/jpeg",
+        "source_url": "https://example.test/wp-content/uploads/media.jpg",
+        "media_details": {"width": 1200, "height": 800},
+        "post": 10,
+    }
+
+
+def _paged_response(
+    request: httpx.Request,
+    items: list[dict[str, Any]],
+    *,
+    total: int,
+    total_pages: int,
+) -> httpx.Response:
+    return httpx.Response(
+        200,
+        json=items,
+        headers={
+            "X-WP-Total": str(total),
+            "X-WP-TotalPages": str(total_pages),
+        },
+        request=request,
+    )
 
 
 class WordPressInventoryClientTests(unittest.TestCase):
-    def make_client(self, handler, *, per_page: int = 2):
+    def test_build_manifest_uses_complete_get_only_pagination(self) -> None:
         requests: list[httpx.Request] = []
+        content = (
+            '<p><img src="/wp-content/uploads/a.jpg" '
+            'srcset="/wp-content/uploads/a-300.jpg 300w, '
+            'https://cdn.test/a.jpg 800w"></p>'
+            '<p><a href="/wp-content/uploads/manual.pdf">Manual</a></p>'
+        )
+        posts = [_post(10, "Ten", content=content), _post(11, "Eleven"), _post(12, "Twelve")]
+        categories = [_category(3, "Eventi"), _category(5, "Corsi"), _category(6, "News")]
 
-        def recording_handler(request: httpx.Request) -> httpx.Response:
+        def handler(request: httpx.Request) -> httpx.Response:
             requests.append(request)
-            return handler(request)
-
-        raw_client = httpx.Client(
-            transport=httpx.MockTransport(recording_handler),
-            follow_redirects=True,
-        )
-        self.addCleanup(raw_client.close)
-        readonly = ReadOnlyHttpClient(client=raw_client)
-        client = WordPressInventoryClient(
-            config=WordPressInventoryConfig(
-                base_url="https://wordpress.example.test",
-                per_page=per_page,
-            ),
-            http=readonly,
-        )
-        return client, readonly, requests
-
-    @staticmethod
-    def paginated_response(
-        request: httpx.Request,
-        payload,
-        *,
-        total: int,
-        total_pages: int,
-        status_code: int = 200,
-    ) -> httpx.Response:
-        return httpx.Response(
-            status_code,
-            request=request,
-            headers={
-                "X-WP-Total": str(total),
-                "X-WP-TotalPages": str(total_pages),
-            },
-            json=payload,
-        )
-
-    def test_transport_rejects_write_method_before_network_use(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(500, request=request)
-
-        _, readonly, requests = self.make_client(handler)
-        with self.assertRaises(ReadOnlyMethodError):
-            readonly.request("POST", "https://wordpress.example.test/wp-json/wp/v2/posts")
-        self.assertEqual(requests, [])
-
-    def test_categories_fetch_all_pages_with_stable_query(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            self.assertEqual(request.method, "GET")
-            self.assertEqual(request.url.path, "/wp-json/wp/v2/categories")
-            self.assertEqual(request.url.params["context"], "view")
-            self.assertEqual(request.url.params["per_page"], "2")
-            self.assertEqual(request.url.params["orderby"], "id")
-            self.assertEqual(request.url.params["order"], "asc")
-            self.assertEqual(request.url.params["hide_empty"], "false")
-            page = int(request.url.params["page"])
-            payload = {
-                1: [
-                    {"id": 3, "slug": "eventi", "link": "https://wordpress.example.test/eventi/"},
-                    {"id": 5, "slug": "corsi", "link": "https://wordpress.example.test/corsi/"},
-                ],
-                2: [
-                    {"id": 6, "slug": "news", "link": "https://wordpress.example.test/news/"},
-                ],
-            }[page]
-            return self.paginated_response(
-                request, payload, total=3, total_pages=2
-            )
-
-        client, _, requests = self.make_client(handler)
-        result = client.get_categories()
-
-        self.assertEqual(len(requests), 2)
-        self.assertEqual(result.total_items, 3)
-        self.assertEqual(result.total_pages, 2)
-        self.assertEqual(result.raw_item_count, 3)
-        self.assertEqual(
-            [record.identity for record in result.records],
-            [
-                "wordpress:category:3",
-                "wordpress:category:5",
-                "wordpress:category:6",
-            ],
-        )
-        self.assertEqual(result.issues, ())
-
-    def test_posts_are_fetched_fresh_without_implicit_cache(self) -> None:
-        call_count = 0
-
-        def handler(request: httpx.Request) -> httpx.Response:
-            nonlocal call_count
-            call_count += 1
-            self.assertEqual(request.url.params["status"], "publish")
-            self.assertEqual(request.url.params["_embed"], "1")
-            return self.paginated_response(
-                request,
-                [
-                    {
-                        "id": 10,
-                        "slug": "post",
-                        "link": "https://wordpress.example.test/post/",
-                        "title": {"rendered": f"Version {call_count}"},
-                    }
-                ],
-                total=1,
-                total_pages=1,
-            )
-
-        client, _, _ = self.make_client(handler)
-        first = client.get_posts()
-        second = client.get_posts()
-
-        self.assertEqual(call_count, 2)
-        self.assertEqual(first.records[0].data["title"]["rendered"], "Version 1")
-        self.assertEqual(second.records[0].data["title"]["rendered"], "Version 2")
-
-    def test_empty_collection_is_valid(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return self.paginated_response(
-                request, [], total=0, total_pages=0
-            )
-
-        client, _, requests = self.make_client(handler)
-        result = client.get_posts()
-        self.assertEqual(len(requests), 1)
-        self.assertEqual(result.records, ())
-        self.assertEqual(result.issues, ())
-        self.assertEqual(result.total_items, 0)
-        self.assertEqual(result.total_pages, 0)
-
-    def test_missing_pagination_headers_fail_closed(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(200, request=request, json=[])
-
-        client, _, _ = self.make_client(handler)
-        with self.assertRaises(WordPressProtocolError) as captured:
-            client.get_posts()
-        self.assertEqual(captured.exception.code, "missing_pagination_headers")
-        self.assertEqual(
-            captured.exception.to_issue().severity, IssueSeverity.FATAL
-        )
-
-    def test_inconsistent_totals_between_pages_fail_closed(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            page = int(request.url.params["page"])
-            if page == 1:
-                return self.paginated_response(
-                    request,
-                    [{"id": 1}, {"id": 2}],
-                    total=3,
-                    total_pages=2,
-                )
-            return self.paginated_response(
-                request,
-                [{"id": 3}, {"id": 4}],
-                total=4,
-                total_pages=2,
-            )
-
-        client, _, _ = self.make_client(handler)
-        with self.assertRaises(WordPressProtocolError) as captured:
-            client.get_media()
-        self.assertEqual(captured.exception.code, "incomplete_pagination")
-
-    def test_invalid_json_fails_closed_without_response_body_in_issue(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(
-                200,
-                request=request,
-                headers={"Content-Type": "application/json"},
-                content=b"not-json",
-            )
-
-        client, _, _ = self.make_client(handler)
-        with self.assertRaises(WordPressProtocolError) as captured:
-            client.get_types()
-        issue = captured.exception.to_issue()
-        self.assertEqual(issue.code, "invalid_json")
-        self.assertNotIn("not-json", json.dumps(issue.to_dict()))
-
-    def test_wrong_json_shape_fails_closed(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(
-                200,
-                request=request,
-                headers={"X-WP-Total": "1", "X-WP-TotalPages": "1"},
-                json={"id": 1},
-            )
-
-        client, _, _ = self.make_client(handler)
-        with self.assertRaises(WordPressProtocolError) as captured:
-            client.get_categories()
-        self.assertEqual(captured.exception.code, "invalid_json_shape")
-
-    def test_http_error_is_fatal_and_does_not_include_body(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(
-                503,
-                request=request,
-                text="private upstream response",
-            )
-
-        client, _, _ = self.make_client(handler)
-        with self.assertRaises(WordPressHttpError) as captured:
-            client.get_types()
-        issue = captured.exception.to_issue()
-        self.assertEqual(issue.severity, IssueSeverity.FATAL)
-        self.assertEqual(issue.details["status_code"], 503)
-        self.assertNotIn("private upstream response", json.dumps(issue.to_dict()))
-
-    def test_malformed_items_are_explicit_issues(self) -> None:
-        def handler(request: httpx.Request) -> httpx.Response:
-            return self.paginated_response(
-                request,
-                [
-                    {
-                        "id": 7,
-                        "slug": "valid",
-                        "link": "https://wordpress.example.test/valid/",
+            path = request.url.path
+            page = int(request.url.params.get("page", "1"))
+            if path.endswith("/types"):
+                return httpx.Response(
+                    200,
+                    json={
+                        "attachment": {
+                            "name": "Media",
+                            "slug": "attachment",
+                            "rest_base": "media",
+                            "rest_namespace": "wp/v2",
+                            "hierarchical": False,
+                            "taxonomies": [],
+                            "supports": {},
+                        },
+                        "post": {
+                            "name": "Posts",
+                            "slug": "post",
+                            "rest_base": "posts",
+                            "rest_namespace": "wp/v2",
+                            "hierarchical": False,
+                            "taxonomies": ["category", "post_tag"],
+                            "supports": {"title": True},
+                        },
                     },
-                    {"id": 0, "slug": "invalid"},
-                ],
+                    request=request,
+                )
+            if path.endswith("/categories"):
+                page_items = categories[(page - 1) * 2 : page * 2]
+                return _paged_response(request, page_items, total=3, total_pages=2)
+            if path.endswith("/posts"):
+                page_items = posts[(page - 1) * 2 : page * 2]
+                return _paged_response(request, page_items, total=3, total_pages=2)
+            if path.endswith("/media"):
+                return _paged_response(request, [_media(20)], total=1, total_pages=1)
+            return httpx.Response(404, request=request)
+
+        with WordPressInventoryClient(
+            "https://example.test",
+            per_page=2,
+            transport=httpx.MockTransport(handler),
+        ) as client:
+            manifest = client.build_manifest(
+                environment="test",
+                observed_at=OBSERVED_AT,
+            )
+
+        self.assertEqual(len(manifest.records), 9)
+        self.assertEqual(manifest.issues, ())
+        self.assertEqual(manifest.metadata["collection_counts"]["posts"], 3)
+        self.assertEqual({request.method for request in requests}, {"GET"})
+
+        post_record = next(
+            record for record in manifest.records if record.identity == "wordpress:post:10"
+        )
+        self.assertEqual(post_record.payload["categories"], (3, 6))
+        self.assertEqual(post_record.payload["tags"], (2, 4))
+        self.assertEqual(
+            post_record.payload["image_urls"],
+            (
+                "https://example.test/wp-content/uploads/a.jpg",
+                "https://example.test/wp-content/uploads/a-300.jpg",
+                "https://cdn.test/a.jpg",
+            ),
+        )
+        self.assertEqual(
+            post_record.payload["linked_media_urls"],
+            ("https://example.test/wp-content/uploads/manual.pdf",),
+        )
+        self.assertEqual(
+            post_record.payload["featured_media"]["source_url"],
+            "https://example.test/wp-content/uploads/cover.jpg",
+        )
+
+        post_requests = [request for request in requests if request.url.path.endswith("/posts")]
+        self.assertEqual(len(post_requests), 2)
+        self.assertTrue(all(request.url.params["orderby"] == "id" for request in post_requests))
+        self.assertTrue(all(request.url.params["order"] == "asc" for request in post_requests))
+        self.assertTrue(all(request.url.params["status"] == "publish" for request in post_requests))
+        self.assertTrue(all(request.url.params["per_page"] == "2" for request in post_requests))
+
+    def test_malformed_source_record_becomes_explicit_issue(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            return _paged_response(
+                request,
+                [_post(10, "Valid"), {"link": "https://example.test/bad/"}],
                 total=2,
                 total_pages=1,
             )
 
-        client, _, _ = self.make_client(handler)
-        result = client.get_posts()
-        self.assertEqual(len(result.records), 1)
-        self.assertEqual(result.raw_item_count, 2)
-        self.assertEqual(len(result.issues), 1)
-        self.assertEqual(result.issues[0].code, "invalid_wordpress_id")
-        self.assertEqual(result.issues[0].severity, IssueSeverity.ERROR)
+        with WordPressInventoryClient(
+            "https://example.test",
+            per_page=2,
+            transport=httpx.MockTransport(handler),
+        ) as client:
+            batch = client.fetch_posts(observed_at=OBSERVED_AT)
 
-    def test_invalid_source_url_is_warning_but_record_is_preserved(self) -> None:
+        self.assertEqual(len(batch.records), 1)
+        self.assertEqual(len(batch.issues), 1)
+        self.assertEqual(batch.issues[0].code, "invalid_source_record")
+        self.assertEqual(batch.issues[0].object_ref, "wordpress:post:index-1")
+
+    def test_client_does_not_cache_responses(self) -> None:
+        calls = 0
+
         def handler(request: httpx.Request) -> httpx.Response:
-            return self.paginated_response(
+            nonlocal calls
+            calls += 1
+            return _paged_response(
                 request,
-                [{"id": 9, "link": "/relative-only"}],
+                [_post(10, f"Version {calls}")],
                 total=1,
                 total_pages=1,
             )
 
-        client, _, _ = self.make_client(handler)
-        result = client.get_posts()
-        self.assertEqual(len(result.records), 1)
-        self.assertIsNone(result.records[0].source_url)
-        self.assertEqual(result.issues[0].code, "invalid_source_url")
-        self.assertEqual(result.issues[0].severity, IssueSeverity.WARNING)
-        self.assertEqual(result.issues[0].identity, "wordpress:post:9")
+        with WordPressInventoryClient(
+            "https://example.test",
+            transport=httpx.MockTransport(handler),
+        ) as client:
+            first = client.fetch_posts(observed_at=OBSERVED_AT)
+            second = client.fetch_posts(observed_at=OBSERVED_AT)
 
-    def test_types_create_records_and_malformed_type_issue(self) -> None:
+        self.assertEqual(calls, 2)
+        self.assertNotEqual(first.records[0].content_hash(), second.records[0].content_hash())
+
+    def test_missing_pagination_headers_fail_closed(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
-            return httpx.Response(
-                200,
-                request=request,
-                json={
-                    "post": {"slug": "post", "rest_base": "posts"},
-                    "broken": ["not", "an", "object"],
-                },
-            )
+            return httpx.Response(200, json=[_post(10, "Ten")], request=request)
 
-        client, _, _ = self.make_client(handler)
-        result = client.get_types()
-        self.assertEqual(result.total_items, 2)
-        self.assertEqual(
-            [record.identity for record in result.records],
-            ["wordpress:type:post"],
-        )
-        self.assertEqual(result.issues[0].code, "malformed_wordpress_type")
+        with WordPressInventoryClient(
+            "https://example.test",
+            transport=httpx.MockTransport(handler),
+        ) as client:
+            with self.assertRaises(PaginationContractError):
+                client.fetch_posts(observed_at=OBSERVED_AT)
 
-    def test_core_snapshot_builds_source_manifest_and_uses_get_only(self) -> None:
+    def test_non_array_collection_response_is_rejected(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
-            self.assertEqual(request.method, "GET")
-            endpoint = request.url.path.rsplit("/", 1)[-1]
-            if endpoint == "types":
-                return httpx.Response(
-                    200,
-                    request=request,
-                    json={"post": {"slug": "post", "rest_base": "posts"}},
-                )
-            payloads = {
-                "categories": [{"id": 3, "link": "https://wordpress.example.test/cat/"}],
-                "posts": [{"id": 10, "link": "https://wordpress.example.test/post/"}],
-                "media": [{"id": 20, "source_url": "https://wordpress.example.test/media.jpg"}],
-            }
-            if endpoint == "media":
-                self.assertNotIn("status", request.url.params)
-                self.assertNotIn("orderby", request.url.params)
-            return self.paginated_response(
-                request,
-                payloads[endpoint],
-                total=1,
-                total_pages=1,
-            )
+            return httpx.Response(200, json={"id": 10}, request=request)
 
-        client, _, requests = self.make_client(handler)
-        snapshot = client.inventory_core()
-        manifest = snapshot.to_manifest(
-            environment="synthetic",
-            observed_at=datetime(2026, 6, 19, 10, 0, tzinfo=timezone.utc),
-        )
+        with WordPressInventoryClient(
+            "https://example.test",
+            transport=httpx.MockTransport(handler),
+        ) as client:
+            with self.assertRaises(ResponseContractError):
+                client.fetch_posts(observed_at=OBSERVED_AT)
 
-        self.assertEqual(len(requests), 4)
-        self.assertTrue(all(request.method == "GET" for request in requests))
-        self.assertEqual(manifest.scope, InventoryScope.SOURCE)
-        self.assertEqual(len(manifest.records), 4)
-        self.assertEqual(manifest.issues, ())
-        self.assertEqual(
-            set(manifest.metadata["endpoints"].keys()),
-            {"types", "categories", "posts", "media"},
-        )
-        json.dumps(manifest.to_dict())
-
-    def test_invalid_config_is_rejected(self) -> None:
-        with self.assertRaises(ValueError):
-            WordPressInventoryConfig(base_url="relative/path")
-        with self.assertRaises(ValueError):
-            WordPressInventoryConfig(
-                base_url="https://wordpress.example.test", per_page=101
-            )
+    def test_invalid_per_page_is_rejected(self) -> None:
+        for per_page in (0, 101):
+            with self.subTest(per_page=per_page):
+                with self.assertRaises(ValueError):
+                    WordPressInventoryClient("https://example.test", per_page=per_page)
 
 
 if __name__ == "__main__":

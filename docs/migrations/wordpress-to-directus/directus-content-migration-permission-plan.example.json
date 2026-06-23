@@ -1,0 +1,203 @@
+{
+  "kind": "directus_content_migration_permission_plan_example",
+  "status": "non_applied_example",
+  "date": "2026-06-22",
+  "target": {
+    "directus_version": "11.13.2",
+    "base_url": "https://cap-cms.skunklabs.uk",
+    "environment": "production"
+  },
+  "non_goals": [
+    "role_creation",
+    "policy_creation",
+    "permission_creation",
+    "user_creation",
+    "token_creation",
+    "directus_mutation",
+    "schema_apply",
+    "content_import",
+    "media_upload"
+  ],
+  "identities": [
+    {
+      "name": "directus-readonly-content-migration",
+      "purpose": [
+        "target_baseline",
+        "fresh_target_absence",
+        "route_collision_checks",
+        "post_run_invariant_checks"
+      ],
+      "permissions": [
+        {
+          "collection": "feeds",
+          "action": "read",
+          "permissions": {},
+          "validation": {},
+          "presets": null,
+          "fields": [
+            "id",
+            "status",
+            "slug",
+            "title",
+            "date",
+            "original_uri",
+            "gallery",
+            "category",
+            "cover"
+          ]
+        },
+        {
+          "collection": "categories",
+          "action": "read",
+          "permissions": {},
+          "validation": {},
+          "presets": null,
+          "fields": [
+            "key",
+            "title",
+            "description",
+            "status",
+            "sort",
+            "date_created",
+            "date_updated"
+          ]
+        },
+        {
+          "collection": "directus_files",
+          "action": "read",
+          "permissions": {},
+          "validation": {},
+          "presets": null,
+          "fields": [
+            "id",
+            "filename_disk",
+            "filename_download",
+            "title",
+            "type",
+            "filesize",
+            "folder",
+            "uploaded_on",
+            "modified_on"
+          ]
+        },
+        {
+          "collection": "directus_folders",
+          "action": "read",
+          "permissions": {},
+          "validation": {},
+          "presets": null,
+          "fields": [
+            "id",
+            "name",
+            "parent"
+          ]
+        }
+      ],
+      "denied_actions": [
+        "create",
+        "update",
+        "delete",
+        "share",
+        "schema",
+        "settings",
+        "users",
+        "roles",
+        "permissions",
+        "policies",
+        "flows",
+        "automations",
+        "admin"
+      ]
+    },
+    {
+      "name": "directus-createonly-content-migration",
+      "purpose": [
+        "approved_draft_feed_creation_only"
+      ],
+      "permissions": [
+        {
+          "collection": "feeds",
+          "action": "read",
+          "permissions": {},
+          "validation": {},
+          "presets": null,
+          "fields": [
+            "id",
+            "status",
+            "slug",
+            "title",
+            "date",
+            "original_uri",
+            "gallery"
+          ]
+        },
+        {
+          "collection": "feeds",
+          "action": "create",
+          "permissions": {},
+          "validation": {
+            "status": {
+              "_eq": "draft"
+            }
+          },
+          "presets": {
+            "status": "draft"
+          },
+          "fields": [
+            "status",
+            "slug",
+            "title",
+            "content",
+            "description",
+            "date",
+            "original_uri",
+            "gallery"
+          ]
+        }
+      ],
+      "denied_actions": [
+        "feeds.update",
+        "feeds.delete",
+        "categories.create",
+        "categories.update",
+        "categories.delete",
+        "directus_files.create",
+        "directus_files.update",
+        "directus_files.delete",
+        "directus_folders.create",
+        "directus_folders.update",
+        "directus_folders.delete",
+        "relations.create",
+        "relations.update",
+        "relations.delete",
+        "schema",
+        "settings",
+        "users",
+        "roles",
+        "permissions",
+        "policies",
+        "flows",
+        "automations",
+        "admin"
+      ]
+    }
+  ],
+  "live_verification_required_later": [
+    "create_only_identity_has_exact_expected_feeds_create_permission",
+    "validation_status_equals_draft",
+    "presets_status_equals_draft",
+    "no_additional_policy_broadens_create_update_delete_access",
+    "no_feeds_update_or_delete_access",
+    "no_schema_settings_users_roles_permissions_policies_access",
+    "no_app_or_admin_access",
+    "token_is_not_schema_capable_token",
+    "token_metadata_matches_content_migration_only"
+  ],
+  "warnings": [
+    "Directus policy behavior is additive.",
+    "Multiple policies can expand effective access.",
+    "Field validation is not enough if another policy grants broader access.",
+    "Executor-side status=draft enforcement remains mandatory.",
+    "Permission evidence must fail closed if the policy graph is ambiguous."
+  ]
+}

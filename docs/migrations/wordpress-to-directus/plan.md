@@ -8,26 +8,22 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [x] Reconcile WordPress REST source inventory with WXR media export evidence and controlled run artifacts outside Git.
+- [ ] Task B3 — implement gallery REST-type discovery and the ordered public-HTML fallback parser.
+
+## Task B slice status
+
+- [x] Task B1 — common manifest records, canonical JSON, SHA-256 hashing, explicit inventory issues, and strict pagination contracts with synthetic-data tests.
+- [x] Task B2 — fresh WordPress read-only client for post types, categories, published posts, media, content-media URL discovery, and complete pagination.
+- [ ] Task B3 — gallery REST discovery and ordered public-HTML fallback parser.
+- [ ] Task B4 — Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relevant relations.
+- [ ] Task B5 — generated frontend route inventory and collision metadata.
+- [ ] Task B6 — read-only CLI commands, controlled artifact output, and integrated synthetic-data tests.
 
 ## Next up
 
-1. Review Directus public-view gaps and decide whether to create a strict read-only identity for approved baseline capture.
-2. Inventory the current Directus schema, field types, constraints, relations, states, and readable permissions with the strict read-only identity once approved.
-3. Record the exact production Directus version and immutable image digest.
-
-## Task B — Read-only inventory implementation
-
-- [x] Slice 1: common manifest models, canonical JSON, SHA-256, JSONL, pagination contracts, and synthetic tests.
-- [x] Slice 2: WordPress read-only client for types, categories, posts, and media.
-- [x] Slice 3: gallery REST discovery and ordered public-HTML fallback.
-- [x] Slice 4: Directus read-only client for runtime metadata, schema metadata, feeds, categories, files, folders, and relations.
-- [x] Slice 5: repository route inventory and collision input contract.
-- [x] Slice 6: read-only CLI integration and end-to-end synthetic fixtures.
-- [x] Slice 7: local WXR media export inventory for WordPress attachments hidden from public REST.
-- [x] Slice 8: reconciliation workflow, historical mapping corroboration only, and write-manifest gating.
-
-Task B exit gate: all inventories are fresh by default, pagination and counts fail closed, generated artifacts stay outside Git, and no code path can emit a non-read request.
+1. Gallery source discovery.
+2. Directus read-only client.
+3. Generated route inventory.
 
 ## Phase 0 — Governance and scope
 
@@ -49,7 +45,6 @@ Exit gate: documentation is reviewed and no unresolved decision changes the safe
 - [ ] Record the exact production Directus version and immutable image digest.
 - [x] Inventory public WordPress archives, known historical category IDs, and overlapping category behavior.
 - [ ] Inventory WordPress REST types, categories, post/media totals, and complete pagination through the Task B client.
-- [x] Capture complete WordPress media evidence from an admin WXR export when public REST pagination omits private attachments.
 - [x] Verify that public gallery albums are available through `/gallery/` and `/dt-gallery/<slug>/` HTML routes.
 - [ ] Determine whether the gallery custom post type is exposed through WordPress REST or requires export/public-HTML fallback.
 - [x] Inventory frontend routes and identify global slug and route collision rules.
@@ -62,14 +57,13 @@ Exit gate: source and target contracts are known well enough to design determini
 
 ## Phase 2 — Safety controls and tests
 
-- [ ] Introduce a read-only HTTP client for source and target inventory.
+- [x] Introduce a guarded read-only HTTP client reusable by source and target inventory clients.
 - [ ] Add a create-only Directus client separated from the legacy mutable client.
-- [ ] Add a method and endpoint allowlist that rejects `PATCH`, `PUT`, and `DELETE`.
+- [x] Add a method allowlist that rejects every method except `GET` and `HEAD` before network transmission.
 - [ ] Add a test proving dry-run sends no non-read request.
 - [ ] Add a test proving protected target records cannot enter a write manifest.
 - [ ] Add a test proving ambiguous matches fail closed.
 - [ ] Add a test proving broad permissions or missing permission evidence stop execution.
-- [x] Establish immutable manifest, hashing, JSONL, issue, and pagination contracts without network or write behavior.
 - [ ] Remove stale-cache dependence from new migration commands.
 - [ ] Keep legacy delete and overwrite commands outside the approved execution path.
 
@@ -77,7 +71,7 @@ Exit gate: automated tests enforce the production invariant before a write path 
 
 ## Phase 3 — Target baseline
 
-- [ ] Define the target baseline entity schemas and canonical hashing rules using the common manifest contracts.
+- [ ] Define the baseline manifest schema and canonical hashing rules.
 - [ ] Inventory all feeds, files, folders, and relevant relations in scope.
 - [ ] Record file checksums where accessible and metadata fingerprints otherwise.
 - [ ] Include all statuses, not only published content.
@@ -90,12 +84,12 @@ Exit gate: every existing in-scope target object is represented as a protected a
 
 ## Phase 4 — Source inventory
 
-- [ ] Define the WordPress post, media, category, and gallery payload schemas using the common manifest contracts.
+- [x] Define the generic source manifest schema and canonical hashing rules.
 - [ ] Fetch all approved posts with complete pagination and no stale cache.
-- [ ] Capture categories, featured media, inline media, links, dates, and source hashes.
+- [x] Implement capture of categories, featured media, inline media, linked files, dates, and source hashes.
 - [ ] Discover all public gallery albums and ordered images.
 - [ ] Resolve original media URLs without mutating source or target.
-- [ ] Record source errors rather than silently omitting records.
+- [x] Record malformed source records as explicit inventory issues rather than silently omitting them.
 - [ ] Validate source counts against WordPress totals and archive pages.
 - [ ] Store the source inventory as a controlled run artifact.
 
@@ -106,7 +100,7 @@ Exit gate: every source record in scope is inventoried or explicitly classified 
 - [ ] Implement the reconciliation states defined in the specification.
 - [ ] Match accepted ledger entries first.
 - [ ] Validate exact `original_uri` matches.
-- [ ] Revalidate historical YAML mappings against the current target as corroboration only, never as authority.
+- [ ] Revalidate historical YAML mappings against the current target.
 - [ ] Treat slug/title/date/category similarity as manual-review evidence only.
 - [ ] Detect route, slug, source identity, and target identity collisions.
 - [ ] Classify source-target drift as protected, never as an update candidate.
