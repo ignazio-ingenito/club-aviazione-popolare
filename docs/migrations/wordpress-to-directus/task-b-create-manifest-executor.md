@@ -178,6 +178,37 @@ No `--execute` run was performed. Production content `POST /items/feeds`
 remains blocked until a separate final execution-readiness prompt reviews the
 dry-run reports and obtains explicit approval.
 
+## Final execution-readiness review - 2026-06-23
+
+A local readiness review validated Gate 1 permission evidence, the narrowed
+Gate 2 report, the narrowed approval/manifest hashes, the narrowed dry-run
+reports, and create-only SOPS secret key names without printing token values.
+
+Readiness artifact directory:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z
+```
+
+Readiness status:
+
+```text
+ready_for_explicit_execution_approval
+```
+
+Artifact hashes:
+
+```text
+artifact-contract-validation.json: c949b2ad813347ea3a65e58959ce1b03bea39cf0a866bd2538afec1b99e50a83
+createonly-secret-key-names.txt: fddb84f8d48b8d52bf059912d538af54b75a3f2c90018ed0e7200c4b4fef3ff7
+createonly-secret-key-validation.json: 4a98e27a4365a8a736bb0b4b4c1c23a05045f4e3e2c62fb7fc05f805fb10a492
+final-execution-readiness-report.json: 1b17bfac4f3703fdabb9086593cd16042044c228058aee054c734025f38f3b76
+```
+
+This is not execution approval. No `--execute` run was performed and no
+Directus mutation occurred. The next step is a separate explicit production
+execution prompt from the operator.
+
 ## Handoff
 
 ```yaml

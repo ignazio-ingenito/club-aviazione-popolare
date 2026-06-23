@@ -522,6 +522,40 @@ emesso alcun `POST /items/feeds`. Il prossimo task è una review indipendente
 dei report narrowed dry-run e, se accettati, un prompt separato di final
 execution-readiness.
 
+## Stato final execution-readiness - 2026-06-23
+
+La review finale locale ha validato:
+
+- Gate 1 permission evidence: `approved`;
+- Gate 2 ristretto: `approved`;
+- dry-run ristretto: `approved`;
+- chiavi richieste del secret SOPS create-only: presenti;
+- piano teorico: 28 `POST /items/feeds` draft;
+- richieste Directus inviate dal dry-run: 0;
+- `--execute`: non eseguito;
+- mutazioni Directus: nessuna.
+
+Directory readiness fuori Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z
+```
+
+Hash principali:
+
+```text
+artifact-contract-validation.json: c949b2ad813347ea3a65e58959ce1b03bea39cf0a866bd2538afec1b99e50a83
+createonly-secret-key-names.txt: fddb84f8d48b8d52bf059912d538af54b75a3f2c90018ed0e7200c4b4fef3ff7
+createonly-secret-key-validation.json: 4a98e27a4365a8a736bb0b4b4c1c23a05045f4e3e2c62fb7fc05f805fb10a492
+final-execution-readiness-report.json: 1b17bfac4f3703fdabb9086593cd16042044c228058aee054c734025f38f3b76
+```
+
+Status: `ready_for_explicit_execution_approval`.
+
+Questo non autorizza ancora l'esecuzione. Il prossimo passo è preparare un
+prompt separato di produzione che autorizzi esplicitamente `--execute` e
+`POST /items/feeds`, se l'operatore decide di procedere.
+
 Produrre anche un report umano contenente soltanto:
 
 - conteggi per stato;

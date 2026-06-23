@@ -8,20 +8,20 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Review the narrowed executor dry-run reports independently. Gate 1
-  permission evidence is ready, narrowed Gate 2 is approved, and the narrowed
-  executor dry-run is generated, but production content `POST` is still not
-  enabled.
+- [ ] Prepare a separate explicit production execution prompt. Final readiness
+  review is `ready_for_explicit_execution_approval`, but production content
+  `POST` is still not enabled.
 
 ## Next up
 
 1. Use `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json` as Gate 1 input.
 2. Use the narrowed manifest artifacts in `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z`.
-3. Review the narrowed executor dry-run reports generated in
+3. Use the final readiness report generated in
+   `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z`.
+4. Review the narrowed executor dry-run reports generated in
    `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/executor-dry-run-narrowed-20260623T192241Z`.
-4. Prepare a separate final execution-readiness prompt if the dry-run reports
-   are accepted; do not enable production content `POST /items/feeds` in this
-   slice.
+5. Prepare a separate explicit production execution prompt if the operator
+   approves production content `POST /items/feeds`.
 
 ## Task B — Read-only inventory implementation
 
@@ -293,8 +293,14 @@ Exit gate: the complete process passes twice without changing protected artifact
   The request plan contains 28 theoretical `POST /items/feeds` draft creates,
   `execute_requested=false`, `non_read_requests_sent=0`, and
   `post_requests_sent=0`.
-- [ ] Obtain explicit production approval for the exact manifest hash.
-- [ ] Prepare final execution-readiness review for the narrowed manifest.
+- [x] Prepare final execution-readiness review for the narrowed manifest.
+  Readiness artifact directory:
+  `/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z`.
+  Status: `ready_for_explicit_execution_approval`. Report SHA-256:
+  `1b17bfac4f3703fdabb9086593cd16042044c228058aee054c734025f38f3b76`.
+  No `--execute` run was performed and no Directus mutation was performed.
+- [ ] Obtain explicit production approval for the exact manifest hash and
+  execution prompt.
 - [ ] Execute writes serially with a unique run ID.
 - [ ] Stop immediately on any invariant failure or unexpected request.
 - [ ] Preserve logs, ledger entries, counts, and hashes.

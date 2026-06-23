@@ -169,6 +169,31 @@ Dry-run validation:
 This dry-run does not satisfy production execution approval by itself. It is an
 input for the separate final execution-readiness review.
 
+## Final execution-readiness review - 2026-06-23
+
+The final readiness review consumed:
+
+- Gate 1 `permission-evidence-create-only.json`: `approved`;
+- narrowed Gate 2 `fresh-target-absence-before-create-narrowed.json`:
+  `approved`;
+- narrowed dry-run reports: `approved`;
+- create-only SOPS secret key names: validated without printing values.
+
+Readiness artifact directory:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-after-gate2-20260623T162618Z/final-execution-readiness-20260623T195141Z
+```
+
+Final readiness report SHA-256:
+
+```text
+1b17bfac4f3703fdabb9086593cd16042044c228058aee054c734025f38f3b76
+```
+
+Status is `ready_for_explicit_execution_approval`. This does not authorize
+production `POST`; a separate explicit execution prompt is still required.
+
 ## Handoff
 
 ```yaml
