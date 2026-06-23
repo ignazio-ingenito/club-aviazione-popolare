@@ -62,6 +62,18 @@ Il prossimo passaggio richiede approvazione esplicita al task di
 permission-management, poi creazione della identity dedicata, SOPS del nuovo
 secret e raccolta GET-only del policy graph con il nuovo token create-only.
 
+Aggiornamento 2026-06-23: il task di permission-management è stato rilanciato
+con `APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. L'apply è parziale: sono stati
+creati ruolo, policy e due permission rows per
+`directus-createonly-content-migration`, ma la creazione dello user/token è
+fallita con HTTP 400 perché Directus ha rifiutato la placeholder email
+pianificata. Non esiste ancora il secret SOPS create-only, non esiste policy
+graph approved per la identity finale e la readiness produzione resta bloccata.
+Il prossimo task deve prima leggere e confrontare le risorse migration-owned già
+create, poi creare solo un service user/token valido se il recovery resta nel
+perimetro permission-management approvato. Non cancellare e non aggiornare alla
+cieca ruolo, policy o permission esistenti.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:

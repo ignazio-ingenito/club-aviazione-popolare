@@ -1,6 +1,6 @@
 # Task B slice 9.9 - Directus permission implementation plan
 
-Status: implementation plan only; not applied
+Status: implementation plan partially applied; execution identity blocked
 
 Date: 2026-06-22
 
@@ -260,6 +260,38 @@ approved as a separate task.
 The current dry-run scope does not include media, folder, relation, or ledger
 creation. Those permissions remain deferred even though the general migration
 specification may need them later.
+
+## Partial apply status
+
+On 2026-06-23, the permission-management task was rerun with
+`APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`.
+
+The apply attempted only the planned permission-management endpoint families:
+
+| Method | Endpoint | Result |
+| --- | --- | --- |
+| `POST` | `/roles` | succeeded |
+| `POST` | `/policies` | succeeded |
+| `POST` | `/permissions` | succeeded for `feeds.read` |
+| `POST` | `/permissions` | succeeded for draft-constrained `feeds.create` |
+| `POST` | `/users` | failed with HTTP 400 because Directus rejected the placeholder service email |
+
+The created policy was requested with `admin_access = false` and
+`app_access = false`. The created permissions remained within the current narrow
+stage: `feeds.read` and draft-constrained `feeds.create` only.
+
+The task did not perform `PATCH`, `PUT`, or `DELETE`. It did not mutate content,
+media, feed records, gallery records, schema, folders, or relations.
+
+No execution identity is valid yet because user/token creation did not
+complete. No create-only SOPS secret exists, and no approved policy graph
+evidence exists. Production create execution remains blocked.
+
+Recovery must not assume a blank target. The next permission-management task
+must read and compare the existing migration-owned role, policy, and permission
+rows before creating a valid dedicated service user/static token. If Directus
+requires changing existing role/policy/user state with `PATCH`, `PUT`, or
+broader permission scope, stop and request a separate approval.
 
 ## Future live verification gate
 

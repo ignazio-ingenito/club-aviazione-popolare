@@ -1,7 +1,7 @@
 # Task C - Directus policy graph live collector scaffold
 
 Status: implemented as mocked GET-only scaffold; live GET adapter
-investigations performed; live policy evidence still not collected
+investigations performed; live create-only policy evidence still not collected
 
 Date: 2026-06-22
 
@@ -210,6 +210,33 @@ Production readiness remains blocked. The next safe step is to rerun the
 permission-management task with explicit apply approval, create the dedicated
 identity, encrypt its credential with SOPS, and then run the GET-only policy
 graph collector using the new create-only credential.
+
+## Create-only identity partial apply
+
+On 2026-06-23, the permission-management task was rerun with
+`APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`.
+
+The apply created permission-management resources for the intended
+`directus-createonly-content-migration` identity, but stopped before producing a
+usable execution credential:
+
+- dedicated role created;
+- dedicated policy created with `admin_access = false` and `app_access = false`;
+- `feeds.read` permission created;
+- draft-constrained `feeds.create` permission created;
+- service user/static token creation failed with HTTP 400 because Directus
+  rejected the placeholder service email.
+
+No raw, normalized, or evaluation policy graph artifacts were created because
+there is still no create-only token. The create-only SOPS secret does not
+exist. Production readiness remains blocked.
+
+The next collector run must use only the final
+`directus-createonly-content-migration` token, not the admin/schema token. If
+the execution token intentionally cannot read roles, policies, or permissions,
+the policy graph evidence must be produced by a separately approved
+operator/admin read of the effective graph and then evaluated without
+broadening the execution identity.
 
 ## Token Handling
 

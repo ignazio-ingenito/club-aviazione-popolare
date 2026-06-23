@@ -1,6 +1,6 @@
 # Task B slice 9.8 - Directus migration identities and SOPS plan
 
-Status: design/scaffold only; no production action performed
+Status: permission-management partially applied; execution identity blocked
 
 Date: 2026-06-22
 
@@ -27,6 +27,13 @@ The current committed SOPS migration secrets contain one Directus token secret:
 metadata identifies it as a temporary schema-capable token for the approved
 `member_*` schema apply. It must not be used for WordPress content migration
 gates or imports.
+
+As of 2026-06-23, the dedicated create-only content-migration secret still does
+not exist:
+
+```text
+secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
+```
 
 ## Identity model
 
@@ -216,6 +223,74 @@ an existing migration-owned role/policy/user. The current planned execution
 scope remains narrower than the full future migration scope: `feeds.read` and
 draft-only `feeds.create` only. Media, folder, ledger, and relation creation
 remain deferred until separate approval updates this plan.
+
+## Partial create-only identity apply
+
+On 2026-06-23, the permission-management task was rerun with explicit apply
+approval:
+
+```text
+APPLY_DIRECTUS_CREATEONLY_IDENTITY=true
+```
+
+The run used the admin/schema credential only for this permission-management
+task and did not use it as a migration execution token.
+
+The run performed only these Directus mutation endpoint families:
+
+| Method | Endpoint | Result |
+| --- | --- | --- |
+| `POST` | `/roles` | created the dedicated migration role |
+| `POST` | `/policies` | created the dedicated migration policy with `admin_access = false` and `app_access = false` |
+| `POST` | `/permissions` | created `feeds.read` for the policy |
+| `POST` | `/permissions` | created draft-constrained `feeds.create` for the policy |
+| `POST` | `/users` | failed with HTTP 400 because the placeholder service email was rejected by Directus validation |
+
+No `PATCH`, `PUT`, or `DELETE` was performed. No content, media, feed, gallery,
+schema, folder, or relation endpoint was mutated.
+
+Because user/token creation failed:
+
+- no dedicated execution user is available;
+- no create-only token is available;
+- no create-only SOPS secret was written;
+- no live policy graph evidence was collected with the intended identity;
+- production readiness remains blocked.
+
+The apply audit is outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-apply-20260623T102813Z/directus-createonly-identity.apply.json
+```
+
+Artifact SHA-256:
+
+```text
+0391dbcf3f7aabc49e1bef2d91536c6835a285a17bb98ad472953ae008e71247
+```
+
+A follow-up GET-only partial-state check with the admin/schema credential
+returned HTTP 403 for the role, policy, and user list endpoints, so it was not
+usable as positive proof of the current live state. The partial-state check
+artifact is also outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-apply-20260623T102813Z/directus-createonly-identity.partial-state.json
+```
+
+Artifact SHA-256:
+
+```text
+450fd3e32a9a529f61709c31d301cd0001958094ea3005aa9255bbf3fdaa90d0
+```
+
+The next task must treat the migration-owned role, policy, and permissions as
+possibly existing. It must read and compare them before any further apply. Do
+not delete them and do not blindly update them. The narrowest expected recovery
+is to create a valid dedicated service user/static token associated with the
+existing migration-owned role, then encrypt the resulting credential with SOPS
+and run policy graph evidence collection. If that requires `PATCH`, `PUT`, or
+broader permissions, stop for a separate approval.
 
 ### Redacted YAML structure
 
