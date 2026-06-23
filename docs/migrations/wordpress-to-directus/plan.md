@@ -257,7 +257,16 @@ Exit gate: the complete process passes twice without changing protected artifact
 - [ ] Confirm the target has not changed since the approved baseline, or capture and approve a new baseline.
 - [ ] Verify the latest CNPG backup completed successfully.
 - [ ] Verify upload-volume protection and available capacity.
-- [ ] Verify create-only permissions immediately before execution.
+- [x] Verify create-only permissions immediately before execution. Gate 1
+  permission evidence was approved on 2026-06-23 with artifact
+  `/tmp/cap-migration-runs/20260622T110402Z/directus-policy-graph-admin-evidence-20260623T152143Z/permission-evidence-create-only.json`,
+  SHA-256 `7b7cbcc3878729b85430dea508c6e1c57744e56b0c251426ad917c1fae0ae9d6`.
+- [ ] Regenerate the approved create manifest before production execution.
+  Gate 2 fresh target absence was attempted on 2026-06-23 and rejected because
+  7 manifest slugs already exist in the target baseline/live Directus view
+  (`14` slug collision entries: live plus baseline evidence). Artifact:
+  `/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json`,
+  SHA-256 `addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9`.
 - [ ] Obtain explicit production approval for the exact manifest hash.
 - [ ] Run production dry-run.
 - [ ] Execute writes serially with a unique run ID.

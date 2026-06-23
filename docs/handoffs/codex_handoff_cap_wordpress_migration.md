@@ -415,6 +415,42 @@ Regole:
 - solo `create_candidate` potrà entrare in un futuro write manifest;
 - non generare ancora write manifest approvato né eseguire import.
 
+## Stato Gate 2 fresh target absence - 2026-06-23
+
+Il Gate 1 `permission-evidence-create-only.json` è approvato, ma il Gate 2
+fresh target absence generato il 2026-06-23 è respinto.
+
+Artifact:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json
+```
+
+SHA-256:
+
+```text
+addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9
+```
+
+Sintesi:
+
+- 35 operazioni controllate;
+- 71 richieste live, tutte `GET`;
+- nessun `POST`, `PATCH`, `PUT` o `DELETE`;
+- nessun token scritto negli artifact;
+- 0 route collision;
+- 0 collisioni su `original_uri`;
+- 0 check saltati;
+- 14 collisioni slug, cioè 7 slug unici già presenti sia nel baseline target
+  sia nella vista live Directus.
+
+Conseguenza operativa:
+
+- non eseguire `create_manifest_executor.py --execute` con questo manifest;
+- rigenerare o restringere il create manifest escludendo gli slug già presenti;
+- poi rigenerare un Gate 2 `approved` prima di qualsiasi prova della barriera
+  `--execute`.
+
 Produrre anche un report umano contenente soltanto:
 
 - conteggi per stato;

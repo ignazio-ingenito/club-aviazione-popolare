@@ -65,6 +65,46 @@ Result:
 - 15 create-manifest executor tests passed;
 - no synthetic test emitted a network request or production POST.
 
+## Gate 2 live result - 2026-06-23
+
+Fresh target absence evidence was generated outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json
+```
+
+The report is intentionally `rejected`, not approved.
+
+Findings:
+
+- the approved source artifacts matched the expected hashes;
+- the manifest contained 35 operations, all `draft` and `create_only`;
+- the create-only token could perform the required read-only checks;
+- live Directus checks used only `GET /server/info` and `GET /items/feeds`;
+- `71` live GET requests returned HTTP `200`;
+- no route collision, protected `original_uri` collision, ambiguous match, or
+  skipped check was found;
+- `14` slug collision entries were found, representing `7` unique manifest
+  slugs already present in both the target baseline and current live Directus
+  view.
+
+Artifact hashes:
+
+```text
+73f7cdb06cae1fc4080a7bde5a6518f0e06daf59640cd630b0819f1f2f50e308  fresh-target-absence-input-validation.json
+e42a1daa96efd1a95c35810c3dbe735a8d7880666779380e08c04b66cd173d8e  fresh-target-absence-live-requests.json
+addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9  fresh-target-absence-before-create.json
+```
+
+The validator correctly rejects this Gate 2 artifact with:
+
+```text
+fresh target absence status mismatch: expected 'approved', got 'rejected'
+```
+
+No `--execute` run was performed because a rejected absence gate is a stop
+condition.
+
 ## Handoff
 
 ```yaml

@@ -52,6 +52,40 @@ Real execution remains blocked in code after the pre-create safety gates pass.
 The next approved slice must implement the serial writer, media handling, and
 ledger-backed idempotency before any production POST is allowed.
 
+## Fresh target absence run - 2026-06-23
+
+Gate 2 was generated against the approved manifest hash
+`902e118a73acad4aacd504f6076ef867c7693f2d16144a45cdd78014269c6e4d`
+using only the create-only credential and live `GET` requests.
+
+Result:
+
+- status: `rejected`;
+- checked operations: `35`;
+- live requests: `71`, all `GET`;
+- live status codes: `200`;
+- route collisions: `0`;
+- protected `original_uri` collisions: `0`;
+- skipped checks: `0`;
+- slug collision entries: `14`, representing `7` unique manifest slugs
+  already present in the target baseline and current Directus view.
+
+Artifact:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/fresh-target-absence-before-create-20260623T155104Z/fresh-target-absence-before-create.json
+```
+
+SHA-256:
+
+```text
+addfd2adca5deb073e8aa4689acb76f704d0dafafd340223c9a7701c69e198e9
+```
+
+Because Gate 2 is rejected, `create_manifest_executor.py --execute` was not
+run. The approved manifest must be regenerated or narrowed to exclude existing
+target slugs before the execute boundary can be tested again.
+
 ## Handoff
 
 ```yaml
