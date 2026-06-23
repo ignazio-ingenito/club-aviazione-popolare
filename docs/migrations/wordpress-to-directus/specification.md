@@ -10,6 +10,11 @@ It MUST NOT update, delete, rename, move, replace, or re-relate any target objec
 
 An existing Directus record always wins over WordPress. Source drift is diagnostic information only.
 
+When a WordPress article is equal or strongly similar to an existing Directus
+article, the Directus article is treated as the definitive protected version.
+Strongly divergent matches are not migrated automatically; they are reported in
+a reconciliation difference list for later editorial review.
+
 The migration MUST fail closed when identity is ambiguous, inventory is incomplete, permissions are broader than approved, or baseline verification cannot be completed.
 
 ## 2. Definitions
@@ -103,6 +108,8 @@ Rules:
 - `parser.yaml` is historical evidence, never authoritative state;
 - a stale Directus ID invalidates the historical mapping;
 - slug or title alone MUST NOT authorize creation or mutation;
+- equal or strongly similar Directus articles are definitive and remain protected;
+- strongly divergent source-target matches MUST be listed with their differences for later reconciliation;
 - a route collision blocks automatic creation;
 - a matched target remains protected even when hashes differ;
 - uncertain cases stop in manual review.

@@ -136,17 +136,18 @@ Run reconciliation without write credentials.
 
 1. Load the accepted ledger first.
 2. Compare exact canonical source URLs with target `original_uri`.
-3. Revalidate every relevant `parser.yaml` mapping against the current target.
+3. Revalidate every relevant `parser.yaml` mapping against the current target as corroboration only; parser.yaml is never authoritative.
 4. Detect slug, route, title, date, category, and media evidence.
 5. Classify each source and target using the specification states.
 6. Treat every existing match and source-target drift as protected.
 7. Put ambiguous or conflicting candidates in manual review.
 8. Confirm every target-only object remains protected.
 9. Review all `create_candidate` records for public-route collisions.
-10. Produce a write manifest containing only approved new records.
-11. Hash and approve the reconciliation report and write manifest.
+10. Hash and approve the reconciliation report.
+11. Build a write manifest containing only approved new records from the approved reconciliation report.
+12. Hash and approve the write manifest.
 
-The reviewer must be able to explain why every write-manifest item is missing. “Not found in parser.yaml” is not sufficient evidence.
+The reviewer must be able to explain why every write-manifest item is missing. “Not found in parser.yaml” is not sufficient evidence, because parser.yaml is corroboration only.
 
 ## 11. Verify execution permissions
 

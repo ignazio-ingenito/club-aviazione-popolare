@@ -1,0 +1,167 @@
+{
+  "kind": "directus_policy_graph_evidence_example",
+  "status": "accepted_static_example",
+  "date": "2026-06-22",
+  "collected_at": "2026-06-22T00:00:00Z",
+  "target": {
+    "directus_version": "11.13.2",
+    "target_url": "https://cap-cms.skunklabs.uk",
+    "base_url_fingerprint": "sha256:example-directus-url-fingerprint",
+    "environment": "production",
+    "evidence_source": "synthetic_documentation_example"
+  },
+  "subject": {
+    "expected_identity": "directus-createonly-content-migration",
+    "user_fingerprint": "sha256:example-redacted-user-fingerprint",
+    "credential_fingerprint": "sha256:example-redacted-credential-fingerprint",
+    "credential_is_schema_capable_token": false
+  },
+  "policy_graph": {
+    "complete": true,
+    "sources": [
+      {
+        "source_fingerprint": "sha256:example-policy-source",
+        "source_name": "directus-createonly-content-migration",
+        "source_type": "access_policy",
+        "permissions": [
+          {
+            "collection": "feeds",
+            "action": "read",
+            "permissions": {},
+            "validation": {},
+            "presets": null,
+            "fields": [
+              "id",
+              "status",
+              "slug",
+              "title",
+              "date",
+              "original_uri",
+              "gallery"
+            ],
+            "classification": "planned"
+          },
+          {
+            "collection": "feeds",
+            "action": "create",
+            "permissions": {},
+            "validation": {
+              "status": {
+                "_eq": "draft"
+              }
+            },
+            "presets": {
+              "status": "draft"
+            },
+            "fields": [
+              "status",
+              "slug",
+              "title",
+              "content",
+              "description",
+              "date",
+              "original_uri",
+              "gallery"
+            ],
+            "classification": "exact_planned_grant"
+          }
+        ]
+      }
+    ]
+  },
+  "feeds_create_analysis": {
+    "planned_fields": [
+      "status",
+      "slug",
+      "title",
+      "content",
+      "description",
+      "date",
+      "original_uri",
+      "gallery"
+    ],
+    "effective_fields": [
+      "status",
+      "slug",
+      "title",
+      "content",
+      "description",
+      "date",
+      "original_uri",
+      "gallery"
+    ],
+    "validation_status_eq_draft": true,
+    "preset_status_eq_draft": true,
+    "broadening_permissions": [],
+    "ambiguous_permissions": [],
+    "result": "accepted_exact_or_narrower"
+  },
+  "effective_access": {
+    "allowed": [
+      "feeds.read",
+      "feeds.create"
+    ],
+    "denied": [
+      "feeds.update",
+      "feeds.delete",
+      "feeds.share",
+      "categories.create",
+      "categories.update",
+      "categories.delete",
+      "directus_files.create",
+      "directus_files.update",
+      "directus_files.delete",
+      "directus_folders.create",
+      "directus_folders.update",
+      "directus_folders.delete",
+      "schema.read",
+      "schema.write",
+      "settings.read",
+      "settings.write",
+      "users.read",
+      "users.write",
+      "roles.read",
+      "roles.write",
+      "permissions.read",
+      "permissions.write",
+      "policies.read",
+      "policies.write",
+      "flows.read",
+      "flows.write",
+      "automations.read",
+      "automations.write",
+      "admin"
+    ]
+  },
+  "forbidden_access": {
+    "any_forbidden_allowed": false,
+    "violations": []
+  },
+  "redaction": {
+    "token_values": "REDACTED",
+    "authorization_headers": "REDACTED",
+    "cookies": "REDACTED",
+    "passwords": "REDACTED",
+    "email_addresses": "REDACTED_OR_EXAMPLE_INVALID",
+    "stable_fingerprints_only": true
+  },
+  "failure_conditions": [
+    "policy_graph_incomplete",
+    "subject_mismatch",
+    "directus_version_unreviewed",
+    "feeds_create_without_draft_validation",
+    "feeds_create_without_draft_preset",
+    "feeds_create_broader_than_planned_fields",
+    "feeds_update_or_delete_allowed",
+    "system_resource_access_allowed",
+    "schema_capable_token_detected",
+    "secret_pattern_detected",
+    "non_get_method_required_for_collection"
+  ],
+  "approval_gate": {
+    "live_collection_requires_explicit_approval": true,
+    "production_post_authorized_by_this_artifact": false,
+    "role_or_permission_changes_authorized_by_this_artifact": false,
+    "migration_execute_authorized_by_this_artifact": false
+  }
+}

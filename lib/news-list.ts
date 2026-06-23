@@ -21,8 +21,7 @@ export type NewsListItem = {
 const sanitizePreview = (html: string = "") => {
   const $ = cheerio.load(html)
   $("img, h1, h2, h3, h4, h5, h6").remove()
-  $("div,p,span").contents().unwrap()
-  return $.html().replaceAll(/&nbsp;/g, " ")
+  return $.text().replaceAll(/\u00a0/g, " ").replaceAll(/\s+/g, " ").trim()
 }
 
 export const toNewsListItem = (feed: Feed): NewsListItem => {
