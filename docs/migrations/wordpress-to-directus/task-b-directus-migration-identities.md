@@ -1,6 +1,6 @@
 # Task B slice 9.8 - Directus migration identities and SOPS plan
 
-Status: permission-management partially applied; execution identity blocked
+Status: create-only execution identity created; permission evidence blocked
 
 Date: 2026-06-22
 
@@ -28,12 +28,16 @@ metadata identifies it as a temporary schema-capable token for the approved
 `member_*` schema apply. It must not be used for WordPress content migration
 gates or imports.
 
-As of 2026-06-23, the dedicated create-only content-migration secret still does
-not exist:
+As of 2026-06-23, the dedicated create-only content-migration secret exists and
+is SOPS-encrypted:
 
 ```text
 secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
 ```
+
+It contains the create-only role id, static token, service email, target URL,
+creation timestamp, identity name, and purpose. Do not print decrypted values
+or use this credential for permission-management actions.
 
 ## Identity model
 
@@ -356,9 +360,92 @@ directus-createonly-identity-recovery-apply.json:
 4a6cf757ac822e91991e1a6204782477c560736daf8f562336fce3f06dc56ffa
 ```
 
-The next recovery attempt needs a Directus-accepted, non-personal service email.
-It must not duplicate role, policy, or permission rows. It must repeat fresh
-GET-only comparison before any new `POST /users`.
+This initial recovery attempt was superseded by the valid-email recovery below.
+
+## Valid-email recovery and create-only secret
+
+On 2026-06-23, the recovery task was rerun with explicit apply approval and the
+Directus-accepted service email:
+
+```text
+cap-migration@skunklabs.uk
+```
+
+The task repeated fresh GET-only comparison before any mutation and classified
+the live state as:
+
+```text
+partial_state_matches_expected
+```
+
+The only recovery mutation performed was:
+
+| Method | Endpoint | Result |
+| --- | --- | --- |
+| `POST` | `/users` | created the dedicated service user and static token |
+
+No role, policy, or permission rows were created, updated, or deleted during
+this recovery. No `PATCH`, `PUT`, or `DELETE` was performed. No content, media,
+feed, gallery, schema, folder, or relation endpoint was mutated.
+
+The encrypted secret was created at:
+
+```text
+secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
+```
+
+Verified decrypted key names only:
+
+```text
+target_url
+identity_name
+role_id
+token
+service_email
+created_at
+purpose
+```
+
+Encrypted secret SHA-256:
+
+```text
+6d2a03b1d6ae0ba5fc44574443d282093b24dfefaee9cc3f7bb50ae1ba9b51a1
+```
+
+Recovery artifacts are outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-recovery-20260623T124439Z/directus-createonly-identity-recovery-comparison.probe.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-recovery-20260623T124439Z/directus-createonly-identity-recovery-apply.json
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-recovery-20260623T124439Z/directus-policy-graph-collection.status.json
+```
+
+Artifact SHA-256:
+
+```text
+directus-createonly-identity-recovery-comparison.probe.json:
+1c8cfb27874458673d15e56b41583e0f4dda555c66a0bd606159eb163bc938de
+
+directus-createonly-identity-recovery-apply.json:
+3b4cc130f2426fb5c94a8c9b4e5eebf505b4d5f06822b3c23e6e8ebb7dd4e493
+
+directus-policy-graph-collection.status.json:
+ec6f7bf28e63e2169def7b61368d28d2539d02267de8c7adcbf2b6c67e476f33
+```
+
+The live policy graph collector was then run with the create-only token. It
+failed closed at:
+
+```text
+GET /roles -> HTTP 403
+```
+
+No raw, normalized, or evaluation policy graph artifacts were created. This is
+consistent with the denied-permission model for the execution identity, but it
+means production readiness remains blocked until an approved operator/admin
+redacted policy graph export or equivalent permission evidence is evaluated.
+Do not broaden the execution identity just to make policy evidence collection
+pass.
 
 ### Redacted YAML structure
 

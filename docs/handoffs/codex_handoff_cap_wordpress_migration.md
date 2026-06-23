@@ -83,9 +83,20 @@ tentato solo `POST /users`, ma Directus ha rifiutato sia
 `directus-createonly-content-migration@cap-migration.local` sia
 `directus-createonly-content-migration@example.invalid` con HTTP 400
 `FAILED_VALIDATION` sul campo `email`. Nessuno user, token o secret SOPS
-create-only è stato creato. Serve una email service non personale accettata da
-Directus; poi bisogna ripetere il confronto GET-only prima di un nuovo
-`POST /users`.
+create-only è stato creato. Questo tentativo è superato dal recovery con email
+valida registrato sotto.
+
+Aggiornamento 2026-06-23: il recovery è stato rilanciato con la email valida
+`cap-migration@skunklabs.uk`. Dopo un nuovo confronto live GET-only classificato
+`partial_state_matches_expected`, è stato eseguito solo `POST /users`, creando
+lo user dedicato e il token statico create-only. Il secret cifrato ora esiste in
+`secrets/migration/directus-createonly-content-migration.20260622.sops.yaml`.
+La raccolta live del policy graph con il token create-only è stata tentata, ma
+si è fermata correttamente su `GET /roles` con HTTP 403. Non sono stati creati
+artifact raw/normalized/evaluation. La readiness produzione resta bloccata:
+serve una evidenza policy graph redatta con export operator/admin redatto e
+sanitizzato, oppure prova equivalente approvata separatamente. Non ampliare il
+token di esecuzione per far passare il collector.
 
 ## Documenti obbligatori
 

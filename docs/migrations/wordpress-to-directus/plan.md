@@ -8,13 +8,13 @@ This is the canonical binary plan. Every checkbox is either completed (`[x]`) or
 
 ## Current active task
 
-- [ ] Provide a Directus-accepted service email for the dedicated create-only content-migration identity recovery. The live partial state now matches the approved role/policy/permission plan, but Directus rejected both service emails allowed by the recovery prompt.
+- [ ] Produce approved permission evidence for the dedicated create-only content-migration identity. The service user, static token, and encrypted SOPS secret now exist, but the live collector cannot collect policy graph evidence with the create-only token because `GET /roles` returns 403.
 
 ## Next up
 
-1. Provide a valid, non-personal service email accepted by Directus for `POST /users`.
-2. Rerun only the service-user/token recovery after fresh GET-only comparison again proves the partial state still matches the approved plan.
-3. Store the create-only credential in SOPS and collect approved GET-only policy graph evidence before any content execution.
+1. Do not broaden the create-only execution identity to read roles, policies, or permissions.
+2. Produce a separately approved operator/admin redacted policy graph export or equivalent permission proof for `directus-createonly-content-migration`.
+3. Evaluate that evidence before any content execution or production `POST /items/feeds`.
 
 ## Task B — Read-only inventory implementation
 
@@ -134,9 +134,9 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Prepare a dry-run Directus create-only identity plan for `directus-createonly-content-migration` and perform GET-only discovery. No matching role, policy, or planned service user currently exists; no Directus mutation was performed because the apply approval environment flag was absent.
 - [x] Attempt the approved Directus create-only identity apply with `APPLY_DIRECTUS_CREATEONLY_IDENTITY=true`. The task created only permission-management resources: the dedicated role, dedicated policy, `feeds.read`, and draft-constrained `feeds.create`; it stopped before creating a usable execution identity because `POST /users` rejected the placeholder service email.
 - [x] Run the approved recovery task with fresh GET-only comparison. Final comparison classified the partial state as `partial_state_matches_expected`: exactly one migration-owned role, one migration-owned policy, expected `feeds.read`, draft-constrained `feeds.create`, zero service users for the two planned emails, and no detected update/delete/wildcard permission.
-- [ ] Provide a Directus-accepted valid service email. Recovery `POST /users` was attempted with `directus-createonly-content-migration@cap-migration.local` and `directus-createonly-content-migration@example.invalid`; Directus rejected both with `FAILED_VALIDATION` for the `email` field, so no service user or token was created.
-- [ ] Create `secrets/migration/directus-createonly-content-migration.20260622.sops.yaml` only after a create-only token exists. No create-only SOPS secret exists yet.
-- [ ] Provide a Directus migration identity or operator-generated redacted policy export with complete permission rows. No approved policy graph evidence artifact exists yet for create execution.
+- [x] Recover the create-only service user and static token with a Directus-accepted valid service email. The recovery used `cap-migration@skunklabs.uk` and only `POST /users` after fresh GET-only comparison.
+- [x] Create `secrets/migration/directus-createonly-content-migration.20260622.sops.yaml` after the create-only token exists. The secret is SOPS-encrypted and contains `target_url`, `identity_name`, `role_id`, `token`, `service_email`, `created_at`, and `purpose`.
+- [ ] Provide a Directus migration identity policy graph export or equivalent operator-generated redacted permission evidence with complete permission rows. The live collector was run with the create-only token and failed closed at `GET /roles` with HTTP 403, so no approved policy graph evidence artifact exists yet for create execution.
 - [x] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
 - [ ] Apply schema changes only after explicit production approval.

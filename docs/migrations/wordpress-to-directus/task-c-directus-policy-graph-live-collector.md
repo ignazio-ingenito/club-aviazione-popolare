@@ -1,7 +1,7 @@
 # Task C - Directus policy graph live collector scaffold
 
 Status: implemented as mocked GET-only scaffold; live GET adapter
-investigations performed; live create-only policy evidence still not collected
+investigations performed; create-only collector attempt blocked by 403
 
 Date: 2026-06-22
 
@@ -177,7 +177,7 @@ The sanitized live evidence showed:
 
 This classifies the stored role id as `wrong_role_id` for the
 WordPress-to-Directus content migration. The documented target identity remains
-`directus-createonly-content-migration`, stored in a distinct future secret:
+`directus-createonly-content-migration`, now stored in a distinct encrypted secret:
 
 ```text
 secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
@@ -255,6 +255,45 @@ directus-createonly-content-migration@example.invalid
 No create-only token exists yet, so the live policy graph collector was not run
 with the final execution identity. No raw, normalized, or evaluation artifacts
 exist for the create-only identity. Production readiness remains blocked.
+
+## Create-only token collector attempt
+
+On 2026-06-23, the recovery task was rerun with the valid service email:
+
+```text
+cap-migration@skunklabs.uk
+```
+
+After fresh GET-only comparison again classified the partial state as
+`partial_state_matches_expected`, recovery created the dedicated service user
+and static token with only:
+
+```text
+POST /users
+```
+
+The create-only credential was stored in:
+
+```text
+secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
+```
+
+The collector was then run with the create-only token, not the admin/schema
+token. It failed closed before artifact generation:
+
+```text
+GET /roles -> HTTP 403
+```
+
+No raw, normalized, or evaluation policy graph artifacts were created. This is
+consistent with the execution identity being denied roles, policies, and
+permissions access, but it means the collector cannot prove the effective
+policy graph using that token alone.
+
+Production readiness remains blocked. The next safe evidence path is a
+separately approved operator/admin redacted policy graph export or equivalent
+permission proof for the dedicated create-only identity. Do not broaden the
+execution identity just to make the collector pass.
 
 ## Token Handling
 

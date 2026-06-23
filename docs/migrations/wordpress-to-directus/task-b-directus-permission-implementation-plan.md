@@ -1,6 +1,6 @@
 # Task B slice 9.9 - Directus permission implementation plan
 
-Status: implementation plan partially applied; execution identity blocked
+Status: implementation plan applied for create-only identity; evidence blocked
 
 Date: 2026-06-22
 
@@ -283,9 +283,9 @@ stage: `feeds.read` and draft-constrained `feeds.create` only.
 The task did not perform `PATCH`, `PUT`, or `DELETE`. It did not mutate content,
 media, feed records, gallery records, schema, folders, or relations.
 
-No execution identity is valid yet because user/token creation did not
-complete. No create-only SOPS secret exists, and no approved policy graph
-evidence exists. Production create execution remains blocked.
+No execution identity was valid yet because user/token creation did not
+complete. No create-only SOPS secret existed, and no approved policy graph
+evidence existed. Production create execution remained blocked.
 
 Recovery must not assume a blank target. The next permission-management task
 must read and compare the existing migration-owned role, policy, and permission
@@ -328,9 +328,58 @@ Both responses were HTTP 400 `FAILED_VALIDATION` for the `email` field.
 
 No service user was created, no static token was created, no encrypted
 create-only secret was written, and no policy graph evidence was collected.
-Production create execution remains blocked until a Directus-accepted
-non-personal service email is provided and the recovery task is rerun after
-fresh GET-only comparison.
+This failed email recovery was superseded by the valid-email recovery below.
+
+## Valid-email recovery status
+
+On 2026-06-23, the recovery task reran with explicit apply approval and the
+Directus-accepted service email:
+
+```text
+cap-migration@skunklabs.uk
+```
+
+Before mutation, the task repeated GET-only comparison and again classified the
+live state as:
+
+```text
+partial_state_matches_expected
+```
+
+The only recovery mutation was:
+
+| Method | Endpoint | Result |
+| --- | --- | --- |
+| `POST` | `/users` | succeeded; created dedicated service user and static token |
+
+No role, policy, or permission rows were created, updated, or deleted during
+this recovery. No `PATCH`, `PUT`, or `DELETE` was performed. No content, media,
+feed, gallery, schema, folder, or relation endpoint was mutated.
+
+The create-only credential is now stored only in the encrypted SOPS file:
+
+```text
+secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
+```
+
+The decrypted key names are:
+
+```text
+target_url
+identity_name
+role_id
+token
+service_email
+created_at
+purpose
+```
+
+The live policy graph collector was run with the create-only token and failed
+closed at `GET /roles` with HTTP 403. No raw, normalized, or evaluation policy
+graph artifacts were created. Production create execution remains blocked until
+a separately approved operator/admin redacted policy graph export or equivalent
+permission evidence proves the effective policy graph without broadening the
+execution identity.
 
 ## Future live verification gate
 
