@@ -54,6 +54,14 @@ Serve ancora una identità dedicata `directus-createonly-content-migration`
 oppure un export policy redatto dall'operatore con permission rows complete.
 Finché questa evidenza manca, la readiness di produzione resta bloccata.
 
+Aggiornamento 2026-06-23: è stato eseguito un dry-run del setup
+`directus-createonly-content-migration`. Il flag di apply non era presente,
+quindi non sono state fatte mutazioni Directus. La discovery GET-only ha trovato
+zero ruoli, zero policy e zero utenti corrispondenti al nome/email pianificati.
+Il prossimo passaggio richiede approvazione esplicita al task di
+permission-management, poi creazione della identity dedicata, SOPS del nuovo
+secret e raccolta GET-only del policy graph con il nuovo token create-only.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:

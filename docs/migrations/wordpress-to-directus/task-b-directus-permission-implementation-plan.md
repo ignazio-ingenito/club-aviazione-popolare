@@ -234,6 +234,33 @@ The create-only identity must deny:
 - App/Admin access;
 - wildcard/system capabilities.
 
+## Dry-run apply plan status
+
+On 2026-06-23, a dry-run plan for the
+`directus-createonly-content-migration` identity was generated outside Git. The
+plan was not applied because the explicit apply approval environment flag was
+absent.
+
+The proposed apply request list is intentionally limited to permission
+management resources:
+
+| Method | Endpoint |
+| --- | --- |
+| `POST` | `/roles` |
+| `POST` | `/policies` |
+| `POST` | `/permissions` |
+| `POST` | `/permissions` |
+| `POST` | `/users` |
+
+No `PATCH`, `PUT`, or `DELETE` is approved for this identity setup. If Directus
+requires one of those methods to attach policy, role, permission, user, or
+static credential data, the apply path must stop and be redesigned or explicitly
+approved as a separate task.
+
+The current dry-run scope does not include media, folder, relation, or ledger
+creation. Those permissions remain deferred even though the general migration
+specification may need them later.
+
 ## Future live verification gate
 
 Before any approved staging or production execution, generate fresh permission

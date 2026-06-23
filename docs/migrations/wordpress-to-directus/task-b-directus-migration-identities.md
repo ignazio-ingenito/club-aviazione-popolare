@@ -178,6 +178,45 @@ Where `<capability>` is one of:
 
 Do not reuse `directus-schema-token.*.sops.yaml` for content migration.
 
+## Dry-run create-only identity discovery
+
+On 2026-06-23, a permission-management dry-run prepared the
+`directus-createonly-content-migration` identity plan and performed GET-only
+discovery against the live Directus target using the admin/schema credential
+only for this permission-management check.
+
+No Directus mutation was performed because the explicit apply approval
+environment flag was absent.
+
+Sanitized discovery results:
+
+- `GET /server/info`: 200;
+- `GET /roles?filter[name][_eq]=directus-createonly-content-migration`: 200,
+  zero matching roles;
+- `GET /policies?filter[name][_eq]=directus-createonly-content-migration`:
+  200, zero matching policies;
+- `GET /users?filter[email][_eq]=directus-createonly-content-migration@example.invalid`:
+  200, zero matching users;
+- `GET /permissions?limit=1`: 200, permission rows readable.
+
+The dry-run artifact is outside Git:
+
+```text
+/tmp/cap-migration-runs/20260622T110402Z/directus-createonly-identity-20260623T100342Z/directus-createonly-identity.plan.json
+```
+
+Artifact SHA-256:
+
+```text
+b651cdef0a7ff916081b58634c3587e89c2ec436819241837a66d3e04dc3813c
+```
+
+The next approved apply must create new dedicated resources instead of updating
+an existing migration-owned role/policy/user. The current planned execution
+scope remains narrower than the full future migration scope: `feeds.read` and
+draft-only `feeds.create` only. Media, folder, ledger, and relation creation
+remain deferred until separate approval updates this plan.
+
 ### Redacted YAML structure
 
 Read-only token:

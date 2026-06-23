@@ -189,6 +189,28 @@ remains blocked until a dedicated create-only migration identity or an
 operator-generated redacted policy export with complete permission rows is
 provided and evaluated.
 
+## Create-only identity setup dry-run
+
+On 2026-06-23, a permission-management dry-run prepared the intended
+`directus-createonly-content-migration` role/policy/user plan and performed
+GET-only discovery before any apply.
+
+The dry-run found:
+
+- no existing role named `directus-createonly-content-migration`;
+- no existing policy named `directus-createonly-content-migration`;
+- no existing user matching the planned service email;
+- `/permissions?limit=1` remains readable to the admin/schema credential.
+
+No Directus mutation was performed. No create-only encrypted secret was created.
+No live policy graph evidence was collected for the intended identity because
+the identity does not yet exist and no execution credential exists.
+
+Production readiness remains blocked. The next safe step is to rerun the
+permission-management task with explicit apply approval, create the dedicated
+identity, encrypt its credential with SOPS, and then run the GET-only policy
+graph collector using the new create-only credential.
+
 ## Token Handling
 
 The token is accepted only as a function argument or through `DIRECTUS_TOKEN` in

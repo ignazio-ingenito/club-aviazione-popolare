@@ -131,6 +131,7 @@ Exit gate: every proposed write is a new object with unambiguous evidence and ex
 - [x] Adapt the live collector `/policies` query to the Directus 11.13.2 relation filter shape after GET-only live probing.
 - [x] Resolve the live collector `/permissions` empty response with GET-only live probing. The selected role's attached policy has no readable permission rows, while `/permissions` itself is readable; this is not a collector query mismatch.
 - [x] Verify the currently stored `DIRECTUS_ROLE_ID` in `secrets/migration/directus-schema-token.20260622.sops.yaml` with GET-only live evidence. It resolves to the `Administrator` role and `Administrator` policy with admin/app access, so it is the wrong role id for the intended create-only content-migration identity.
+- [x] Prepare a dry-run Directus create-only identity plan for `directus-createonly-content-migration` and perform GET-only discovery. No matching role, policy, or planned service user currently exists; no Directus mutation was performed because the apply approval environment flag was absent.
 - [ ] Provide a Directus migration identity or operator-generated redacted policy export with complete permission rows. No approved policy graph evidence artifact exists yet for create execution.
 - [x] Design the append-only ledger schema and supersession model.
 - [ ] Review the schema design separately before applying it.
