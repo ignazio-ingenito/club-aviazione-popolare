@@ -154,6 +154,41 @@ safe path is to provide a Directus migration identity or an operator-generated,
 redacted policy export with complete permission rows, then rerun evidence
 collection without enabling production `POST`.
 
+## Live role identity finding
+
+On 2026-06-23, a GET-only identity verification checked the
+`DIRECTUS_ROLE_ID` currently stored in:
+
+```text
+secrets/migration/directus-schema-token.20260622.sops.yaml
+```
+
+Only SOPS key names were printed. Secret values, headers, role IDs, and policy
+IDs were not written to Git or included in documentation.
+
+The sanitized live evidence showed:
+
+- the configured role is named `Administrator`;
+- the attached policy is named `Administrator`;
+- the selected policy reports `admin_access = true` and `app_access = true`;
+- the selected policy still reports zero permission rows;
+- `/permissions?limit=1` is readable and returns permission rows globally;
+- candidate permission filters for the selected policy return zero rows.
+
+This classifies the stored role id as `wrong_role_id` for the
+WordPress-to-Directus content migration. The documented target identity remains
+`directus-createonly-content-migration`, stored in a distinct future secret:
+
+```text
+secrets/migration/directus-createonly-content-migration.20260622.sops.yaml
+```
+
+No Directus roles, policies, permissions, users, tokens, schema, content, media,
+feeds, or galleries were changed during the verification. Production readiness
+remains blocked until a dedicated create-only migration identity or an
+operator-generated redacted policy export with complete permission rows is
+provided and evaluated.
+
 ## Token Handling
 
 The token is accepted only as a function argument or through `DIRECTUS_TOKEN` in

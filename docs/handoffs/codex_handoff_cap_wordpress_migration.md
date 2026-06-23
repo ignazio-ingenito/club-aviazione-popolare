@@ -41,6 +41,19 @@ Ogni articolo, file, cartella, cover, categoria e relazione già presente in Dir
 
 Directus è autorevole per tutto ciò che esiste già. Le differenze con WordPress sono drift protetto, non update candidate.
 
+## Stato permessi Directus content migration
+
+Aggiornamento 2026-06-23: il `DIRECTUS_ROLE_ID` presente in
+`secrets/migration/directus-schema-token.20260622.sops.yaml` è stato verificato
+con sole richieste GET e risulta legato al ruolo `Administrator` e alla policy
+`Administrator`, con `admin_access` e `app_access` attivi. Questo classifica il
+ruolo come `wrong_role_id` per la migrazione WordPress-to-Directus.
+
+Non usare il secret `directus-schema-token` per gate o import content migration.
+Serve ancora una identità dedicata `directus-createonly-content-migration`
+oppure un export policy redatto dall'operatore con permission rows complete.
+Finché questa evidenza manca, la readiness di produzione resta bloccata.
+
 ## Documenti obbligatori
 
 Leggere prima di lavorare:
