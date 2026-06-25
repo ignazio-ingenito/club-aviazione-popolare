@@ -667,3 +667,56 @@ next_action: ""
 ```
 
 La risposta finale deve dichiarare esplicitamente che nessun artefatto preesistente di Directus è stato modificato o eliminato.
+
+## 2026-06-25 - Create-manifest serial writer implemented
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+The create-manifest executor now has a gated serial writer for the narrowed
+public create migration. The writer remains behind the existing execution
+gates and requires `--execute`, `DIRECTUS_TOKEN`, approved permission evidence,
+approved fresh target absence evidence, approved manifest/profile artifacts,
+and an explicit operator approval prompt before any production write.
+
+Implemented behavior:
+
+- validates the request plan before transport use;
+- posts only to `/items/feeds`;
+- sends only draft payloads;
+- writes serially;
+- stops on the first HTTP or validation error;
+- rejects `PATCH`, `PUT`, and `DELETE` before transport use;
+- writes `execution_events.jsonl` incrementally after each successful create;
+- writes `execution_report.json` only after a fully successful run;
+- supports `--fresh-target-absence-sha256` so the production prompt can bind
+  execution to the same-moment Gate 2 refresh artifact.
+
+Validation performed:
+
+```text
+UV_CACHE_DIR=/tmp/uv-cache uv run python -m unittest discover -s tests -p 'test_pre_create_gates.py' -v
+UV_CACHE_DIR=/tmp/uv-cache uv run python -m unittest discover -s tests -p 'test_create_manifest_executor.py' -v
+UV_CACHE_DIR=/tmp/uv-cache uv run python -m unittest discover -s tests -p 'test_directus_policy_*.py' -v
+UV_CACHE_DIR=/tmp/uv-cache uv run python -m compileall -q .
+```
+
+Result:
+
+```text
+test_pre_create_gates.py: Ran 21 tests, OK
+Ran 23 tests, OK
+test_directus_policy_*.py: Ran 72 tests, OK
+compileall: exit 0
+```
+
+Next action:
+
+```text
+Commit the writer/docs update, then use the production prompt only after the
+operator supplies the exact production approval sentence.
+```

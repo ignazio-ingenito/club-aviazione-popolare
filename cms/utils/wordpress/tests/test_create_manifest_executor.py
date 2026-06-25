@@ -340,12 +340,17 @@ class CreateManifestExecutorTests(unittest.TestCase):
     def test_execute_with_rejected_target_gate_fails_before_transport(self) -> None:
         self.assert_rejected_gate_fails_before_transport(reject_permission=False)
 
-    def test_execute_with_approved_gates_reaches_boundary_without_post(self) -> None:
+    def test_execute_with_approved_gates_posts_draft_items_serially(self) -> None:
         requests: list[httpx.Request] = []
 
         def handler(request: httpx.Request) -> httpx.Response:
             requests.append(request)
-            return httpx.Response(201, request=request, json={"data": {"id": 1}})
+            payload = json.loads(request.content.decode("utf-8"))
+            return httpx.Response(
+                201,
+                request=request,
+                json={"data": {"id": f"created-{len(requests)}", "status": payload["status"]}},
+            )
 
         raw = httpx.Client(transport=httpx.MockTransport(handler))
         self.addCleanup(raw.close)
@@ -371,23 +376,46 @@ class CreateManifestExecutorTests(unittest.TestCase):
                 approval_sha=approval_sha,
                 target_url="https://directus.example.test",
             )
-            with self.assertRaisesRegex(CreateManifestExecutorError, "real writer is not implemented"):
-                run_executor(
-                    manifest_path=manifest_path,
-                    approval_path=approval_path,
-                    output_dir=Path(tmp) / "reports",
-                    execute=True,
-                    client=client,
-                    auth_token="token",
-                    permission_evidence_path=permission_path,
-                    fresh_target_absence_path=absence_path,
-                    directus_url="https://directus.example.test",
-                    expected_manifest_sha256=manifest_sha,
-                    expected_approval_sha256=approval_sha,
-                )
-        self.assertEqual(requests, [])
+            result = run_executor(
+                manifest_path=manifest_path,
+                approval_path=approval_path,
+                output_dir=Path(tmp) / "reports",
+                execute=True,
+                client=client,
+                auth_token="token",
+                permission_evidence_path=permission_path,
+                fresh_target_absence_path=absence_path,
+                directus_url="https://directus.example.test",
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+            )
+            execution_report = json.loads(Path(result["reports"]["execution_report"]).read_text(encoding="utf-8"))
+            execution_events = (Path(tmp) / "reports" / "execution_events.jsonl").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(result["executed_operations"], 35)
+        self.assertEqual(len(requests), 35)
+        self.assertEqual(len(execution_events), 35)
+        self.assertEqual({request.method for request in requests}, {"POST"})
+        self.assertEqual({request.url.path for request in requests}, {"/items/feeds"})
+        self.assertEqual(execution_report["executed_operations"], 35)
+        self.assertEqual({item["status"] for item in execution_report["created"]}, {"draft"})
 
-    def test_execute_with_approved_gates_builds_safe_client_when_missing(self) -> None:
+    def test_execute_accepts_explicit_fresh_target_absence_hash(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            return httpx.Response(201, request=request, json={"data": {"id": len(requests), "status": "draft"}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
         with self.artifact_paths() as (
             manifest_path,
             approval_path,
@@ -402,12 +430,63 @@ class CreateManifestExecutorTests(unittest.TestCase):
                 approval_sha=approval_sha,
                 target_url="https://directus.example.test",
             )
-            with self.assertRaisesRegex(CreateManifestExecutorError, "real writer is not implemented"):
+            result = run_executor(
+                manifest_path=manifest_path,
+                approval_path=approval_path,
+                output_dir=Path(tmp) / "reports",
+                execute=True,
+                client=client,
+                auth_token="token",
+                permission_evidence_path=permission_path,
+                fresh_target_absence_path=absence_path,
+                fresh_target_absence_sha256=sha256_bytes(absence_path.read_bytes()),
+                directus_url="https://directus.example.test",
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+            )
+        self.assertEqual(result["executed_operations"], 35)
+        self.assertEqual(len(requests), 35)
+
+    def test_execute_stops_on_first_failed_post(self) -> None:
+        requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            requests.append(request)
+            if len(requests) == 3:
+                return httpx.Response(500, request=request, json={"errors": [{"message": "boom"}]})
+            return httpx.Response(201, request=request, json={"data": {"id": len(requests), "status": "draft"}})
+
+        raw = httpx.Client(transport=httpx.MockTransport(handler))
+        self.addCleanup(raw.close)
+        client = DirectusCreateOnlyClient(
+            config=DirectusCreateOnlyConfig(
+                base_url="https://directus.example.test",
+                allowed_item_collections=("feeds",),
+                auth_token="token",
+            ),
+            http=raw,
+        )
+        with self.artifact_paths() as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            _counts,
+        ), TemporaryDirectory() as tmp:
+            permission_path, absence_path = self.write_gate_reports(
+                Path(tmp),
+                manifest_path=manifest_path,
+                manifest_sha=manifest_sha,
+                approval_sha=approval_sha,
+                target_url="https://directus.example.test",
+            )
+            with self.assertRaises(httpx.HTTPStatusError):
                 run_executor(
                     manifest_path=manifest_path,
                     approval_path=approval_path,
                     output_dir=Path(tmp) / "reports",
                     execute=True,
+                    client=client,
                     auth_token="token",
                     permission_evidence_path=permission_path,
                     fresh_target_absence_path=absence_path,
@@ -415,6 +494,9 @@ class CreateManifestExecutorTests(unittest.TestCase):
                     expected_manifest_sha256=manifest_sha,
                     expected_approval_sha256=approval_sha,
                 )
+            execution_events = (Path(tmp) / "reports" / "execution_events.jsonl").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(requests), 3)
+        self.assertEqual(len(execution_events), 2)
 
     def test_non_draft_operation_fails(self) -> None:
         manifest = self.synthetic_manifest()

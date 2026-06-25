@@ -209,6 +209,30 @@ This is not execution approval. No `--execute` run was performed and no
 Directus mutation occurred. The next step is a separate explicit production
 execution prompt from the operator.
 
+## Serial feed writer implementation - 2026-06-25
+
+The executor now has a real serial writer behind the existing execute gates.
+It still performs no production write unless `--execute`, `DIRECTUS_TOKEN`,
+approved permission evidence, approved fresh target absence, and the approved
+manifest/profile are all supplied.
+
+Implemented behavior:
+
+- validates the approved request plan before transport use;
+- posts only to `/items/feeds`;
+- sends only draft payloads;
+- writes operations serially;
+- stops on the first HTTP or validation error;
+- rejects `PATCH`, `PUT`, and `DELETE` before transport use;
+- writes `execution_events.jsonl` incrementally after each successful create;
+- writes `execution_report.json` only after a fully successful run.
+- supports `--fresh-target-absence-sha256` so an execution prompt can bind the
+  run to the same-moment fresh target absence refresh artifact.
+
+The writer was verified with mocked HTTP tests only. No production `--execute`
+run was performed and no Directus mutation occurred in this implementation
+slice.
+
 ## Handoff
 
 ```yaml

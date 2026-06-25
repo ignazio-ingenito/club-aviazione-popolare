@@ -100,6 +100,7 @@ class ExecutorReports:
     request_plan: dict[str, Any]
     dry_run_report: dict[str, Any]
     stop_condition_report: dict[str, Any]
+    execution_report: dict[str, Any] | None = None
 
 
 def load_and_validate_manifest(
@@ -259,6 +260,7 @@ def run_executor(
     client: DirectusCreateOnlyClient | None = None,
     permission_evidence_path: Path | str | None = None,
     fresh_target_absence_path: Path | str | None = None,
+    fresh_target_absence_sha256: str | None = None,
     artifact_profile: str = DEFAULT_ARTIFACT_PROFILE,
     expected_manifest_sha256: str | None = None,
     expected_approval_sha256: str | None = None,
@@ -286,6 +288,7 @@ def run_executor(
             auth_token=auth_token,
             permission_evidence_path=permission_evidence_path,
             fresh_target_absence_path=fresh_target_absence_path,
+            fresh_target_absence_sha256=fresh_target_absence_sha256,
             artifact_profile=artifact_profile,
             expected_manifest_sha256=expected_manifest_sha256,
             expected_approval_sha256=expected_approval_sha256,
@@ -300,12 +303,32 @@ def run_executor(
                 auth_token=auth_token,
             )
         )
-        if execution_client is not client:
-            execution_client.close()
-        paths = write_reports(reports, output_dir=output_dir)
-        raise CreateManifestExecutorError(
-            "Execution boundary passed, but real writer is not implemented in this slice."
+        output_path = Path(output_dir)
+        paths = write_reports(reports, output_dir=output_path)
+        try:
+            execution_report = _execute_request_plan(
+                execution_client,
+                reports.request_plan,
+                execution_events_path=output_path / "execution_events.jsonl",
+            )
+        finally:
+            if execution_client is not client:
+                execution_client.close()
+        executed = execution_report["executed_operations"]
+        execution_report_path = output_path / "execution_report.json"
+        if execution_report_path.exists():
+            raise FileExistsError(f"Refusing to overwrite existing report: {execution_report_path}")
+        execution_report_path.write_text(
+            json.dumps(execution_report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
         )
+        paths["execution_report"] = execution_report_path
+        return {
+            "execute": execute,
+            "executed_operations": executed,
+            "reports": {name: str(path) for name, path in paths.items()},
+            "request_plan_sha256": canonical_sha256(reports.request_plan),
+        }
 
     paths = write_reports(reports, output_dir=output_dir)
     return {
@@ -329,6 +352,8 @@ def write_reports(reports: ExecutorReports, *, output_dir: Path | str) -> dict[s
         "dry_run_report": reports.dry_run_report,
         "stop_condition_report": reports.stop_condition_report,
     }
+    if reports.execution_report is not None:
+        payloads["execution_report"] = reports.execution_report
     paths: dict[str, Path] = {}
     for name, payload in payloads.items():
         path = destination / f"{name}.json"
@@ -354,6 +379,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--permission-evidence", help="permission-evidence-create-only.json path for execute mode.")
     parser.add_argument("--fresh-target-absence", help="fresh-target-absence-before-create.json path for execute mode.")
     parser.add_argument(
+        "--fresh-target-absence-sha256",
+        help="Expected sha256 for the fresh target absence artifact used in execute mode.",
+    )
+    parser.add_argument(
         "--artifact-profile",
         choices=sorted(APPROVED_ARTIFACT_PROFILES),
         default=DEFAULT_ARTIFACT_PROFILE,
@@ -372,6 +401,7 @@ def main(argv: list[str] | None = None) -> int:
         auth_token=token,
         permission_evidence_path=args.permission_evidence,
         fresh_target_absence_path=args.fresh_target_absence,
+        fresh_target_absence_sha256=args.fresh_target_absence_sha256,
     )
     print(json.dumps(result, sort_keys=True))
     return 0
@@ -385,6 +415,7 @@ def _validate_execute_gates(
     auth_token: str | None,
     permission_evidence_path: Path | str | None,
     fresh_target_absence_path: Path | str | None,
+    fresh_target_absence_sha256: str | None,
     artifact_profile: str,
     expected_manifest_sha256: str,
     expected_approval_sha256: str,
@@ -406,12 +437,13 @@ def _validate_execute_gates(
         expected_approval_sha256=expected_approval_sha256,
         expected_counts=expected_counts,
     )
-    if profile.fresh_target_absence_sha256 is not None:
+    expected_fresh_target_absence_sha256 = fresh_target_absence_sha256 or profile.fresh_target_absence_sha256
+    if expected_fresh_target_absence_sha256 is not None:
         fresh_target_absence_sha256 = _file_sha256(Path(fresh_target_absence_path))
-        if fresh_target_absence_sha256 != profile.fresh_target_absence_sha256:
+        if fresh_target_absence_sha256 != expected_fresh_target_absence_sha256:
             raise CreateManifestExecutorError(
                 "Fresh target absence sha256 mismatch: "
-                f"expected {profile.fresh_target_absence_sha256}, got {fresh_target_absence_sha256}."
+                f"expected {expected_fresh_target_absence_sha256}, got {fresh_target_absence_sha256}."
             )
     permission_evidence = _read_json_object(Path(permission_evidence_path))
     fresh_target_absence = _read_json_object(Path(fresh_target_absence_path))
@@ -431,6 +463,55 @@ def _validate_execute_gates(
         )
     except PreCreateGateError as exc:
         raise CreateManifestExecutorError(str(exc)) from exc
+
+
+def _execute_request_plan(
+    client: DirectusCreateOnlyClient,
+    request_plan: Mapping[str, Any],
+    *,
+    execution_events_path: Path,
+) -> dict[str, Any]:
+    operations = request_plan.get("operations")
+    if not isinstance(operations, list):
+        raise CreateManifestExecutorError("Request plan operations must be a list before execution.")
+
+    created: list[dict[str, Any]] = []
+    for index, operation in enumerate(operations, start=1):
+        if not isinstance(operation, Mapping):
+            raise CreateManifestExecutorError("Every request plan operation must be an object.")
+        method = _require_text(operation.get("method"), "method").upper()
+        endpoint = _require_text(operation.get("endpoint"), "endpoint")
+        if method != "POST":
+            raise CreateManifestExecutorError(f"Execution allows only POST, got {method}.")
+        if endpoint != "/items/feeds":
+            raise CreateManifestExecutorError(f"Execution allows only /items/feeds, got {endpoint}.")
+        payload = operation.get("payload")
+        if not isinstance(payload, Mapping):
+            raise CreateManifestExecutorError("Every request plan operation must include a payload object.")
+        if payload.get("status") != "draft":
+            raise CreateManifestExecutorError("Execution allows only draft payloads.")
+
+        data = client.create_item("feeds", payload)
+        event = {
+            "sequence": index,
+            "operation_id": operation.get("operation_id"),
+            "operation": operation.get("operation"),
+            "source_identity": operation.get("source_identity"),
+            "target_collection": "feeds",
+            "target_id": data.get("id"),
+            "status": data.get("status", payload.get("status")),
+        }
+        created.append(event)
+        with execution_events_path.open("a", encoding="utf-8") as events:
+            events.write(json.dumps(event, ensure_ascii=False, sort_keys=True) + "\n")
+
+    return {
+        "kind": "execution_report",
+        "executed_operations": len(created),
+        "created": created,
+        "forbidden_methods_sent": [],
+        "post_endpoints": ["/items/feeds"] if created else [],
+    }
 
 
 def _artifact_profile(name: str) -> ArtifactProfile:
