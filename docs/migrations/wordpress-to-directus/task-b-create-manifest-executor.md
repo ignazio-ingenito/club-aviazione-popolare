@@ -233,6 +233,72 @@ The writer was verified with mocked HTTP tests only. No production `--execute`
 run was performed and no Directus mutation occurred in this implementation
 slice.
 
+## Recovered narrowed artifacts - 2026-06-25
+
+The previous narrowed artifact directory under `/tmp` was not present in the
+current workspace. The original 35-operation artifacts remained available under:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z
+```
+
+A recovered narrowed artifact set was generated outside Git by removing the
+same 7 documented slug-colliding article operations from the original manifest
+and approval.
+
+Recovered directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z
+```
+
+Recovered hashes:
+
+```text
+migration-approval-narrowed-recovered.json: ad4568ff085c6364afb6e91c74a068dbf1d9065f86cf7dbb252895ba69dcbd88
+create-manifest-draft-only-narrowed-recovered.json: 787aab1c088f148c8231fbe3de94ff538e2bb7a989a535387ecf61a011d8597f
+narrowing-recovery-report.json: 223b612db95df8a96715db7eaf2c6d9d19f5d243afdcd30ea0b63ccfda5c530a
+```
+
+Counts:
+
+```text
+create_feed_draft: 21
+create_gallery_draft: 7
+total_operations: 28
+```
+
+The executor now records the recovered profile:
+
+```text
+narrowed_recovered_20260625T164519Z
+```
+
+Recovered dry-run result:
+
+```text
+report_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/executor-dry-run-recovered
+planned_methods: POST
+planned_endpoints: /items/feeds
+operation_count: 28
+post_requests_sent: 0
+non_read_requests_sent: 0
+```
+
+Recovered dry-run hashes:
+
+```text
+validation_report.json: a5d10657c330719691e35bc9f2f348911ab63d52224edbece6778471b966b44b
+request_plan.json: bb9744e03971e99fd935a6f26e7d0944aeaea22275200c8d63e0a633eb50bd77
+dry_run_report.json: d3cbc41a12464013c3418766d55f1d44209fe91ff01fee9948b9f2fccd9bc02e
+stop_condition_report.json: 76210e5303e4300d54e4c6ef8a1cf6b548785f8e40ee63509389516a12b0c658
+```
+
+The old narrowed Gate 2/readiness artifacts were not recovered. Production
+execution must therefore create a same-moment GET-only fresh target absence
+refresh and pass its SHA through `--fresh-target-absence-sha256` before any
+`POST`.
+
 ## Handoff
 
 ```yaml

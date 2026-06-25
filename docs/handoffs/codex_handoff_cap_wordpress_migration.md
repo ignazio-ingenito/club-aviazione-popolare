@@ -720,3 +720,75 @@ Next action:
 Commit the writer/docs update, then use the production prompt only after the
 operator supplies the exact production approval sentence.
 ```
+
+## 2026-06-25 - Narrowed artifacts recovered before production
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+The old narrowed artifact directory referenced under `/tmp` was no longer
+available. The original 35-operation artifacts were still present under:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z
+```
+
+A new recovered narrowed artifact set was generated outside Git by removing the
+same 7 documented slug-colliding article operations.
+
+Recovered directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z
+```
+
+Recovered artifact hashes:
+
+```text
+migration-approval-narrowed-recovered.json: ad4568ff085c6364afb6e91c74a068dbf1d9065f86cf7dbb252895ba69dcbd88
+create-manifest-draft-only-narrowed-recovered.json: 787aab1c088f148c8231fbe3de94ff538e2bb7a989a535387ecf61a011d8597f
+narrowing-recovery-report.json: 223b612db95df8a96715db7eaf2c6d9d19f5d243afdcd30ea0b63ccfda5c530a
+```
+
+Recovered dry-run:
+
+```text
+report_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/executor-dry-run-recovered
+request_plan.json: bb9744e03971e99fd935a6f26e7d0944aeaea22275200c8d63e0a633eb50bd77
+validation_report.json: a5d10657c330719691e35bc9f2f348911ab63d52224edbece6778471b966b44b
+dry_run_report.json: d3cbc41a12464013c3418766d55f1d44209fe91ff01fee9948b9f2fccd9bc02e
+stop_condition_report.json: 76210e5303e4300d54e4c6ef8a1cf6b548785f8e40ee63509389516a12b0c658
+```
+
+Executor profile:
+
+```text
+narrowed_recovered_20260625T164519Z
+```
+
+Counts:
+
+```text
+create_feed_draft: 21
+create_gallery_draft: 7
+total_operations: 28
+```
+
+Validation:
+
+- local manifest/approval validation accepted the recovered artifacts;
+- dry-run planned only `POST /items/feeds`;
+- dry-run sent `0` POST requests and `0` non-read requests;
+- no Directus request was sent.
+
+Important:
+
+```text
+The old narrowed Gate 2/readiness artifacts were not recovered. Before any
+production POST, run a same-moment GET-only fresh target absence refresh and
+pass its hash through --fresh-target-absence-sha256.
+```

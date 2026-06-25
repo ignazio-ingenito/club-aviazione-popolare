@@ -45,6 +45,7 @@ class ArtifactProfile:
 
 ORIGINAL_ARTIFACT_PROFILE = "original_20260622T110402Z"
 NARROWED_ARTIFACT_PROFILE = "narrowed_after_gate2_20260623T162618Z"
+RECOVERED_NARROWED_ARTIFACT_PROFILE = "narrowed_recovered_20260625T164519Z"
 APPROVED_ARTIFACT_PROFILES: Mapping[str, ArtifactProfile] = {
     ORIGINAL_ARTIFACT_PROFILE: ArtifactProfile(
         name=ORIGINAL_ARTIFACT_PROFILE,
@@ -61,6 +62,16 @@ APPROVED_ARTIFACT_PROFILES: Mapping[str, ArtifactProfile] = {
         approval_sha256="6b4093177cf4156084292add1bb1e7adac802d9f8c60e1633b5fc68621d98994",
         manifest_sha256="9dd3289b2db550dc329032e7e825e74a48449a07ff69547ee455c3f4d9dbc0f9",
         fresh_target_absence_sha256="bbf399f35c138396dc3240c5198c05ef8d45f7d7f95296f087bc377ab39a8a55",
+        counts={
+            "create_feed_draft": 21,
+            "create_gallery_draft": 7,
+            "total_operations": 28,
+        },
+    ),
+    RECOVERED_NARROWED_ARTIFACT_PROFILE: ArtifactProfile(
+        name=RECOVERED_NARROWED_ARTIFACT_PROFILE,
+        approval_sha256="ad4568ff085c6364afb6e91c74a068dbf1d9065f86cf7dbb252895ba69dcbd88",
+        manifest_sha256="787aab1c088f148c8231fbe3de94ff538e2bb7a989a535387ecf61a011d8597f",
         counts={
             "create_feed_draft": 21,
             "create_gallery_draft": 7,
