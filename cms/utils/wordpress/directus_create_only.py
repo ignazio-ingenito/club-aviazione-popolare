@@ -16,6 +16,7 @@ import httpx
 
 
 CREATE_ONLY_METHODS = frozenset({"GET", "HEAD", "POST"})
+DEFAULT_USER_AGENT = "cap-wordpress-migration/1.0"
 
 
 class DirectusCreateOnlyError(RuntimeError):
@@ -52,11 +53,13 @@ class DirectusCreateOnlyConfig:
     allow_files: bool = True
     allow_folders: bool = True
     auth_token: str | None = None
+    user_agent: str = DEFAULT_USER_AGENT
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "base_url", _require_absolute_http_url(self.base_url, "base_url"))
         collections = tuple(_require_text(collection, "allowed_item_collections") for collection in self.allowed_item_collections)
         object.__setattr__(self, "allowed_item_collections", collections)
+        object.__setattr__(self, "user_agent", _require_text(self.user_agent, "user_agent"))
         if self.auth_token is not None:
             token = self.auth_token.strip()
             if not token:
@@ -186,9 +189,8 @@ class DirectusCreateOnlyClient:
         return urljoin(self.config.base_url + "/", _require_text(endpoint, "endpoint").lstrip("/"))
 
     def _merge_headers(self, headers: Mapping[str, str] | None) -> dict[str, str] | None:
-        if self.config.auth_token is None and headers is None:
-            return None
         merged = dict(headers or {})
+        merged.setdefault("User-Agent", self.config.user_agent)
         if self.config.auth_token is not None:
             merged["Authorization"] = f"Bearer {self.config.auth_token}"
         return merged

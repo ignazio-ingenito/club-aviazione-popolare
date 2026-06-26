@@ -981,3 +981,98 @@ Resolve why the create-only token now receives HTTP 403 on the GET-only target
 absence checks. Production execution remains blocked until a fresh Gate2 report
 is approved immediately before --execute.
 ```
+
+## 2026-06-26 - Permission verification root cause and refreshed gates
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+The permission failure was investigated read-only. The create-only token and
+admin/schema token were not the root cause. The failing production Gate2 refresh
+used Python `urllib` without an explicit `User-Agent`; that request shape is
+currently rejected with HTTP 403 when `Authorization` is present. The same
+tokens work with `curl`, and Python `urllib` works when it sends:
+
+```text
+User-Agent: cap-wordpress-migration/1.0
+```
+
+Code updates:
+
+- `directus_create_only.py` now sends a default
+  `User-Agent: cap-wordpress-migration/1.0`;
+- `directus_policy_collector.py` now sends the same User-Agent for live GET
+  collection;
+- mocked tests assert the User-Agent is sent and can be overridden.
+
+Read-only debug artifact:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/directus-createonly-permission-debug-20260626T070916Z/directus-createonly-permission-debug.sanitized.json
+```
+
+Debug hash:
+
+```text
+directus-createonly-permission-debug.sanitized.json: 7b3146cdeac0921648b9020eb22081ec5b7071151ffad751ccb2d8d7f7ff8e3c
+urllib-user-agent-probe.sanitized.json: c3e0004a42757bfc1ff651b9b4e6421685eaff6fb5b174c93007787269f824fe
+```
+
+Refreshed permission verification run:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/directus-permission-verification-20260626T071556Z
+```
+
+Gate1 policy graph status:
+
+```text
+status: approved
+```
+
+Gate1 hashes:
+
+```text
+directus-createonly-policy-graph.raw.json: b2ad69af371334171e974cfac32b7e8fb04f33b422c9acd92096c449a1e1bc2e
+directus-createonly-policy-graph.normalized.json: aa0dfb65adb2a1309ebc0949ce29a41a8ee6fed1f3ab1195f5f9fd6a1c0ff328
+directus-createonly-policy-graph.evaluation.json: 794246ab503bc950327c83b4b0336dbc3a474909c66db309309cee2996dcf43c
+permission-evidence-create-only.json: 290fe70e8b5e83f63622e45599333919c0634c035f9ede501fa7c9e0e38f7eb1
+```
+
+Gate2 fresh target absence status:
+
+```text
+status: approved
+request_count: 57
+checked_operation_count: 28
+slug_collisions: 0
+protected_collisions: 0
+skipped_checks: 0
+```
+
+Gate2 hashes:
+
+```text
+fresh-target-absence-execution-live-requests.json: e906a4ed6728e464dde23b11ae51490e803353a591d4f63ce3f5143caa7d2998
+fresh-target-absence-execution-refresh.json: 8bf7e8a2fec22e96d7db76a97d50e14459994ce01c39ed110fb952dc9a178575
+```
+
+Validation:
+
+- local tests passed;
+- live permission graph collection was GET-only;
+- live fresh target absence refresh was GET-only;
+- no token found in run artifacts;
+- no `POST`, `PATCH`, `PUT`, or `DELETE` was sent.
+
+Next action:
+
+```text
+Production execution can be retried only with a new exact operator approval
+sentence. Use the refreshed Gate1/Gate2 artifacts above, or rerun Gate2 again
+same-moment if execution is delayed.
+```

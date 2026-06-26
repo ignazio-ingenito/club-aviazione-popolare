@@ -93,6 +93,7 @@ class DirectusPolicyCollectorTests(unittest.TestCase):
         )
 
         self.assertTrue(all(request.headers["Authorization"] == f"Bearer {token}" for request in requests))
+        self.assertTrue(all(request.headers["User-Agent"] == "cap-wordpress-migration/1.0" for request in requests))
         self.assertNotIn(token, json.dumps(raw))
 
     def test_collector_rejects_missing_token(self) -> None:

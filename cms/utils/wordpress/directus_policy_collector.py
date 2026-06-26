@@ -15,6 +15,9 @@ from urllib.parse import quote, urlparse
 import httpx
 
 
+DEFAULT_USER_AGENT = "cap-wordpress-migration/1.0"
+
+
 class DirectusPolicyCollectorError(ValueError):
     """Raised when live policy graph collection cannot be proven safe."""
 
@@ -31,7 +34,7 @@ def collect_directus_policy_graph_raw(
     base_url = _normalize_directus_url(directus_url)
     selected_role_id = _require_text(role_id, "role_id")
     token = _require_text(auth_token, "auth_token")
-    headers = {"Authorization": f"Bearer {token}"}
+    headers = {"Authorization": f"Bearer {token}", "User-Agent": DEFAULT_USER_AGENT}
 
     owns_client = http is None
     client = http or httpx.Client(timeout=30, follow_redirects=False)

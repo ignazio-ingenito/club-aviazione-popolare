@@ -57,6 +57,7 @@ class DirectusCreateOnlyClientTests(unittest.TestCase):
     def test_create_only_client_allows_configured_create_endpoints(self) -> None:
         def handler(request: httpx.Request) -> httpx.Response:
             self.assertEqual(request.headers["Authorization"], "Bearer secret-token")
+            self.assertEqual(request.headers["User-Agent"], "cap-wordpress-migration/1.0")
             if request.url.path == "/items/feeds":
                 self.assertEqual(request.method, "POST")
                 self.assertEqual(json.loads(request.content), {"title": "Draft"})
@@ -88,6 +89,18 @@ class DirectusCreateOnlyClientTests(unittest.TestCase):
         self.assertEqual(folder["id"], "folder-1")
         self.assertEqual(uploaded["id"], "file-1")
         self.assertEqual([request.method for request in requests], ["POST", "POST", "POST"])
+
+    def test_create_only_client_preserves_explicit_user_agent_header(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            self.assertEqual(request.headers["User-Agent"], "custom-agent/1.0")
+            return httpx.Response(200, request=request, json={"data": []})
+
+        client, requests = self.make_client(handler)
+
+        response = client.get("/items/feeds", headers={"User-Agent": "custom-agent/1.0"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(requests), 1)
 
     def test_empty_auth_token_is_rejected(self) -> None:
         with self.assertRaises(ValueError):
