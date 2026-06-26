@@ -13,7 +13,7 @@ from .canonical import (
     thaw_json,
 )
 from .errors import InventoryContractError, PaginationContractError
-from .manifest import InventoryManifest
+from .models import InventoryScope, IssueSeverity
 from .pagination import (
     InventoryPage,
     PageMeta,
@@ -24,7 +24,7 @@ from .pagination import (
     merge_complete_pages,
     wordpress_page_meta,
 )
-from .records import InventoryIssue, ManifestRecord
+from .models import InventoryIssue, InventoryManifest, ManifestRecord
 
 __all__ = [
     "CanonicalizationError",
@@ -32,6 +32,7 @@ __all__ = [
     "InventoryIssue",
     "InventoryManifest",
     "InventoryPage",
+    "InventoryScope",
     "ManifestRecord",
     "PageMeta",
     "PageMetadata",
@@ -39,6 +40,7 @@ __all__ = [
     "PaginationAccumulator",
     "PaginationContractError",
     "PaginationError",
+    "IssueSeverity",
     "canonical_json",
     "canonical_json_bytes",
     "canonical_sha256",

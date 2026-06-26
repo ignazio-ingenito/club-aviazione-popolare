@@ -1386,3 +1386,217 @@ Next action:
 Prepare a continuation manifest for the remaining uncreated items only,
 excluding draft feeds 402-407.
 ```
+
+## 2026-06-26 - 22-item continuation prepared and gated
+
+State:
+
+- branch: `develop`
+- production execution for continuation: not run
+- Directus mutation during this slice: none
+- protected production artifact impact: none
+
+The 6 previously created draft feeds were excluded from a new continuation
+manifest. They remain protected migration-created artifacts; no deletion was
+performed.
+
+Continuation run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-continuation-after-407-20260626T145957Z
+```
+
+Continuation scope:
+
+```text
+total_operations: 22
+create_feed_draft: 15
+create_gallery_draft: 7
+excluded_already_created_source_identities:
+- wordpress:post:2715
+- wordpress:post:2734
+- wordpress:post:2740
+- wordpress:post:2755
+- wordpress:post:3957
+- wordpress:post:5786
+```
+
+Artifact hashes:
+
+```text
+migration-approval-continuation-after-407.json: 7f1fa7ad7d96ff95e82a9829399742186ef8108ee640443b7d7a468b5a336a0a
+create-manifest-draft-only-continuation-after-407.json: 82d572a82e369da8fa1a69fc31c3e1129775e874d7cf62084b224c86301f2a76
+dry-run request_plan_sha256: b6443b8bb8c3e30d3ff48b15a0b687107eeb64534c380e8df2bc89bae840d68f
+fresh-target-absence-before-create-continuation-after-407.json: fc9544bb83421110e37cbe08ac64ee33fee05747f88940055609fe57afd939e7
+fresh-target-absence-live-requests.json: 99fe0088974bf2267b7fc01df1a101282c2711dd90be57e6ba746cffabf0ce6b
+permission-evidence-create-only.json: 290fe70e8b5e83f63622e45599333919c0634c035f9ede501fa7c9e0e38f7eb1
+```
+
+Verification:
+
+```text
+tests/test_create_manifest_executor.py: 26 tests OK
+compileall: OK
+dry-run: passed, 0 POST requests sent
+fresh target absence: approved, 44 GET requests, 0 collisions
+offline pre-create gate validation: OK
+```
+
+Next action:
+
+```text
+If production continuation is still desired, provide explicit approval for
+manifest sha256 82d572a82e369da8fa1a69fc31c3e1129775e874d7cf62084b224c86301f2a76
+with --execute for 22 items, only POST /items/feeds, all draft, stop at first
+error.
+```
+
+## 2026-06-26 - 22-item continuation executed
+
+State:
+
+- branch: `develop`
+- production execution: completed
+- Directus mutations: 22 `POST /items/feeds`
+- protected pre-existing artifact impact: none observed
+- deletion performed: none
+
+Execution run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-continuation-after-407-20260626T145957Z/production-execution-20260626T150859Z
+```
+
+Execution result:
+
+```text
+executed_operations: 22
+created_target_ids: 408-429
+status: draft
+post_endpoints: /items/feeds
+forbidden_methods_sent: none
+```
+
+Created draft feeds:
+
+```text
+408 wordpress:post:5789 draft
+409 wordpress:post:5793 draft
+410 wordpress:post:5801 draft
+411 wordpress:post:6189 draft
+412 wordpress:post:6843 draft
+413 wordpress:post:6853 draft
+414 wordpress:post:6879 draft
+415 wordpress:post:6902 draft
+416 wordpress:post:6929 draft
+417 wordpress:post:7129 draft
+418 wordpress:post:7146 draft
+419 wordpress:post:7177 draft
+420 wordpress:post:8071 draft
+421 wordpress:post:8387 draft
+422 wordpress:post:8392 draft
+423 wordpress:gallery:3156 draft
+424 wordpress:gallery:3974 draft
+425 wordpress:gallery:5064 draft
+426 wordpress:gallery:5124 draft
+427 wordpress:gallery:5656 draft
+428 wordpress:gallery:7494 draft
+429 wordpress:gallery:8152 draft
+```
+
+Artifact hashes:
+
+```text
+validation_report.json: 01ecfcbb0e6f96e814a0341eec20c38713305b5644c5199876188ff5cd884de8
+request_plan.json: d1427fc7765232141b2748986c3ad237053ab96d395b81fd352f7ca7816d5ee2
+dry_run_report.json: 885a7aada20b901ab98a4cc3621dac4e7422d34517f75578cf81aba8dc78b746
+stop_condition_report.json: 480d569466af6994247dcfe7c3010730b915f7c59f7dd7552c509db6cf08b34b
+execution_events.jsonl: 289aef1d0343b7beb79592f9b98d4f1b5de5f74a01b37709cb0500a9ed2ce133
+execution_report.json: 685f795d40487ed9effc71b2f940c812f3cb9f44bb1c7824123df16b5b5deff7
+post-execution-created-draft-verification.json: 43fc02c57a72c318d8a4cba57619441f298f1058ea0441698681e4b9ba8ed50a
+```
+
+Verification:
+
+- pre-execution tests passed: 47 tests OK;
+- post-execution live verification: approved, 22 GET checks, all draft;
+- no token was found in the execution run directory;
+- the first failed execute attempt had no token and stopped before transport.
+
+Next action:
+
+```text
+Run post-migration reconciliation/invariant verification, then decide whether
+gallery media/folder/relation migration remains in scope. Do not delete the 6
+earlier draft feeds without a separate explicit destructive-change task.
+```
+
+## 2026-06-26 - Gallery media inventory refreshed
+
+State:
+
+- branch: `develop`
+- production execution: not run for media
+- Directus mutation during this slice: none
+- protected production artifact impact: none
+
+The existing gallery inventory was not sufficient for media migration because
+all 7 gallery records had `images=[]`. Root cause: WordPress REST exposes
+`dt_gallery` records, but their rendered content is empty. Public album HTML
+does contain the ordered image list.
+
+Code update:
+
+- `inventory.gallery` now enriches REST gallery records from public album HTML
+  when REST content has no images.
+- HTML parsing prefers the `article.type-dt_gallery` / `article.dt_gallery`
+  container when present, avoiding site logos outside the gallery body.
+- `inventory.models` compatibility was restored for both the legacy
+  `system/object_type/object_id/payload` model and the newer
+  `scope/entity_type/identity/data` JSONL model.
+
+New inventory artifact:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-inventory-20260626T154201Z/gallery-with-images.jsonl
+sha256: 3fa7ccf3b220cfeeb2db3e349ad1bac18eb650bc40df9dd2b73084ac6f97ca86
+```
+
+Counts:
+
+```text
+gallery_count: 7
+total_images: 291
+wordpress:gallery:3156 foto_recenti: 17
+wordpress:gallery:3974 foto-raduno-2001: 10
+wordpress:gallery:5064 foto-raduno-2002: 10
+wordpress:gallery:5124 foto-fly-in-vichy-2007: 8
+wordpress:gallery:5656 49-raduno-cap-ozzano-emilia-10-11-12-settembre-2021: 53
+wordpress:gallery:7494 52-raduno-cap-lilh-6-7-8-9-2024: 148
+wordpress:gallery:8152 53-raduno-cap-reggio-emilia-5-6-7-9-2025: 45
+```
+
+Verification:
+
+```text
+tests/test_gallery_inventory.py tests/test_inventory_cli.py tests/test_manifest.py: 22 tests OK
+compileall: OK
+```
+
+Blocker found:
+
+```text
+GET /folders with the create-only token returns HTTP 403.
+```
+
+This means the current create-only identity cannot yet prove folder absence or
+folder collisions for gallery media. Do not run media upload until a separate
+folder/file permission evidence gate is produced.
+
+Next action:
+
+```text
+Prepare a gallery-media permission/gate slice: prove read/create access for
+directus_folders and directus_files without update/delete, then build a
+draft-only run-owned folder/file request plan for the 291 gallery images.
+```

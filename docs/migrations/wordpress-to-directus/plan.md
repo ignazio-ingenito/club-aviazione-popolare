@@ -277,6 +277,105 @@ Protected migration-created drafts now include:
 
 Any continuation manifest must exclude these 6 created drafts.
 
+Continuation gate prepared on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-continuation-after-407-20260626T145957Z
+operation_count: 22
+create_feed_draft: 15
+create_gallery_draft: 7
+manifest_sha256: 82d572a82e369da8fa1a69fc31c3e1129775e874d7cf62084b224c86301f2a76
+approval_sha256: 7f1fa7ad7d96ff95e82a9829399742186ef8108ee640443b7d7a468b5a336a0a
+```
+
+The continuation excludes the 6 already-created draft feeds. The local
+executor profile is `continuation_after_407_20260626T145957Z`.
+
+Dry-run and pre-create gates:
+
+```text
+dry_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-continuation-after-407-20260626T145957Z/dry-run-20260626T150051Z
+dry_run_status: passed
+dry_run_post_requests_sent: 0
+planned_methods: POST
+planned_endpoints: /items/feeds
+request_plan_sha256: b6443b8bb8c3e30d3ff48b15a0b687107eeb64534c380e8df2bc89bae840d68f
+permission_evidence_sha256: 290fe70e8b5e83f63622e45599333919c0634c035f9ede501fa7c9e0e38f7eb1
+fresh_target_absence_sha256: fc9544bb83421110e37cbe08ac64ee33fee05747f88940055609fe57afd939e7
+fresh_target_absence_status: approved
+fresh_target_absence_get_requests: 44
+```
+
+No production `POST` was run for this 22-item continuation. Production
+continuation remains blocked until explicit approval is given for the exact
+manifest hash above.
+
+Production continuation executed on 2026-06-26 after explicit approval:
+
+```text
+execution_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-continuation-after-407-20260626T145957Z/production-execution-20260626T150859Z
+execution_status: completed
+executed_operations: 22
+created_target_ids: 408-429
+post_endpoints: /items/feeds
+forbidden_methods_sent: none
+post_execution_verification_status: approved
+```
+
+Execution artifact hashes:
+
+```text
+validation_report.json: 01ecfcbb0e6f96e814a0341eec20c38713305b5644c5199876188ff5cd884de8
+request_plan.json: d1427fc7765232141b2748986c3ad237053ab96d395b81fd352f7ca7816d5ee2
+dry_run_report.json: 885a7aada20b901ab98a4cc3621dac4e7422d34517f75578cf81aba8dc78b746
+stop_condition_report.json: 480d569466af6994247dcfe7c3010730b915f7c59f7dd7552c509db6cf08b34b
+execution_events.jsonl: 289aef1d0343b7beb79592f9b98d4f1b5de5f74a01b37709cb0500a9ed2ce133
+execution_report.json: 685f795d40487ed9effc71b2f940c812f3cb9f44bb1c7824123df16b5b5deff7
+post-execution-created-draft-verification.json: 43fc02c57a72c318d8a4cba57619441f298f1058ea0441698681e4b9ba8ed50a
+```
+
+The 6 earlier draft feeds were not deleted. The continuation added only new
+draft feed records. New gallery records are draft feed rows with `gallery=true`;
+their media/folder/relation import remains outside this execution.
+
+Gallery media inventory refresh on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-inventory-20260626T154201Z
+gallery_manifest: gallery-with-images.jsonl
+gallery_manifest_sha256: 3fa7ccf3b220cfeeb2db3e349ad1bac18eb650bc40df9dd2b73084ac6f97ca86
+gallery_count: 7
+total_images: 291
+```
+
+Image counts:
+
+```text
+wordpress:gallery:3156 foto_recenti: 17
+wordpress:gallery:3974 foto-raduno-2001: 10
+wordpress:gallery:5064 foto-raduno-2002: 10
+wordpress:gallery:5124 foto-fly-in-vichy-2007: 8
+wordpress:gallery:5656 49-raduno-cap-ozzano-emilia-10-11-12-settembre-2021: 53
+wordpress:gallery:7494 52-raduno-cap-lilh-6-7-8-9-2024: 148
+wordpress:gallery:8152 53-raduno-cap-reggio-emilia-5-6-7-9-2025: 45
+```
+
+The prior gallery inventory had zero images because WordPress REST exposes the
+`dt_gallery` records with empty rendered content. The inventory client now
+enriches REST gallery records from the public album HTML when REST has no
+images, and limits HTML image parsing to the `dt_gallery` article container when
+present so site logos are not treated as gallery media.
+
+Current blocker for media execution:
+
+```text
+GET /folders with the create-only token returns HTTP 403.
+```
+
+Gallery media migration requires a separate gate proving folder/file read and
+create permissions, plus a create-only request plan for run-owned folders and
+files. No gallery media upload was performed during this inventory refresh.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

@@ -46,6 +46,7 @@ class ArtifactProfile:
 ORIGINAL_ARTIFACT_PROFILE = "original_20260622T110402Z"
 NARROWED_ARTIFACT_PROFILE = "narrowed_after_gate2_20260623T162618Z"
 RECOVERED_NARROWED_ARTIFACT_PROFILE = "narrowed_recovered_20260625T164519Z"
+CONTINUATION_AFTER_407_ARTIFACT_PROFILE = "continuation_after_407_20260626T145957Z"
 APPROVED_ARTIFACT_PROFILES: Mapping[str, ArtifactProfile] = {
     ORIGINAL_ARTIFACT_PROFILE: ArtifactProfile(
         name=ORIGINAL_ARTIFACT_PROFILE,
@@ -76,6 +77,16 @@ APPROVED_ARTIFACT_PROFILES: Mapping[str, ArtifactProfile] = {
             "create_feed_draft": 21,
             "create_gallery_draft": 7,
             "total_operations": 28,
+        },
+    ),
+    CONTINUATION_AFTER_407_ARTIFACT_PROFILE: ArtifactProfile(
+        name=CONTINUATION_AFTER_407_ARTIFACT_PROFILE,
+        approval_sha256="7f1fa7ad7d96ff95e82a9829399742186ef8108ee640443b7d7a468b5a336a0a",
+        manifest_sha256="82d572a82e369da8fa1a69fc31c3e1129775e874d7cf62084b224c86301f2a76",
+        counts={
+            "create_feed_draft": 15,
+            "create_gallery_draft": 7,
+            "total_operations": 22,
         },
     ),
 }

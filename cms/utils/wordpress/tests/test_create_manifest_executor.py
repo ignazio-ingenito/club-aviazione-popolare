@@ -9,6 +9,7 @@ import httpx
 
 from create_manifest_executor import (
     APPROVED_ARTIFACT_PROFILES,
+    CONTINUATION_AFTER_407_ARTIFACT_PROFILE,
     CreateManifestExecutorError,
     NARROWED_ARTIFACT_PROFILE,
     RECOVERED_NARROWED_ARTIFACT_PROFILE,
@@ -154,6 +155,31 @@ class CreateManifestExecutorTests(unittest.TestCase):
             {operation["endpoint"] for operation in request_plan["operations"]},
             {"/items/feeds"},
         )
+
+    def test_continuation_manifest_builds_draft_only_allowlisted_plan(self) -> None:
+        with self.artifact_paths(feed_count=15, gallery_count=7) as (
+            manifest_path,
+            approval_path,
+            manifest_sha,
+            approval_sha,
+            counts,
+        ):
+            manifest = load_and_validate_manifest(
+                manifest_path,
+                approval_path=approval_path,
+                artifact_profile=CONTINUATION_AFTER_407_ARTIFACT_PROFILE,
+                expected_manifest_sha256=manifest_sha,
+                expected_approval_sha256=approval_sha,
+            )
+        plan = build_request_plan(manifest)
+
+        self.assertEqual(counts, APPROVED_ARTIFACT_PROFILES[CONTINUATION_AFTER_407_ARTIFACT_PROFILE].counts)
+        self.assertEqual(len(plan), 22)
+        self.assertEqual({item.method for item in plan}, {"POST"})
+        self.assertEqual({item.endpoint for item in plan}, {"/items/feeds"})
+        self.assertEqual(sum(1 for item in plan if item.operation == "create_feed_draft"), 15)
+        self.assertEqual(sum(1 for item in plan if item.operation == "create_gallery_draft"), 7)
+        self.assertEqual({item.payload["status"] for item in plan}, {"draft"})
 
     def test_narrowed_profile_supplies_expected_counts(self) -> None:
         with self.artifact_paths(feed_count=21, gallery_count=7) as (
@@ -583,6 +609,20 @@ class CreateManifestExecutorTests(unittest.TestCase):
         self.assertEqual(
             profile.manifest_sha256,
             "787aab1c088f148c8231fbe3de94ff538e2bb7a989a535387ecf61a011d8597f",
+        )
+
+    def test_continuation_after_407_profile_records_artifact_hashes(self) -> None:
+        profile = APPROVED_ARTIFACT_PROFILES[CONTINUATION_AFTER_407_ARTIFACT_PROFILE]
+        self.assertEqual(profile.counts["create_feed_draft"], 15)
+        self.assertEqual(profile.counts["create_gallery_draft"], 7)
+        self.assertEqual(profile.counts["total_operations"], 22)
+        self.assertEqual(
+            profile.approval_sha256,
+            "7f1fa7ad7d96ff95e82a9829399742186ef8108ee640443b7d7a468b5a336a0a",
+        )
+        self.assertEqual(
+            profile.manifest_sha256,
+            "82d572a82e369da8fa1a69fc31c3e1129775e874d7cf62084b224c86301f2a76",
         )
 
     def test_manifest_sha_mismatch_fails(self) -> None:

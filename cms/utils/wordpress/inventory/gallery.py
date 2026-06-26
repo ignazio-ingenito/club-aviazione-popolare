@@ -207,10 +207,52 @@ class WordPressGalleryDiscoveryClient:
             params={"orderby": "id", "order": "asc", "_embed": "1"},
         )
         records: list[ManifestRecord] = []
+        issues: list[InventoryIssue] = list(result.issues)
         for position, record in enumerate(result.records, start=1):
             raw_data = dict(record.data)
             slug = str(raw_data.get("slug") or raw_data.get("id")).strip()
             images = self._images_from_rendered_content(raw_data, record.source_url)
+            if not images and record.source_url:
+                try:
+                    album_html = self._get_html(record.source_url, endpoint="gallery_album_rest_html_fallback")
+                except WordPressHttpError as exc:
+                    issues.append(
+                        InventoryIssue(
+                            scope=InventoryScope.SOURCE,
+                            severity=IssueSeverity.ERROR,
+                            code="gallery_rest_html_fallback_failed",
+                            message="REST gallery did not expose images and public album HTML could not be fetched.",
+                            entity_type="wordpress_gallery_album",
+                            identity=record.identity,
+                            details={"url": record.source_url, "error": exc.code},
+                        )
+                    )
+                else:
+                    images = self._images_from_album(album_html, album_url=record.source_url)
+                    if images:
+                        issues.append(
+                            InventoryIssue(
+                                scope=InventoryScope.SOURCE,
+                                severity=IssueSeverity.WARNING,
+                                code="gallery_images_enriched_from_public_html",
+                                message="REST gallery record did not expose images; public HTML was used for image order.",
+                                entity_type="wordpress_gallery_album",
+                                identity=record.identity,
+                                details={"url": record.source_url, "image_count": len(images)},
+                            )
+                        )
+            if not images:
+                issues.append(
+                    InventoryIssue(
+                        scope=InventoryScope.SOURCE,
+                        severity=IssueSeverity.ERROR,
+                        code="gallery_album_has_no_images",
+                        message="Gallery album did not expose image entries through REST content or public HTML.",
+                        entity_type="wordpress_gallery_album",
+                        identity=record.identity,
+                        details={"url": record.source_url},
+                    )
+                )
             records.append(
                 ManifestRecord(
                     scope=InventoryScope.SOURCE,
@@ -229,7 +271,7 @@ class WordPressGalleryDiscoveryClient:
         return WordPressCollectionResult(
             endpoint=endpoint,
             records=tuple(records),
-            issues=result.issues,
+            issues=tuple(issues),
             total_items=result.total_items,
             total_pages=result.total_pages,
             raw_item_count=result.raw_item_count,
@@ -341,9 +383,11 @@ class WordPressGalleryDiscoveryClient:
 
     def _images_from_album(self, html: str, *, album_url: str) -> list[dict[str, Any]]:
         soup = BeautifulSoup(html, "html.parser")
+        container = soup.select_one("article.type-dt_gallery, article.dt_gallery")
+        search_root = container if isinstance(container, Tag) else soup
         images: list[dict[str, Any]] = []
 
-        for image in soup.find_all("img"):
+        for image in search_root.find_all("img"):
             if not isinstance(image, Tag):
                 continue
             thumbnail_url = _absolute_attr_url(image, album_url, "src")

@@ -123,13 +123,16 @@ class GalleryDiscoveryClientTests(unittest.TestCase):
                         },
                     },
                 )
-            self.assertEqual(request.url.path, "/wp-json/wp/v2/album")
-            return self.paginated_response(
-                request,
-                [{"id": 9, "slug": "album", "link": "https://wordpress.example.test/dt-gallery/album/"}],
-                total=1,
-                total_pages=1,
-            )
+            if request.url.path == "/wp-json/wp/v2/album":
+                return self.paginated_response(
+                    request,
+                    [{"id": 9, "slug": "album", "link": "https://wordpress.example.test/dt-gallery/album/"}],
+                    total=1,
+                    total_pages=1,
+                )
+            if request.url.path == "/dt-gallery/album/":
+                return httpx.Response(200, request=request, text="<article></article>")
+            return httpx.Response(404, request=request)
 
         client, _, _ = self.make_client(handler)
         discovery = client.discover()
@@ -137,6 +140,64 @@ class GalleryDiscoveryClientTests(unittest.TestCase):
         self.assertEqual(discovery.method, "rest")
         self.assertEqual(discovery.rest_endpoint, "album")
         self.assertEqual(discovery.result.records[0].identity, "wordpress:gallery:9")
+
+    def test_rest_gallery_without_images_is_enriched_from_public_html(self) -> None:
+        def handler(request: httpx.Request) -> httpx.Response:
+            if request.url.path.endswith("/types"):
+                return httpx.Response(
+                    200,
+                    request=request,
+                    json={
+                        "dt_gallery": {
+                            "slug": "dt_gallery",
+                            "rest_base": "dt-gallery",
+                            "name": "Gallery",
+                        },
+                    },
+                )
+            if request.url.path == "/wp-json/wp/v2/dt-gallery":
+                return self.paginated_response(
+                    request,
+                    [
+                        {
+                            "id": 8152,
+                            "slug": "album-rest",
+                            "link": "https://wordpress.example.test/dt-gallery/album-rest/",
+                            "content": {"rendered": ""},
+                        }
+                    ],
+                    total=1,
+                    total_pages=1,
+                )
+            if request.url.path == "/dt-gallery/album-rest/":
+                return httpx.Response(
+                    200,
+                    request=request,
+                    text="""
+                    <header><img src="/wp-content/uploads/logo.gif" alt="Logo"></header>
+                    <article class="project-post type-dt_gallery">
+                      <div class="slide-item"><img src="/wp-content/uploads/b.jpg"></div>
+                      <div class="slide-item"><img src="/wp-content/uploads/a.jpg"></div>
+                    </article>
+                    """,
+                )
+            return httpx.Response(404, request=request)
+
+        client, _, requests = self.make_client(handler)
+        discovery = client.discover()
+
+        self.assertEqual(discovery.method, "rest")
+        self.assertEqual([request.method for request in requests], ["GET", "GET", "GET"])
+        record = discovery.result.records[0]
+        self.assertEqual(record.identity, "wordpress:gallery:8152")
+        self.assertEqual(
+            [image["source_url"].rsplit("/", 1)[-1] for image in record.data["images"]],
+            ["b.jpg", "a.jpg"],
+        )
+        self.assertEqual(
+            [issue.code for issue in discovery.result.issues],
+            ["gallery_images_enriched_from_public_html"],
+        )
 
     def test_public_html_fallback_preserves_archive_and_dom_order(self) -> None:
         archive_html = """
