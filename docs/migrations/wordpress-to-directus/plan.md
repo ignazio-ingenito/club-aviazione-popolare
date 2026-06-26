@@ -195,6 +195,39 @@ Exit gate: execution completed without forbidden methods, mutations, or unresolv
 
 Exit gate: migration evidence is complete and publication is an independent reviewed decision.
 
+## Production execution note — 2026-06-26
+
+The narrowed public production execution was approved and started from commit
+`b5d1534`. All pre-execution gates passed, including same-moment fresh target
+absence.
+
+The run stopped on the first unexpected Directus error:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/production-execution-20260626T074914Z
+execution_status: stopped_on_first_error
+executed_operation_count: 5
+failed_sequence: 6
+failed_source_identity: wordpress:post:5786
+failed_slug: 31-raduno-cap-toscana
+failure_status: HTTP 400 Bad Request
+```
+
+Created draft feeds:
+
+```text
+402 wordpress:post:2715 draft
+403 wordpress:post:2734 draft
+404 wordpress:post:2740 draft
+405 wordpress:post:2755 draft
+406 wordpress:post:3957 draft
+```
+
+The created drafts are now migration-created artifacts and must be treated as
+protected for any continuation. Do not rerun the original 28-item manifest.
+Investigate the HTTP 400 for `wordpress:post:5786`, then prepare a continuation
+manifest only for remaining uncreated items.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

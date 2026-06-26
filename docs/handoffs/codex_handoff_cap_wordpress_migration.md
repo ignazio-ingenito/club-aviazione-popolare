@@ -1076,3 +1076,96 @@ Production execution can be retried only with a new exact operator approval
 sentence. Use the refreshed Gate1/Gate2 artifacts above, or rerun Gate2 again
 same-moment if execution is delayed.
 ```
+
+## 2026-06-26 - Production execution partially created 5 drafts and stopped on HTTP 400
+
+State:
+
+- branch: `develop`
+- execution worktree: `/tmp/cap-prod-exec-20260626T074817Z`
+- production execution: partially executed
+- Directus mutation: 5 `POST /items/feeds` creates
+- protected production artifact impact: none observed
+
+The operator provided the exact production approval sentence. Production gates
+were rerun from a clean detached worktree at commit `b5d1534`.
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/production-execution-20260626T074914Z
+```
+
+Pre-execution gates:
+
+```text
+pre_execution_artifact_validation: approved
+Gate1 permission evidence: approved
+Gate2 fresh target absence: approved
+Gate2 request_count: 57
+Gate2 checked_operation_count: 28
+Gate2 slug_collisions: 0
+Gate2 protected_collisions: 0
+Gate2 skipped_checks: 0
+```
+
+Execution result:
+
+```text
+execution_status: stopped_on_first_error
+executed_operation_count: 5
+failed_sequence: 6
+failed_source_identity: wordpress:post:5786
+failed_slug: 31-raduno-cap-toscana
+failed_method: POST
+failed_endpoint: /items/feeds
+failure_status: HTTP 400 Bad Request
+```
+
+Created draft feeds:
+
+```text
+402 wordpress:post:2715 draft
+403 wordpress:post:2734 draft
+404 wordpress:post:2740 draft
+405 wordpress:post:2755 draft
+406 wordpress:post:3957 draft
+```
+
+Post-run verification:
+
+```text
+status: approved
+created_count: 5
+all_created_status: draft
+```
+
+Artifact hashes:
+
+```text
+pre-execution-artifact-validation.json: efcc43bc446465a704acfa49a47fb7fe69e44bbec54efc839aacfa7eaecf3226
+fresh-target-absence-execution-live-requests.json: fa1462e69d306741029d34721385f2b4938286f8529415b074079c3303495b50
+fresh-target-absence-execution-refresh.json: e44bc27f7eb7d017ea53b448ad1d5b3505cf08508cccfa65390b7242edbf7b51
+execution/request_plan.json: 898a37a421ed00f0e4b6c15d51f03ee78b7f9bfe0155ad0ccdbd8f7a3094f470
+execution/execution_events.jsonl: 667e04fdd5923646ee260ba80f5d1fbc4775c7b1ae934f1bb2a966e657c70d5a
+post-execution-created-draft-verification.json: 30fb8cc099d4db6e09531d52bea6a0dc492be206e9d5b4bfeb05335812b6b895
+```
+
+Validation:
+
+- local tests passed before execution;
+- same-moment Gate2 passed before execution;
+- execution plan contained only `POST /items/feeds`;
+- no `PATCH`, `PUT`, or `DELETE` was sent;
+- token leak scan passed;
+- no retry was attempted after the HTTP 400 failure.
+
+Next action:
+
+```text
+Investigate why `wordpress:post:5786` / `31-raduno-cap-toscana` is rejected by
+Directus with HTTP 400. Do not rerun the full 28-item manifest: the first 5
+items now exist and must be treated as protected migration-created drafts.
+Prepare a narrowed continuation manifest for the remaining items only after the
+HTTP 400 root cause is understood.
+```
