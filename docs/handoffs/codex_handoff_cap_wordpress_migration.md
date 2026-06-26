@@ -853,3 +853,55 @@ Use the new Gate1 artifact for the production prompt, then run same-moment
 fresh target absence validation for the 28 recovered narrowed operations. Do
 not run --execute until the exact production approval sentence is present.
 ```
+
+## 2026-06-26 - Fresh target absence approved for recovered narrowed manifest
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+After the derived Gate1 artifact was approved, a same-moment target absence
+refresh was run with the create-only token. The run used GET-only requests
+against Directus and checked the 28 recovered narrowed manifest operations by
+`original_uri` and `slug`.
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/fresh-target-absence-rerun-20260626T063208Z
+```
+
+Result:
+
+```text
+status: approved
+checked_operation_count: 28
+request_count: 57
+slug_collisions: 0
+protected_collisions: 0
+skipped_checks: 0
+```
+
+Artifact hashes:
+
+```text
+fresh-target-absence-execution-live-requests.json: 3f7fb80e0b90378a9ecd70ad6c2306eadbbc5103b2218063c1eee865046dc3fb
+fresh-target-absence-execution-refresh.json: 46ba7d6561411993d383adce8dc2e292856166e96265a6a1d6b96715a7ca8df1
+```
+
+Validation:
+
+- `validate_fresh_target_absence_report` accepted the report;
+- no token found in the run artifacts;
+- no `POST`, `PATCH`, `PUT`, or `DELETE` was sent.
+
+Next action:
+
+```text
+Production execution is now blocked only by explicit operator approval and by
+the freshness of this Gate2 artifact. If execution is delayed materially, rerun
+same-moment fresh target absence before using --execute.
+```
