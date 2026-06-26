@@ -1753,3 +1753,46 @@ Next action:
 Reload Directus and verify Member Topics, Member Feeds Topics, and Member Feeds
 Files no longer fail on member_topics.status.
 ```
+
+## 2026-06-26 - Member junction status schema fix
+
+State:
+
+- branch: `develop`
+- Directus schema mutations:
+  - `POST /fields/member_feeds_files`
+  - `POST /fields/member_feeds_topics`
+- content/media/feed/gallery mutation: none
+- protected production artifact impact: none
+
+Problem:
+
+```text
+member_feeds_files and member_feeds_topics also had workflow/archive metadata
+bound to status, but the generated schema did not create status fields for
+those junction collections.
+```
+
+Code fix:
+
+```text
+cms/utils/wordpress/inventory/member_schema_plan.py now creates required string
+select-dropdown status fields for member_feeds_files and member_feeds_topics.
+```
+
+Live apply evidence:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/member-junction-status-schema-fix-20260626T201348Z
+summary_sha256: 2ac4b1502caadda512a4c578e3a336970707dcb144c5ddc6997d0e13228ec567
+requests: GET /fields, POST /fields/member_feeds_files, POST /fields/member_feeds_topics, GET /fields
+status: ok
+created: member_feeds_files, member_feeds_topics
+```
+
+Next action:
+
+```text
+Reload Directus and verify Member Feeds Files and Member Feeds Topics no longer
+fail on status.
+```

@@ -318,6 +318,35 @@ production_mutation: created member_topics.status only
 
 No content, media, feed, gallery, user, role, or permission record was changed.
 
+## Member junction status fields fix
+
+After `member_topics.status` was fixed, the same Directus UI error remained on
+the two junction collections because they also had workflow/archive metadata
+bound to `status` without a corresponding field.
+
+The schema generator now includes:
+
+```text
+member_feeds_files.status: string, required, select-dropdown
+member_feeds_topics.status: string, required, select-dropdown
+```
+
+Production fix applied on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/member-junction-status-schema-fix-20260626T201348Z
+summary: member-junction-status-schema-fix.summary.json
+summary_sha256: 2ac4b1502caadda512a4c578e3a336970707dcb144c5ddc6997d0e13228ec567
+requests:
+  - GET /fields
+  - POST /fields/member_feeds_files
+  - POST /fields/member_feeds_topics
+  - GET /fields
+production_mutation: created member_feeds_files.status and member_feeds_topics.status only
+```
+
+No content, media, feed, gallery, user, role, or permission record was changed.
+
 ## Post-apply verification
 
 After schema apply:

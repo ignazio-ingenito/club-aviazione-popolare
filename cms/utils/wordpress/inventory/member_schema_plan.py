@@ -206,12 +206,14 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("migration_run_id", "string", required=True),
         ),
         "member_feeds_files": (
+            _field("status", "string", required=True, interface="select-dropdown"),
             _alias("member_feed", "m2o", "integer"),
             _alias("file", "m2o", "uuid"),
             _field("sort", "integer", required=True),
             _field("source_identity", "string", required=True),
         ),
         "member_feeds_topics": (
+            _field("status", "string", required=True, interface="select-dropdown"),
             _alias("member_feed", "m2o", "integer"),
             _alias("member_topic", "m2o", "integer"),
         ),
