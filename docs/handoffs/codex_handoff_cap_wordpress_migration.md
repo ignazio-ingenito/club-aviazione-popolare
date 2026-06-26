@@ -1657,3 +1657,51 @@ access for directus_folders and directus_files, plus read-only access to the
 created gallery feeds. Do not upload gallery media until that identity has
 approved policy evidence and fresh folder/file absence evidence.
 ```
+
+## 2026-06-26 - Gallery media schema-token read gate
+
+State:
+
+- branch/worktree: `gallery-media-read-gate`
+- production execution: not run for media
+- Directus mutation during this slice: none
+- live methods used: GET only
+- protected production artifact impact: none
+
+The schema token was used only for read-only Directus inventory because the
+create-only content migration identity cannot read folders or files.
+
+External artifacts:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-read-gate-20260626T195547Z/directus-core.schema-token.jsonl
+sha256: d974e7f9397e76ebf96b16a9313e17ab9f04109f0baf259efa9c1668c6f56467
+
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-read-gate-20260626T195547Z/gallery-media-read-gate.report.json
+sha256: aded7cb0127e7f0bf3358705a4a04380d3a7e2fa3916de7030d421fd5bf26893
+```
+
+Findings:
+
+```text
+directus_files_visible: 627
+directus_folders_visible: 246
+directus_feeds_visible: 326
+gallery_count: 7
+gallery_images: 291
+folder_name_collisions_for_gallery_slugs: 0
+image_filename_collisions: 9
+galleries_with_image_filename_collisions: 4
+```
+
+The 9 filename collisions are not sufficient to reuse files automatically
+because filename equality does not prove binary identity. They must be reviewed
+or verified with stronger content evidence.
+
+Next action:
+
+```text
+Create or provide a gallery-media execution identity with read/create-only
+access to directus_folders and directus_files, then rerun policy evidence and a
+fresh absence gate using that execution identity before any upload.
+```

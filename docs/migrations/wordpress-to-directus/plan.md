@@ -408,6 +408,44 @@ explicitly approve broadening the existing identity for this phase only. The
 separate identity is safer because it preserves the feed-only evidence already
 used for article creation.
 
+Schema-token GET-only read gate on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-read-gate-20260626T195547Z
+directus_manifest: directus-core.schema-token.jsonl
+directus_manifest_sha256: d974e7f9397e76ebf96b16a9313e17ab9f04109f0baf259efa9c1668c6f56467
+comparison_report: gallery-media-read-gate.report.json
+comparison_report_sha256: aded7cb0127e7f0bf3358705a4a04380d3a7e2fa3916de7030d421fd5bf26893
+live_methods_used: GET only
+production_mutations: none
+```
+
+Target inventory visible with the schema token:
+
+```text
+directus_files: 627
+directus_folders: 246
+directus_feeds: 326
+inventory_issues: 0
+```
+
+Gallery comparison result:
+
+```text
+gallery_count: 7
+gallery_images: 291
+unique_gallery_filenames: 291
+duplicate_gallery_filenames: 0
+folder_name_collisions_for_gallery_slugs: 0
+image_filename_collisions: 9
+galleries_with_image_filename_collisions: 4
+```
+
+The 9 filename matches are not approved reuse evidence. Same filename does not
+prove same binary content or same intended gallery placement. Treat them as
+manual review candidates or require stronger checksum/content evidence before
+reusing existing files.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

@@ -9,7 +9,7 @@ from enum import Enum
 from types import MappingProxyType
 from typing import Any, Mapping
 
-from .canonical import canonical_json, canonical_sha256, canonicalize, sha256_hex
+from .canonical import canonical_json, canonical_sha256, canonicalize, sha256_hex, thaw_json
 from .errors import InventoryContractError
 
 
@@ -139,7 +139,7 @@ class ManifestRecord:
             "schema_version": self.schema_version,
             "identity": self.identity,
             "canonical_url": self.canonical_url,
-            "payload": dict(self.payload),
+            "payload": thaw_json(self.payload),
         }
 
     def content_hash(self) -> str:
@@ -149,7 +149,7 @@ class ManifestRecord:
         if self.scope is None:
             return {
                 **self.content_dict(),
-                "observed_at": self.observed_at,
+                "observed_at": canonicalize(self.observed_at),
                 "content_hash": self.content_hash(),
             }
         return {
@@ -158,7 +158,7 @@ class ManifestRecord:
             "entity_type": self.entity_type,
             "identity": self.identity,
             "source_url": self.source_url,
-            "data": dict(self.data),
+            "data": thaw_json(self.data),
             "sha256": self.sha256,
         }
 
@@ -198,7 +198,7 @@ class InventoryIssue:
                 "code": self.code,
                 "message": self.message,
                 "retryable": self.retryable,
-                "details": dict(self.details),
+                "details": thaw_json(self.details),
             }
         return {
             "schema_version": self.schema_version,
@@ -208,7 +208,7 @@ class InventoryIssue:
             "message": self.message,
             "entity_type": self.entity_type,
             "identity": self.identity,
-            "details": dict(self.details),
+            "details": thaw_json(self.details),
         }
 
 
@@ -255,20 +255,20 @@ class InventoryManifest:
                 "manifest_type": self.manifest_type,
                 "environment": self.environment,
                 "base_url": self.base_url,
-                "observed_at": self.observed_at,
+                "observed_at": canonicalize(self.observed_at),
                 "records": [record.to_dict() for record in sorted_records],
                 "issues": [issue.to_dict() for issue in sorted_issues],
-                "metadata": dict(self.metadata),
+                "metadata": thaw_json(self.metadata),
             }
         return {
             "schema_version": self.schema_version,
             "scope": self.scope.value,
             "environment": self.environment,
             "base_url": self.base_url,
-            "observed_at": self.observed_at,
+            "observed_at": canonicalize(self.observed_at),
             "records": [record.to_dict() for record in sorted_records],
             "issues": [issue.to_dict() for issue in sorted_issues],
-            "metadata": dict(self.metadata),
+            "metadata": thaw_json(self.metadata),
         }
 
     def canonical_json(self) -> str:
@@ -294,7 +294,7 @@ class InventoryManifest:
                         key=lambda item: (item.identity or item.object_ref or "", item.code, item.message),
                     )
                 ],
-                "metadata": dict(self.metadata),
+                "metadata": thaw_json(self.metadata),
             }
         )
 
