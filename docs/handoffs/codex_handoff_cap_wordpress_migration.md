@@ -905,3 +905,79 @@ Production execution is now blocked only by explicit operator approval and by
 the freshness of this Gate2 artifact. If execution is delayed materially, rerun
 same-moment fresh target absence before using --execute.
 ```
+
+## 2026-06-26 - Production execution blocked by create-only read 403
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+The operator provided the exact production approval sentence, so the production
+prompt was executed from a clean detached worktree:
+
+```text
+/tmp/cap-prod-exec-20260626T064744Z
+```
+
+The main checkout was not used for production execution because it was dirty
+before execution (`.gitignore` had an unrelated local change).
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/create-manifest-narrowed-recovered-20260625T164519Z/production-execution-20260626T064859Z
+```
+
+Pre-execution validation:
+
+```text
+status: approved
+Gate1 permission evidence: approved
+manifest operation count: 28
+planned methods: POST
+planned endpoints: /items/feeds
+```
+
+The same-moment fresh target absence refresh was attempted with the create-only
+token using GET-only requests. It failed closed:
+
+```text
+status: rejected
+request_count: 57
+checked_operation_count: 28
+slug_collisions: 0
+protected_collisions: 0
+skipped_checks: 0
+observed_statuses: 57 x HTTP 403
+```
+
+No `--execute` command was run because Gate2 did not approve. No production
+write occurred.
+
+Artifact hashes:
+
+```text
+pre-execution-artifact-validation.json: 3c9468ec4394ecaa4e0a57c5418a17e26012a364e3981b86e073676a6567e19d
+createonly-secret-key-names.txt: fddb84f8d48b8d52bf059912d538af54b75a3f2c90018ed0e7200c4b4fef3ff7
+fresh-target-absence-execution-live-requests.json: 9089022dae9877a60268af5966cf42641a05df9dc00c63dabe10daed3b14a3b1
+fresh-target-absence-execution-refresh.json: 19227736b8742763a8422bfaed339f391c1e3cd17b5a49e7057f88560b940c42
+```
+
+Validation:
+
+- local tests passed before live refresh;
+- create-only secret key names were present;
+- run artifact token scan passed;
+- no `POST`, `PATCH`, `PUT`, or `DELETE` was sent;
+- no external artifact was staged.
+
+Next action:
+
+```text
+Resolve why the create-only token now receives HTTP 403 on the GET-only target
+absence checks. Production execution remains blocked until a fresh Gate2 report
+is approved immediately before --execute.
+```
