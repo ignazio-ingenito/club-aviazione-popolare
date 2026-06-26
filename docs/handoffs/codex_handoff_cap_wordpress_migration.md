@@ -1307,3 +1307,82 @@ Prepare a continuation manifest that excludes the 5 already-created drafts and
 continues from `wordpress:post:5786`, then rerun create-only gates before any
 new production POST.
 ```
+
+## 2026-06-26 - Single retry for `wordpress:post:5786` succeeded
+
+State:
+
+- branch: `develop`
+- production execution: single-item continuation performed
+- Directus mutation: 1 `POST /items/feeds`
+- protected pre-existing artifact impact: none observed
+
+After `feeds.description` was widened to 750, a single guarded retry was run
+for only `wordpress:post:5786`. The original 28-item manifest was not rerun.
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/post-5786-single-retry-20260626T081720Z
+```
+
+Preflight:
+
+```text
+status: approved
+source_identity: wordpress:post:5786
+slug: 31-raduno-cap-toscana
+description_len: 674
+target_absence_by_original_uri: approved
+target_absence_by_slug: approved
+```
+
+Execution:
+
+```text
+method: POST
+endpoint: /items/feeds
+execution_status: created
+target_id: 407
+target_status: draft
+```
+
+Post-run verification:
+
+```text
+status: approved
+target_id: 407
+status: draft
+```
+
+Artifact hashes:
+
+```text
+single-post-5786-preflight.json: 7da66712244a8cba37c052f534484de6e80b7c880d3668eab0ca67d6996b1546
+single-post-5786-execution.json: 5f647bc1b267012006361457ac2e7a950ad272d0d1666d9baa13d48eb183189e
+single-post-5786-post-verification.json: cd322fbaf7bf3d322bd78e03cdfdb9ea978778451972329d2515971940f642a7
+```
+
+Protected migration-created drafts after this retry:
+
+```text
+402 wordpress:post:2715 draft
+403 wordpress:post:2734 draft
+404 wordpress:post:2740 draft
+405 wordpress:post:2755 draft
+406 wordpress:post:3957 draft
+407 wordpress:post:5786 draft
+```
+
+Validation:
+
+- no token found in single-retry artifacts;
+- only one `POST /items/feeds` was sent;
+- no `PATCH`, `PUT`, `DELETE`, media upload, publish, or retry loop occurred.
+
+Next action:
+
+```text
+Prepare a continuation manifest for the remaining uncreated items only,
+excluding draft feeds 402-407.
+```

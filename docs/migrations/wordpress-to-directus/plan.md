@@ -255,6 +255,28 @@ manifest descriptions over 750: 0
 Continuation can now be planned for the remaining uncreated items only. The 5
 already-created draft feeds remain protected migration-created artifacts.
 
+Single-item continuation applied on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/post-5786-single-retry-20260626T081720Z
+source_identity: wordpress:post:5786
+target_id: 407
+target_status: draft
+```
+
+Protected migration-created drafts now include:
+
+```text
+402 wordpress:post:2715 draft
+403 wordpress:post:2734 draft
+404 wordpress:post:2740 draft
+405 wordpress:post:2755 draft
+406 wordpress:post:3957 draft
+407 wordpress:post:5786 draft
+```
+
+Any continuation manifest must exclude these 6 created drafts.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.
