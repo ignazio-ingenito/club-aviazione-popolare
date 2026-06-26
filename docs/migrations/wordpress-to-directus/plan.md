@@ -376,6 +376,38 @@ Gallery media migration requires a separate gate proving folder/file read and
 create permissions, plus a create-only request plan for run-owned folders and
 files. No gallery media upload was performed during this inventory refresh.
 
+Gallery media permission discovery on 2026-06-26:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-permission-gates-20260626T155615Z
+blocked_report_sha256: 6d28be2670e6259fc952643d18d7d2e8d4fc33d2dda6fb429b0959ab608a91f3
+policy_probe_sha256: 8afd790514a8a70724228f22ec3ee47254f0f0d552df881bf31a48f43ba891e0
+```
+
+Findings:
+
+```text
+GET /server/info: 200
+GET /policies?filter[name][_eq]=directus-createonly-content-migration: 200
+GET /permissions?filter[policy][_eq]=<policy_id>: 200
+GET /roles?filter[name][_eq]=directus-createonly-content-migration: 403
+```
+
+The current `directus-createonly-content-migration` policy has exactly:
+
+```text
+feeds.read
+feeds.create
+```
+
+It does not have `directus_folders` or `directus_files` read/create
+permissions. This confirms that gallery media migration cannot proceed with the
+current execution identity. The recommended next permission-management task is
+to create a separate `directus-createonly-gallery-media-migration` identity, or
+explicitly approve broadening the existing identity for this phase only. The
+separate identity is safer because it preserves the feed-only evidence already
+used for article creation.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

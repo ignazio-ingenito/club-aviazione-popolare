@@ -1600,3 +1600,60 @@ Prepare a gallery-media permission/gate slice: prove read/create access for
 directus_folders and directus_files without update/delete, then build a
 draft-only run-owned folder/file request plan for the 291 gallery images.
 ```
+
+## 2026-06-26 - Gallery media permission gate blocked
+
+State:
+
+- branch/worktree: `gallery-media-gates`
+- production execution: not run
+- Directus mutation: none
+- protected production artifact impact: none
+
+GET-only permission discovery was performed to determine whether gallery media
+can proceed with the current Directus migration identity.
+
+Artifacts:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-permission-gates-20260626T155615Z/gallery-media-permission-discovery.blocked.json
+sha256: 6d28be2670e6259fc952643d18d7d2e8d4fc33d2dda6fb429b0959ab608a91f3
+
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-permission-gates-20260626T155615Z/gallery-media-policy-read-probe.json
+sha256: 8afd790514a8a70724228f22ec3ee47254f0f0d552df881bf31a48f43ba891e0
+```
+
+Live GET findings:
+
+```text
+GET /server/info: 200
+GET /policies?filter[name][_eq]=directus-createonly-content-migration: 200
+GET /permissions?filter[policy][_eq]=<policy_id>: 200
+GET /roles?filter[name][_eq]=directus-createonly-content-migration: 403
+```
+
+Current policy actions:
+
+```text
+feeds.read
+feeds.create
+```
+
+Blocker:
+
+```text
+The current create-only content identity has no directus_folders or
+directus_files read/create permission, and the create-only token returns 403 for
+GET /folders. Folder absence/collision cannot be proven and media upload cannot
+be safely planned or executed.
+```
+
+Recommended next action:
+
+```text
+Run a separate permission-management task to create a dedicated
+directus-createonly-gallery-media-migration identity with read/create-only
+access for directus_folders and directus_files, plus read-only access to the
+created gallery feeds. Do not upload gallery media until that identity has
+approved policy evidence and fresh folder/file absence evidence.
+```
