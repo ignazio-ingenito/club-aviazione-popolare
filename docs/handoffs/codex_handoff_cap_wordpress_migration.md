@@ -1705,3 +1705,51 @@ Create or provide a gallery-media execution identity with read/create-only
 access to directus_folders and directus_files, then rerun policy evidence and a
 fresh absence gate using that execution identity before any upload.
 ```
+
+## 2026-06-26 - Member topics status schema fix
+
+State:
+
+- branch: `develop`
+- Directus schema mutation: `POST /fields/member_topics`
+- content/media/feed/gallery mutation: none
+- protected production artifact impact: none
+
+Problem:
+
+```text
+member_topics.status was referenced by collection workflow/archive metadata but
+was missing from the generated field specs and from live Directus.
+```
+
+Code fix:
+
+```text
+cms/utils/wordpress/inventory/member_schema_plan.py now creates
+member_topics.status as a required string select-dropdown field.
+```
+
+Live apply evidence:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/member-topics-status-schema-fix-20260626T200837Z
+summary_sha256: c086cd56ebbcb6f234e6062d4d383ec2a21fe515ff892d43cfd16c4048290fa7
+requests: GET /fields, POST /fields/member_topics, GET /fields
+status: ok
+created: true
+```
+
+Verification:
+
+```text
+tests/test_member_schema_plan.py: 6 tests OK
+compileall: OK
+token leak scan: OK
+```
+
+Next action:
+
+```text
+Reload Directus and verify Member Topics, Member Feeds Topics, and Member Feeds
+Files no longer fail on member_topics.status.
+```

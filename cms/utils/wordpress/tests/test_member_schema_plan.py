@@ -94,6 +94,27 @@ class MemberSchemaPlanTests(unittest.TestCase):
             "uuid",
         )
 
+    def test_member_topics_schema_includes_workflow_status_field(self) -> None:
+        with TemporaryDirectory() as tmp:
+            baseline_path = self.write_target_baseline(Path(tmp), collections=("feeds",))
+            manifest = build_member_schema_plan_manifest(
+                target_manifest_path=baseline_path,
+                environment="synthetic",
+                observed_at=datetime(2026, 6, 22, 12, 0, tzinfo=timezone.utc),
+            )
+
+        member_topic_status = [
+            record.data["body"]
+            for record in manifest.records
+            if record.data["endpoint"] == "/fields/member_topics"
+            and record.data["body"]["field"] == "status"
+        ]
+
+        self.assertEqual(len(member_topic_status), 1)
+        self.assertEqual(member_topic_status[0]["type"], "string")
+        self.assertTrue(member_topic_status[0]["meta"]["required"])
+        self.assertEqual(member_topic_status[0]["meta"]["interface"], "select-dropdown")
+
     def test_existing_member_collection_fails_closed_without_requests(self) -> None:
         with TemporaryDirectory() as tmp:
             baseline_path = self.write_target_baseline(

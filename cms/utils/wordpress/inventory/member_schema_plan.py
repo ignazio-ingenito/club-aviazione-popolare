@@ -173,6 +173,7 @@ def _field_specs() -> dict[str, tuple[dict[str, Any], ...]]:
             _field("source_slug", "string"),
         ),
         "member_topics": (
+            _field("status", "string", required=True, interface="select-dropdown"),
             _field("slug", "string", required=True, unique=True),
             _field("title", "string", required=True),
             _field("source_taxonomy", "string", required=True),

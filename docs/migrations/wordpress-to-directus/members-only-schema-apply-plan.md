@@ -285,6 +285,39 @@ with 59 successful, 0 skipped, 0 failed, and no non-`POST` method. Final live
 post-apply schema verification remains pending because the network approval
 system hit its usage limit before the verification script could run.
 
+## Member topics status field fix
+
+On 2026-06-26 the Directus UI/API reported:
+
+```text
+You don't have permission to access field "status" in collection "member_topics" or it does not exist.
+```
+
+Manual UI inspection showed `member_topics.status` did not exist. This was a
+schema-plan bug: the collection workflow/archive metadata referenced
+`status`, but the `member_topics` field list did not create it.
+
+The schema generator now includes:
+
+```text
+member_topics.status: string, required, select-dropdown
+```
+
+Production fix applied:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/member-topics-status-schema-fix-20260626T200837Z
+summary: member-topics-status-schema-fix.summary.json
+summary_sha256: c086cd56ebbcb6f234e6062d4d383ec2a21fe515ff892d43cfd16c4048290fa7
+requests:
+  - GET /fields
+  - POST /fields/member_topics
+  - GET /fields
+production_mutation: created member_topics.status only
+```
+
+No content, media, feed, gallery, user, role, or permission record was changed.
+
 ## Post-apply verification
 
 After schema apply:
