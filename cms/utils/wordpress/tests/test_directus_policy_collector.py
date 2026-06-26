@@ -44,6 +44,7 @@ class DirectusPolicyCollectorTests(unittest.TestCase):
 
         policies_request = next(request for request in requests if request.url.path == "/policies")
         self.assertEqual(policies_request.url.params.get("filter[roles][role][_eq]"), "role-create-only")
+        self.assertEqual(policies_request.url.params.get("fields"), "id,name,roles.role.*")
         self.assertNotIn("filter[roles][_contains]", policies_request.url.params)
 
     def test_collector_accepts_directus_access_role_linkage(self) -> None:

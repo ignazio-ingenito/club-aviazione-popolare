@@ -43,7 +43,10 @@ def collect_directus_policy_graph_raw(
             base_url,
             "/policies",
             headers=headers,
-            params={"filter[roles][role][_eq]": selected_role_id},
+            params={
+                "filter[roles][role][_eq]": selected_role_id,
+                "fields": "id,name,roles.role.*",
+            },
             label="policies",
         )
         policies = _require_non_empty_list(policies, "policies response")

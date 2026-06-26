@@ -63,6 +63,7 @@ SYSTEM_COLLECTIONS = frozenset(
     }
 )
 FILE_OR_FOLDER_COLLECTIONS = frozenset({"directus_files", "directus_folders", "files", "folders"})
+PERMISSION_EVIDENCE_KIND = "permission_evidence_create_only"
 
 
 class DirectusPolicyEvidenceError(ValueError):
@@ -199,6 +200,72 @@ def evaluate_policy_graph_evidence(payload: Mapping[str, Any]) -> dict[str, Any]
     _evaluate_permissions(permissions, checks=checks, reasons=reasons)
 
     return _result(reasons, checks)
+
+
+def build_permission_evidence_create_only(
+    payload: Mapping[str, Any],
+    *,
+    evaluation: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build the canonical Gate 1 report from approved policy graph evidence.
+
+    The generated report keeps the existing pre-create gate contract. It derives
+    the probe matrix from an approved complete policy graph rather than from
+    live denied-probe requests with the execution token.
+    """
+
+    payload = _require_mapping(payload, "policy graph evidence")
+    evaluation_payload = evaluation or evaluate_policy_graph_evidence(payload)
+    evaluation_payload = _require_mapping(evaluation_payload, "policy graph evaluation")
+    if evaluation_payload.get("status") != "approved":
+        raise DirectusPolicyEvidenceError("permission evidence requires approved policy graph evaluation")
+
+    target_url = _target_url(payload)
+    observed_at = _text(payload.get("observed_at")) or _text(payload.get("collected_at"))
+    identity = payload.get("identity")
+    if not isinstance(identity, Mapping):
+        identity = payload.get("subject")
+    identity = _require_mapping(identity, "identity")
+    role = _require_text_value(identity.get("role"), "identity.role")
+    label = _text(identity.get("label")) or role
+
+    return {
+        "kind": PERMISSION_EVIDENCE_KIND,
+        "status": "approved",
+        "target_url": target_url,
+        "observed_at": observed_at,
+        "execution_identity": {
+            "id": f"directus-role:{role}",
+            "role": role,
+            "label": label,
+        },
+        "capabilities": {
+            "admin": False,
+            "system_wildcard": False,
+            "wildcard": False,
+            "broad_token": False,
+            "role_admin": False,
+            "permission_management": False,
+        },
+        "evidence_source": {
+            "kind": payload.get("kind"),
+            "evaluation_kind": evaluation_payload.get("kind"),
+            "evaluation_status": evaluation_payload.get("status"),
+            "source": "approved_policy_graph",
+        },
+        "probes": {
+            "create": _probe("POST", "/items/feeds", "allowed", True),
+            "patch": _probe("PATCH", "/items/feeds", "denied", False),
+            "put": _probe("PUT", "/items/feeds", "denied", False),
+            "delete": _probe("DELETE", "/items/feeds", "denied", False),
+            "schema": _probe("GET", "/schema", "denied", False),
+            "settings": _probe("GET", "/settings", "denied", False),
+            "users": _probe("GET", "/users", "denied", False),
+            "roles": _probe("GET", "/roles", "denied", False),
+            "permissions": _probe("GET", "/permissions", "denied", False),
+            "policies": _probe("GET", "/policies", "denied", False),
+        },
+    }
 
 
 def _evaluate_permissions(
@@ -363,6 +430,16 @@ def _has_status_draft_preset(permission: Mapping[str, Any]) -> bool:
     return presets.get("status") == "draft"
 
 
+def _probe(method: str, resource: str, result: str, success: bool) -> dict[str, Any]:
+    return {
+        "method": method,
+        "resource": resource,
+        "result": result,
+        "success": success,
+        "evidence_source": "approved_policy_graph",
+    }
+
+
 def _has_items(value: Any) -> bool:
     if value is None:
         return False
@@ -517,6 +594,10 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
     parser.add_argument("--raw-input", help="Raw synthetic Directus policy graph JSON path.")
     parser.add_argument("--normalized-output", help="Normalized evidence JSON output path.")
     parser.add_argument("--evaluation-output", help="Evaluation JSON output path for raw mode.")
+    parser.add_argument(
+        "--permission-evidence-output",
+        help="Derived permission-evidence-create-only.json output path, written only for approved evidence.",
+    )
     parser.add_argument("--force", action="store_true", help="Allow overwriting the output file.")
     args = parser.parse_args(argv)
 
@@ -543,7 +624,13 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
             raw_output_path = Path(args.raw_output)
             normalized_output_path = Path(args.normalized_output)
             evaluation_output_path = Path(args.evaluation_output)
-            for path in (raw_output_path, normalized_output_path, evaluation_output_path):
+            permission_evidence_output_path = (
+                Path(args.permission_evidence_output) if args.permission_evidence_output else None
+            )
+            output_paths = [raw_output_path, normalized_output_path, evaluation_output_path]
+            if permission_evidence_output_path is not None:
+                output_paths.append(permission_evidence_output_path)
+            for path in output_paths:
                 _ensure_writable_output(path, force=args.force)
                 _ensure_output_outside_repository(path)
 
@@ -571,16 +658,21 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
                 json.dumps(evaluation, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",
             )
+            output_summary = {
+                "status": evaluation["status"],
+                "raw_output": str(raw_output_path),
+                "normalized_output": str(normalized_output_path),
+                "evaluation_output": str(evaluation_output_path),
+            }
+            if permission_evidence_output_path is not None:
+                permission_evidence = build_permission_evidence_create_only(normalized, evaluation=evaluation)
+                permission_evidence_output_path.write_text(
+                    json.dumps(permission_evidence, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                output_summary["permission_evidence_output"] = str(permission_evidence_output_path)
             print(
-                json.dumps(
-                    {
-                        "status": evaluation["status"],
-                        "raw_output": str(raw_output_path),
-                        "normalized_output": str(normalized_output_path),
-                        "evaluation_output": str(evaluation_output_path),
-                    },
-                    sort_keys=True,
-                ),
+                json.dumps(output_summary, sort_keys=True),
             )
         elif raw_mode:
             if any(collect_mode_args):
@@ -591,8 +683,14 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
                 )
             normalized_output_path = Path(args.normalized_output)
             evaluation_output_path = Path(args.evaluation_output)
-            _ensure_writable_output(normalized_output_path, force=args.force)
-            _ensure_writable_output(evaluation_output_path, force=args.force)
+            permission_evidence_output_path = (
+                Path(args.permission_evidence_output) if args.permission_evidence_output else None
+            )
+            output_paths = [normalized_output_path, evaluation_output_path]
+            if permission_evidence_output_path is not None:
+                output_paths.append(permission_evidence_output_path)
+            for path in output_paths:
+                _ensure_writable_output(path, force=args.force)
 
             raw_payload = _read_json_object(Path(args.raw_input))
             normalized = normalize_directus_policy_graph_payload(raw_payload)
@@ -605,15 +703,20 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
                 json.dumps(evaluation, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",
             )
+            output_summary = {
+                "status": evaluation["status"],
+                "normalized_output": str(normalized_output_path),
+                "evaluation_output": str(evaluation_output_path),
+            }
+            if permission_evidence_output_path is not None:
+                permission_evidence = build_permission_evidence_create_only(normalized, evaluation=evaluation)
+                permission_evidence_output_path.write_text(
+                    json.dumps(permission_evidence, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                output_summary["permission_evidence_output"] = str(permission_evidence_output_path)
             print(
-                json.dumps(
-                    {
-                        "status": evaluation["status"],
-                        "normalized_output": str(normalized_output_path),
-                        "evaluation_output": str(evaluation_output_path),
-                    },
-                    sort_keys=True,
-                ),
+                json.dumps(output_summary, sort_keys=True),
             )
         else:
             if any(collect_mode_args):
@@ -621,11 +724,26 @@ def main(argv: list[str] | None = None, *, http: httpx.Client | None = None) -> 
             if not args.input or not args.output:
                 raise ValueError("evaluator mode requires --input and --output")
             output_path = Path(args.output)
-            _ensure_writable_output(output_path, force=args.force)
+            permission_evidence_output_path = (
+                Path(args.permission_evidence_output) if args.permission_evidence_output else None
+            )
+            output_paths = [output_path]
+            if permission_evidence_output_path is not None:
+                output_paths.append(permission_evidence_output_path)
+            for path in output_paths:
+                _ensure_writable_output(path, force=args.force)
             payload = _read_json_object(Path(args.input))
             evaluation = evaluate_policy_graph_evidence(payload)
             output_path.write_text(json.dumps(evaluation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            print(json.dumps({"status": evaluation["status"], "output": str(output_path)}, sort_keys=True))
+            output_summary = {"status": evaluation["status"], "output": str(output_path)}
+            if permission_evidence_output_path is not None:
+                permission_evidence = build_permission_evidence_create_only(payload, evaluation=evaluation)
+                permission_evidence_output_path.write_text(
+                    json.dumps(permission_evidence, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+                output_summary["permission_evidence_output"] = str(permission_evidence_output_path)
+            print(json.dumps(output_summary, sort_keys=True))
     except (
         OSError,
         json.JSONDecodeError,

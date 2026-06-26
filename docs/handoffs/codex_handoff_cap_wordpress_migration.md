@@ -792,3 +792,64 @@ The old narrowed Gate 2/readiness artifacts were not recovered. Before any
 production POST, run a same-moment GET-only fresh target absence refresh and
 pass its hash through --fresh-target-absence-sha256.
 ```
+
+## 2026-06-26 - Gate1 derived from admin GET-only policy graph
+
+State:
+
+- branch: `develop`
+- production execution: not performed
+- Directus mutation: none
+- protected production artifact impact: none
+
+The create-only execution token cannot read `/roles/<role_id>`, so it cannot
+regenerate the full policy graph itself. The safe path is a split-evidence
+model:
+
+- use a broader admin/schema token only as a GET-only evidence reader;
+- export the create-only role policy graph outside Git;
+- evaluate the graph locally;
+- derive the canonical `permission-evidence-create-only.json` consumed by the
+  existing pre-create gate;
+- keep the create-only token reserved for fresh target absence and execution.
+
+Code updates:
+
+- `directus_policy_collector.py` now requests `fields=id,name,roles.role.*`
+  for `/policies`, avoiding Directus access-junction IDs being mistaken for
+  role IDs.
+- `directus_policy_evidence.py` can write
+  `--permission-evidence-output <path>` from approved policy graph evidence.
+- `pre_create_gates.py` remains unchanged and remains the final Gate1
+  validator.
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gate1-admin-export-20260626T062824Z
+```
+
+Artifact hashes:
+
+```text
+directus-createonly-policy-graph.raw.json: 8c0d5287fb77c33512e71404a4404b44db83a1c15a3c1a8164b6d055377432e7
+directus-createonly-policy-graph.normalized.json: 1747cf1f48b578e9664a9f4b71feeb4931261f3515500b563ad7861106e4f18a
+directus-createonly-policy-graph.evaluation.json: 794246ab503bc950327c83b4b0336dbc3a474909c66db309309cee2996dcf43c
+permission-evidence-create-only.json: 63a115f7921dad9e36556aceb0cc722b246edec768dd25bf5c76b00e9352de2c
+```
+
+Validation:
+
+- policy graph evaluation status: `approved`;
+- derived `permission-evidence-create-only.json` passed
+  `validate_permission_evidence_report`;
+- no token found in the run artifacts;
+- no `POST`, `PATCH`, `PUT`, or `DELETE` was sent.
+
+Next action:
+
+```text
+Use the new Gate1 artifact for the production prompt, then run same-moment
+fresh target absence validation for the 28 recovered narrowed operations. Do
+not run --execute until the exact production approval sentence is present.
+```

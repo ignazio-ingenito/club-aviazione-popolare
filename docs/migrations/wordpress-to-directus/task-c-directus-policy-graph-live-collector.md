@@ -445,3 +445,53 @@ open_questions:
   - None for the mocked scaffold slice.
 next_action: After operator approval, run collect-live outside Git and review the normalized/evaluation artifacts before any production write gate.
 ```
+
+## Derived Gate 1 Export - 2026-06-26
+
+The create-only execution token cannot read `/roles/<role_id>`, so it cannot
+regenerate the full policy graph itself. A separate admin/schema token was used
+as a GET-only evidence reader to export the policy graph for the
+`directus-createonly-content-migration` role. No Directus mutation occurred.
+
+The collector now requests explicit Directus 11 role linkage fields:
+
+```text
+GET /policies?filter[roles][role][_eq]=<role_id>&fields=id,name,roles.role.*
+```
+
+This avoids confusing `directus_access` junction IDs with role IDs in the
+default `/policies` response.
+
+The evidence CLI can now derive the canonical Gate 1 artifact from an approved
+policy graph:
+
+```text
+--permission-evidence-output <path>/permission-evidence-create-only.json
+```
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gate1-admin-export-20260626T062824Z
+```
+
+Artifacts:
+
+```text
+directus-createonly-policy-graph.raw.json: 8c0d5287fb77c33512e71404a4404b44db83a1c15a3c1a8164b6d055377432e7
+directus-createonly-policy-graph.normalized.json: 1747cf1f48b578e9664a9f4b71feeb4931261f3515500b563ad7861106e4f18a
+directus-createonly-policy-graph.evaluation.json: 794246ab503bc950327c83b4b0336dbc3a474909c66db309309cee2996dcf43c
+permission-evidence-create-only.json: 63a115f7921dad9e36556aceb0cc722b246edec768dd25bf5c76b00e9352de2c
+```
+
+Validation:
+
+- policy graph evaluation status: `approved`;
+- derived Gate 1 `permission-evidence-create-only.json` passed
+  `validate_permission_evidence_report`;
+- request methods used by the collector are GET-only;
+- no token was found in the run artifacts.
+
+The derived Gate 1 artifact does not authorize production execution by itself.
+The next gate remains same-moment fresh target absence validation for the 28
+recovered narrowed operations.

@@ -5,7 +5,8 @@ from tempfile import TemporaryDirectory
 import json
 import unittest
 
-from directus_policy_evidence import evaluate_policy_graph_evidence, main
+from directus_policy_evidence import build_permission_evidence_create_only, evaluate_policy_graph_evidence, main
+from pre_create_gates import validate_permission_evidence_report
 
 
 class DirectusPolicyEvidenceTests(unittest.TestCase):
@@ -14,6 +15,30 @@ class DirectusPolicyEvidenceTests(unittest.TestCase):
 
         self.assertEqual(result["status"], "approved")
         self.assertEqual(result["reasons"], [])
+
+    def test_build_permission_evidence_from_approved_graph_passes_pre_create_gate(self) -> None:
+        payload = self.approved_payload()
+        evaluation = evaluate_policy_graph_evidence(payload)
+
+        permission_evidence = build_permission_evidence_create_only(payload, evaluation=evaluation)
+
+        self.assertEqual(permission_evidence["kind"], "permission_evidence_create_only")
+        self.assertEqual(permission_evidence["status"], "approved")
+        self.assertEqual(permission_evidence["probes"]["create"]["result"], "allowed")
+        self.assertEqual(permission_evidence["probes"]["patch"]["result"], "denied")
+        self.assertEqual(permission_evidence["probes"]["roles"]["result"], "denied")
+        validate_permission_evidence_report(
+            permission_evidence,
+            expected_target_url="https://cap-cms.skunklabs.uk",
+        )
+
+    def test_build_permission_evidence_rejects_unapproved_graph(self) -> None:
+        payload = self.approved_payload()
+        payload["permissions"][0]["validation"] = {}
+        evaluation = evaluate_policy_graph_evidence(payload)
+
+        with self.assertRaisesRegex(ValueError, "requires approved"):
+            build_permission_evidence_create_only(payload, evaluation=evaluation)
 
     def test_missing_identity_rejects(self) -> None:
         payload = self.approved_payload()
@@ -144,6 +169,54 @@ class DirectusPolicyEvidenceTests(unittest.TestCase):
             self.assertEqual(exit_code, 0)
             written = json.loads(output_path.read_text(encoding="utf-8"))
             self.assertEqual(written["status"], "approved")
+
+    def test_cli_writes_permission_evidence_for_approved_input(self) -> None:
+        with TemporaryDirectory() as tmp:
+            input_path = Path(tmp) / "evidence.json"
+            output_path = Path(tmp) / "evaluation.json"
+            permission_path = Path(tmp) / "permission-evidence-create-only.json"
+            input_path.write_text(json.dumps(self.approved_payload()), encoding="utf-8")
+
+            exit_code = main(
+                [
+                    "--input",
+                    str(input_path),
+                    "--output",
+                    str(output_path),
+                    "--permission-evidence-output",
+                    str(permission_path),
+                ],
+            )
+
+            self.assertEqual(exit_code, 0)
+            permission_evidence = json.loads(permission_path.read_text(encoding="utf-8"))
+            validate_permission_evidence_report(
+                permission_evidence,
+                expected_target_url="https://cap-cms.skunklabs.uk",
+            )
+
+    def test_cli_refuses_permission_evidence_for_rejected_input(self) -> None:
+        with TemporaryDirectory() as tmp:
+            payload = self.approved_payload()
+            payload["permissions"][0]["validation"] = {}
+            input_path = Path(tmp) / "evidence.json"
+            output_path = Path(tmp) / "evaluation.json"
+            permission_path = Path(tmp) / "permission-evidence-create-only.json"
+            input_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            exit_code = main(
+                [
+                    "--input",
+                    str(input_path),
+                    "--output",
+                    str(output_path),
+                    "--permission-evidence-output",
+                    str(permission_path),
+                ],
+            )
+
+            self.assertEqual(exit_code, 1)
+            self.assertFalse(permission_path.exists())
 
     def test_cli_refuses_to_overwrite_without_force(self) -> None:
         with TemporaryDirectory() as tmp:
