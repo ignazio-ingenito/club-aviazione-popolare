@@ -228,6 +228,21 @@ protected for any continuation. Do not rerun the original 28-item manifest.
 Investigate the HTTP 400 for `wordpress:post:5786`, then prepare a continuation
 manifest only for remaining uncreated items.
 
+Root cause identified on 2026-06-26:
+
+```text
+feeds.description is varchar(500)
+wordpress:post:5786 generated description length is 674
+```
+
+Only `wordpress:post:5786` violates this limit in the 28-item request plan.
+Continuation is blocked until an explicit decision is made:
+
+- widen `feeds.description` to `text` through a separately approved schema task;
+- add an explicit deterministic description/excerpt transformation;
+- exclude `wordpress:post:5786` from automated continuation and handle it
+  manually.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

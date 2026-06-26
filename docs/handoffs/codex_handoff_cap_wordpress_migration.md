@@ -1169,3 +1169,73 @@ items now exist and must be treated as protected migration-created drafts.
 Prepare a narrowed continuation manifest for the remaining items only after the
 HTTP 400 root cause is understood.
 ```
+
+## 2026-06-26 - Root cause for `wordpress:post:5786` HTTP 400
+
+State:
+
+- branch: `develop`
+- investigation mode: read-only
+- production execution: not resumed
+- Directus mutation during investigation: none
+- protected production artifact impact: none
+
+The HTTP 400 root cause was identified by comparing the failed request payload
+with the live Directus `feeds` field schema.
+
+Root cause:
+
+```text
+feeds.description is character varying(500)
+wordpress:post:5786 generated description length is 674
+```
+
+Only one operation in the 28-item request plan violates this field limit:
+
+```text
+sequence: 6
+source_identity: wordpress:post:5786
+slug: 31-raduno-cap-toscana
+field: description
+length: 674
+limit: 500
+```
+
+The first 5 operations had `description <= 500`, which explains why they were
+created before the executor stopped at sequence 6.
+
+Investigation artifacts:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/post-5786-http400-investigation-20260626T075857Z
+```
+
+Artifact hashes:
+
+```text
+feeds-schema.sanitized.json: 7ef53a20022b2bbc737d9d0fa8050c7e32918cee22e0de03625e4a2146f6f23a
+post-5786-http400-root-cause.json: ec6c544fa3b5c254c904b042b566a11a21eeca87e1d4b56d5968c56f2fadc713
+```
+
+Decision needed before continuation:
+
+```text
+Choose how to handle WordPress excerpts longer than Directus feeds.description
+varchar(500). Do not silently truncate or omit fields to make the write pass.
+```
+
+Viable options:
+
+- widen `feeds.description` to `text` through a separately approved schema task;
+- introduce an explicit deterministic excerpt transformation for `description`
+  while preserving full WordPress content in `content`;
+- exclude `wordpress:post:5786` from automated continuation and handle it
+  manually in Directus.
+
+Next action:
+
+```text
+Choose one of the description handling options, then generate a continuation
+manifest that excludes the 5 already-created drafts and handles
+`wordpress:post:5786` according to the approved policy.
+```
