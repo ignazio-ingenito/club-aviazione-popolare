@@ -1239,3 +1239,71 @@ Choose one of the description handling options, then generate a continuation
 manifest that excludes the 5 already-created drafts and handles
 `wordpress:post:5786` according to the approved policy.
 ```
+
+## 2026-06-26 - `feeds.description` widened to 750
+
+State:
+
+- branch: `develop`
+- production schema mutation: performed
+- content execution: not resumed
+- Directus content mutation during schema task: none
+- protected production content artifact impact: none
+
+The operator approved widening `feeds.description` to 750. A single schema
+mutation was applied:
+
+```text
+PATCH /fields/feeds/description
+body: {"schema":{"max_length":750}}
+```
+
+Run directory:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/feeds-description-schema-750-20260626T080446Z
+```
+
+Preflight:
+
+```text
+feeds.description max_length: 500
+```
+
+Apply result:
+
+```text
+http_status: 200
+reported_max_length: 750
+```
+
+Post-apply verification:
+
+```text
+status: approved
+feeds.description max_length: 750
+wordpress:post:5786 description length: 674
+manifest descriptions over 750: 0
+```
+
+Artifact hashes:
+
+```text
+preflight-feeds-description-field.json: 54bb11c5e3d1435f714fa81fd5e0bf8c6ef37daa9aa214aa6ec0a9f78c163366
+apply-feeds-description-max-length-750.json: c55b0b1c1f9c46a3327f4a1f68e37b3e37e4dbb31dcc5ee1d3863d60c06a4bad
+post-apply-feeds-description-verification.json: f1ef620bfe821e02677d6c00e91ec1d29c0e6a07d71a7925927ce2fcd9f2a2c0
+```
+
+Validation:
+
+- no token found in schema task artifacts;
+- only the approved schema endpoint was mutated;
+- no content import or continuation execution was run.
+
+Next action:
+
+```text
+Prepare a continuation manifest that excludes the 5 already-created drafts and
+continues from `wordpress:post:5786`, then rerun create-only gates before any
+new production POST.
+```

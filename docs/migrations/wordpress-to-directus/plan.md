@@ -243,6 +243,18 @@ Continuation is blocked until an explicit decision is made:
 - exclude `wordpress:post:5786` from automated continuation and handle it
   manually.
 
+Decision applied on 2026-06-26:
+
+```text
+feeds.description widened from varchar(500) to varchar(750)
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/feeds-description-schema-750-20260626T080446Z
+post_apply_status: approved
+manifest descriptions over 750: 0
+```
+
+Continuation can now be planned for the remaining uncreated items only. The 5
+already-created draft feeds remain protected migration-created artifacts.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.
