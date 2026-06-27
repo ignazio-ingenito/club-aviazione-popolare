@@ -475,6 +475,62 @@ Production readiness remains blocked until the dedicated gallery-media identity
 is created or provided, encrypted in SOPS, and proven with GET-only token probes
 and redacted policy evidence. Do not upload gallery media yet.
 
+Gallery-media identity apply attempt on 2026-06-27:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T060034Z
+identity_name: directus-createonly-gallery-media-migration
+service_email: cap-gallery-media-migration@skunklabs.uk
+pre_apply_classification: absent_safe_to_create
+post_apply_classification: existing_matches_expected
+apply_requested: true
+apply_performed: true
+```
+
+Permission-management mutations performed:
+
+```text
+POST /roles
+POST /policies
+POST /permissions
+POST /users
+```
+
+Created live permission graph:
+
+```text
+feeds.read
+directus_folders.read
+directus_folders.create
+directus_files.read
+directus_files.create
+```
+
+No `PATCH`, `PUT`, `DELETE`, content import, media upload, folder content
+creation, file upload, feed mutation, schema apply, or frontend change was
+performed.
+
+The run remains blocked because the static token captured during user creation
+could not be validated afterward. The encrypted secret was not committed: after
+the initial SOPS write failed, admin GET recovery exposed only a masked token,
+and all gallery-media token GET probes returned HTTP 401. The invalid SOPS file
+was removed from the worktree.
+
+Artifacts:
+
+```text
+gallery-media-identity.pre-apply-discovery.json: fd09ce7acc8ead6b03fc8f5ce306a5b1ad2644ae4f849014e1caa473c3d05d77
+gallery-media-identity.apply.json: 9186fe6c7bbf3625a3d246409bff05ab771faf003dc897a17af20709afdb5688
+gallery-media-identity.post-apply-discovery.json: 4f011bc3e44085786f3261f70da80ed9dc8239792ce30a3976dc79767c5f4fef
+gallery-media-token-get-probes.json: 6655a6c2b5bda21559c91dd48d330beca36eb84ad32a74a5db210e5f550eda59
+gallery-media-identity.final-blocked.json: 188e935adaf7d640613c464359f46e744848fcd880bdb98f87f3069b9ef6ddf5
+```
+
+Next action: resolve the gallery-media service user static token with an
+approved Directus token regeneration/update procedure, then create the SOPS
+secret and rerun GET-only token probes plus redacted policy evidence before any
+gallery media upload.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

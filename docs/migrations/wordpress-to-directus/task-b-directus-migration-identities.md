@@ -805,3 +805,68 @@ Production readiness remains blocked because the explicit apply gate was not
 set. The next permission-management run may create this identity only after
 `APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true` is intentionally present and fresh
 GET-only comparison still classifies the state as safe.
+
+## Gallery-media identity apply status
+
+Later on 2026-06-27, the gallery-media permission-management slice was rerun
+with:
+
+```text
+APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true
+```
+
+Fresh pre-apply discovery classified the state as:
+
+```text
+absent_safe_to_create
+```
+
+The apply created the dedicated gallery-media role, policy, five permission
+rows, and service user with only these endpoint families:
+
+```text
+POST /roles
+POST /policies
+POST /permissions
+POST /users
+```
+
+No `PATCH`, `PUT`, or `DELETE` was performed. No content, media, feed, gallery,
+schema, folder-content, file upload, relation, or frontend object was changed.
+
+Post-apply discovery classified the live state as:
+
+```text
+existing_matches_expected
+```
+
+The identity has the intended permission rows:
+
+```text
+feeds.read
+directus_folders.read
+directus_folders.create
+directus_files.read
+directus_files.create
+```
+
+However, the run is not production-ready. The static token could not be
+validated: GET probes with the gallery-media token returned HTTP 401 for every
+probe, including `/server/info`. The invalid SOPS secret was removed and no
+gallery-media secret is committed.
+
+Artifacts:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T060034Z
+gallery-media-identity.pre-apply-discovery.json: fd09ce7acc8ead6b03fc8f5ce306a5b1ad2644ae4f849014e1caa473c3d05d77
+gallery-media-identity.apply.json: 9186fe6c7bbf3625a3d246409bff05ab771faf003dc897a17af20709afdb5688
+gallery-media-identity.post-apply-discovery.json: 4f011bc3e44085786f3261f70da80ed9dc8239792ce30a3976dc79767c5f4fef
+gallery-media-token-get-probes.json: 6655a6c2b5bda21559c91dd48d330beca36eb84ad32a74a5db210e5f550eda59
+gallery-media-identity.final-blocked.json: 188e935adaf7d640613c464359f46e744848fcd880bdb98f87f3069b9ef6ddf5
+```
+
+Next action: resolve static token generation for the existing
+`cap-gallery-media-migration@skunklabs.uk` service user through an approved
+Directus token regeneration/update path, then write the encrypted SOPS secret
+and rerun token probes plus policy evidence.

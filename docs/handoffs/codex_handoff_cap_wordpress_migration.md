@@ -1764,6 +1764,94 @@ APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true, then validate the new token with
 GET-only probes and redacted policy evidence.
 ```
 
+## 2026-06-27 - Gallery-media identity apply blocked on token validation
+
+State:
+
+- branch/worktree: `codex/gallery-media-identity-apply`
+- Directus permission-management mutation: performed
+- Directus content/media/folder/file/feed mutation: none
+- protected production artifact impact: none
+
+After the blocked discovery, the permission-management slice was rerun with:
+
+```text
+APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true
+```
+
+Fresh pre-apply GET-only discovery classified the state as:
+
+```text
+absent_safe_to_create
+```
+
+The apply then created only permission-management resources:
+
+```text
+POST /roles
+POST /policies
+POST /permissions
+POST /users
+```
+
+Created intended permissions:
+
+```text
+feeds.read
+directus_folders.read
+directus_folders.create
+directus_files.read
+directus_files.create
+```
+
+Post-apply discovery classified the live policy/user state as:
+
+```text
+existing_matches_expected
+```
+
+The run did not perform any `PATCH`, `PUT`, `DELETE`, feed creation/update,
+folder content creation, file upload, media upload, schema apply, frontend
+change, or homelab change.
+
+Blocker:
+
+```text
+The gallery-media static token could not be validated.
+All GET probes with the new token returned HTTP 401.
+```
+
+The SOPS secret was not committed. The initial SOPS encryption failed because
+the plaintext timestamp was not quoted. The temporary plaintext was removed.
+Admin GET recovery could read the user and role but returned only a masked token
+value, so the recovered secret was invalid and was removed from the worktree.
+
+Artifacts outside Git:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T060034Z
+gallery-media-identity.pre-apply-discovery.json: fd09ce7acc8ead6b03fc8f5ce306a5b1ad2644ae4f849014e1caa473c3d05d77
+gallery-media-identity.apply.json: 9186fe6c7bbf3625a3d246409bff05ab771faf003dc897a17af20709afdb5688
+gallery-media-identity.post-apply-discovery.json: 4f011bc3e44085786f3261f70da80ed9dc8239792ce30a3976dc79767c5f4fef
+gallery-media-token-get-probes.json: 6655a6c2b5bda21559c91dd48d330beca36eb84ad32a74a5db210e5f550eda59
+gallery-media-identity.final-blocked.json: 188e935adaf7d640613c464359f46e744848fcd880bdb98f87f3069b9ef6ddf5
+```
+
+Current readiness:
+
+```text
+blocked
+```
+
+Next action:
+
+```text
+Resolve the gallery-media service user static token with an approved Directus
+token regeneration/update procedure, then create the SOPS secret and rerun
+GET-only token probes plus redacted policy evidence. Do not upload gallery
+media yet.
+```
+
 ## 2026-06-26 - Member topics status schema fix
 
 State:

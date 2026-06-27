@@ -573,3 +573,36 @@ gallery-media role, policy, permissions, service user, static token, and SOPS
 secret. It must not modify the existing feed-only content migration identity
 and must stop if Directus requires `PATCH`, `PUT`, `DELETE`, or broader
 permission scope.
+
+## Gallery-media apply result
+
+The approved gallery-media apply was attempted on 2026-06-27. The role, policy,
+permissions, and service user were created with only `POST` requests to
+permission-management resources:
+
+```text
+POST /roles
+POST /policies
+POST /permissions
+POST /users
+```
+
+The created policy graph matches the intended action set:
+
+```text
+feeds.read
+directus_folders.read
+directus_folders.create
+directus_files.read
+directus_files.create
+```
+
+The apply is still blocked because token validation failed. The captured token
+could not be proven usable, and admin GET recovery returned only a masked token
+value. All GET probes with the encrypted gallery-media token returned HTTP 401.
+
+No SOPS secret was committed. The next safe recovery is an explicit token
+regeneration/update procedure for the existing gallery-media service user,
+followed by SOPS encryption, GET-only token probes, and redacted policy
+evidence. Do not broaden `directus-createonly-content-migration` to work around
+this blocker.
