@@ -2,7 +2,7 @@
 
 ## Repo and state
 
-- Source repo: `/home/iingenito/projects/personal/club-avizione-popolare`
+- Source repo: `/home/iingenito/projects/personal/club-aviazione-popolare`
 - Branch: `develop`
 - Latest pushed commit: `afd8904 feat(wordpress): complete gallery media migration`
 - Production frontend: `https://cap.skunklabs.uk`

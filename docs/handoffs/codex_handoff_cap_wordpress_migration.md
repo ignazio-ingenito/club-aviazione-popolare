@@ -15,7 +15,7 @@ Non eseguire import, upload, modifica schema, modifica permessi o altre scrittur
 
 ## Repository e servizi
 
-- Repository: `ignazio-ingenito/club-avizione-popolare`
+- Repository: `ignazio-ingenito/club-aviazione-popolare`
 - Branch operativo: `develop`
 - WordPress sorgente: `https://www.clubaviazionepopolare.org`
 - Directus target: `https://cap-cms.skunklabs.uk/`
@@ -143,7 +143,7 @@ Usare un worktree separato e pulito:
 cd /percorso/al/repository/originale
 git fetch origin --prune
 
-WORKTREE="../club-avizione-popolare-codex"
+WORKTREE="../club-aviazione-popolare-codex"
 BRANCH="codex/wp-migration-inventory"
 
 git worktree add "$WORKTREE" -b "$BRANCH" origin/develop

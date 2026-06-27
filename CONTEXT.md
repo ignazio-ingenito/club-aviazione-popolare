@@ -9,7 +9,7 @@ This file gives agents a compact, high-signal understanding of the Club Aviazion
 - Source website during migration: `https://www.clubaviazionepopolare.org` (WordPress).
 - New frontend: Next.js App Router.
 - CMS: Directus backed by PostgreSQL.
-- Repository and image names intentionally use the existing spelling `club-avizione-popolare`; do not rename them as part of migration work.
+- Repository and image names intentionally use the existing spelling `club-aviazione-popolare`; do not rename them as part of migration work.
 - Default development branch: `develop`.
 
 ## Runtime Architecture
