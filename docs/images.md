@@ -2,8 +2,8 @@
 
 This repo publishes two images to GitHub Container Registry:
 
-- **Web (Next.js):** `ghcr.io/<owner>/<repo>-web`
-- **CMS (Directus + optional extensions):** `ghcr.io/<owner>/<repo>-cms`
+- **Web (Next.js):** `ghcr.io/ignazio-ingenito/club-aviazione-popolare-web`
+- **CMS (Directus + optional extensions):** `ghcr.io/ignazio-ingenito/club-aviazione-popolare-cms`
 
 The workflow is `Build and Publish Images` in `.github/workflows/build-and-deploy.yml`.
 
