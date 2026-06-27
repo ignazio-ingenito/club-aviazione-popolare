@@ -870,3 +870,47 @@ Next action: resolve static token generation for the existing
 `cap-gallery-media-migration@skunklabs.uk` service user through an approved
 Directus token regeneration/update path, then write the encrypted SOPS secret
 and rerun token probes plus policy evidence.
+
+## Gallery-media token recovery helper
+
+On 2026-06-27, a local recovery helper was added for the existing
+`cap-gallery-media-migration@skunklabs.uk` service user:
+
+```text
+cms/utils/wordpress/gallery_media_token_recovery.py
+cms/utils/wordpress/tests/test_gallery_media_token_recovery.py
+```
+
+The helper does not execute live recovery by default. Its default path performs
+admin-token discovery with `GET` only and writes sanitized reports outside Git.
+It refuses output directories inside the repository and does not serialize token
+values into JSON reports.
+
+The only live mutation it can perform is gated by:
+
+```text
+APPLY_DIRECTUS_GALLERY_MEDIA_TOKEN_REGEN=true
+```
+
+When that gate is present, the helper first re-discovers the existing
+gallery-media user and expected policy graph, then allows only:
+
+```text
+PATCH /users/<gallery-media-user-id>
+```
+
+with a new static token value. It does not create or change roles, policies,
+permissions, feeds, folders, files, schema, frontend code, or homelab manifests.
+
+Verification:
+
+```text
+cd cms/utils/wordpress
+uv run python -m unittest tests/test_gallery_media_token_recovery.py -v
+uv run python -m compileall -q gallery_media_token_recovery.py tests/test_gallery_media_token_recovery.py
+```
+
+No live Directus mutation was executed while adding the helper. The next
+production action still requires explicit approval for token regeneration,
+followed by SOPS encryption, GET-only token probes, and redacted policy
+evidence before any gallery media upload.

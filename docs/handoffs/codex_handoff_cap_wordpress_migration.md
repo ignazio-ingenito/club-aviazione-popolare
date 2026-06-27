@@ -1942,3 +1942,146 @@ Next action:
 Reload Directus and verify Member Feeds Files and Member Feeds Topics no longer
 fail on status.
 ```
+
+## 2026-06-27 - Gallery-media token recovery helper
+
+State:
+
+- branch: `develop`
+- repo changes: local helper and focused tests only
+- Directus live mutation: none
+- content/media/feed/gallery mutation: none
+- protected production artifact impact: none
+
+Context:
+
+```text
+The dedicated gallery-media role, policy, permissions, and service user already
+exist, but the captured static token could not be validated. All GET probes with
+that token returned HTTP 401, including /server/info.
+```
+
+Code added:
+
+```text
+cms/utils/wordpress/gallery_media_token_recovery.py
+cms/utils/wordpress/tests/test_gallery_media_token_recovery.py
+```
+
+Safety behavior:
+
+```text
+default: GET-only discovery/reporting with admin token
+reports: sanitized JSON outside Git, no token values serialized
+apply gate: APPLY_DIRECTUS_GALLERY_MEDIA_TOKEN_REGEN=true
+only allowed apply mutation: PATCH /users/<gallery-media-user-id> token
+explicitly not touched: roles, policies, permissions, feeds, folders, files, schema, frontend, homelab
+```
+
+Verification:
+
+```text
+cd cms/utils/wordpress
+uv run python -m unittest tests/test_gallery_media_token_recovery.py -v
+uv run python -m compileall -q gallery_media_token_recovery.py tests/test_gallery_media_token_recovery.py
+```
+
+Next action:
+
+```text
+After explicit approval for token regeneration, run the helper against live
+Directus with the schema/admin token, encrypt the printed token into the
+gallery-media SOPS secret, then rerun GET-only token probes and redacted policy
+evidence. Do not upload gallery media until those gates are approved.
+```
+
+## 2026-06-27 - Gallery media upload completed
+
+State:
+
+- branch: `develop`
+- Directus credential path:
+  - regenerated gallery-media token with schema token;
+  - proved gallery-media token with GET-only probes;
+  - attempted upload with gallery-media token and stopped on first `POST /files`
+    `403`;
+  - completed upload with `directus-schema-token.20260622.sops.yaml` by explicit
+    operator acceleration decision.
+- Directus content/media mutation:
+  - `POST /folders`;
+  - `POST /files`;
+  - no `PATCH`, `PUT`, `DELETE`.
+- frontend/schema/homelab mutation: none
+- protected production artifact impact: no baseline artifact was updated or
+  deleted; new migration-owned folders/files were created for the 7 gallery
+  draft feeds.
+
+Token recovery:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-token-recovery-20260627T075447Z
+status: token_regenerated
+probe_status: approved
+secret_written: secrets/migration/directus-createonly-gallery-media-migration.20260626.sops.yaml
+```
+
+First upload attempt:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-upload-20260627T075707Z
+status: stopped_on_first_error
+created_folder_count: 1
+uploaded_file_count: 0
+error: POST /files returned HTTP 403 with the dedicated gallery-media token
+```
+
+Completed upload:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-upload-schema-token-20260627T075818Z
+status: completed
+created_folder_count: 6
+reused_folder_count: 1
+uploaded_file_count: 291
+post_endpoints: /folders, /files
+forbidden_methods_sent: none
+```
+
+Verification:
+
+```text
+schema_verify_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-post-upload-schema-verify-20260627T080043Z
+schema_verify_status: approved
+schema_verified_galleries: 7
+schema_verified_files: 291
+
+public_read_verify_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-public-read-verify-20260627T080104Z
+public_read_verify_status: approved
+```
+
+Artifact hashes:
+
+```text
+gallery-media-token-recovery.apply.json: c996065b76e84f0bfbe8e87a478b7e029a71939ea63548557bf060c139a6073c
+gallery-media-token-recovery.probes.json: 4d097ddcd39d1d8048bdb97789b437ef5b552f7326836ff25d702c4757cd67f8
+gallery-media-upload-report.json: d0ff923cf0e6830ef18daee6d9ea40885a97dc409f7b3468a58ade5459cf71f8
+gallery-media-upload-events.jsonl: 50f32eace3831451565ce0e99a18ecd307d2f268a774c455c46535124f06de78
+gallery-media-post-upload-schema-verification.json: eb4a24386ee70f8a22ec38cf2d4f2e39f1b3dad370c135d7343d6ef0aa763979
+gallery-media-public-read-verification.json: e723062870f73932fb2ab5e06b54dae89ea69a909d5c1dd599055c93b9073aea
+```
+
+Notes:
+
+```text
+The current frontend resolves galleries by exact folder name and reads files in
+that folder. Uploaded filenames include a zero-padded source-order prefix so the
+existing filename/title sorting preserves gallery order.
+```
+
+Next action:
+
+```text
+Commit the helper/docs/secret changes, then run a focused frontend smoke check
+for the 7 gallery draft routes once draft visibility/editorial review is in the
+desired state.
+```

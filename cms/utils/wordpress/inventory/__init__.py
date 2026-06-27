@@ -13,6 +13,7 @@ from .canonical import (
     thaw_json,
 )
 from .errors import InventoryContractError, PaginationContractError
+from .jsonl import read_manifest_jsonl, render_manifest_jsonl
 from .models import InventoryScope, IssueSeverity
 from .pagination import (
     InventoryPage,
@@ -25,9 +26,22 @@ from .pagination import (
     wordpress_page_meta,
 )
 from .models import InventoryIssue, InventoryManifest, ManifestRecord
+from .reconciliation import (
+    HistoricalMappingEvidence,
+    ReconciliationEvidence,
+    ReconciliationEvidenceKind,
+    ReconciliationReport,
+    ReconciliationResult,
+    ReconciliationState,
+    historical_mappings_from_parser_yaml,
+    reconcile_manifest_files,
+    reconcile_manifests,
+    reconcile_record,
+)
 
 __all__ = [
     "CanonicalizationError",
+    "HistoricalMappingEvidence",
     "InventoryContractError",
     "InventoryIssue",
     "InventoryManifest",
@@ -40,14 +54,25 @@ __all__ = [
     "PaginationAccumulator",
     "PaginationContractError",
     "PaginationError",
+    "ReconciliationEvidence",
+    "ReconciliationEvidenceKind",
+    "ReconciliationReport",
+    "ReconciliationResult",
+    "ReconciliationState",
     "IssueSeverity",
     "canonical_json",
     "canonical_json_bytes",
     "canonical_sha256",
     "canonicalize",
     "freeze_json",
+    "historical_mappings_from_parser_yaml",
     "merge_complete_pages",
     "normalize_json",
+    "read_manifest_jsonl",
+    "reconcile_manifest_files",
+    "reconcile_manifests",
+    "reconcile_record",
+    "render_manifest_jsonl",
     "sha256_bytes",
     "sha256_hex",
     "thaw_json",

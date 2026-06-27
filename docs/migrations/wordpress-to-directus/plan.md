@@ -531,6 +531,84 @@ approved Directus token regeneration/update procedure, then create the SOPS
 secret and rerun GET-only token probes plus redacted policy evidence before any
 gallery media upload.
 
+Gallery-media token recovery helper prepared on 2026-06-27:
+
+```text
+files:
+  cms/utils/wordpress/gallery_media_token_recovery.py
+  cms/utils/wordpress/tests/test_gallery_media_token_recovery.py
+status: local helper implemented; no live token recovery executed
+default_behavior: GET-only discovery/reporting
+apply_gate: APPLY_DIRECTUS_GALLERY_MEDIA_TOKEN_REGEN=true
+allowed_apply_mutation: PATCH /users/<gallery-media-user-id> token only
+forbidden_apply_mutations: roles, policies, permissions, feeds, folders, files, schema, frontend, homelab
+```
+
+Verification:
+
+```text
+cd cms/utils/wordpress
+uv run python -m unittest tests/test_gallery_media_token_recovery.py -v
+uv run python -m compileall -q gallery_media_token_recovery.py tests/test_gallery_media_token_recovery.py
+```
+
+The helper writes sanitized reports outside Git and refuses output paths inside
+the repository. It does not serialize admin or gallery-media tokens into JSON
+reports. Production readiness remains blocked until an explicitly approved live
+token-regeneration run succeeds, the token is encrypted into SOPS, GET-only
+token probes are approved, and redacted policy evidence confirms the identity
+is not broader than the intended gallery-media read/create scope.
+
+Gallery media upload completed on 2026-06-27:
+
+```text
+token_recovery_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-token-recovery-20260627T075447Z
+token_recovery_status: token_regenerated
+token_probe_status: approved
+secret_written: secrets/migration/directus-createonly-gallery-media-migration.20260626.sops.yaml
+
+first_upload_attempt_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-upload-20260627T075707Z
+first_upload_status: stopped_on_first_error
+first_upload_result: created 1 empty folder, uploaded 0 files
+first_upload_error: dedicated gallery-media token received HTTP 403 on POST /files
+
+upload_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-upload-schema-token-20260627T075818Z
+credential_used: directus-schema-token.20260622.sops.yaml
+upload_status: completed
+created_folders: 6
+reused_empty_migration_folder: 1
+uploaded_files: 291
+post_endpoints: /folders, /files
+forbidden_methods_sent: none
+
+schema_verify_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-post-upload-schema-verify-20260627T080043Z
+schema_verify_status: approved
+verified_galleries: 7
+verified_files: 291
+
+public_read_verify_run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-public-read-verify-20260627T080104Z
+public_read_verify_status: approved
+```
+
+Artifact hashes:
+
+```text
+gallery-media-token-recovery.apply.json: c996065b76e84f0bfbe8e87a478b7e029a71939ea63548557bf060c139a6073c
+gallery-media-token-recovery.probes.json: 4d097ddcd39d1d8048bdb97789b437ef5b552f7326836ff25d702c4757cd67f8
+gallery-media-upload-report.json: d0ff923cf0e6830ef18daee6d9ea40885a97dc409f7b3468a58ade5459cf71f8
+gallery-media-upload-events.jsonl: 50f32eace3831451565ce0e99a18ecd307d2f268a774c455c46535124f06de78
+gallery-media-post-upload-schema-verification.json: eb4a24386ee70f8a22ec38cf2d4f2e39f1b3dad370c135d7343d6ef0aa763979
+gallery-media-public-read-verification.json: e723062870f73932fb2ab5e06b54dae89ea69a909d5c1dd599055c93b9073aea
+```
+
+The schema token was used for the final upload only after the dedicated
+gallery-media token proved unusable for `POST /files`. The operation still used
+only `GET`, `HEAD`, and `POST`; no `PATCH`, `PUT`, `DELETE`, feed update,
+folder/file update, schema change, frontend change, or homelab change was
+performed during media upload. The migrated galleries rely on the existing
+folder-by-slug frontend fallback; filenames were uploaded with numeric prefixes
+to preserve source order under the current `title, filename_download` sorting.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.
