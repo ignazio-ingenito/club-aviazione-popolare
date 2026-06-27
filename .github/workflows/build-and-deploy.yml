@@ -2,7 +2,7 @@ name: Build and Publish Images
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
     tags:
       - "v*"
   pull_request:
@@ -48,7 +48,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_WEB }}
           tags: |
             type=sha,format=long
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.ref_name == 'develop' || github.ref_name == 'main' }}
             type=ref,event=tag
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -95,7 +95,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_CMS }}
           tags: |
             type=sha,format=long
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=latest,enable=${{ github.ref_name == 'develop' || github.ref_name == 'main' }}
             type=ref,event=tag
             type=ref,event=branch
             type=semver,pattern={{version}}
