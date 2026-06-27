@@ -446,6 +446,35 @@ prove same binary content or same intended gallery placement. Treat them as
 manual review candidates or require stronger checksum/content evidence before
 reusing existing files.
 
+Gallery-media identity discovery on 2026-06-27:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T055028Z
+identity_name: directus-createonly-gallery-media-migration
+service_email: cap-gallery-media-migration@skunklabs.uk
+live_methods_used: GET only
+live_state_classification: absent_safe_to_create
+apply_requested: false
+apply_performed: false
+production_mutations: none
+```
+
+Artifacts:
+
+```text
+gallery-media-identity.discovery.json: 8c4158e37cdf1986d8c3179bf01d18626063e4e4eade0bb7f9217351f23c59c6
+gallery-media-identity.blocked.json: e907e626c17f75605182aa3ef3d2f2c5f381661f9b53a7355c7f48673221024a
+```
+
+The schema/admin token was used only for sanitized permission-management GET
+discovery. No gallery-media role, policy, user, token, SOPS secret, folder,
+file, feed, or media object was created because
+`APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true` was not present.
+
+Production readiness remains blocked until the dedicated gallery-media identity
+is created or provided, encrypted in SOPS, and proven with GET-only token probes
+and redacted policy evidence. Do not upload gallery media yet.
+
 ## Definition of done
 
 The migration is done only when all phases are closed, no protected artifact changed, no forbidden method was used, every new object has provenance, reruns are idempotent, and unresolved cases are explicitly excluded or reviewed.

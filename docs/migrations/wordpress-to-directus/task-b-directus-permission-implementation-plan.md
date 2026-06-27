@@ -532,3 +532,44 @@ open_questions:
   - Which future command or script will generate credential-free policy graph evidence for the detailed `feeds.create` permission object?
 next_action: After explicit approval, create the two Directus migration identities, store tokens with SOPS, and regenerate live gate evidence without using the schema token.
 ```
+
+## Gallery-media permission-management discovery
+
+On 2026-06-27, a separate permission-management discovery checked the planned
+gallery-media execution identity:
+
+```text
+directus-createonly-gallery-media-migration
+cap-gallery-media-migration@skunklabs.uk
+```
+
+This identity is intentionally separate from
+`directus-createonly-content-migration`, which remains feed-only and must not be
+broadened for gallery media.
+
+The fresh GET-only discovery found no existing role, policy, or user for the
+gallery-media identity and classified the state as:
+
+```text
+absent_safe_to_create
+```
+
+No creation was performed because the explicit apply gate was absent:
+
+```text
+APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true
+```
+
+Artifacts:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T055028Z
+gallery-media-identity.discovery.json: 8c4158e37cdf1986d8c3179bf01d18626063e4e4eade0bb7f9217351f23c59c6
+gallery-media-identity.blocked.json: e907e626c17f75605182aa3ef3d2f2c5f381661f9b53a7355c7f48673221024a
+```
+
+The next approved apply for gallery media should create only the dedicated
+gallery-media role, policy, permissions, service user, static token, and SOPS
+secret. It must not modify the existing feed-only content migration identity
+and must stop if Directus requires `PATCH`, `PUT`, `DELETE`, or broader
+permission scope.

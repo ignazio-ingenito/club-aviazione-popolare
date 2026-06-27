@@ -751,3 +751,57 @@ open_questions:
   - Will Directus 11.13.2 enforce `status = draft` at access-policy level for `feeds.create`, or must this remain executor-only?
 next_action: After explicit approval, create the two dedicated Directus identities, store their tokens with SOPS, and regenerate the two live gate artifacts without using the schema token.
 ```
+
+## Gallery-media identity discovery status
+
+On 2026-06-27, the permission-management slice for a separate gallery-media
+execution identity was checked with GET-only live discovery.
+
+Planned identity:
+
+```text
+identity_name: directus-createonly-gallery-media-migration
+service_email: cap-gallery-media-migration@skunklabs.uk
+secret_path: secrets/migration/directus-createonly-gallery-media-migration.20260626.sops.yaml
+```
+
+Required capabilities:
+
+```text
+feeds.read
+directus_folders.read
+directus_folders.create
+directus_files.read
+directus_files.create
+```
+
+Fresh discovery using the schema/admin token found:
+
+```text
+classification: absent_safe_to_create
+role_count: 0
+policy_count: 0
+user_count: 0
+live_methods_used: GET only
+apply_requested: false
+apply_performed: false
+```
+
+No role, policy, permission, user, token, folder, file, feed, schema, or media
+object was created. No existing `directus-createonly-content-migration` secret
+or identity was modified.
+
+Artifacts are outside Git:
+
+```text
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T055028Z/gallery-media-identity.discovery.json
+sha256: 8c4158e37cdf1986d8c3179bf01d18626063e4e4eade0bb7f9217351f23c59c6
+
+/home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T055028Z/gallery-media-identity.blocked.json
+sha256: e907e626c17f75605182aa3ef3d2f2c5f381661f9b53a7355c7f48673221024a
+```
+
+Production readiness remains blocked because the explicit apply gate was not
+set. The next permission-management run may create this identity only after
+`APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true` is intentionally present and fresh
+GET-only comparison still classifies the state as safe.

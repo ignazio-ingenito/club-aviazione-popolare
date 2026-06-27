@@ -1706,6 +1706,64 @@ access to directus_folders and directus_files, then rerun policy evidence and a
 fresh absence gate using that execution identity before any upload.
 ```
 
+## 2026-06-27 - Gallery-media identity discovery blocked
+
+State:
+
+- branch: `develop`
+- Directus permission-management mutation: none
+- Directus content/media/folder/feed mutation: none
+- protected production artifact impact: none
+
+The permission-management handoff for
+`directus-createonly-gallery-media-migration` was checked against the latest
+article and gallery progress. It is compatible with the current blocker: the
+feed-only `directus-createonly-content-migration` identity remains unchanged and
+must not be broadened for gallery media.
+
+Fresh GET-only discovery with the schema/admin token classified the planned
+gallery-media identity as:
+
+```text
+absent_safe_to_create
+```
+
+No role, policy, or service user exists for:
+
+```text
+identity_name: directus-createonly-gallery-media-migration
+service_email: cap-gallery-media-migration@skunklabs.uk
+```
+
+No creation was performed because the explicit apply gate was absent:
+
+```text
+APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true
+```
+
+Artifacts outside Git:
+
+```text
+run_dir: /home/iingenito/cap-migration-runs/20260622T110402Z/gallery-media-identity-20260627T055028Z
+gallery-media-identity.discovery.json: 8c4158e37cdf1986d8c3179bf01d18626063e4e4eade0bb7f9217351f23c59c6
+gallery-media-identity.blocked.json: e907e626c17f75605182aa3ef3d2f2c5f381661f9b53a7355c7f48673221024a
+```
+
+No SOPS secret was created:
+
+```text
+secrets/migration/directus-createonly-gallery-media-migration.20260626.sops.yaml
+```
+
+Next action:
+
+```text
+Resolve gallery-media identity/permission evidence before any gallery media
+upload. If approved, rerun the permission-management slice with
+APPLY_DIRECTUS_GALLERY_MEDIA_IDENTITY=true, then validate the new token with
+GET-only probes and redacted policy evidence.
+```
+
 ## 2026-06-26 - Member topics status schema fix
 
 State:
