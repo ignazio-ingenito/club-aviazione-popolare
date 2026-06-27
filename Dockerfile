@@ -17,7 +17,11 @@ RUN corepack prepare pnpm@10.28.1 --activate
 COPY --from=deps /pnpm /pnpm
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ARG DIRECTUS_PUBLIC_URL=https://cap-cms.skunklabs.uk
+ARG DIRECTUS_INTERNAL_URL=https://cap-cms.skunklabs.uk
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DIRECTUS_PUBLIC_URL=$DIRECTUS_PUBLIC_URL
+ENV DIRECTUS_INTERNAL_URL=$DIRECTUS_INTERNAL_URL
 RUN pnpm run build
 
 FROM node:22-alpine AS runner
